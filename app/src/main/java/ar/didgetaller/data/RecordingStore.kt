@@ -2,6 +2,7 @@ package ar.didgetaller.data
 
 import android.content.Context
 import ar.didgetaller.core.SessionAnalysis
+import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.ProgressiveWavWriter
 import ar.didgetaller.core.Pcm16WavReader
 import org.json.JSONArray
@@ -15,7 +16,7 @@ class RecordingStore(context: Context) {
     data class Session(
         val id:String, val name:String, val createdAt:Long, val durationMs:Long, val sizeBytes:Long,
         val summary:SessionAnalysis.Summary?, val timeline:List<SessionAnalysis.Point>,
-        val legacy:Boolean, val recovered:Boolean=false
+        val legacy:Boolean, val recovered:Boolean=false, val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO
     )
     private val directory=File(context.filesDir,"recordings").apply { mkdirs() }
     private val prefs=context.getSharedPreferences("local_data",Context.MODE_PRIVATE)
@@ -44,7 +45,7 @@ class RecordingStore(context: Context) {
             }.orEmpty()
             Session(id,item.optString("name","Grabación"),item.optLong("createdAt"),
                 item.optLong("durationMs"),file.length(),summary,samples,!item.has("timeline"),
-                item.optBoolean("recovered",false))
+                item.optBoolean("recovered",false),InstrumentProfile.fromStored(item.optString("instrument")))
         }
         val known=indexed.mapTo(mutableSetOf()) {it.id}
         val recovered=directory.listFiles().orEmpty().mapNotNull {candidate ->
@@ -68,15 +69,15 @@ class RecordingStore(context: Context) {
         }
         return count
     }
-    @Synchronized fun importCapture(partial:File,points:List<SessionAnalysis.Point>,createdAt:Long):Session {
+    @Synchronized fun importCapture(partial:File,points:List<SessionAnalysis.Point>,createdAt:Long,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
         require(partial.parentFile?.canonicalFile==directory.canonicalFile && partial.extension=="part")
         val id=partial.nameWithoutExtension;val destination=file(id)
         val duration=Pcm16WavReader(partial).use {it.frameCount*1000/it.sampleRate}
         check(!destination.exists() && partial.renameTo(destination)){"No se pudo conservar la captura."}
-        return indexCapture(id,duration,points,createdAt)
+        return indexCapture(id,duration,points,createdAt,instrument)
     }
     @Synchronized fun save(bytes:ByteArray,points:List<SessionAnalysis.Point> = emptyList(),
-                           createdAt:Long=System.currentTimeMillis()):Session {
+                           createdAt:Long=System.currentTimeMillis(),instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
         require(bytes.size>44 && String(bytes,0,4,Charsets.US_ASCII)=="RIFF")
         val id=UUID.randomUUID().toString()
         val destination=file(id)
@@ -85,16 +86,17 @@ class RecordingStore(context: Context) {
             temporary.outputStream().use {it.write(bytes);it.flush()}
             check(temporary.renameTo(destination)) {"No se pudo conservar el WAV"}
             val duration=duration(destination)
-            return indexCapture(id,duration,points,createdAt)
+            return indexCapture(id,duration,points,createdAt,instrument)
         } finally {temporary.delete()}
     }
-    private fun indexCapture(id:String,duration:Long,points:List<SessionAnalysis.Point>,createdAt:Long):Session {
+    private fun indexCapture(id:String,duration:Long,points:List<SessionAnalysis.Point>,createdAt:Long,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
             val destination=file(id)
             val now=createdAt
             val name="Sesión ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm",java.util.Locale.getDefault()).format(java.util.Date(now))}"
-            val summary=SessionAnalysis.summarize(points)
+            val summary=SessionAnalysis.summarize(points,instrument.validMinHz,instrument.validMaxHz)
             val array=entries()
             val item=JSONObject().put("id",id).put("name",name).put("createdAt",now).put("durationMs",duration)
+                .put("instrument",instrument.name)
                 .put("timeline",JSONArray().also { timeline ->
                     points.forEach { point -> timeline.put(JSONArray().put(point.timeMs)
                         .put(point.hz ?: JSONObject.NULL).put(point.confidence)) }
@@ -105,7 +107,7 @@ class RecordingStore(context: Context) {
                 .put("totalPoints",summary.totalPoints))
             array.put(item)
             check(prefs.edit().putString("recordings",array.toString()).commit())
-            return Session(id,name,now,duration,destination.length(),summary,points,false)
+            return Session(id,name,now,duration,destination.length(),summary,points,false,instrument=instrument)
     }
     @Synchronized fun rename(id:String,name:String) {
         require(name.isNotBlank())

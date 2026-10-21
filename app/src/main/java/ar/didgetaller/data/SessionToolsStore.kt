@@ -22,6 +22,8 @@ class SessionToolsStore(context:Context) {
         val arr=JSONArray();for(i in 0 until old.length())if(old.getJSONObject(i).optString("id")!=markerId)arr.put(old.get(i));value.put("markers",arr);save(r)}
     fun forget(id:String){val r=root();r.remove(id);save(r)}
     fun forgetDesign(id:String){val r=root();r.keys().forEach {key ->r.optJSONObject(key)?.takeIf {it.optString("designId")==id}?.remove("designId")};save(r)}
+    fun instrument()=ar.didgetaller.core.InstrumentProfile.fromStored(prefs.getString("instrument",null))
+    fun setInstrument(profile:ar.didgetaller.core.InstrumentProfile){check(prefs.edit().putString("instrument",profile.name).commit())}
     fun limitSeconds()=prefs.getInt("limitSeconds",900).coerceIn(60,3600)
     fun setLimitSeconds(seconds:Int){require(seconds in 60..3600);check(prefs.edit().putInt("limitSeconds",seconds).commit())}
 }

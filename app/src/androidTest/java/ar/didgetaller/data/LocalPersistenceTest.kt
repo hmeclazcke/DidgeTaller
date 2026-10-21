@@ -39,6 +39,28 @@ class LocalPersistenceTest {
                 target.getSharedPreferences("instrumentation_local_data",mode)
         }
     }
+    @Test fun instrumentIsAdditiveAndLegacyReadsNeverRewriteIndexOrAudio(){
+        val context=isolatedContext();val prefs=context.getSharedPreferences("local_data",0)
+        val store=RecordingStore(context)
+        val wav=WavCodec.encode(ShortArray(44100){i->(5000*sin(2*Math.PI*440*i/44100)).toInt().toShort()},44100,44100)
+        val old=store.save(wav,listOf(SessionAnalysis.Point(0,69.3,.95)))
+        val legacy=JSONArray(prefs.getString("recordings","[]"));legacy.getJSONObject(0).remove("instrument")
+        prefs.edit().putString("recordings",legacy.toString()).commit()
+        val exact=prefs.getString("recordings",null)
+        assertEquals(ar.didgetaller.core.InstrumentProfile.DIDGERIDOO,RecordingStore(context).list().single().instrument)
+        assertEquals(exact,prefs.getString("recordings",null));assertArrayEquals(wav,store.file(old.id).readBytes())
+        val profile=ar.didgetaller.core.InstrumentProfile.NATIVE_AMERICAN_FLUTE
+        val flute=store.save(wav,(0..5).map {SessionAnalysis.Point(it*150L,440.0,.98)},instrument=profile)
+        assertEquals(profile,RecordingStore(context).list().first {it.id==flute.id}.instrument)
+        store.rename(flute.id,"Flauta de prueba")
+        assertEquals(profile,RecordingStore(context).list().first {it.id==flute.id}.instrument)
+        assertFalse(JSONArray(prefs.getString("recordings","[]")).getJSONObject(0).has("instrument"))
+        val cache=AnalysisCache(context)
+        val analysis=cache.analyze(flute.id,store.file(flute.id),instrument=profile)
+        assertEquals(440.0,analysis.medianValidHz!!,1.0)
+        val cached=AnalysisCache(context).analyze(flute.id,store.file(flute.id),instrument=profile)
+        assertEquals(analysis.timeline,cached.timeline);assertArrayEquals(wav,store.file(flute.id).readBytes())
+    }
     @Test fun legacyMeasurementsAndDesignsRemainReadable() {
         val context=isolatedContext()
         val prefs=context.getSharedPreferences("local_data",0)

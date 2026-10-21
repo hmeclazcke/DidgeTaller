@@ -1,5 +1,40 @@
 # Visor acústico 3.1
 
+## Reparación de Fundamental 3.2.4 — 21/10/2026
+
+La política visual3.2.3 queda reemplazada: umbral0,70 y enlaces limitados entre extremos medidos coherentes tras incertidumbres breves, sin muestras interpoladas. Silencios reales/pausas largas cortan. Tarjeta/detalle/fullscreen usan la misma tendencia; originales y razones disponibles en herramientas. Criterios completos y comparación Re·D2/Mib·Eb2 en VALIDATION. General incluye toda la tendencia respaldada y contexto; no se cambia zoom, Reset ni propiedad de cámaras.
+
+Fundamental muestra unidad Hz una sola vez en el margen izquierdo, números/notas medidos; margen fijo durante gesto. Leyenda «Línea: tendencia», sin aviso «N fuera» ni párrafo permanente bajo el gráfico. Conteos/ayuda conservados en herramientas. STFT/onda/transporte/insets/orientación no modificados.
+
+## Graph Intelligence & UX Stability 3.2.2 — 21/10/2026
+
+Reglas vigentes que reemplazan las descripciones históricas: `explorer(id)` es fullscreen y `preview(id)` es detalle. Cámaras, gráfico, lectura y seguimiento independientes; selección/fragmento/bucle pertenecen a la sesión activa. Salir completamente elimina ambos estados; rotar o volver al detalle no contamina cámaras. La tarjeta deriva su rango de datos, sin ExplorerState.
+
+Fundamental limita el dominio manual a General robusta. Mostrar todos/rango exacto habilitan explícitamente dominio extendido; Reset lo desactiva y recupera tiempo completo + General. Ajustada muestra dispersión pequeña sin suavizar. Series inmutables y rangos memoizados, sin auto-fit durante gesto/pan.
+
+PitchTrace clasifica estimaciones contextualmente inciertas sin cambiar sus Hz: ver criterios/tests en VALIDATION. Marcadores opcionales y cursor con Hz/confianza originales, sin confirmar nota. Valores confiables recortados por percentiles se avisan y pueden verse por completo. Music no asigna nota a cero/casi cero/fuera de MIDI0–127. Las transformaciones radiales/STFT/insets de3.2.1 se conservan.
+
+## Stability & Precision 3.2.1 — 21/10/2026
+
+`measure/wide` se desapila hacia `measure`; ambas presentaciones conservan captura. Navegación de sesión/visor mantiene su propietario de audio anterior. No BackHandlers.
+
+Pinch usa razón radial de centroides, no separaciones X/Y. El ancla es el centro actual; pan normalizado lo lleva al centro anterior antes de calcular la nueva ventana. Solo al final se aplica el dominio. Se conservan coordenadas de datos al redimensionar; el margen Y de Fundamental no depende de los ticks del momento.
+
+STFT fija posiciones al origen del WAV y hop16384, pondera celdas por soporte temporal y mantiene referencia de color. La transformación del bitmap usa float. Render al soltar, sin180ms de espera; durante gesto conserva la tesela completada en sus coordenadas reales. VISUAL_VERSION3 es independiente de análisis VERSION2.
+
+Serie canónica: lecturas originales si existen; reanálisis solo para sesiones sin serie. `PitchTrace` comparte cortes y validez; General usa todos los válidos y contexto de tres semitonos por lado, Ajustada conserva escala robusta y advertencia de recorte. Textos completos en herramientas. Reset conserva selección/lectura/audio y restaura cámara general. Estas reglas reemplazan las descripciones3.1/3.2 que siguen.
+
+## Acoustic Studio 3.2 — 21/10/2026 (prevalece sobre la presentación anterior)
+
+- Un solo propietario de `safeDrawing` en el visor; el Scaffold exterior entrega insets cero. Se oculta únicamente la barra de estado con `WindowInsetsControllerCompat`, se conserva navegación/cutout y se restaura su visibilidad al salir. [API Android](https://developer.android.com/develop/ui/views/layout/immersive).
+- Barras de 48 dp. En horizontal bajo (<400 dp de altura de ventana) o fuente ≥1,3, transporte y acciones se reúnen en una única barra. En ventanas más altas hay dos barras. Menú de gráfico en el título; escalas, selección, análisis, zoom alternativo y lectura completa en Herramientas. Con fuente grande se prioriza el tiempo completo; zoom sigue disponible por gesto/panel.
+- Leyenda STFT en el margen reservado del eje, nunca sobre los datos. Márgenes de etiquetas medidos con Paint; la misma región `PlotDataArea` gobierna dibujo, inspección y gestos. Las pruebas verifican área de datos y selección temporal después de cambiar tamaño.
+- Fundamental conserva eje lineal en Hz. `Music.pitch` devuelve MIDI, referencia A4=440 y cents decimales, o null para entradas inválidas. `PitchAxis` usa notas exactas espaciadas en Hz; en zoom fino vuelve a ticks numéricos con una sola equivalencia «≈». Nota secundaria y ancho medido antes del dibujo. El aviso de lecturas fuera del rango corresponde al viewport actual; Mostrar todos lo elimina cuando efectivamente entran.
+- `ExplorerState` toma el instrumento guardado de la sesión. Didgeridoo conserva rangos graves; Flauta nativa usa análisis nominal 200–1600 Hz (guarda de interpolación ±0,5%) y presets espectrales 2000/4000/Nyquist. Espectrograma muestra exclusivamente Hz; onda y procesamiento STFT no se duplican.
+- Cámara, selección, reproducción y back stack conservan la propiedad por sesión de 3.1. Ningún BackHandler agregado. La orientación solicitada previamente se restaura al salir.
+
+Evidencia y límites actuales: `VALIDATION.md`, `UI_AUDIT.md`. La descripción histórica de detector 35–220 Hz que sigue corresponde exclusivamente a didgeridoo.
+
 ## Navegación y propiedad del estado
 
 `viewer/{id}/{plot}` es un destino de Navigation Compose sobre `session/{id}`. Atrás y la flecha desapilan el mismo destino. El visor tiene su propio Scaffold con áreas seguras, sin navegación inferior ni scroll vertical contenedor. El Laboratorio ofrece una portada y destinos `lab/tool/{tool}` con pestañas fuera del formulario desplazable.

@@ -1,5 +1,60 @@
 # Hoja de ruta priorizada — Didge Taller
 
+## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
+
+- [x] Revertir umbral visual0,85/segmentación excesiva; recuperar tendencia con originales intactos y silencios reales diferenciados.
+- [x] Outliers aislados fuera de curva/autoescala, inspeccionables; toot respaldado/flauta conservados. Misma política en las tres superficies.
+- [x] Reproducir las lecturas exactas Re·D2/Mib·Eb2 y comparar APK3.2.2/3.2.3/3.2.4 visualmente, solo en emulador.
+- [x] Eje sin Hz repetidos, datos detalle+5,33%; leyenda compacta, avisos fuera de la vista principal.
+- [x]104 JVM y APK3.2.4-beta1/10 compilados; checkpoint previo recuperable y cambios anteriores de Git preservados.
+- [x]39 casos UI distintos más6 repeticiones360/420dp/fuentes1,3/1,5;20 capturas revisadas. Samsung install-r/Success, arranque/firma/APK verificados,61 hashes/13 sesiones/13 WAV intactos tras respaldo fresco. Checkpoint final recuperable.
+- [ ] Validación musical/física de eventos de una sola lectura, afinador independiente, gesto físico, sincronía audible,15min/batería y TalkBack completo.
+
+## Fundamental Precision 3.2.3 — 21/10/2026
+
+- [x] Curva confiable compartida e incertidumbre accesible sin reescribir lecturas; diagnóstico real focalizado en solo lectura.
+- [x] General incluye toots respaldados aunque breves; Ajustada/zoom fino/Reset conservados, sin suavizado.
+- [x] Eje según etiquetas reales, sin unidad duplicada; leyenda breve. Datos detalle+10,68% en escenario comparable.
+- [x] 97 JVM/38 instrumentados distintos; matriz360/420dp y fuentes1,3/1,5,13 capturas inspeccionadas. APK3.2.3-beta1/9.
+- [x] Samsung install-r/Success, firma/APK verificados;61 hashes intactos y13 sesiones/WAV indexados/legibles tras respaldo fresco.
+- [ ] Validar musicalmente con PVC/flauta real y afinador independiente, gesto físico, sincronía audible,15min/batería y TalkBack completo.
+
+## Graph Intelligence & UX Stability 3.2.2 — 21/10/2026
+
+- [x] Auto-fit robusto de Fundamental y zoom-out limitado al contexto de datos; rango completo explícito y Reset correcto.
+- [x] Cámaras separadas de preview/fullscreen, tarjetas determinísticas, nueva visita limpia, selección/bucle conservados y perfiles por sesión.
+- [x] Clasificación contextual de periodicidad incierta sin borrar/suavizar lecturas; segmentos y acceso a originales comunes.
+- [x] Notas limitadas al rango musical soportado; 0Hz, NaN, infinito y frecuencias casi nulas sin nota.
+- [x] 86 JVM, 35 casos instrumentados distintos, matriz visual 360/420 y fuentes ampliadas; APK3.2.2/8 y actualización segura Samsung.
+- [ ] Contrastar manualmente fluidez y gestos físicos, afinador independiente, sincronía audible, 15min/batería y TalkBack completo.
+
+[Validación](VALIDATION.md) · [Capturas](screenshots/v322-final/README.md). Se conservan los resultados históricos debajo.
+
+## Stability & Precision 3.2.1 — 21/10/2026
+
+- [x] Medir/Vista amplia: Atrás por back stack real, grabación y escucha preservadas; teclas y gesto de borde en emulador.
+- [x] Zoom radial continuo, transformación con pan/ancla simultáneos, límites finitos y coordenadas independientes de orientación.
+- [x] STFT estable respecto del WAV, raster en coordenadas flotantes, reset sin demora artificial; caché visual v3, análisis histórico conservado.
+- [x] Serie canónica y política común entre miniatura/detalle/visor; General/Ajustada y marcadores de baja confianza, sin borrar saltos reales.
+- [x] Lectura completa en herramientas, fuente grande, layout horizontal de 3.2 conservado; 76 JVM y 32 casos instrumentados distintos.
+- [x] APK 3.2.1/7 e instalación segura Samsung con hashes verificados.
+- [ ] Prueba manual del pinch/pan en Samsung, flauta/PVC reales y afinador, sincronía audible, 15 minutos/batería y TalkBack completo.
+
+Evidencia: [VALIDATION](VALIDATION.md), [capturas](screenshots/v321-final/README.md). No se agregaron instrumentos ni simuladores.
+
+## Cierre Acoustic Studio 3.2 — 21/10/2026
+
+- [x] Visor compartido de cuatro gráficos: barras compactas, menú de herramientas, leyenda integrada, tratamiento único de insets, rotación y reproducción conservadas.
+- [x] Capturas antes/después en Samsung; datos del espectrograma superan 70% de altura total después. Matriz de emulador 360/420 dp y fuentes 1,0/1,3/1,5; coordenadas táctiles y ejes verificados.
+- [x] Fundamental con Hz + nota secundaria, ticks musicales exactos o equivalencia ≈, cursor con cents y autoescala por datos/perfil; STFT solo Hz.
+- [x] Flauta nativa: selección, YIN adaptado y probado con armónicos/ruido/silencios/melodía, captura y persistencia por sesión, Biblioteca/detalle y presets. Laboratorio identificado como didgeridoo.
+- [x] Compatibilidad de sesiones anteriores sin migración destructiva; cache derivada v2.
+- [x] 67 JVM, 27 casos instrumentados distintos en emulador, APK 3.2/6; Samsung install -r Success y 8 WAV/datos conservados.
+- [ ] Validar con flauta real/PVC y afinador independiente: ataque, soplido, registro, octavas y latencia percibida.
+- [ ] Sincronía audible, 15 minutos sostenidos/batería y recorrido TalkBack completo.
+
+Evidencia: [capturas y medidas](screenshots/v32-final/README.md), [validación](VALIDATION.md). Los ciclos históricos que siguen conservan sus resultados originales.
+
 ## Didge Taller 3.1 — UX/UI y visor inmersivo, entrega 20/10/2026
 
 - [x] Auditoría previa con capturas reales y reproducción de «Marcar fin» estrecho.

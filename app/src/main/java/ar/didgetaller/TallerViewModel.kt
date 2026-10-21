@@ -20,6 +20,7 @@ import ar.didgetaller.audio.MicrophoneEngine
 import ar.didgetaller.core.AcousticModel
 import ar.didgetaller.core.BoreOptimizer
 import ar.didgetaller.core.Music
+import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.PitchDetector
 import ar.didgetaller.core.SessionAnalysis
 import ar.didgetaller.core.Pcm16WavReader
@@ -47,9 +48,19 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val tools=SessionToolsStore(application)
     val workspace=SessionWorkspace(viewModelScope,recordingStore,cache)
     private val explorers=mutableMapOf<String,ar.didgetaller.ui.ExplorerState>()
-    fun explorer(id:String)=explorers.getOrPut(id){ar.didgetaller.ui.ExplorerState()}
+    fun explorer(id:String)=explorers.getOrPut(id){ar.didgetaller.ui.ExplorerState(sessions.firstOrNull {it.id==id}?.instrument ?: InstrumentProfile.DIDGERIDOO)}
+    private val previews=mutableMapOf<String,ar.didgetaller.ui.ExplorerState>()
+    fun preview(id:String)=previews.getOrPut(id){explorer(id).let {ar.didgetaller.ui.ExplorerState(it.instrument,it.selection)}}
     private var activeDetail:String?=null
     var viewerOriginalOrientation:Int?=null
+    var instrument by mutableStateOf(tools.instrument());private set
+    private var captureInstrument=instrument
+    fun selectInstrument(profile:InstrumentProfile){
+        if(listening || sessionPhase!=SessionPhase.IDLE)return
+        instrument=profile;tools.setInstrument(profile);minHz=profile.minHz;maxHz=profile.initialMaxHz
+        mic.instrument=profile;mic.minHz=minHz;mic.maxHz=maxHz
+        reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0
+    }
     var recordingLimitSeconds by mutableStateOf(tools.limitSeconds());private set
     var undoEntry by mutableStateOf<UndoEntry?>(null);private set
     var trashCount by mutableStateOf(trash.ids("session").size+trash.ids("design").size);private set
@@ -70,15 +81,15 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         val selected=store.designs(true).find {it.id==associatedDesignId}
         if(selected!=null)associationJob=viewModelScope.launch {associatedSimulation=withContext(Dispatchers.Default){AcousticModel.evaluate(selected.shape)}}
     }
-    fun associate(item:RecordingStore.Session,designId:String?){tools.associate(item.id,designId);loadTools(item)}
+    fun associate(item:RecordingStore.Session,designId:String?){if(item.instrument!=InstrumentProfile.DIDGERIDOO && designId!=null)return;tools.associate(item.id,designId);loadTools(item)}
     fun addMarker(item:RecordingStore.Session,time:Long,type:String){tools.addMarker(item.id,time,type,"");markers=tools.markers(item.id)}
     fun removeMarker(item:RecordingStore.Session,id:String){tools.deleteMarker(item.id,id);markers=tools.markers(item.id)}
     fun compare(a:RecordingStore.Session,b:RecordingStore.Session,aStart:Long=0,aEnd:Long?=null,bStart:Long=0,bEnd:Long?=null){
         comparisonJob?.cancel();comparison=ComparisonState(running=true)
         comparisonJob=viewModelScope.launch {try {
             val results=withContext(Dispatchers.Default){
-                val first=cache.analyze(a.id,sessionFile(a),aStart,aEnd,cancelled={!isActive},progress={p->main.post {if(isActive)comparison=comparison.copy(progress=p/2)}})
-                val second=cache.analyze(b.id,sessionFile(b),bStart,bEnd,cancelled={!isActive},progress={p->main.post {if(isActive)comparison=comparison.copy(progress=50+p/2)}})
+                val first=cache.analyze(a.id,sessionFile(a),aStart,aEnd,instrument=a.instrument,cancelled={!isActive},progress={p->main.post {if(isActive)comparison=comparison.copy(progress=p/2)}})
+                val second=cache.analyze(b.id,sessionFile(b),bStart,bEnd,instrument=b.instrument,cancelled={!isActive},progress={p->main.post {if(isActive)comparison=comparison.copy(progress=50+p/2)}})
                 first to second
             };comparison=ComparisonState(a=results.first,b=results.second,progress=100)
         } catch(e:CancellationException){throw e} catch(e:Exception){comparison=ComparisonState(error=e.message ?: "Error de comparación.")}}
@@ -130,8 +141,8 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val player=SessionPlayer({id,paused ->playingId=id;playbackPaused=paused},{message=it})
     private var consecutiveReadings=0
     var message by mutableStateOf("");private set
-    var minHz by mutableStateOf(35);private set
-    var maxHz by mutableStateOf(140);private set
+    var minHz by mutableStateOf(instrument.minHz);private set
+    var maxHz by mutableStateOf(instrument.initialMaxHz);private set
     var shape by mutableStateOf(AcousticModel.Shape());private set
     var simulation by mutableStateOf<AcousticModel.Simulation?>(null);private set
     var simBusy by mutableStateOf(true);private set
@@ -144,7 +155,9 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
 
     private val mic=MicrophoneEngine(onReading={incoming ->
         reading=incoming
-        if(incoming.hz>0) {
+        val usable=if(instrument==InstrumentProfile.DIDGERIDOO)incoming.hz>0 else
+            incoming.hz in instrument.validMinHz..instrument.validMaxHz && incoming.confidence>=.80
+        if(usable) {
             val previous=filteredHz
             val difference=if(previous>0)abs(1200*ln(incoming.hz/previous)/ln(2.0)) else Double.POSITIVE_INFINITY
             filteredHz=if(difference<70) 0.65*previous+0.35*incoming.hz else incoming.hz
@@ -154,18 +167,18 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         if(sessionPhase==SessionPhase.CAPTURING) {
             sessionTimeline=sessionTimeline+SessionAnalysis.Point(
                 (SystemClock.elapsedRealtime()-sessionStartedAtMs).coerceAtLeast(0),
-                incoming.hz.takeIf { it>0 && it.isFinite() },incoming.confidence)
+                incoming.hz.takeIf { usable && it.isFinite() },incoming.confidence)
         }
     },onRecordingStopped={
         if(sessionPhase==SessionPhase.CAPTURING)finishSession()
     },onRecordingReady={file ->
         main.post {
             if(sessionPhase==SessionPhase.CAPTURING)finishSession()
-            val points=pendingTimeline
+            val points=pendingTimeline;val profile=captureInstrument
             sessionExecutor.execute {
                 val result=runCatching {
                     check(file.length()>44) {"No se capturó audio. Intentá de nuevo."}
-                    recordingStore.importCapture(file,points,sessionStartedAtWallMs)
+                    recordingStore.importCapture(file,points,sessionStartedAtWallMs,profile)
                 }
                 main.post {
                     pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE
@@ -180,14 +193,18 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         if(sessionPhase==SessionPhase.CAPTURING)finishSession() else listening=false
     })
 
-    init { calculate();if(recoveredCount>0)message="Se recuperaron $recoveredCount grabaciones interrumpidas. Están en Biblioteca." }
-    fun setRange(expanded:Boolean){minHz=35;maxHz=if(expanded)220 else 140;mic.minHz=minHz;mic.maxHz=maxHz}
+    init { mic.instrument=instrument;mic.minHz=minHz;mic.maxHz=maxHz;calculate();if(recoveredCount>0)message="Se recuperaron $recoveredCount grabaciones interrumpidas. Están en Biblioteca." }
+    fun setRange(expanded:Boolean){if(instrument!=InstrumentProfile.DIDGERIDOO || listening)return;minHz=35;maxHz=if(expanded)220 else 140;mic.minHz=minHz;mic.maxHz=maxHz}
     /** Navigation owns the back stack; audio must not outlive its destination. */
-    fun onDestinationChanged(sessionId:String?=null){
-        microphoneStop();fullScreen=false
+    private var inMeasurementDestination=false
+    fun onDestinationChanged(sessionId:String?=null,measurement:Boolean=false){
+        // Normal/wide are presentations of the SAME capture, including repeated entries.
+        if(measurement && inMeasurementDestination)return
+        inMeasurementDestination=measurement
+        microphoneStop()
         if(activeDetail!=sessionId || sessionId==null){
             stopPlayback();cancelRecordingAnalysis(clear=true);workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
-            activeDetail?.let {explorers[it]?.looping=false;explorers[it]?.gestureActive=false}
+            activeDetail?.let {explorers.remove(it);previews.remove(it)}
         }
         activeDetail=sessionId
     }
@@ -196,7 +213,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         recordingAnalysis=RecordingAnalysisState(item.id,running=true,startMs=startMs,endMs=endMs)
         analysisExecutor.execute {
             val result=runCatching {cache.analyze(item.id,recordingStore.file(item.id),startMs,endMs,
-                cancelled={serial!=analysisVersion.get() || Thread.currentThread().isInterrupted},force=force,progress={percent ->
+                cancelled={serial!=analysisVersion.get() || Thread.currentThread().isInterrupted},force=force,instrument=item.instrument,progress={percent ->
                     main.post {if(serial==analysisVersion.get())recordingAnalysis=recordingAnalysis.copy(progress=percent)}
                 })}
             main.post {if(serial==analysisVersion.get() && !cleared) {
@@ -223,6 +240,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     fun startSession() {
         if(sessionPhase!=SessionPhase.IDLE)return
         if(listening)microphoneStop()
+        captureInstrument=instrument
         microphoneStart()
         if(!listening)return
         sessionTimeline=emptyList();pendingTimeline=emptyList()

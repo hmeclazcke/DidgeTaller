@@ -7,6 +7,7 @@ import android.media.MediaRecorder
 import android.os.Handler
 import android.os.Looper
 import ar.didgetaller.core.PitchDetector
+import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.ProgressiveWavWriter
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
@@ -30,6 +31,7 @@ class MicrophoneEngine(
     @Volatile private var recording=false
     private var writer:ProgressiveWavWriter?=null
     private var limitSamples=RATE*MAX_RECORD_SECONDS.toLong()
+    @Volatile var instrument=InstrumentProfile.DIDGERIDOO
     @Volatile var minHz=35
     @Volatile var maxHz=140
 
@@ -79,7 +81,8 @@ class MicrophoneEngine(
         }
     }
     private fun readLoop(record:AudioRecord) {
-        val rolling=ShortArray(FRAME);val chunk=ShortArray(CHUNK)
+        val profile=instrument;val frame=profile.windowSamples
+        val rolling=ShortArray(frame);val chunk=ShortArray(CHUNK)
         var filled=0; var frames=0
         try {
             while(active.get() && audio===record && !Thread.currentThread().isInterrupted) {
@@ -98,14 +101,14 @@ class MicrophoneEngine(
                     }
                 }
                 if(reachedLimit)finishRecording()
-                if(filled+n<FRAME){System.arraycopy(chunk,0,rolling,filled,n);filled+=n}
-                else if(n>=FRAME){System.arraycopy(chunk,n-FRAME,rolling,0,FRAME);filled=FRAME}
+                if(filled+n<=frame){System.arraycopy(chunk,0,rolling,filled,n);filled+=n}
+                else if(n>=frame){System.arraycopy(chunk,n-frame,rolling,0,frame);filled=frame}
                 else {
-                    System.arraycopy(rolling,n,rolling,0,FRAME-n)
-                    System.arraycopy(chunk,0,rolling,FRAME-n,n)
-                    filled=FRAME
+                    System.arraycopy(rolling,n,rolling,0,frame-n)
+                    System.arraycopy(chunk,0,rolling,frame-n,n)
+                    filled=frame
                 }
-                if(filled==FRAME && ++frames%2==0){
+                if(filled==frame && ++frames%profile.analysisChunks==0){
                     val result=PitchDetector.analyze(rolling,RATE,minHz,maxHz)
                     mainHandler.post {if(active.get())onReading(result)}
                 }

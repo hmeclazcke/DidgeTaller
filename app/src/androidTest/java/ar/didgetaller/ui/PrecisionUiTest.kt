@@ -1,0 +1,220 @@
+package ar.didgetaller.ui
+
+import android.Manifest
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.os.Build
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.lifecycle.ViewModelProvider
+import androidx.test.espresso.Espresso
+import androidx.test.platform.app.InstrumentationRegistry
+import ar.didgetaller.MainActivity
+import ar.didgetaller.TallerViewModel
+import ar.didgetaller.SessionPhase
+import ar.didgetaller.core.*
+import ar.didgetaller.data.RecordingStore
+import org.junit.*
+import org.junit.Assert.*
+import org.junit.Assume.assumeTrue
+import java.io.File
+import kotlin.math.*
+
+/** Real Activity, system Back and multi-pointer injection; fixtures exclusively on emulator. */
+class PrecisionUiTest {
+    @get:Rule val compose=createAndroidComposeRule<MainActivity>()
+    private lateinit var vm:TallerViewModel
+    private lateinit var store:RecordingStore
+    private val owned=mutableListOf<String>()
+    @Before fun setup(){
+        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        compose.runOnUiThread {vm=ViewModelProvider(compose.activity)[TallerViewModel::class.java]}
+        store=RecordingStore(compose.activity.application)
+    }
+    @After fun cleanup(){
+        if(::vm.isInitialized)compose.runOnUiThread {vm.microphoneStop();vm.stopPlayback();vm.workspace.clear();compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED}
+        owned.forEach {store.delete(it)}
+    }
+    private fun capture(name:String){
+        val label=InstrumentationRegistry.getArguments().getString("studioLabel") ?: "precision"
+        val file=File(compose.activity.getExternalFilesDir(null),"stability/$label-$name.png").apply {parentFile!!.mkdirs()}
+        compose.waitForIdle()
+        // Native destination/window drawing can trail Compose semantics for a frame.
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        android.os.SystemClock.sleep(350)
+        val bitmap=InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
+        file.outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}
+        bitmap.recycle()
+    }
+    private fun fixture():RecordingStore.Session {
+        val pcm=ShortArray(44100*20){i->if(i in 44100*7..44100*8)0 else (7000*sin(2*PI*70*i/44100)).toInt().toShort()}
+        val points=(0..99).map {i->SessionAnalysis.Point(i*200L,when(i){in 35..40->null;25->35.0;else->70+sin(i.toDouble())*.15},if(i==25).3 else .97)}
+        val item=store.save(WavCodec.encode(pcm,pcm.size,44100),points);owned+=item.id
+        compose.runOnIdle {vm.renameSession(item,"Estabilidad · prueba sintética")}
+        return item
+    }
+    private fun detail(item:RecordingStore.Session){
+        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${item.id}").performScrollTo()
+        capture("library-same-session")
+        compose.onNodeWithTag("session-${item.id}").performClick()
+        compose.onNodeWithTag("time-chart").performScrollTo()
+        capture("fundamental-detail")
+    }
+    private fun pick(title:String){
+        compose.onNodeWithContentDescription("Cambiar gráfico").performClick();compose.onNodeWithText(title).performClick()
+        compose.waitUntil(5000){compose.activity.hasWindowFocus()}
+    }
+    @Test fun systemBackFromWideReturnsToMeasureRepeatedlyWithoutFinishingActivity(){
+        capture("measure-normal")
+        repeat(3){
+            compose.onNodeWithText("Vista amplia").performScrollTo().performClick()
+            compose.onNodeWithTag("measure-wide-screen").assertIsDisplayed()
+            if(it==0)capture("measure-wide")
+            val resources=compose.activity.resources
+            val mode=resources.getIdentifier("config_navBarInteractionMode","integer","android")
+            if(it==2 && mode!=0 && resources.getInteger(mode)==2){
+                val metrics=resources.displayMetrics
+                val fd=InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("input swipe 1 ${metrics.heightPixels/2} ${metrics.widthPixels/3} ${metrics.heightPixels/2} 350")
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use {stream->stream.readBytes()}
+            }else Espresso.pressBackUnconditionally()
+            compose.waitUntil(5000){!vm.fullScreen}
+            compose.onNodeWithTag("measure-screen").assertIsDisplayed()
+            compose.runOnIdle {assertFalse(vm.fullScreen);assertFalse(compose.activity.isFinishing);assertEquals(SessionPhase.IDLE,vm.sessionPhase);assertFalse(vm.listening)}
+        }
+    }
+    @Test fun wideBackKeepsListeningWithoutCreatingARecording(){
+        InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(compose.activity.packageName,Manifest.permission.RECORD_AUDIO)
+        val before=vm.sessions.map {it.id}.toSet()
+        compose.runOnIdle {vm.microphoneStart()}
+        compose.waitUntil(10000){vm.listening}
+        compose.onNodeWithText("Vista amplia").performScrollTo().performClick()
+        Espresso.pressBackUnconditionally()
+        compose.waitUntil(5000){!vm.fullScreen}
+        compose.onNodeWithTag("measure-screen").assertIsDisplayed()
+        compose.runOnIdle {assertTrue(vm.listening);assertEquals(SessionPhase.IDLE,vm.sessionPhase);assertEquals(before,vm.sessions.map {it.id}.toSet())}
+    }
+    @Test fun wideSystemBackKeepsSameActiveCaptureTimelineAndWav(){
+        InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(compose.activity.packageName,Manifest.permission.RECORD_AUDIO)
+        val previous=vm.sessions.map {it.id}.toSet()
+        compose.onNodeWithText("Iniciar medición").performClick()
+        compose.waitUntil(10000){vm.listening && vm.sessionTimeline.size>=4}
+        val start=vm.sessionStartedAtMs
+        val prefix=vm.sessionTimeline.toList()
+        val partial=File(compose.activity.filesDir,"recordings").listFiles()!!.single {it.extension=="part"}
+        repeat(3){
+            val size=partial.length()
+            compose.onNodeWithText("Vista amplia").performScrollTo().performClick()
+            compose.onNodeWithTag("measure-wide-screen").assertIsDisplayed()
+            if(it==0)capture("measure-wide-capturing")
+            Espresso.pressBackUnconditionally()
+            compose.onNodeWithTag("measure-screen").assertIsDisplayed()
+            compose.runOnIdle {
+                assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertTrue(vm.listening)
+                assertEquals(start,vm.sessionStartedAtMs);assertEquals(previous,vm.sessions.map {it.id}.toSet())
+                assertEquals(prefix,vm.sessionTimeline.take(prefix.size));assertTrue(partial.exists() && partial.length()>=size)
+            }
+        }
+        compose.onNodeWithText("Detener y guardar").performClick()
+        compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE && vm.sessions.any {it.id !in previous}}
+        val saved=vm.sessions.filter {it.id !in previous};owned+=saved.map {it.id}
+        assertEquals(1,saved.size);assertTrue(saved.single().timeline.size>=prefix.size)
+    }
+    @Test fun canonicalPitchAndBothScalesAndCompleteInspectionRemainAvailable(){
+        val item=fixture();detail(item)
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        val state=vm.explorer(item.id)
+        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span>20);vm.analyzeRecording(item)}
+        compose.waitUntil(30000){vm.recordingAnalysis.result!=null}
+        compose.runOnIdle {assertSame(item.timeline,sessionPlotPoints(vm,item))}
+        capture("fundamental-general")
+        compose.onNodeWithTag("viewer-tools").performClick()
+        compose.onNodeWithText("Vista ajustada").performScrollTo().performClick()
+        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span<2)}
+        capture("fundamental-fitted")
+        val graph=compose.onNodeWithTag("immersive-plot")
+        val area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {longClick(Offset(area.left+area.width*.2f,area.center.y),800)}
+        val reading=state.inspected!!
+        compose.onNodeWithTag("viewer-tools").performClick()
+        compose.onNodeWithTag("complete-reading").assertTextEquals(reading)
+        val layouts=mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+        compose.onNodeWithTag("complete-reading").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult){it(layouts)}
+        capture("tools-complete-reading")
+        android.util.Log.i("PrecisionLayout","reading size=${layouts.single().size} lines=${layouts.single().lineCount} widthOverflow=${layouts.single().didOverflowWidth} heightOverflow=${layouts.single().didOverflowHeight} text=$reading")
+        assertFalse(layouts.single().hasVisualOverflow)
+        compose.onNodeWithText("Vista general").performScrollTo().performClick()
+        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithTag("reset-viewport").performClick()
+        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span>20);assertEquals(reading,state.inspected)}
+    }
+    @Test fun continuousRadialPinchPanRotationAndResetUseDataCoordinates(){
+        val item=fixture();detail(item)
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        pick("Espectrograma")
+        compose.waitUntil(30000){vm.workspace.state.spectrogram!=null && !vm.workspace.state.loading}
+        capture("spectrogram-portrait")
+        val graph=compose.onNodeWithTag("immersive-plot");val state=vm.explorer(item.id)
+        val initial=state.camera(item.durationMs,44100,item.timeline)
+        val reference=state.spectrumReference
+        fun pinch(horizontal:Boolean,ratio:Float){
+            val a=graph.fetchSemanticsNode().config[PlotDataArea]
+            val center=a.center
+            val delta=if(horizontal)Offset(a.width*.20f,0f) else Offset(0f,a.height*.20f)
+            graph.performTouchInput {pinch(start0=center-delta,start1=center+delta,end0=center-delta*ratio,end1=center+delta*ratio,durationMillis=600)}
+        }
+        pinch(true,1.5f)
+        var camera=state.camera(item.durationMs,44100,item.timeline)
+        assertEquals(initial.x.span/1.5,camera.x.span,initial.x.span*.02)
+        assertEquals(initial.y.span/1.5,camera.y.span,initial.y.span*.02)
+        assertEquals(initial.x.value(.5),camera.x.value(.5),20.0)
+        assertEquals(initial.y.value(.5),camera.y.value(.5),1.0)
+        val beforePan=camera
+        val area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {swipe(area.center,area.center+Offset(area.width*.08f,-area.height*.08f),500)}
+        camera=state.camera(item.durationMs,44100,item.timeline)
+        assertTrue(camera.x.low<beforePan.x.low);assertTrue(camera.y.low<beforePan.y.low)
+        val preserved=camera
+        compose.onNodeWithTag("rotate-viewer").performClick()
+        compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_LANDSCAPE}
+        compose.runOnIdle {assertEquals(preserved,state.camera(item.durationMs,44100,item.timeline))}
+        pinch(false,1.3f)
+        val after=state.camera(item.durationMs,44100,item.timeline)
+        assertEquals(preserved.x.span/1.3,after.x.span,preserved.x.span*.02)
+        assertEquals(preserved.y.span/1.3,after.y.span,preserved.y.span*.02)
+        pinch(false,1/1.3f)
+        compose.onNodeWithTag("reset-viewport").performClick()
+        compose.waitUntil(30000){!vm.workspace.state.loading}
+        compose.runOnIdle {assertEquals(initial,state.camera(item.durationMs,44100,item.timeline));assertEquals(reference,state.spectrumReference,1e-16)}
+        val root=compose.onNodeWithTag("acoustic-viewer").fetchSemanticsNode().boundsInRoot
+        val data=graph.fetchSemanticsNode().config[PlotDataArea]
+        assertTrue("Preserve dominant data area",data.height/root.height>=.65f)
+        capture("spectrogram-landscape")
+        graph.performTouchInput {longClick(data.center,800)}
+        compose.onNodeWithTag("viewer-tools").performClick()
+        compose.onNodeWithTag("complete-reading").assertTextEquals(state.inspected!!)
+        capture("spectrogram-reading-tools")
+        // The previous logarithmic toggle crashed at the lowest possible linear bin.
+        compose.runOnIdle {state.transform(item.durationMs,44100,item.timeline,.5,1.0,1.0,1e20,0.0,0.0)}
+        compose.onNodeWithTag("log-frequency").performScrollTo().performClick()
+        compose.runOnIdle {val y=state.camera(item.durationMs,44100,item.timeline).y;assertTrue(y.low>0 && y.high>y.low && y.high<=22050.00001)}
+        compose.onNodeWithTag("log-frequency").performClick()
+        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithTag("reset-viewport").performClick()
+        pick("Forma de onda");compose.waitUntil(30000){vm.workspace.state.wave!=null && !vm.workspace.state.loading}
+        pinch(true,1.3f)
+        assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span<2)
+        pick("Armónicos");compose.runOnIdle {vm.analyzeRecording(item)}
+        compose.waitUntil(30000){vm.recordingAnalysis.result!=null}
+        pinch(true,1.3f)
+        assertTrue(state.camera(item.durationMs,44100,item.timeline).x.span<500)
+        compose.onNodeWithTag("rotate-viewer").performClick()
+        compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_PORTRAIT}
+        compose.onNodeWithContentDescription("Volver a la sesión").performClick()
+        compose.onNodeWithTag("session-detail").assertIsDisplayed()
+    }
+}

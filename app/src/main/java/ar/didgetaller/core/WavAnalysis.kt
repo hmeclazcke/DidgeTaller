@@ -7,7 +7,7 @@ import kotlin.math.min
 object WavAnalysis {
     data class Settings(val fftSize: Int = 32768, val hopSize: Int = fftSize / 2,
                         val minPitchHz: Int = 35, val maxPitchHz: Int = 220,
-                        val maxWindows: Int = 10000) {
+                        val maxWindows: Int = 10000,val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO) {
         init {
             require(fftSize in 4096..65536 && fftSize and (fftSize - 1) == 0)
             require(hopSize in 1..fftSize && minPitchHz >= 20 && maxPitchHz > minPitchHz && maxWindows > 0)
@@ -49,10 +49,12 @@ object WavAnalysis {
             val weight = requested.toDouble() / settings.fftSize
             totalWeight += weight
             for (bin in average.indices) average[bin] += spectrum.density[bin] * weight
+            if(settings.instrument==InstrumentProfile.DIDGERIDOO){
             val pitch = PitchDetector.analyze(if (requested == pcm.size) pcm else pcm.copyOf(requested),
                 source.sampleRate, settings.minPitchHz, settings.maxPitchHz, includeVisuals = false)
             points += SessionAnalysis.Point((at + requested / 2) * 1000 / source.sampleRate,
                 pitch.hz.takeIf { it > 0 && pitch.confidence >= 0.80 }, pitch.confidence)
+            }
             windows++
             val percent = ((at + requested - startFrame) * 100 / (endFrame - startFrame)).toInt().coerceAtMost(99)
             if (percent != lastProgress) { checkCancelled(); progress(percent); lastProgress = percent }
@@ -60,18 +62,39 @@ object WavAnalysis {
             if (at + requested >= endFrame) break
             at += settings.hopSize
         }
+        if(settings.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE){
+            // A separate short pitch pass preserves melodic changes. The spectrum/STFT
+            // retains its original 32768-point frequency resolution and averaging.
+            val frame=ShortArray(settings.instrument.windowSamples)
+            val hop=frame.size/2
+            require((endFrame-startFrame-1)/hop+1<=settings.maxWindows*4L){"Demasiadas lecturas: seleccioná un fragmento menor."}
+            var position=startFrame
+            while(position<endFrame){
+                checkCancelled()
+                val n=min(frame.size.toLong(),endFrame-position).toInt()
+                if(n<4096)break
+                check(source.read(position,frame)>=n)
+                val pitch=PitchDetector.analyze(if(n==frame.size)frame else frame.copyOf(n),source.sampleRate,
+                    settings.minPitchHz,settings.maxPitchHz,includeVisuals=false)
+                points+=SessionAnalysis.Point((position+n/2)*1000/source.sampleRate,
+                    pitch.hz.takeIf {it in settings.minPitchHz*.995..settings.maxPitchHz*1.005 && pitch.confidence>=.80},pitch.confidence)
+                if(position+n>=endFrame)break
+                position+=hop
+            }
+        }
         checkCancelled()
         for (bin in average.indices) average[bin] /= totalWeight
         val spectrum = PowerSpectrum(source.sampleRate, settings.fftSize, average)
-        val summary = SessionAnalysis.summarize(points, settings.minPitchHz.toDouble(), settings.maxPitchHz.toDouble())
-        val valid = points.filter { it.isUsable(settings.minPitchHz.toDouble(), settings.maxPitchHz.toDouble()) }
+        val guard=if(settings.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE).005 else 0.0
+        val summary = SessionAnalysis.summarize(points, settings.minPitchHz*(1-guard), settings.maxPitchHz*(1+guard))
+        val valid = points.filter { it.isUsable(settings.minPitchHz*(1-guard), settings.maxPitchHz*(1+guard)) }
         fun median(values: List<Double>): Double? = values.sorted().takeIf { it.isNotEmpty() }?.let {
             (it[(it.size - 1) / 2] + it[it.size / 2]) / 2
         }
         val result = Result(startFrame, endFrame, source.sampleRate, windows, spectrum,
             HarmonicAnalysis.analyze(spectrum, summary?.typicalHz), points, summary,
             median(valid.map { it.hz!! }), valid.takeIf { it.isNotEmpty() }?.map { it.hz!! }?.average(),
-            valid.size.toDouble() / points.size, median(valid.map { it.confidence }))
+            if(points.isEmpty())0.0 else valid.size.toDouble() / points.size, median(valid.map { it.confidence }))
         checkCancelled(); progress(100)
         return result
     }

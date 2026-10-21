@@ -12,8 +12,8 @@ android {
         applicationId = "ar.didgetaller"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "3.1.0-beta1"
+        versionCode = 10
+        versionName = "3.2.4-beta1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

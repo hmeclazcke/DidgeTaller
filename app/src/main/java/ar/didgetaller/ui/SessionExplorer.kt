@@ -31,31 +31,31 @@ internal fun LabCard(title:String,content:@Composable ColumnScope.()->Unit) {
 
 @Composable
 internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,onExpand:(AcousticPlot)->Unit) {
-    val s=vm.explorer(item.id)
+    val s=vm.preview(item.id)
     var tools by rememberSaveable(item.id){mutableStateOf(false)}
     var fragments by rememberSaveable(item.id){mutableStateOf(false)}
     var markers by rememberSaveable(item.id){mutableStateOf(false)}
     LaunchedEffect(item.id){vm.openTools(item)}
     LabCard("Explorar el audio") {
         ScrollableTabRow(selectedTabIndex=s.plot.ordinal,edgePadding=0.dp){
-            AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind},text={Text(kind.title,maxLines=1)})}
+            AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind;s.inspected=null},text={Text(kind.title,maxLines=1)})}
         }
         OutlinedButton(onClick={onExpand(s.plot)},modifier=Modifier.fillMaxWidth().testTag("expand-plot")){Text("Pantalla completa")}
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
         if(s.plot==AcousticPlot.PITCH){
-            val range=s.pitch(sessionPlotPoints(vm,item))
-            Text("Escala automática · verde: lectura confiable · amarillo/naranja: mayor variación o incertidumbre · huecos: sin detección.",style=MaterialTheme.typography.bodySmall)
-            if(range.clipped>0)Text("${range.clipped} lecturas fuera del encuadre automático. Abrí las herramientas para ver todos los valores.",color=MaterialTheme.colorScheme.secondary,style=MaterialTheme.typography.bodySmall)
+            val points=sessionPlotPoints(vm,item)
+            Text("Línea: tendencia",style=MaterialTheme.typography.bodySmall)
+            if(s.pitch(points).valid==0)Text("Sin lecturas confiables · el audio se conserva",style=MaterialTheme.typography.bodySmall)
         }
         if(s.plot==AcousticPlot.SPECTRUM && vm.recordingAnalysis.result==null)Text("Tocá «Analizar grabación» para obtener el espectro real.",style=MaterialTheme.typography.bodySmall)
-        Text("Tocá el gráfico para explorar con zoom y desplazamiento en dos ejes.",style=MaterialTheme.typography.bodySmall)
+        if(s.plot!=AcousticPlot.PITCH)Text("Tocá el gráfico para explorar con zoom y desplazamiento en dos ejes.",style=MaterialTheme.typography.bodySmall)
         FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
             TextButton(onClick={tools=!tools}){Text(if(tools)"Ocultar escalas" else "Escalas y rangos")}
             TextButton(onClick={fragments=!fragments}){Text(if(fragments)"Ocultar fragmentos" else "Selección y fragmentos")}
             TextButton(onClick={markers=!markers}){Text("Marcadores")}
         }
-        if(tools)PlotTools(vm,item)
-        if(fragments)FragmentTools(vm,item)
+        if(tools)PlotTools(vm,item,s)
+        if(fragments)FragmentTools(vm,item,s)
         if(markers){
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
                 TextButton(onClick={vm.addMarker(item,s.selectedMs,"Posible toot")}){Text("Marcar posible toot")}
@@ -74,6 +74,10 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
 
 @Composable
 internal fun SessionRelations(vm:TallerViewModel,item:RecordingStore.Session) {
+    if(item.instrument==ar.didgetaller.core.InstrumentProfile.NATIVE_AMERICAN_FLUTE){
+        Text("Flauta nativa norteamericana · análisis de audio. Los diseños del Laboratorio simulan didgeridoos y no se asocian a esta sesión.",style=MaterialTheme.typography.bodySmall)
+        return
+    }
     var expanded by remember {mutableStateOf(false)}
     val design=vm.designs.find {it.id==vm.associatedDesignId}
     LabCard("Instrumento y diseño") {

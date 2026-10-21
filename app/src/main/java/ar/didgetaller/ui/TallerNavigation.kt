@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 
 internal object TallerRoutes {
     const val Measure = "measure"
+    const val MeasureWide = "measure/wide"
     const val Lab = "lab"
     const val Library = "library"
     const val Compare = "compare"
@@ -19,7 +20,7 @@ internal object TallerRoutes {
 
 /** Keep each main section's saved UI state, without saving an abandoned audio detail. */
 internal fun NavHostController.navigateToSection(index: Int) {
-    while(currentDestination?.route in listOf(TallerRoutes.Session,TallerRoutes.Viewer,TallerRoutes.Compare,TallerRoutes.LabTool)) popBackStack()
+    while(currentDestination?.route in listOf(TallerRoutes.MeasureWide,TallerRoutes.Session,TallerRoutes.Viewer,TallerRoutes.Compare,TallerRoutes.LabTool)) popBackStack()
     if (currentDestination?.route == TallerRoutes.sections[index]) return
     navigate(TallerRoutes.sections[index]) {
         popUpTo(graph.findStartDestination().id) { saveState = true }

@@ -58,7 +58,7 @@ class ViewerRotationTest {
             assertEquals(position.toDouble(),vm.playbackPositionMs().toDouble(),80.0)
             assertEquals(camera,state.cameras[state.plot]);assertEquals(3000L..7000L,state.region)
         }
-        compose.onNodeWithText("Reproducir").performClick()
+        compose.onNodeWithTag("viewer-play").performClick()
         compose.onNodeWithTag("rotate-viewer").performClick()
         compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_LANDSCAPE}
         compose.onNodeWithTag("acoustic-viewer").assertIsDisplayed()
@@ -68,6 +68,9 @@ class ViewerRotationTest {
         val path=File(compose.activity.getExternalFilesDir(null),"ui-audit/v31-after-landscape.png").apply {parentFile!!.mkdirs()}
         path.outputStream().use {compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)}
         compose.onNodeWithContentDescription("Volver a la sesión").performClick()
+        // Check the live player before pausing it. This avoids waiting for a continuously
+        // changing playback cursor to become Espresso-idle across the orientation/inset transition.
+        compose.runOnUiThread {assertEquals(item.id,vm.playingId);assertFalse(vm.playbackPaused);vm.togglePlayback(item)}
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
         compose.runOnIdle {assertEquals(item.id,vm.playingId)}
         compose.onNodeWithContentDescription("Volver a Sesiones").performClick()

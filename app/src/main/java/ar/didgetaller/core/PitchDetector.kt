@@ -30,21 +30,26 @@ object PitchDetector {
         }
         val spectrum = if (includeVisuals) spectrum(pcm, sampleRate) else emptyList()
         if (rms < 0.005) return Reading(rms = rms, waveform = wave, spectrum = spectrum)
-        val ds = 4
+        // Preserve the proven low-register path. Higher notes need longer periods in samples
+        // for accurate interpolation (27.6 samples at 1600Hz instead of 6.9 after /4).
+        val ds = if(maxHz>500)1 else 4
         val fs=sampleRate.toDouble()/ds
         val x = DoubleArray(pcm.size/ds) { i ->
-            ((pcm[i*ds]-mean)+(pcm[i*ds+1]-mean)+(pcm[i*ds+2]-mean)+(pcm[i*ds+3]-mean)) / (ds*32768.0)
+            var sum=0.0
+            for(j in 0 until ds)sum+=pcm[i*ds+j]-mean
+            sum/(ds*32768.0)
         }
-        val minLag=max(2, floor(fs / maxHz).toInt())
-        val maxLag=min(x.size/2, ceil(fs/minHz).toInt())
+        val minLag=max(2, floor(fs / maxHz).toInt()-(if(ds==1)1 else 0))
+        val maxLag=min(x.size/2, ceil(fs/minHz).toInt()+(if(ds==1)1 else 0))
         val win=min(2200,x.size-maxLag-1)
         if (win < 1000) return Reading(rms=rms,waveform=wave,spectrum=spectrum)
+        val offset=if(ds==1)(x.size-win-maxLag).coerceAtLeast(0)/2 else 0
         val cmndf=DoubleArray(maxLag+1)
         var accumulated=0.0
         cmndf[0]=1.0
         for (lag in 1..maxLag) {
             var squared=0.0
-            for (j in 0 until win) { val d=x[j]-x[j+lag]; squared+=d*d }
+            for (j in 0 until win) { val d=x[offset+j]-x[offset+j+lag]; squared+=d*d }
             accumulated+=squared
             cmndf[lag]=if (accumulated>1e-15) squared*lag/accumulated else 1.0
         }
@@ -62,6 +67,12 @@ object PitchDetector {
             for(j in minLag..maxLag) if(cmndf[j]<smallest) { smallest=cmndf[j];best=j }
         }
         if(best<0) return Reading(rms=rms,waveform=wave,spectrum=spectrum)
+        // A strong H2 can create a shallow minimum at half the true period.
+        // Prefer its double only with a substantial measured improvement, never by continuity.
+        if(maxHz>500 && cmndf[best]>.025){
+            val doubled=(max(minLag,best*2-2)..min(maxLag,best*2+2)).minByOrNull {cmndf[it]}
+            if(doubled!=null && cmndf[doubled]<cmndf[best]*.65)best=doubled
+        }
         var delta=0.0
         if(best>minLag && best<maxLag) {
             val a=cmndf[best-1];val b=cmndf[best];val c=cmndf[best+1]

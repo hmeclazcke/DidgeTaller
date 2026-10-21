@@ -1,5 +1,53 @@
 # Registro de trabajo
 
+## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
+
+- Baseline preservada en `checkpoints/before-3.2.4`, sin reset/stash/commit global. Comparación selectiva contra3.2.2: regresión por umbral0,85 y corte automático de enlaces. Revertidos; presentación0,70 con puentes limitados entre extremos medidos, sin reconstruir frecuencias ni alterar originales.
+- Retornos aislados/períodos bajos breves quedan inspeccionables sin destruir tendencia/General; silencio claro/largo conserva huecos. Bordes exigen degradación de confianza; evita descartar retorno legítimo del toot, detectado en el primer foco fallido. Se actualizaron expectativas de tests que exigían la política rechazada.
+- Casos reales desde respaldo local en solo lectura, WAV silencioso en sandbox de emulador: Re·D2 recupera40 puntos/33 enlaces frente a17/15; Mib·Eb2 recupera20/19 frente a12/5. Comparación adicional contra APK3.2.2/8. No afirmar que cada descarte sea error del detector ni que los huecos reales deban rellenarse.
+- Eje numérico con unidad única Hz/nota secundaria; reserva115,55→74,55px y datos+5,33% en detalle comparable. Leyenda breve y sin «N fuera» en zona principal. Solo4 archivos main modificados,39 idénticos; sin cambio de motores/cámaras/persistencia.
+- Gate104 JVM/build aprobado;39 UI distintos(1 comparación real+36 regresión+2 rotación),6 repeticiones de matriz360/420dp y fuentes1,3/1,5.20 capturas revisadas, índice `docs/screenshots/v324-final/README.md`. Primer baseline lanzado antes de completar APK de prueba falló por clase no disponible; se conserva el fallo y repetición limpia, sin contarlo aprobado. Validador auxiliar de logs corregido para aceptar el singular «1 test»; no fallo de la app.
+- Samsung `R5CT21KTQ8W`: respaldo fresco `samsung-before-3.2.4-20261021-152023`,61 archivos/13 WAV; install-r/Success y arranque correcto, APK/firma compatibles.61 hashes intactos,13 sesiones y13 WAV indexados/legibles a15:20:53; informe `v324-samsung-update.json`. Captura física negra, sin afirmar inspección visual allí ni solicitar desbloqueo. Sin instrumentación/captura de audio/reproducción/clear/uninstall/restauración en el teléfono.
+- Cierre recuperable en `checkpoints/latest.txt`; previo3.2.3 y modificaciones de Git conservados. Pendiente validación musical/física de eventos brevísimos, afinador independiente, pinch físico, sincronía audible,15min/batería y TalkBack completo. Los huecos reales no se rellenan para mejorar la estética.
+
+## Fundamental Precision 3.2.3 — 21/10/2026
+
+- Checkpoint previo `checkpoints/before-3.2.3`: fuente/docs/estado/diff preservados; Git con cambios anteriores. Sin reset/stash ni commit que los mezcle.
+- Causas: aceptación visual0,70 conectaba periodicidad débil no armónica y colas junto a ausencias; percentiles recortaban toots confiables raros; eje medía etiqueta ficticia. Diagnóstico de13 WAV/índice real en solo lectura, sin asumir error en todos los saltos.
+- `PitchTrace` común: confianza de presentación0,85, retorno no armónico/bordes inciertos, originales intactos y huecos sin interpolación. General incluye cada confiable; Ajustada robusta. Textos reales medidos/origen fijo durante gesto, curva verde en todas las superficies y leyendas breves.
+- Cierre:97 JVM,38 instrumentados distintos (3 nuevos+33 regresión+2 rotación), matriz360/420dp y fuentes1,3/1,5;13 capturas inspeccionadas. Eje189,825→115,550px; datos detalle+10,68%. Recorrido del cursor corregido tras buscar fuera del zoom. Corrida agrupada interrumpida en rotación excluida;33+2 limpios por separado. Detalles y logs `v323-*` en VALIDATION.
+- Samsung: install-r/Success y arranque; firma compatible y APK instalado idéntico. Respaldo fresco61 archivos/13 WAV;61 hashes sin cambios,13 sesiones y13 WAV indexados/legibles a14:42:50. Sin instrumentación, clear, uninstall, restauración, captura ni reproducción física. Checkpoint recuperable en `checkpoints/latest.txt`.
+- Límites/próximo paso manual: confianza no calibrada, amplitud no guardada por lectura, clasificación de eventos brevísimos imperfectos no infalible. No modificar motores por presunta nota real. Validación física de afinador/gestos/audio/15min/TalkBack pendiente.
+
+## Graph Intelligence & UX Stability 3.2.2 — 21/10/2026
+
+- Estado previo y fuente completa preservados en `checkpoints/before-3.2.2`; se verificaron76 JVM previos y logs de32 instrumentados históricos. No reset/stash/commit de cambios ajenos.
+- Causas corregidas: dominio mínimo hardcodeado500Hz, cámara de detalle/fullscreen compartida y retenida fuera de sesión, confianza de periodicidad insuficiente para interpretar retornos aislados, generación de notas desde0,001Hz que redondeaban a0.
+- General robusta/domain por datos, estado por contexto con selección común, incertidumbre contextual sin corrección destructiva, etiquetas MIDI0–127. Lecturas originales intactas. Script de diagnóstico PCM en respaldo, sin tocar el teléfono; no cambio de detector por evidencia ambigua.
+- Cierre:86 JVM,35 instrumentados distintos + matriz360/420 y fuentes grandes, capturas revisadas, APK3.2.2-beta1/8. Samsung install-r/Success; 12 WAV y datos de usuario con hashes intactos. Detalles/fallos reales en VALIDATION.
+- Checkpoint final indicado en `checkpoints/latest.txt`, sin ZIP masivo ni audios personales. Pendientes validaciones físicas de gesto/afinador/audio/15min/TalkBack; clasificación contextual admite ambigüedades y mantiene originales inspeccionables.
+
+## Stability & Precision 3.2.1 — 21/10/2026
+
+- Git ahora disponible con cambios anteriores de3.2 sin commit; se preservaron antes de editar en `checkpoints/before-3.2.1` (fuente, estado y diff), sin reset/stash ni commits que mezclen trabajo previo.
+- Corregidos back stack de Vista amplia y propiedad de captura, zoom radial/ancla+pan, límites y márgenes estables, origen fijo de STFT/raster flotante, reset sin demora, serie/escala/segmentos comunes de Fundamental y panel de lectura completa. Sin nuevos instrumentos/simuladores/dependencias.
+- Diagnóstico privado del respaldo: saltos de frecuencia ya presentes, algunos con confianza alta; conservados sin suavizado/corrección destructiva. Reanálisis no sustituye lecturas capturadas. VISUAL_VERSION3 perezosa; análisis VERSION2 y motores conservados.
+- Gate final:76 JVM,32 casos instrumentados diferentes (5+25+2), focos360/420 con fuente grande, capturas revisadas. Fallos y timeout inicial conservados sin contarlos como aprobados; detalles en VALIDATION.
+- Samsung install-r/Success, firma compatible, respaldo fresco de48 archivos/10 WAV y hashes de datos del usuario intactos. No captura/reproducción ni pruebas instrumentadas físicas.
+- Pendiente manual: pinch/pan físico, afinador independiente, audio/sincronía,15min/batería/TalkBack. Checkpoint de cierre pequeño indicado en `checkpoints/latest.txt`; no nuevo ZIP masivo.
+
+## Cierre Acoustic Studio 3.2 — 21/10/2026
+
+Implementación completa de los tres entregables, conservando arquitectura, navegación, WAV progresivo, laboratorio y cachés derivadas. Sin Git disponible; checkpoints ZIP antes de 3.2 y al cerrar fases A/C, más cierre final indicado en `checkpoints/latest.txt`.
+
+- A: visor compartido de cuatro gráficos, barras compactas adaptativas, leyenda integrada, opciones contextuales e insets únicos con restauración de barra de estado/orientación. Iteraciones visuales reales hasta superar objetivo. Samsung misma sesión: **306 / 1080 px (28.3%) → 773 / 1080 px (71.6%)**, área de datos sin ejes. Sin datos inventados/ocultación de silencios.
+- B: `Music.pitch`, `PitchAxis`, etiquetas medidas Hz/nota secundaria y equivalencias ≈, cursor/cents, autoescala y aviso de valores fuera del viewport; STFT solo Hz.
+- C: `InstrumentProfile`, parámetros YIN/captura por perfil (flauta 200–1600 Hz a tasa completa, ventana8192/cadencia93 ms), protección localizada contra octava, confianza/pausas, pista offline más corta; perfil persistido y caché v2. Biblioteca/detalle/Medir actualizados, Laboratorio claramente didgeridoo. Lectura antigua sin campo → Didgeridoo sin reescritura.
+- D: **67 JVM**, **27 casos instrumentados distintos** solo emulador, matriz 360/420 dp y fuentes ampliadas; selección temporal, gestos, reproductor, persistencia antigua/nueva y captura emulada. Corregidos snackbar, tiempo truncado y pruebas ambiguas; dos ejecuciones de rotación fallida/interrumpida conservadas, seguidas por cierre limpio 2/2. Detalles/logs en VALIDATION.
+- APK 3.2.0-beta1/6 actualizado con install-r/Success en Samsung `R5CT21KTQ8W`; firma comprobada y respaldo fresco de 27 archivos/8 WAV. Todos los datos de usuario conservan hashes; solo runtime y nuevos derivados documentados. Capturas físicas antes/después y matriz revisadas: `docs/screenshots/v32-final/README.md`.
+
+Pendiente de prueba manual, no de implementación: flauta/PVC reales y afinador, sincronía audible, soplido/ataques extremos, 15 minutos/batería y recorrido TalkBack completo. No se calibró precisión física ni se simuló una flauta. Capturas iterativas archivadas en checkpoints para no saturar docs.
+
 ## 2026-10-20 — Cierre de Didge Taller 3.1 beta1
 
 - Implementados visor NavHost, matemáticas puras y gestos compartidos, cámaras por sesión, cuatro adaptadores, seguimiento de posición real y conservación al rotar. Laboratorio con portada/destinos y barras fijas; Biblioteca/detalle/acciones/formatos/permiso revisados. No se rehicieron algoritmos ni modelos persistidos: 26 módulos anteriores idénticos al ZIP inicial.

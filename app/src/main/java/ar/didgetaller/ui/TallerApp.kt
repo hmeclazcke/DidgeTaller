@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,7 +44,10 @@ import ar.didgetaller.data.LocalStore
 import ar.didgetaller.data.RecordingStore
 import ar.didgetaller.core.AcousticModel
 import ar.didgetaller.core.Music
+import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.SessionAnalysis
+import ar.didgetaller.core.PlotScales
+import ar.didgetaller.core.PitchTrace
 import kotlin.math.*
 import java.util.Locale
 
@@ -83,15 +88,18 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         // The same destination change handles system Back, the toolbar arrow and section changes.
         DisposableEffect(navController,vm) {
             val listener=NavController.OnDestinationChangedListener { _,destination,args ->
+                vm.fullScreen=destination.route==TallerRoutes.MeasureWide
                 if(destination.route!=TallerRoutes.Viewer && vm.viewerOriginalOrientation!=null){
                     hostActivity?.requestedOrientation=vm.viewerOriginalOrientation!!;vm.viewerOriginalOrientation=null
                 }
-                vm.onDestinationChanged(if(destination.route in listOf(TallerRoutes.Session,TallerRoutes.Viewer))args?.getString("id") else null)
+                vm.onDestinationChanged(if(destination.route in listOf(TallerRoutes.Session,TallerRoutes.Viewer))args?.getString("id") else null,
+                    measurement=destination.route in listOf(TallerRoutes.Measure,TallerRoutes.MeasureWide))
             }
             navController.addOnDestinationChangedListener(listener)
             onDispose {navController.removeOnDestinationChangedListener(listener)}
         }
         LaunchedEffect(vm.message) {if(vm.message.isNotBlank()) {snackbars.showSnackbar(vm.message,withDismissAction=true);vm.clearMessage()}}
+        LaunchedEffect(route){if(inDetail)snackbars.currentSnackbarData?.dismiss()}
         LaunchedEffect(vm.undoEntry) {vm.undoEntry?.let {entry ->
             val result=snackbars.showSnackbar("En la papelera",actionLabel="Deshacer",withDismissAction=true,duration=SnackbarDuration.Long)
             if(vm.undoEntry==entry){if(result==SnackbarResult.ActionPerformed)vm.undoDelete() else vm.clearUndo()}
@@ -146,7 +154,10 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         ) { padding ->
             NavHost(navController,startDestination=TallerRoutes.Measure,modifier=Modifier.padding(padding).fillMaxSize()) {
                 composable(TallerRoutes.Measure) {
-                    DestinationContent("measure-screen") {MeasureScreen(vm)}
+                    DestinationContent("measure-screen") {MeasureScreen(vm){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
+                }
+                composable(TallerRoutes.MeasureWide) {
+                    DestinationContent("measure-wide-screen") {MeasureScreen(vm){navController.popBackStack()}}
                 }
                 composable(TallerRoutes.Lab) {
                     DestinationContent("lab-home") {LabHome {index->vm.labTab=index;navController.navigate(TallerRoutes.tool(index))}}
@@ -184,7 +195,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 composable(TallerRoutes.Session,arguments=listOf(navArgument("id") {type=NavType.StringType})) { detail ->
                     val item=vm.sessions.firstOrNull {it.id==detail.arguments?.getString("id")}
                     DestinationContent("session-detail") {
-                        if(item!=null)SessionDetail(vm,item,exportRecording,onBack={navController.popBackStack()},onExpand={navController.navigate(TallerRoutes.viewer(item.id,it))})
+                        if(item!=null)SessionDetail(vm,item,exportRecording,onBack={navController.popBackStack()},onExpand={vm.explorer(item.id).plot=it;navController.navigate(TallerRoutes.viewer(item.id,it))})
                         else Text("Esta sesión ya no está disponible.",color=muted)
                     }
                 }
@@ -212,7 +223,16 @@ private fun Panel(title:String?=null,subtitle:String?=null,content:@Composable C
 }
 
 @Composable
-private fun MeasureScreen(vm:TallerViewModel) {
+private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
+    var instruments by remember {mutableStateOf(false)}
+    Box {
+        TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
+            Text("Instrumento: ${vm.instrument.title} ▾",maxLines=1)
+        }
+        DropdownMenu(expanded=instruments,onDismissRequest={instruments=false}){
+            InstrumentProfile.entries.forEach {profile->DropdownMenuItem(text={Text(profile.title)},onClick={vm.selectInstrument(profile);instruments=false})}
+        }
+    }
     RecordingSettings(vm)
     if(vm.permissionDenied){
         val context=androidx.compose.ui.platform.LocalContext.current
@@ -242,21 +262,26 @@ private fun MeasureScreen(vm:TallerViewModel) {
     Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
         Text(if(capturing)"SESIÓN EN CURSO" else "MEDICIÓN ACÚSTICA",Modifier.weight(1f),
             color=if(capturing)orange else muted,fontSize=12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
-        TextButton(onClick={vm.fullScreen=!vm.fullScreen}) {Text(if(vm.fullScreen)"Vista normal" else "Vista amplia")}
+        TextButton(onClick=onPresentationToggle) {Text(if(vm.fullScreen)"Vista normal" else "Vista amplia")}
     }
     Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(28.dp),color=cardColor) {
         Column(Modifier.background(Brush.verticalGradient(listOf(Color(0xFF1D3839),cardColor)))
             .padding(horizontal=20.dp,vertical=if(vm.fullScreen)28.dp else 20.dp),
             horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(8.dp)) {
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
-                Text("Fundamental estimada",Modifier.weight(1f),color=muted,fontSize=12.sp)
+                Text("Fundamental (nota base)",Modifier.weight(1f),color=muted,fontSize=12.sp)
                 if(capturing)Text("●  ${"%02d:%02d".format(elapsed/60,elapsed%60)}",color=orange,
                     fontWeight=FontWeight.Bold,fontSize=14.sp)
             }
             BoxWithConstraints(Modifier.fillMaxWidth(),contentAlignment=Alignment.Center) {
-                val size=(maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(74f,155f).sp
+                val label=if(hz>0)note.first().uppercase(Locale.getDefault()) else "—"
+                val preferred=(maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(74f,155f)
+                val measurer=androidx.compose.ui.text.rememberTextMeasurer()
+                val density=androidx.compose.ui.platform.LocalDensity.current
+                val width=measurer.measure(label,style=androidx.compose.ui.text.TextStyle(fontSize=preferred.sp,fontWeight=FontWeight.Bold),softWrap=false).size.width
+                val size=(preferred*(with(density){maxWidth.toPx()}/width.coerceAtLeast(1)).coerceAtMost(1f)).sp
                 Column(horizontalAlignment=Alignment.CenterHorizontally) {
-                    Text(if(hz>0)note.first().uppercase(Locale.getDefault()) else "—",fontSize=size,
+                    Text(label,fontSize=size,
                         fontWeight=FontWeight.Bold,lineHeight=size,color=ink,maxLines=1)
                     Text(if(hz>0)note.getOrElse(1){""} else "Nota pendiente",color=blue,
                         fontSize=if(vm.fullScreen)26.sp else 20.sp,fontWeight=FontWeight.Medium)
@@ -272,18 +297,19 @@ private fun MeasureScreen(vm:TallerViewModel) {
         Panel("LECTURA EN VIVO",if(vm.stableReading)"La frecuencia se sostiene entre lecturas." else "La nota aún puede cambiar.") {
             if(hz>0) {
                 val cents=Music.cents(hz)
+                Text("Periodicidad: %.2f".format(spanish,vm.reading.confidence),color=muted,fontSize=12.sp)
                 Text("${if(cents>0) "+" else ""}$cents cents respecto a ${note.getOrElse(1){"la nota cercana"}}",
                     color=ink,fontSize=13.sp)
                 CentMeter(cents)
             } else Text("Tocá una nota sostenida. El silencio se conserva como pausa en el gráfico.",color=muted,fontSize=13.sp)
             if(!vm.fullScreen && vm.sessionTimeline.size>2)
-                SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true)
+                SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true,instrument=vm.instrument)
         }
     } else if(!vm.fullScreen) {
         Text("Una sola acción inicia la medición y el WAV. Al detener, la sesión se guarda en Biblioteca.",
             color=muted,fontSize=14.sp,lineHeight=21.sp)
     }
-    if(!vm.fullScreen) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
+    if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
         Text(if(vm.maxHz==140)"Rango 35–140 Hz · ampliar a 220" else "Rango 35–220 Hz · volver a 140")
     }
 }
@@ -306,40 +332,34 @@ private fun CentMeter(cents:Int) {
 
 @Composable
 private fun SessionGraph(points:List<SessionAnalysis.Point>,durationMs:Long,modifier:Modifier=Modifier,
-                         compact:Boolean=false,cursorMs:Int?=null) {
-    val valid=points.filter {it.usable}
-    val bottom=((valid.minOfOrNull {it.hz!!} ?: 55.0)-4.0).coerceAtLeast(0.0)
-    val top=(valid.maxOfOrNull {it.hz!!} ?: 85.0)+4.0
+                         compact:Boolean=false,cursorMs:Int?=null,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO,tag:String="pitch-summary") {
+    val range=remember(points,instrument){PlotScales.overview(points,instrument)}
+    val trace=remember(points,instrument){PitchTrace.build(points,instrument)}
+    val bottom=range.window.low
+    val top=range.window.high
     Box(modifier) {
-    Canvas(Modifier.fillMaxSize().background(Color(0xFF10262C),RoundedCornerShape(12.dp)).padding(8.dp)) {
+    Canvas(Modifier.fillMaxSize().testTag(tag).semantics {this[PlotWindow]=ar.didgetaller.core.PlotViewport(ar.didgetaller.core.AxisWindow(0.0,durationMs.coerceAtLeast(2).toDouble()),range.window)}.background(Color(0xFF10262C),RoundedCornerShape(12.dp)).padding(8.dp)) {
         val width=size.width;val height=size.height
-        val span=durationMs.coerceAtLeast(points.lastOrNull()?.timeMs ?: 1L).coerceAtLeast(1L)
-        fun x(point:SessionAnalysis.Point)=(point.timeMs.toFloat()/span*width).coerceIn(0f,width)
-        fun y(point:SessionAnalysis.Point)=((top-point.hz!!)/(top-bottom)*height).toFloat().coerceIn(0f,height)
+        val span=durationMs.coerceAtLeast(2L)
+        fun x(point:SessionAnalysis.Point)=point.timeMs.toFloat()/span*width
+        fun y(point:SessionAnalysis.Point)=((top-point.hz!!)/(top-bottom)*height).toFloat()
         for(i in 0..4)drawLine(Color(0xFF29434A),Offset(0f,height*i/4),Offset(width,height*i/4),strokeWidth=1f)
-        var previous:SessionAnalysis.Point?=null
-        points.forEach {point ->
-            if(point.usable) {
-                val before=previous
-                if(before!=null && point.timeMs-before.timeMs<=1200) {
-                    val difference=abs(1200.0*log2(point.hz!!/before.hz!!))
-                    val color=when {
-                        point.confidence<0.80 || difference>60 -> orange
-                        difference>25 -> Color(0xFFF0D58A)
-                        else -> accent
-                    }
-                    drawLine(color,Offset(x(before),y(before)),Offset(x(point),y(point)),
+        clipRect(0f,0f,width,height){trace.forEach {sample ->
+            val point=sample.point
+            if(!sample.uncertain){
+                val before=sample.previous?.let {trace[it].point}
+                if(before!=null) {
+                    drawLine(accent,Offset(x(before),y(before)),Offset(x(point),y(point)),
                         strokeWidth=if(compact)3f else 4f,cap=StrokeCap.Round)
-                } else if(!compact)drawCircle(accent,4f,Offset(x(point),y(point)))
-                previous=point
-            } else previous=null
-        }
+                } else drawCircle(accent,if(compact)2f else 4f,Offset(x(point),y(point)))
+            }
+        }}
         cursorMs?.let {time ->
             val at=(time.toFloat()/span*width).coerceIn(0f,width)
             drawLine(blue,Offset(at,0f),Offset(at,height),strokeWidth=3f)
         }
     }
-    if(!compact && valid.isNotEmpty()) {
+    if(!compact && range.valid>0) {
         Text(hzLabel(top),Modifier.align(Alignment.TopStart).padding(10.dp),
             color=muted,fontSize=10.sp)
         Text(hzLabel(bottom),Modifier.align(Alignment.BottomStart).padding(10.dp),
@@ -669,7 +689,7 @@ private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->
                     val generated="Sesión ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm",Locale.getDefault()).format(java.util.Date(item.createdAt))}"
                     val customName=item.name!=generated
                     Row(verticalAlignment=Alignment.CenterVertically){
-                        Text(if(customName)item.name else item.summary?.let {Music.note(it.typicalHz)} ?: "Sesión sin nota",Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                        Text(if(customName)item.name else item.summary?.let {Music.note(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})"Notas variables" else "Sesión sin nota",Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                         Box {
                             IconButton(onClick={menu=true}){Icon(Icons.Default.MoreVert,"Opciones de la sesión ${item.name}")}
                             DropdownMenu(expanded=menu,onDismissRequest={menu=false}){
@@ -679,10 +699,10 @@ private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->
                     }
                     FlowRow(horizontalArrangement=Arrangement.spacedBy(12.dp)){
                         if(customName && item.summary!=null)Text(Music.note(item.summary.typicalHz),style=MaterialTheme.typography.bodyLarge)
-                        Text(item.summary?.let {hzLabel(it.typicalHz)} ?: "Nota no determinada",color=if(item.summary!=null)accent else muted,style=if(item.summary!=null)MaterialTheme.typography.titleLarge else MaterialTheme.typography.bodyMedium)
+                        Text(item.summary?.let {hzLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})"Notas variables" else "Nota no determinada",color=if(item.summary!=null)accent else muted,style=if(item.summary!=null)MaterialTheme.typography.titleLarge else MaterialTheme.typography.bodyMedium)
                     }
-                    if(item.timeline.isNotEmpty())SessionGraph(item.timeline,item.durationMs,Modifier.fillMaxWidth().height(48.dp),compact=true)
-                    Text("${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
+                    if(item.timeline.isNotEmpty())SessionGraph(item.timeline,item.durationMs,Modifier.fillMaxWidth().height(48.dp),compact=true,instrument=item.instrument,tag="summary-${item.id}")
+                    Text("${item.instrument.title} · ${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
                     Text(item.summary?.let {"Estabilidad ${stabilityLabel(it.stabilityPercent)}"} ?: "WAV disponible para analizar",color=orange,style=MaterialTheme.typography.bodySmall)
                     if(item.legacy && item.name!=(if(item.recovered)"Audio recuperado" else "Grabación anterior"))Text(if(item.recovered)"Audio recuperado" else "Grabación anterior",color=muted,style=MaterialTheme.typography.bodySmall)
                 }
@@ -708,9 +728,9 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
     var more by rememberSaveable(item.id){mutableStateOf(false)}
     Panel {
         Text(item.name,style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
-        Text(item.summary?.let {Music.note(it.typicalHz)} ?: "Nota no determinada",style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)
-        Text(item.summary?.let {hzLabel(it.typicalHz)} ?: "Sin frecuencia confiable",color=accent,style=MaterialTheme.typography.headlineSmall)
-        Text("${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
+        Text(item.summary?.let {Music.note(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})"Notas variables" else "Nota no determinada",style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)
+        Text(item.summary?.let {hzLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})"Ver evolución en Fundamental" else "Sin frecuencia confiable",color=accent,style=MaterialTheme.typography.headlineSmall)
+        Text("${item.instrument.title} · ${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
         Text(item.summary?.let {"Estabilidad ${stabilityLabel(it.stabilityPercent)}"} ?: "Audio disponible para analizar",color=orange,style=MaterialTheme.typography.bodySmall)
         TextButton(onClick={more=!more}){Text(if(more)"Menos información" else "Detalles de la sesión")}
         if(more){
@@ -718,7 +738,7 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
             Text("%.1f MB · WAV local".format(java.util.Locale.forLanguageTag("es-AR"),item.sizeBytes/1024.0/1024.0),style=MaterialTheme.typography.bodySmall)
             item.summary?.let {summary->
                 Text("${summary.stabilityPercent}% de las lecturas pertenecen a la nota predominante. Rango habitual: ${hzLabel(summary.lowHz)}–${hzLabel(summary.highHz)} · ${summary.validPoints} lecturas útiles.",style=MaterialTheme.typography.bodySmall)
-            } ?: Text("No hay suficientes lecturas asociadas. Podés analizar el WAV sin modificarlo.",style=MaterialTheme.typography.bodySmall)
+            } ?: Text(if(item.timeline.any {item.instrument.accepts(it)})"Hay notas diferentes sin una nota predominante. Explorá la serie temporal." else "No hay suficientes lecturas asociadas. Podés analizar el WAV sin modificarlo.",style=MaterialTheme.typography.bodySmall)
         }
     }
     Panel("Audio") {

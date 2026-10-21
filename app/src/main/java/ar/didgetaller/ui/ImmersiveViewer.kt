@@ -15,6 +15,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.material3.*
@@ -40,7 +43,8 @@ internal fun Context.activity():Activity?=when(this){is Activity->this;is Contex
 
 internal fun sessionPlotPoints(vm:TallerViewModel,item:RecordingStore.Session):List<SessionAnalysis.Point>{
     val analysis=vm.recordingAnalysis.takeIf {it.sessionId==item.id}
-    return if(analysis?.result!=null && (analysis.startMs==0L && analysis.endMs==null || item.timeline.isEmpty()))analysis.result.timeline else item.timeline
+    // Reanalysis is a different estimator/window cadence, not a replacement for captured readings.
+    return item.timeline.ifEmpty {analysis?.result?.timeline.orEmpty()}
 }
 
 @Composable
@@ -57,16 +61,16 @@ internal fun playbackCursor(vm:TallerViewModel,item:RecordingStore.Session):Long
 @Composable
 internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,modifier:Modifier,
                          immersive:Boolean=false,onExpand:()->Unit={}) {
-    val s=vm.explorer(item.id);val visual=vm.workspace.state
+    val s=if(immersive)vm.explorer(item.id) else vm.preview(item.id);val visual=vm.workspace.state
     val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs.coerceAtLeast(2)
     val analysis=vm.recordingAnalysis.takeIf {it.sessionId==item.id}
     val result=analysis?.result
     val points=sessionPlotPoints(vm,item)
+    val trace=remember(points,item.instrument){PitchTrace.build(points,item.instrument)}
     val camera=s.camera(duration,visual.rate,points)
     LaunchedEffect(item.id){vm.openTools(item)}
     LaunchedEffect(camera,s.plot,s.logarithmic,s.rangeDb,s.gestureActive,visual.frames){
         if(visual.frames>1 && !s.gestureActive && s.plot in listOf(AcousticPlot.SPECTROGRAM,AcousticPlot.WAVE)){
-            delay(180)
             vm.workspace.render(item,VisualRequest(camera.x.low.toLong(),camera.x.high.toLong().coerceAtLeast(camera.x.low.toLong()+1),
                 camera.y.low.coerceAtLeast(0.0),camera.y.high,s.logarithmic,s.rangeDb,s.spectrumReference),s.plot==AcousticPlot.SPECTROGRAM)
         }
@@ -94,7 +98,12 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                 if(s.mode!=0 && !inspect){s.looping=false;vm.setPlaybackLoopOff()}
                 val point=points.minByOrNull {abs(it.timeMs-time)}?.takeIf {abs(it.timeMs-time)<=750}
                 s.inspected=when(s.plot){
-                    AcousticPlot.PITCH->"${seconds(time)} · "+(point?.hz?.let {"${Music.note(it)} · ${hzLabel(it)} · periodicidad %.2f".format(spanish,point.confidence)} ?: "Sin lectura confiable cercana")
+                    AcousticPlot.PITCH->"${seconds(time)} · "+(point?.let {p->trace.firstOrNull {it.point===p}}?.let {sample->
+                        val hz=sample.point.hz!!
+                        if(sample.uncertain) return@let "${hzLabel(hz)} · estimación incierta: ${sample.reason?.label} · confianza %.3f (YIN), sin nota confirmada".format(spanish,sample.point.confidence)
+                        val musical=Music.pitch(hz)!!
+                        "${hzLabel(hz)} · ${musical.note} · %+.1f cents (A4=440)".format(spanish,musical.cents)
+                    } ?: "Sin lectura confiable cercana")
                     AcousticPlot.WAVE->{val wave=visual.wave;val frame=time*visual.rate/1000
                         if(wave!=null && frame in wave.start until wave.end){val i=((frame-wave.start)*wave.min.size/(wave.end-wave.start)).toInt().coerceIn(wave.min.indices)
                             "${seconds(time)} · amplitud PCM ${axisLabel(wave.min[i].toDouble(),.1)} a ${axisLabel(wave.max[i].toDouble(),.1)}"}else "${seconds(time)} · esperando muestras de esta región"}
@@ -122,62 +131,115 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     val recording=vm.recordingAnalysis.takeIf {it.sessionId==item.id}
     val cursor=playbackCursor(vm,item)
     var tools by rememberSaveable(item.id){mutableStateOf(false)}
-    val activity=LocalContext.current.activity()
-    val landscape=LocalConfiguration.current.screenWidthDp>LocalConfiguration.current.screenHeightDp
     var plots by remember {mutableStateOf(false)}
-    Scaffold(modifier=Modifier.fillMaxSize().testTag("acoustic-viewer"),
-        topBar={TopAppBar(title={if(landscape)Box {
-            TextButton(onClick={plots=true}){Text(state.plot.title,maxLines=1)}
-            DropdownMenu(expanded=plots,onDismissRequest={plots=false}){AcousticPlot.entries.forEach {kind->DropdownMenuItem(text={Text(kind.title)},onClick={state.plot=kind;plots=false})}}
-        }else Text(state.plot.title,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)},navigationIcon={IconButton(onClick=onBack){Icon(Icons.AutoMirrored.Filled.ArrowBack,"Volver a la sesión")}},
-            actions={
-                if(landscape){
-                    IconButton(onClick={state.reset(visual.durationMs.takeIf {it>0} ?: item.durationMs,visual.rate,points)},modifier=Modifier.testTag("reset-viewport")){Icon(Icons.Default.Refresh,"Restablecer vista")}
-                    IconButton(onClick={tools=true}){Icon(Icons.Default.MoreVert,"Herramientas")}
+    val activity=LocalContext.current.activity()
+    val config=LocalConfiguration.current
+    val landscape=config.screenWidthDp>config.screenHeightDp
+    // A short landscape phone cannot fit two 48dp bars plus readable axes at 70%.
+    // Merge transport into the toolbar there; keep two bars on taller viewports.
+    val singleBar=landscape && (config.screenHeightDp<400 || config.fontScale>=1.3f)
+    DisposableEffect(activity){
+        val window=activity?.window
+        val controller=window?.let {androidx.core.view.WindowCompat.getInsetsController(it,it.decorView)}
+        val wasVisible=window?.decorView?.let {androidx.core.view.ViewCompat.getRootWindowInsets(it)?.isVisible(androidx.core.view.WindowInsetsCompat.Type.statusBars())} ?: true
+        val behavior=controller?.systemBarsBehavior
+        controller?.systemBarsBehavior=androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        controller?.hide(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+        onDispose {
+            if(wasVisible)controller?.show(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+            if(behavior!=null)controller?.systemBarsBehavior=behavior
+        }
+    }
+    val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs
+    val camera=state.camera(duration,visual.rate,points)
+    val range=state.pitch(points)
+    val reading=state.inspected ?:
+        "${axisLabel(camera.y.low,camera.y.span)}–${axisLabel(camera.y.high,camera.y.span)} ${if(state.plot==AcousticPlot.WAVE)"PCM" else if(state.plot==AcousticPlot.SPECTRUM)"dB rel" else "Hz"}"
+    val playing=vm.playingId==item.id && !vm.playbackPaused
+    @Composable fun transport(){
+        IconButton(onClick={vm.togglePlayback(item)},modifier=Modifier.testTag("viewer-play")){
+            Icon(if(playing)ViewerIcons.Pause else Icons.Default.PlayArrow,if(playing)"Pausar" else "Reproducir")
+        }
+        Text("${seconds(cursor)} / ${seconds(duration)}",Modifier.widthIn(max=if(landscape)180.dp else if(config.fontScale>=1.3f)200.dp else 120.dp).testTag("viewer-time"),style=MaterialTheme.typography.labelMedium,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+    }
+    @Composable fun follow(){
+        if(state.plot.temporal)IconToggleButton(checked=state.follow,onCheckedChange={state.follow=it}){
+            Icon(Icons.Default.ArrowForward,if(state.follow)"Seguir activado" else "Seguir")
+        }
+    }
+    // This is the sole owner of safe insets. Outer Scaffold supplies zero in viewer.
+    Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).testTag("acoustic-viewer")){
+        Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-toolbar"),verticalAlignment=Alignment.CenterVertically){
+            IconButton(onClick=onBack){Icon(Icons.AutoMirrored.Filled.ArrowBack,"Volver a la sesión")}
+            Box(Modifier.weight(1f)){
+                TextButton(onClick={plots=true},modifier=Modifier.fillMaxWidth().semantics {contentDescription="Cambiar gráfico"}){
+                    Text(state.plot.title+" ▾",
+                        maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                 }
-                TextButton(onClick={
+                DropdownMenu(expanded=plots,onDismissRequest={plots=false}){AcousticPlot.entries.forEach {kind->
+                    DropdownMenuItem(text={Text(kind.title)},onClick={state.plot=kind;state.inspected=null;plots=false})
+                }}
+            }
+            if(singleBar){transport();follow()}
+            IconButton(onClick={state.reset(duration,visual.rate,points)},modifier=Modifier.testTag("reset-viewport")){Icon(Icons.Default.Refresh,"Restablecer vista")}
+            IconButton(onClick={
                 if(vm.viewerOriginalOrientation==null)vm.viewerOriginalOrientation=activity?.requestedOrientation
-                activity?.requestedOrientation=if(landscape)ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED else ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-            },modifier=Modifier.testTag("rotate-viewer")){Text("Girar")}})},
-        bottomBar={Column(Modifier.navigationBarsPadding().padding(horizontal=12.dp)){
-            Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)){
-                Button(onClick={vm.togglePlayback(item)},modifier=Modifier.heightIn(min=48.dp)) {Text(if(vm.playingId==item.id && !vm.playbackPaused)"Pausar" else "Reproducir")}
-                Text(seconds(cursor),Modifier.weight(1f),style=MaterialTheme.typography.labelMedium)
-                if(state.plot.temporal)FilterChip(selected=state.follow,onClick={state.follow=!state.follow},label={Text("Seguir")})
+                activity?.requestedOrientation=if(landscape)ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            },modifier=Modifier.testTag("rotate-viewer")){Icon(ViewerIcons.Rotate,"Cambiar orientación")}
+            IconButton(onClick={tools=true},modifier=Modifier.testTag("viewer-tools")){
+                BadgedBox(badge={if(state.inspected!=null)Badge{Text("i")}}){Icon(Icons.Default.MoreVert,"Herramientas")}
             }
-        }}){padding ->
-        Column(Modifier.padding(padding).fillMaxSize().padding(horizontal=8.dp),verticalArrangement=Arrangement.spacedBy(4.dp)){
-            if(!landscape)ScrollableTabRow(selectedTabIndex=state.plot.ordinal,edgePadding=0.dp){AcousticPlot.entries.forEach {kind->Tab(selected=state.plot==kind,onClick={state.plot=kind;state.inspected=null},text={Text(kind.title,maxLines=1)})}}
-            if(!landscape)Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){
-                TextButton(onClick={state.reset(visual.durationMs.takeIf {it>0} ?: item.durationMs,visual.rate,points)},modifier=Modifier.weight(1f).testTag("reset-viewport")){Text("Restablecer vista",maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)}
-                IconButton(onClick={state.transform(visual.durationMs,visual.rate,points,.5,.5,2.0,2.0,0.0,0.0)}){Icon(Icons.Default.Add,"Acercar")}
-                IconButton(onClick={state.transform(visual.durationMs,visual.rate,points,.5,.5,.5,.5,0.0,0.0)}){Text("−",Modifier.semantics {contentDescription="Alejar"},style=MaterialTheme.typography.headlineSmall)}
-                IconButton(onClick={tools=true}){Icon(Icons.Default.MoreVert,"Herramientas")}
+        }
+        Box(Modifier.weight(1f).fillMaxWidth()){
+            SessionPlot(vm,item,cursor,Modifier.fillMaxSize(),immersive=true)
+            if(state.plot==AcousticPlot.PITCH && range.valid==0)Text(
+                "Sin lecturas confiables · el audio se conserva",Modifier.align(Alignment.Center).padding(16.dp),
+                style=MaterialTheme.typography.bodySmall)
+            if(state.plot==AcousticPlot.SPECTRUM && recording?.result==null && recording?.running!=true)
+                TextButton(onClick={vm.analyzeRecording(item)},modifier=Modifier.align(Alignment.Center).testTag("viewer-analyze")){Text("Analizar grabación")}
+            if(visual.error!=null)TextButton(onClick={vm.workspace.open(item)},modifier=Modifier.align(Alignment.Center)){
+                Text("${visual.error} · Reintentar",color=MaterialTheme.colorScheme.error)
             }
-            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().weight(1f),immersive=true)
-            if(visual.loading)LinearProgressIndicator(progress={visual.progress/100f},modifier=Modifier.fillMaxWidth())
-            val camera=state.camera(visual.durationMs.takeIf {it>0} ?: item.durationMs,visual.rate,points)
-            Text(state.inspected ?: "${if(state.plot.temporal)"Tiempo" else "Hz"}: ${axisLabel(camera.x.low,camera.x.span)}–${axisLabel(camera.x.high,camera.x.span)} ${if(state.plot.temporal)"ms" else "Hz"} · ${axisLabel(camera.y.low,camera.y.span)}–${axisLabel(camera.y.high,camera.y.span)} ${if(state.plot==AcousticPlot.WAVE)"PCM" else if(state.plot==AcousticPlot.SPECTRUM)"dB rel" else "Hz"}",
-                style=MaterialTheme.typography.labelSmall,maxLines=if(landscape)1 else 2)
-            if(state.plot==AcousticPlot.SPECTROGRAM)Row(verticalAlignment=Alignment.CenterVertically){
-                Canvas(Modifier.weight(1f).height(8.dp)){for(x in 0 until size.width.toInt())drawLine(Color(SpectralPalette.color(-state.rangeDb+state.rangeDb*x/size.width,state.rangeDb)),Offset(x.toFloat(),0f),Offset(x.toFloat(),size.height),1f)}
-                Text(" −${state.rangeDb.toInt()} → 0 dB rel",style=MaterialTheme.typography.labelSmall)
+            if(state.plot==AcousticPlot.SPECTROGRAM)Row(Modifier.align(Alignment.TopEnd).padding(end=12.dp).heightIn(min=16.dp),verticalAlignment=Alignment.CenterVertically){
+                Text("−${state.rangeDb.toInt()}",style=MaterialTheme.typography.labelSmall)
+                Canvas(Modifier.width(72.dp).height(6.dp).padding(horizontal=4.dp)){
+                    for(x in 0 until size.width.toInt())drawLine(Color(SpectralPalette.color(-state.rangeDb+state.rangeDb*x/size.width,state.rangeDb)),Offset(x.toFloat(),0f),Offset(x.toFloat(),size.height),1f)
+                }
+                Text("0 dB rel",style=MaterialTheme.typography.labelSmall)
             }
-            if(!landscape)Text("Arrastrá ↔ ↕ · zoom con dos dedos · mantené para inspeccionar",style=MaterialTheme.typography.labelSmall)
-            visual.error?.let {Text(it,color=MaterialTheme.colorScheme.error,style=MaterialTheme.typography.bodySmall)}
-            if(state.plot==AcousticPlot.SPECTRUM){
-                Text(if(recording?.endMs!=null)"Espectro del fragmento ${seconds(recording.startMs)}–${seconds(recording.endMs)}" else "Espectro de toda la grabación · H?: candidato",style=MaterialTheme.typography.labelSmall)
-                if(recording?.running==true){
-                    LinearProgressIndicator(progress={recording.progress/100f},modifier=Modifier.fillMaxWidth())
-                    TextButton(onClick={vm.cancelRecordingAnalysis()}){Text("Cancelar análisis · ${recording.progress}%")}
-                }else if(recording?.result==null)TextButton(onClick={vm.analyzeRecording(item)}){Text("Analizar grabación")}
-                recording?.error?.let {Text(it,color=MaterialTheme.colorScheme.error,style=MaterialTheme.typography.bodySmall)}
+            if(visual.loading || recording?.running==true)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp).align(Alignment.BottomCenter))
+        }
+        if(!singleBar)Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-transport"),verticalAlignment=Alignment.CenterVertically){
+            transport()
+            if(landscape)TextButton(onClick={tools=true},modifier=Modifier.weight(1f).testTag("open-reading")){
+                Text(if(state.inspected!=null)"Lectura completa ›" else reading,style=MaterialTheme.typography.labelSmall,maxLines=1)
             }
+            else Spacer(Modifier.weight(1f))
+            if(config.fontScale<1.3f){
+                IconButton(onClick={state.transform(duration,visual.rate,points,.5,.5,2.0,2.0,0.0,0.0)}){Icon(Icons.Default.Add,"Acercar")}
+                IconButton(onClick={state.transform(duration,visual.rate,points,.5,.5,.5,.5,0.0,0.0)}){Text("−",Modifier.semantics {contentDescription="Alejar"})}
+            }
+            follow()
+        }
+        if(!landscape)TextButton(onClick={tools=true},modifier=Modifier.fillMaxWidth()){
+            Text(reading,style=MaterialTheme.typography.labelSmall,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         }
     }
     if(tools)ModalBottomSheet(onDismissRequest={tools=false}){
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
             Text("Herramientas de exploración",style=MaterialTheme.typography.titleLarge)
+            Text(reading,modifier=Modifier.fillMaxWidth().testTag("complete-reading"),style=MaterialTheme.typography.bodySmall)
+            if(state.plot==AcousticPlot.PITCH)Text(if(item.timeline.isEmpty())"Fuente: reanálisis WAV" else "Fuente: lecturas originales de grabación · misma serie que Biblioteca",style=MaterialTheme.typography.bodySmall)
+            Text("Arrastrá en dos ejes · pellizcá para ampliar · mantené para inspeccionar.",style=MaterialTheme.typography.bodySmall)
+            Row {
+                TextButton(onClick={state.transform(duration,visual.rate,points,.5,.5,2.0,2.0,0.0,0.0)}){Text("Acercar")}
+                TextButton(onClick={state.transform(duration,visual.rate,points,.5,.5,.5,.5,0.0,0.0)}){Text("Alejar")}
+            }
+            if(state.plot==AcousticPlot.SPECTRUM){
+                Text(if(recording?.endMs!=null)"Espectro del fragmento" else "Espectro de toda la grabación · H?: candidato",style=MaterialTheme.typography.bodySmall)
+                TextButton(onClick={if(recording?.running==true)vm.cancelRecordingAnalysis() else vm.analyzeRecording(item)},modifier=Modifier.testTag("viewer-analyze-tools")){Text(if(recording?.running==true)"Cancelar análisis" else "Analizar grabación")}
+            }
+            (visual.error ?: recording?.error)?.let {Text(it,color=MaterialTheme.colorScheme.error)}
             PlotTools(vm,item)
             FragmentTools(vm,item)
             TextButton(onClick={tools=false}){Text("Volver al gráfico")}
@@ -186,8 +248,8 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
 }
 
 @Composable
-internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session){
-    val s=vm.explorer(item.id);val visual=vm.workspace.state
+internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session,s:ExplorerState=vm.explorer(item.id)){
+    val visual=vm.workspace.state
     val points=sessionPlotPoints(vm,item)
     val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs;val camera=s.camera(duration,visual.rate,points)
     var exact by remember(s.plot){mutableStateOf(false)}
@@ -201,9 +263,9 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session){
             OutlinedTextField(value=to,onValueChange={to=it},label={Text("Hasta $unit")},singleLine=true,keyboardOptions=KeyboardOptions(keyboardType=if(s.plot==AcousticPlot.WAVE)KeyboardType.Text else KeyboardType.Decimal),modifier=Modifier.fillMaxWidth())
         }
         val a=from.replace(',','.').toDoubleOrNull();val b=to.replace(',','.').toDoubleOrNull()
-        val domain=s.domains(duration,visual.rate,points).let {if(s.plot==AcousticPlot.SPECTRUM)it.first else it.second}
+        val domain=s.domains(duration,visual.rate,points,fullPitchDomain=true).let {if(s.plot==AcousticPlot.SPECTRUM)it.first else it.second}
         val valid=a!=null && b!=null && a.isFinite() && b.isFinite() && a>=domain.low && b<=domain.high && b>a
-        TextButton(onClick={val window=domain.constrain(AxisWindow(a!!,b!!));s.cameras[s.plot]=if(s.plot==AcousticPlot.SPECTRUM)camera.copy(x=window)else camera.copy(y=window);s.follow=false;exact=false},enabled=valid){Text("Aplicar rango")}
+        TextButton(onClick={val window=domain.constrain(AxisWindow(a!!,b!!));if(s.plot==AcousticPlot.PITCH)s.extendedPitchRange=true;s.cameras[s.plot]=if(s.plot==AcousticPlot.SPECTRUM)camera.copy(x=window)else camera.copy(y=window);s.follow=false;exact=false},enabled=valid){Text("Aplicar rango")}
         if(!valid)Text("Ingresá un intervalo entre ${axisLabel(domain.low,domain.high-domain.low)} y ${axisLabel(domain.high,domain.high-domain.low)} $unit.",style=MaterialTheme.typography.bodySmall)
     }
     FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
@@ -213,7 +275,7 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session){
     }
     if(s.plot==AcousticPlot.SPECTROGRAM || s.plot==AcousticPlot.SPECTRUM){
         FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
-            listOf(100.0,500.0,2000.0,visual.rate/2.0).distinct().forEach {limit->
+            (if(item.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE)listOf(2000.0,4000.0,visual.rate/2.0) else listOf(100.0,500.0,2000.0,visual.rate/2.0)).distinct().forEach {limit->
                 FilterChip(selected=(if(s.plot.temporal)camera.y.high else camera.x.high)==limit,onClick={
                     val window=AxisWindow(if(s.plot==AcousticPlot.SPECTROGRAM && s.logarithmic)visual.rate/32768.0 else 0.0,limit)
                     s.cameras[s.plot]=if(s.plot.temporal)camera.copy(y=window) else camera.copy(x=window);s.follow=false
@@ -223,11 +285,26 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session){
     }
     if(s.plot==AcousticPlot.PITCH){
         val range=s.pitch(points)
-        Text("Escala automática: ${range.valid} lecturas válidas. ${range.clipped} fuera del encuadre robusto; los datos originales se conservan.",style=MaterialTheme.typography.bodySmall)
-        TextButton(onClick={s.cameras[s.plot]=camera.copy(y=s.pitch(points,true).window)}){Text("Mostrar todos los valores")}
+        Text("${range.valid} lecturas en la tendencia. General muestra su rango; Ajustada amplía las variaciones.",style=MaterialTheme.typography.bodySmall)
+        Row {
+            TextButton(onClick={s.extendedPitchRange=false;s.cameras[s.plot]=camera.copy(y=s.overview(points).window);s.follow=false}){Text("Vista general")}
+            TextButton(onClick={s.extendedPitchRange=false;s.cameras[s.plot]=camera.copy(y=range.window);s.follow=false}){Text("Vista ajustada")}
+        }
+        val trace=remember(points,s.instrument){PitchTrace.build(points,s.instrument)}
+        val uncertain=trace.count {it.uncertain}
+        Text("${range.clipped} fuera de Ajustada · $uncertain originales excluidos de la tendencia. Se omiten excursiones aisladas sin vaciar la curva; intervalos breves de incertidumbre unen solo extremos medidos próximos. Ausencia clara o prolongada deja un hueco. Los valores originales no se corrigen ni se rellenan. Confianza YIN no es probabilidad de acierto.",style=MaterialTheme.typography.bodySmall)
+        Row(verticalAlignment=Alignment.CenterVertically){Text("Mostrar lecturas originales / inciertas",Modifier.weight(1f));Switch(checked=s.showUncertain,onCheckedChange={s.showUncertain=it},modifier=Modifier.testTag("show-uncertain"))}
+        if(s.showUncertain)Text("Círculos naranjas: estimaciones originales, sin nota confirmada. Mantené pulsado sobre su tiempo para consultar Hz y confianza; usá Mostrar todos para incluir las que están fuera del rango.",style=MaterialTheme.typography.bodySmall)
+        TextButton(onClick={s.extendedPitchRange=true;s.showUncertain=true;s.cameras[s.plot]=camera.copy(y=s.pitch(points,true).window);s.follow=false}){Text("Mostrar todos los valores")}
     }
     if(s.plot==AcousticPlot.SPECTROGRAM){
-        Row(verticalAlignment=Alignment.CenterVertically){Text("Frecuencia logarítmica",Modifier.weight(1f));Switch(checked=s.logarithmic,onCheckedChange={s.logarithmic=it;s.cameras[s.plot]=camera.copy(y=AxisWindow(if(it)max(camera.y.low,visual.rate/32768.0) else 0.0,camera.y.high))},modifier=Modifier.testTag("log-frequency"))}
+        Row(verticalAlignment=Alignment.CenterVertically){Text("Frecuencia logarítmica",Modifier.weight(1f));Switch(checked=s.logarithmic,onCheckedChange={
+            s.logarithmic=it
+            val domain=s.domains(duration,visual.rate,points).second
+            val low=max(camera.y.low,domain.low)
+            val high=if(camera.y.high>low)camera.y.high else low+visual.rate/32768.0
+            s.cameras[s.plot]=camera.copy(y=domain.constrain(AxisWindow(low,high)))
+        },modifier=Modifier.testTag("log-frequency"))}
         Text("Rango dinámico: ${s.rangeDb.toInt()} dB")
         Slider(value=s.rangeDb.toFloat(),onValueChange={s.rangeDb=it.toDouble()},valueRange=30f..100f)
         Canvas(Modifier.fillMaxWidth().height(16.dp)){for(x in 0 until size.width.toInt())drawLine(Color(SpectralPalette.color(-s.rangeDb+s.rangeDb*x/size.width,s.rangeDb)),Offset(x.toFloat(),0f),Offset(x.toFloat(),size.height),1f)}
@@ -239,8 +316,8 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session){
 }
 
 @Composable
-internal fun FragmentTools(vm:TallerViewModel,item:RecordingStore.Session){
-    val s=vm.explorer(item.id);val duration=(vm.workspace.state.durationMs.takeIf {it>0} ?: item.durationMs).coerceAtLeast(1)
+internal fun FragmentTools(vm:TallerViewModel,item:RecordingStore.Session,s:ExplorerState=vm.explorer(item.id)){
+    val duration=(vm.workspace.state.durationMs.takeIf {it>0} ?: item.durationMs).coerceAtLeast(1)
     Text("Seleccionar fragmento",style=MaterialTheme.typography.titleSmall)
     FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
         listOf("Buscar","Marcar inicio","Marcar fin").forEachIndexed {i,label->FilterChip(selected=s.mode==i,onClick={s.mode=i},label={Text(label,maxLines=1)},modifier=Modifier.heightIn(min=48.dp).testTag("selection-mode-$i"))}
@@ -261,7 +338,7 @@ internal fun FragmentTools(vm:TallerViewModel,item:RecordingStore.Session){
 
 @Composable
 internal fun LabHome(onOpen:(Int)->Unit){
-    Text("Explorá el instrumento y su sonido",style=MaterialTheme.typography.headlineSmall)
+    Text("Laboratorio de didgeridoo",style=MaterialTheme.typography.headlineSmall)
     listOf("Diseñar" to "Perfil interior, puntos de control y resonancias simuladas.","Espectro" to "Observá el sonido del micrófono en tiempo real.","Buscar" to "Explorá geometrías para objetivos de resonancia.","Guía" to "Conceptos musicales y acústicos, explicados en español.").forEachIndexed {i,pair->
         OutlinedCard(onClick={onOpen(i)},modifier=Modifier.fillMaxWidth()){
             Column(Modifier.padding(20.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){Text(pair.first,style=MaterialTheme.typography.titleLarge);Text(pair.second,style=MaterialTheme.typography.bodyMedium)}

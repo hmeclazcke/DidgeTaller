@@ -32,15 +32,10 @@ internal fun Modifier.immersiveGestures(onTap:(Offset)->Unit,onInspect:(Offset)-
                     else if(moved){
                         active(true)
                         val pan=event.calculatePan()
-                        fun zoom(horizontal:Boolean):Float {
-                            val previous=event.changes.filter {it.pressed && it.previousPressed}
-                            if(previous.size<2)return 1f
-                            val a=previous[0];val b=previous[1]
-                            val before=if(horizontal)abs(a.previousPosition.x-b.previousPosition.x) else abs(a.previousPosition.y-b.previousPosition.y)
-                            val after=if(horizontal)abs(a.position.x-b.position.x) else abs(a.position.y-b.position.y)
-                            return if(before>viewConfiguration.touchSlop && after>viewConfiguration.touchSlop)(after/before).coerceIn(.5f,2f) else 1f
-                        }
-                        transform(point,pan,zoom(true),zoom(false));event.changes.forEach {it.consume()}
+                        // Radial centroid-size ratio is continuous for every finger angle.
+                        // Axis separation becomes singular near horizontal/vertical alignment.
+                        val zoom=event.calculateZoom().takeIf {it.isFinite() && it>0f} ?: 1f
+                        transform(point,pan,zoom,zoom);event.changes.forEach {it.consume()}
                     }
                 }
                 if(!moved && !inspecting){

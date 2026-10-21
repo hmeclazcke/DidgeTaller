@@ -34,11 +34,14 @@ internal fun RecordingAnalysisPanel(vm:TallerViewModel,item:RecordingStore.Sessi
             state?.error?.let {Text(it,color=colors.error,fontSize=13.sp)}
             state?.result?.let {result ->
                 val summary=result.summary
-                Text(summary?.let {"${Music.note(it.typicalHz)} · ${hzLabel(it.typicalHz)}"} ?: "Fundamental incierta",
+                Text(summary?.let {"${Music.note(it.typicalHz)} · ${hzLabel(it.typicalHz)}"} ?:
+                    if(item.instrument==ar.didgetaller.core.InstrumentProfile.NATIVE_AMERICAN_FLUTE && result.validWindowFraction>=.5)"Notas variables · sin nota predominante" else "Fundamental incierta",
                     color=colors.primary,fontSize=22.sp,fontWeight=FontWeight.Bold)
-                Text("${result.sampleRate} Hz de muestreo · ${result.windows} ventanas · hasta %.2f s por ventana".format(spanish,result.spectrum.fftSize.toDouble()/result.sampleRate),
+                Text("${result.sampleRate} Hz de muestreo · ${result.windows} ventanas espectrales · hasta %.2f s por ventana".format(spanish,result.spectrum.fftSize.toDouble()/result.sampleRate),
                     color=colors.onSurfaceVariant,fontSize=12.sp)
-                Text("Ventanas con frecuencia válida: ${(result.validWindowFraction*100).toInt()}%"+
+                if(item.instrument==ar.didgetaller.core.InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+                    Text("Fundamental: ventanas de ${item.instrument.windowSamples*1000/result.sampleRate} ms · paso ${item.instrument.windowSamples*500/result.sampleRate} ms",color=colors.onSurfaceVariant,fontSize=12.sp)
+                Text("Lecturas de fundamental válidas: ${(result.validWindowFraction*100).toInt()}%"+
                     (result.medianPeriodicityConfidence?.let {" · periodicidad %.2f".format(spanish,it)} ?: ""),fontSize=13.sp)
                 summary?.let {Text("Estabilidad: ${it.stabilityPercent}% · rango habitual ${hzLabel(it.lowHz)} – ${hzLabel(it.highHz)}",fontSize=13.sp)}
                 result.medianValidHz?.let {median ->

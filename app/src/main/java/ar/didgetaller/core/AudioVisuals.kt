@@ -32,34 +32,42 @@ object AudioVisuals {
         val n=32768;val hop=n/2;val low=if(logarithmic)max(source.sampleRate.toDouble()/n,lowHz) else max(0.0,lowHz)
         val high=min(highHz,source.sampleRate/2.0);require(high>low)
         val columns=min(maxColumns.toLong(),max(1L,(end-start+hop-1)/hop)).toInt()
-        val sums=DoubleArray(columns*rows);val counts=IntArray(columns)
+        val sums=DoubleArray(columns*rows);val weights=DoubleArray(columns)
         val analyzer=SpectralAnalysis(n);val pcm=ShortArray(n)
         val binHz=source.sampleRate.toDouble()/n
         val boundaries=DoubleArray(rows+1){i ->if(logarithmic)low*(high/low).pow(i.toDouble()/rows) else low+(high-low)*i/rows}
-        var at=start;var lastProgress=-1
-        while(at<end){checkCancel(cancelled);val read=source.read(at,pcm);val count=min(read.toLong(),end-at).toInt();if(count<2)break
+        // Window positions belong to the WAV, never to the current viewport.
+        // Each column averages the overlap with these fixed windows' temporal support.
+        val lastWindow=((source.frameCount-1-n/2+hop/2)/hop).coerceAtLeast(0)
+        val firstWindow=((start-n/2+hop/2)/hop).coerceIn(0,lastWindow)
+        val finalWindow=((end-1-n/2+hop/2)/hop).coerceIn(firstWindow,lastWindow)
+        val cellWidth=(end-start).toDouble()/columns
+        for(window in firstWindow..finalWindow){
+            checkCancel(cancelled)
+            val at=window*hop
+            val count=source.read(at,pcm);if(count<2)continue
             val frame=analyzer.frame(pcm,source.sampleRate,count)
-            val center=at+count/2
-            val col=((center-start)*columns/(end-start)).toInt().coerceIn(0,columns-1)
+            val supportStart=if(window==0L)0.0 else (at+n/2-hop/2).toDouble()
+            val supportEnd=if(window==lastWindow)source.frameCount.toDouble() else (at+n/2+hop/2).toDouble()
+            val firstColumn=floor((supportStart-start)/cellWidth).toInt().coerceIn(0,columns-1)
+            val lastColumn=floor((supportEnd-start)/cellWidth).toInt().coerceIn(0,columns-1)
+            val frameRows=DoubleArray(rows)
             for(row in 0 until rows){
                 val first=ceil(boundaries[row]/binHz).toInt().coerceIn(0,frame.density.lastIndex)
                 val last=(ceil(boundaries[row+1]/binHz).toInt()-1).coerceAtMost(frame.density.lastIndex)
                 // Raster rows narrower than one FFT bin use nearest-bin support, without inventing resolution.
-                sums[col*rows+row]+=if(last<first)frame.density[((boundaries[row]+boundaries[row+1])/(2*binHz)).roundToInt().coerceIn(0,frame.density.lastIndex)]
+                frameRows[row]=if(last<first)frame.density[((boundaries[row]+boundaries[row+1])/(2*binHz)).roundToInt().coerceIn(0,frame.density.lastIndex)]
                     else (first..last).sumOf {frame.density[it]}/(last-first+1)
             }
-            counts[col]++
-            val percent=((at-start)*100/(end-start)).toInt();if(percent!=lastProgress){progress(percent);lastProgress=percent}
-            if(at+count>=end)break
-            at+=hop
+            for(col in firstColumn..lastColumn){
+                val overlap=(min(supportEnd,start+(col+1)*cellWidth)-max(supportStart,start+col*cellWidth)).coerceAtLeast(0.0)
+                weights[col]+=overlap
+                for(row in 0 until rows)sums[col*rows+row]+=frameRows[row]*overlap
+            }
+            progress(((window-firstWindow+1)*100/(finalWindow-firstWindow+1)).toInt())
         }
         checkCancel(cancelled)
-        // Empty edge cells inherit their nearest actual window; these are window-supported values, not extra observations.
-        for(col in 0 until columns)if(counts[col]>0)repeat(rows){sums[col*rows+it]/=counts[col]}
-        for(col in 0 until columns)if(counts[col]==0){
-            val nearest=counts.indices.filter {counts[it]>0}.minByOrNull {abs(it-col)} ?: continue
-            repeat(rows){sums[col*rows+it]=sums[nearest*rows+it]}
-        }
+        for(col in 0 until columns)if(weights[col]>0)repeat(rows){sums[col*rows+it]/=weights[col]}
         val power=FloatArray(sums.size){sums[it].toFloat()};val reference=power.maxOrNull()?.toDouble() ?: 0.0
         progress(100)
         return Spectrogram(start,end,source.sampleRate,low,high,logarithmic,columns,rows,power,reference,n,hop)

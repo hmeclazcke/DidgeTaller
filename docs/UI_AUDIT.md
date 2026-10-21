@@ -1,5 +1,47 @@
 # Auditoría de interfaz — Didge Taller 3.1
 
+## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
+
+La revisión de3.2.3 usó un fixture demasiado favorable al filtro: las **lecturas exactas** Re·D2/Mib·Eb2 reproducen la fragmentación que denunció el usuario. Se compararon visualmente las mismas series en APK3.2.2/8,3.2.3/9 y3.2.4/10, con fechas/duración/resumen originales y WAV silenciosos de soporte solo en emulador. Ahora Re·D2 recupera33 enlaces frente a15 y Mib·Eb2,19 frente a5; sus huecos reales permanecen. No se presentan estas capturas como prueba física del audio.
+
+General queda60,58–85,68Hz para Re·D2 y63,77–90,18Hz para Mib·Eb2; ya no dominan períodos bajos inciertos. Lecturas originales accesibles en herramientas. Curva/escala común a tarjeta/detalle/fullscreen, sin decimación de F0. Se retiran «N fuera» y el párrafo permanente de gestos de Fundamental; «Línea: tendencia» evita confundir periodicidad moderada con certeza acústica.
+
+Detalle916px en420dp/fuente1,0: eje115,55→74,55px(−35,48%), datos769,625→810,625px(+5,33%). Se conserva Paint real/margen4+4dp y ancho congelado durante gesto. Hz una vez, notas secundarias. Espectrograma/onda/controles horizontales/insets no modificados. Matriz360/420dp/fuentes1,3/1,5 aprobada y capturas inspeccionadas; [20 evidencias](screenshots/v324-final/README.md).39 casos UI distintos aprobados solo en emulador. Samsung actualizado con datos intactos; captura negra impide afirmar inspección visual física. Ver VALIDATION.
+
+## Fundamental Precision 3.2.3 — 21/10/2026
+
+Corrección focalizada de Fundamental, sin auditoría general. Capturas auténticas antes/después del mismo fixture70–73Hz con cuatro retornos débiles a60/65/77/82,5Hz: en3.2.2 forman V/segmentos naranjas; en3.2.3 la curva verde tiene huecos y los originales son círculos opcionales sin conexión. La transición respaldada205/207Hz permanece visible. Fixture explícito: no atribuir esta comparación al WAV del Samsung.
+
+Medida420dp/fuente1,0: gráfico detalle916px; reserva189,825→115,550px (−39,13%), datos695,350→769,625px (+10,68%). Ancho por textos reales Hz/nota, margen exterior4dp+separación4dp y origen retenido durante gesto. Sin Hz superior redundante. Leyenda de una línea (dos con fuentes grandes) y ayuda completa en herramientas. [13 capturas inspeccionadas](screenshots/v323-final/README.md), incluyendo360/420dp, fuentes1,3/1,5 y horizontal, sin superposición/recorte.38 casos UI distintos aprobados solo en emulador. Evidencia y límites en [VALIDATION](VALIDATION.md).
+
+## Graph Intelligence & UX Stability 3.2.2 — 21/10/2026
+
+- General/Reset de drone70Hz vuelven a≈58,9–83,3Hz; Ajustada permite ver±0,15Hz. Zoom-out se detiene limpiamente en General, sin0–500 implícito.
+- Tarjeta determinística confirmada antes/después de explorar. Preview recupera su cámara propia y una nueva visita crea estado inicial; flauta mantiene el perfil guardado aunque Medir esté en Didgeridoo.
+- Incertidumbre contextual interrumpe la línea y queda disponible como círculo/original en Herramientas, sin nota confirmada. Datos confiables y silencios mantienen tiempos y cortes comunes. No suavizado ni decimación engañosa; clipping real en miniatura.
+- 0Hz y región0–1Hz sin notas imposibles, también en semántica accesible. Hz primario/nota secundaria; espectrograma solo Hz.
+- Revisados [fixtures y matriz visual](screenshots/v322-final/README.md); visor horizontal compacto conservado. Gestos físicos/Samsung y accesibilidad completa pendientes.
+
+## Stability & Precision 3.2.1 — 21/10/2026
+
+- Revisados Medir normal/amplio, misma tarjeta/detalle/visor de Fundamental, espectrograma vertical/horizontal, herramientas, flauta y fuentes ampliadas. [Selección de capturas](screenshots/v321-final/README.md).
+- Corregidos: Atrás fuera de Vista amplia, razones de zoom singulares por eje, ancla incorrecta con pan+zoom, origen móvil de STFT, redondeo del bitmap y recorte antiguo tras reset. También intervalo degenerado al pasar el bin inferior a log.
+- Fundamental general y miniatura ahora comparten serie y escala; ajustada amplía voluntariamente variaciones pequeñas. Datos inciertos aislados, pausas sin línea, anomalías válidas conservadas. El diagnóstico numérico confirma saltos presentes en el índice, sin atribuirlos todos al instrumento ni todos al detector.
+- El título conserva el gráfico; información científica completa en panel adaptable con indicador i, sin reducir letra ni agregar barras. La advertencia de recorte corresponde al viewport actual, no al rango robusto de otro preset. Cambiar pestaña limpia la lectura de otro gráfico.
+- Barras y márgenes de STFT de3.2 conservados; datos ≥65% de altura útil en recorridos verificados. No se vuelve a la distribución de28,3%. La medición física de71,6% corresponde a3.2, salvo evidencia adicional de3.2.1.
+- Cierre:76 JVM y32 casos instrumentados distintos más focos; Samsung actualizado preservando datos. Gestos físicos, afinación real y accesibilidad completa pendientes.
+
+## Cierre Acoustic Studio 3.2 — 21/10/2026
+
+Auditoría focalizada y corregida: visor, Fundamental, Medir/perfiles, Biblioteca y detalle. No rediseño general. [Capturas reales revisadas](screenshots/v32-final/README.md).
+
+- **Causa del visor comprimido:** TopAppBar y controles pensados para vertical, varias filas de leyenda/lectura/transporte, además de márgenes amplios de ejes. No se encontró doble padding del Scaffold exterior. Se reemplazó por cabecera 48 dp y transporte 48 dp, reunidos en una sola barra cuando la altura/fuente lo exige. Girar, reproducir, seguir y restablecer son iconos con objetivos táctiles; opciones, rangos y lectura completa están en Herramientas. Leyenda pequeña integrada en margen reservado.
+- **Medición física:** espectrograma Samsung de la misma sesión, antes/después: **306 / 1080 px (28.3%) → 773 / 1080 px (71.6%)** de altura TOTAL de captura para los datos sin ejes. Se inspeccionaron ejes, colores, controles, leyenda y navegación. El gráfico domina después del cambio. En emulador el área de datos varía entre 66,4% y 74,6% de altura útil según tamaño/fuente; ver tabla del índice.
+- **Fundamental:** Hz en primera línea y nota secundaria en segunda; ticks de frecuencia musical exacta cuando caben. Zoom fino utiliza marcas numéricas y una única referencia ≈. Ancho medido antes del Canvas; cursor completo con cents disponible en panel. Autoescala robusta y aviso explícito de puntos fuera del viewport. STFT continúa exclusivamente Hz/dB relativos.
+- **Fuente grande y 360 dp:** se corrigieron contador con elipsis, criterio de barra única y snackbar que cubría acceso al visor. Medir adapta la nota al ancho medido; selector de instrumento visible y bloqueado mientras graba/guarda. Vertical sin scroll contenedor accidental ni controles superpuestos a ejes.
+- **Flauta/Biblioteca:** instrumento discreto junto a fecha; detalle respeta perfil guardado; melodía aparece como notas variables. El Laboratorio dice didgeridoo y no ofrece asociación engañosa a flauta. Pausas no conservan una nota anterior.
+- **Interacción:** gestos y dibujo comparten la misma región de datos, probada tras cambio de tamaño; preservación del reproductor/selección/cámara en rotación y Atrás comprobada en emulador. Samsung: comprobación visual y navegación, sin iniciar micrófono/reproducción. Pruebas acústicas físicas, audibles y accesibilidad completa pendientes.
+
 ## Alcance y evidencia (20/10/2026)
 
 Auditoría sobre la interfaz real del emulador `emulator-5554`. Samsung excluido de pruebas instrumentadas. Línea base: 44 pruebas JVM sin fallos y APK debug compilado. No hay metadatos Git en esta copia; respaldo recuperable en `checkpoints/before-3.1-20261020-195852.zip`.
