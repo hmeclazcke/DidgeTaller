@@ -5,7 +5,8 @@ class PitchStream(
     val instrument:InstrumentProfile,
     private val minHz:Int=instrument.minHz,
     private val maxHz:Int=instrument.initialMaxHz,
-    private val includeVisuals:Boolean=true
+    private val includeVisuals:Boolean=true,
+    private val observe:((PitchDetector.Diagnostic)->Unit)?=null
 ) {
     private val window=ShortArray(instrument.windowSamples)
     private var filled=0
@@ -25,6 +26,6 @@ class PitchStream(
             pcm.copyInto(window,keep,0,count);filled=window.size
         }
         if(filled<window.size || ++updates%instrument.analysisChunks!=0)return null
-        return PitchDetector.analyze(window,44100,minHz,maxHz,includeVisuals)
+        return PitchDetector.analyzeWithDiagnostics(window,44100,minHz,maxHz,includeVisuals,observe)
     }
 }

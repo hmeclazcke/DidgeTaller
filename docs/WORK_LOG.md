@@ -1,3 +1,7 @@
+## 21/10/2026 ? 3.2.6, diagn?stico reproducible
+
+Preservada base `309135e`. Diagn?stico opcional del estimador real y decisi?n LivePitch compartida con ViewModel. Tres WAV privados ?ntegros; p?rdidas por baja periodicidad reproducidas, no por renderer. Candidatos largos de 19:17 requieren comparaci?n ac?stica antes de cualquier correcci?n. 9 JVM focalizadas + reproducci?n privada y assembleDebug aprobados; 652 ventanas iguales a la base. Informes locales ignorados, sin cambios DSP a?n.
+
 # Registro de trabajo
 
 ## Cierre verificable 3.2.5 — 21/10/2026

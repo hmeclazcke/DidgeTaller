@@ -15,10 +15,18 @@ object PitchDetector {
         val spectrum: List<Float> = emptyList()
     )
 
+    /** Diagnostic evidence, not a second estimator or a confidence calibration. */
+    data class Minimum(val hz:Double,val confidence:Double)
+    data class Diagnostic(val candidateHz:Double?,val reason:String,val offsetSamples:Int=0,
+        val comparedSamples:Int=0,val minima:List<Minimum> = emptyList())
+
     fun analyze(pcm: ShortArray, sampleRate: Int = 44100, minHz: Int = 35, maxHz: Int = 140,
-                includeVisuals: Boolean = true): Reading {
+                includeVisuals: Boolean = true): Reading = analyzeWithDiagnostics(pcm,sampleRate,minHz,maxHz,includeVisuals,null)
+
+    fun analyzeWithDiagnostics(pcm:ShortArray,sampleRate:Int,minHz:Int,maxHz:Int,
+        includeVisuals:Boolean,observe:((Diagnostic)->Unit)?):Reading {
         require(sampleRate > 0 && minHz >= 20 && maxHz > minHz)
-        if (pcm.size < 4096) return Reading()
+        if (pcm.size < 4096) {observe?.invoke(Diagnostic(null,"short_window"));return Reading()}
         val mean = pcm.sumOf { it.toDouble() } / pcm.size
         val rms = sqrt(pcm.sumOf { (it - mean).pow(2) } / pcm.size) / 32768.0
         val wave = if (!includeVisuals) emptyList() else List(128) { i ->
@@ -29,7 +37,7 @@ object PitchDetector {
             peak.toFloat()
         }
         val spectrum = if (includeVisuals) spectrum(pcm, sampleRate) else emptyList()
-        if (rms < 0.005) return Reading(rms = rms, waveform = wave, spectrum = spectrum)
+        if (rms < 0.005) {observe?.invoke(Diagnostic(null,"low_amplitude"));return Reading(rms = rms, waveform = wave, spectrum = spectrum)}
         // Preserve the proven low-register path. Higher notes need longer periods in samples
         // for accurate interpolation (27.6 samples at 1600Hz instead of 6.9 after /4).
         val ds = if(maxHz>500)1 else 4
@@ -42,7 +50,7 @@ object PitchDetector {
         val minLag=max(2, floor(fs / maxHz).toInt()-(if(ds==1)1 else 0))
         val maxLag=min(x.size/2, ceil(fs/minHz).toInt()+(if(ds==1)1 else 0))
         val win=min(2200,x.size-maxLag-1)
-        if (win < 1000) return Reading(rms=rms,waveform=wave,spectrum=spectrum)
+        if (win < 1000) {observe?.invoke(Diagnostic(null,"short_comparison"));return Reading(rms=rms,waveform=wave,spectrum=spectrum)}
         val offset=if(ds==1)(x.size-win-maxLag).coerceAtLeast(0)/2 else 0
         val cmndf=DoubleArray(maxLag+1)
         var accumulated=0.0
@@ -66,7 +74,7 @@ object PitchDetector {
             var smallest=1.0
             for(j in minLag..maxLag) if(cmndf[j]<smallest) { smallest=cmndf[j];best=j }
         }
-        if(best<0) return Reading(rms=rms,waveform=wave,spectrum=spectrum)
+        if(best<0) {observe?.invoke(Diagnostic(null,"no_minimum"));return Reading(rms=rms,waveform=wave,spectrum=spectrum)}
         // A strong H2 can create a shallow minimum at half the true period.
         // Prefer its double only with a substantial measured improvement, never by continuity.
         if(maxHz>500 && cmndf[best]>.025){
@@ -81,6 +89,13 @@ object PitchDetector {
         }
         val hz=fs/(best+delta)
         val confidence=(1.0-cmndf[best]).coerceIn(0.0,1.0)
+        observe?.invoke(Diagnostic(hz,when {
+            hz<minHz*.95 || hz>maxHz*1.05 -> "outside_range"
+            confidence<.65 -> "low_periodicity"
+            else -> "accepted"
+        },offset*ds,win*ds,(minLag..maxLag).filter {i ->
+            (i==minLag || cmndf[i]<=cmndf[i-1]) && (i==maxLag || cmndf[i]<=cmndf[i+1])
+        }.map {Minimum(fs/it,(1-cmndf[it]).coerceIn(0.0,1.0))}))
         return Reading(
             hz=if(hz>=minHz*0.95 && hz<=maxHz*1.05 && confidence>=0.65) hz else 0.0,
             confidence=confidence,rms=rms,waveform=wave,spectrum=spectrum

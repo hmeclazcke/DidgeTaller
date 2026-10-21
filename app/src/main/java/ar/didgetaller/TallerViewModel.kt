@@ -1,5 +1,7 @@
 package ar.didgetaller
 
+import ar.didgetaller.core.LivePitch
+
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
@@ -155,19 +157,12 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
 
     private val mic=MicrophoneEngine(onReading={incoming ->
         reading=incoming
-        val usable=if(instrument==InstrumentProfile.DIDGERIDOO)incoming.hz>0 else
-            incoming.hz in instrument.validMinHz..instrument.validMaxHz && incoming.confidence>=.80
-        if(usable) {
-            val previous=filteredHz
-            val difference=if(previous>0)abs(1200*ln(incoming.hz/previous)/ln(2.0)) else Double.POSITIVE_INFINITY
-            filteredHz=if(difference<70) 0.65*previous+0.35*incoming.hz else incoming.hz
-            consecutiveReadings=if(difference<45) consecutiveReadings+1 else 1
-            if(consecutiveReadings>=2)lastMeasuredHz=filteredHz
-        } else {filteredHz=0.0;consecutiveReadings=0}
+        val live=LivePitch.next(LivePitch.State(filteredHz,consecutiveReadings,lastMeasuredHz),incoming,instrument)
+        filteredHz=live.hz;consecutiveReadings=live.consecutive;lastMeasuredHz=live.lastMeasuredHz
         if(sessionPhase==SessionPhase.CAPTURING) {
             sessionTimeline=sessionTimeline+SessionAnalysis.Point(
                 (SystemClock.elapsedRealtime()-sessionStartedAtMs).coerceAtLeast(0),
-                incoming.hz.takeIf { usable && it.isFinite() },incoming.confidence)
+                live.storedHz,incoming.confidence)
         }
     },onRecordingStopped={
         if(sessionPhase==SessionPhase.CAPTURING)finishSession()

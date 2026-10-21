@@ -1,3 +1,19 @@
+## Diagn?stico 3.2.6 ? etapa A, 21/10/2026
+
+Base limpia `309135e`, identidad Git configurada comprobada; fuente y hashes preservados en `checkpoints/before-3.2.6`. Los tres WAV externos coinciden con su README y se abren solo en lectura. Reportes privados CSV: `app/build/reports/real-audio/baseline`; no se versionan ni empaquetan audios.
+
+Reproducci?n con `Pcm16WavReader ? PitchStream ? PitchDetector ? LivePitch ? PitchTrace`. `LivePitch` extrae literalmente la aceptaci?n y suavizado existentes del ViewModel, sin modificar par?metros. Observador opcional registra candidato, periodicidad, m?nimos CMNDF, soporte temporal, rechazo, Hz UI/guardados y presentaci?n. La autocorrelaci?n normalizada sobre la ventana completa es una comparaci?n independiente, no una etiqueta correcta.
+
+| WAV (hora) | Ventanas | Hz admitidos | RMS <0,005 | Periodicidad insuficiente |
+|---|---:|---:|---:|---:|
+| 19:04 | 256 | 163 | 62 | 31 |
+| 19:17 | 122 | 48 | 24 | 50 |
+| 19:26 | 276 | 129 | 62 | 85 |
+
+Las p?rdidas energ?ticas se producen antes de la UI: candidato con periodicidad <0,65. En 19:17, 3,07?7,89 s hay estimaciones de 35?36,6 Hz; varios m?nimos largos tambi?n aparecen en autocorrelaci?n, mientras 60?69 Hz compiten con menor periodicidad. No est? demostrado que sean simplemente octavas falsas. No se duplica la frecuencia ni se modifica DSP en esta etapa. Los l?mites de vocales no est?n etiquetados con exactitud.
+
+Validaci?n: compilaci?n y 9 pruebas focalizadas aprobadas (AcousticReliability, LivePitch, PitchDiagnostic), m?s la prueba opcional sobre los tres WAV. Comparaci?n contra las clases preservadas de `309135e`: igualdad exacta de Hz/confianza/RMS en 652 ventanas completas. Los reportes del stream incluyen dos ventanas finales parciales adicionales. `DIDGE_TALLER_FIXTURES` habilita la prueba privada; sin esa variable se omite. `DIDGE_DIAGNOSTIC_LABEL` separa reportes antes/despu?s. No atribuir a esta instrumentaci?n una correcci?n de vocalizaci?n.
+
 # Registro de validación
 
 ## Recovery & Acoustic Reliability 3.2.5 — 21/10/2026
