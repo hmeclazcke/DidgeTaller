@@ -1,5 +1,16 @@
 # Hoja de ruta priorizada — Didge Taller
 
+## Real Audio Diagnostics 3.2.6 — 21/10/2026
+
+- [x] Reproducir tres WAV privados con pipeline real y localizar pérdidas antes de la UI; hashes íntegros, sin empaquetar audio.
+- [x] Comparar cinco alternativas y períodos competidores; conservar YIN al no demostrar una mejora fiable.
+- [x] Separar dos conexiones débiles de registro sin perder muestras; conservar toot, flauta, colores y huecos reales.
+- [x] Medir margen STFT, retirar Hz separado, recuperar marcas X y comprobar título/scroll normal a diferentes fuentes/tamaños.
+- [x] 128 JVM y compilación debug/app-test aprobados; resultados de regresión final e instalación en VALIDATION.
+- [x] 44 UI distintos más8 repeticiones,21 capturas revisadas y contraste exacto de652 lecturas guardadas. Samsung3.2.6 actualizado:69 hashes/18 sesiones/18 WAV intactos tras respaldo fresco.
+- [ ] Resolver estimación física durante «I» con referencia y tramos etiquetados; no asumir que una banda66Hz prueba una F0 única.
+- [ ] Precisión contra afinador, gesto físico, sincronía audible,15min/batería y TalkBack completo.
+
 ## Recovery & Acoustic Reliability 3.2.5 — 21/10/2026
 
 - [x] Comparar fuente histórica verificable, preservar estado/hashes y aplicar recuperación selectiva sin tocar YIN ni originales.

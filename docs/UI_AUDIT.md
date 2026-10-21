@@ -1,5 +1,9 @@
 # Auditoría de interfaz — Didge Taller 3.1
 
+## Real Audio Diagnostics 3.2.6 — 21/10/2026
+
+La serie nominal de19:17 contiene grupos reales de estimaciones35–36/60–68Hz; se conservan completos y se retiran dos enlaces que sugerían un barrido amplio con periodicidad débil. Las otras dos series y colores no cambian. Las capturas de esos datos privados quedan locales; las evidencias versionadas usan fixtures sintéticos explícitos. Medir muestra incertidumbre sin fingir una nota actual. STFT: margen147→69px, ancho útil+9,54% en el mismo fixture1080px/420dpi/fuente1,0. Fundamental ya medía75px; no se afirma una reducción inexistente. Unidad Hz en leyenda/rango, etiquetas X medidas sin superposición y fallback cuando el paso redondeado solo dejaba0s. Título de sesión íntegro al desplazarlo a la vista; scroll/insets/navegación intactos. Validación y límites acústicos en [VALIDATION](VALIDATION.md).
+
 ## Recovery 3.2.5 — 21/10/2026
 
 Comparación nativa de las mismas series en APK3.2.2,3.2.4 y3.2.5, más fixtures explícitos de variación/periodicidad y PCM controlado de Medir. La revisión detectó un barrido engañoso desde un ataque débil aislado; se conserva como punto, sin unirlo al tramo respaldado. Los colores vuelven a expresar métricas y las conexiones sobre omisiones son discontinuas. Los huecos del registro reciente no desaparecen artificialmente: gran parte ya existe en la captura. La prueba exige los tres colores en píxeles reales del Canvas y nota/Hz visibles en Medir; Ajustada se inspecciona con el panel cerrado. Matriz, capturas e integridad: [VALIDATION](VALIDATION.md) y [evidencia](screenshots/v325-final/README.md). No es validación acústica física.
