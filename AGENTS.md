@@ -1,5 +1,19 @@
 # AGENTS.md — Didge Taller (Kotlin / Android)
 
+## Git obligatorio — 21/10/2026 (regla permanente y prioritaria)
+
+Estas reglas reemplazan las indicaciones históricas de Git ausente o de no crear un commit del estado acumulado. El punto de partida preservado es `3f0510f` (`3.2.4-beta1/10`); el commit histórico `4f90893` se conserva intacto.
+
+- Antes de modificar código, revisar `git status`, los cambios y `.gitignore`. Si hay trabajo previo sin registrar, crear un commit de punto de partida con los archivos del proyecto que corresponda versionar, excluyendo privados y generados. Si el árbol ya está limpio, usar el commit existente; no crear commits vacíos.
+- Antes del primer commit de cada iteración, verificar `git config --get user.name`, `git config --get user.email` y la identidad efectiva con `git var GIT_AUTHOR_IDENT` / `git var GIT_COMMITTER_IDENT`. Usar exclusivamente la identidad configurada por el usuario; no inventar nombres/correos, usar otro autor ni modificar la configuración global. Si falta identidad o hay una identidad efectiva diferente, informar antes de crear commits.
+- Después de cada fase funcional terminada, compilable y con sus pruebas pertinentes aprobadas, crear un commit pequeño con mensaje descriptivo, por ejemplo `fix(audio): restore reliable didgeridoo detection`, `fix(charts): recover fundamental rendering`, `fix(ui): restore confidence colors` o `test(audio): add harmonic variation regression tests`.
+- Si una fase falla, conservar los cambios y documentar el error y el estado real; no crear un commit que la presente como validada. El commit de partida preserva trabajo existente y debe describir honestamente qué verificaciones se ejecutaron, sin atribuir nuevas validaciones a evidencia histórica.
+- Preparar rutas explícitas con `git add -- <rutas>` o seleccionar fragmentos; nunca usar `git add -A` indiscriminadamente. Antes de cada commit revisar `git diff --cached --stat`, `git diff --cached`, `git diff --cached --check` y los nombres preparados. Inspeccionar también los archivos nuevos y binarios; `.gitignore` no protege archivos ya rastreados.
+- No incluir WAV personales, otros audios privados, respaldos, fixtures/diagnósticos privados, contraseñas, claves, credenciales, archivos locales sensibles, builds ni cachés. Conservar el wrapper de Gradle y las evidencias de UI revisadas que correspondan a documentación del proyecto. No borrar archivos privados para limpiar el estado de Git: excluirlos.
+- Nunca usar `git reset --hard` para descartar cambios sin autorización, ni `git clean -fd` indiscriminadamente. No modificar ni borrar commits históricos, hacer force push ni enviar a un remoto sin autorización explícita. No usar amend/rebase para reescribir el historial existente.
+- Al terminar, crear un commit final solo si quedan cambios pendientes y verificados. Informar el hash abreviado y el mensaje de cada commit creado, el estado final de `git status` y la versión o commit recomendado para recuperación. Una recuperación debe preservar primero el trabajo posterior; no implica autorización para descartar cambios.
+- Registrar comandos, resultados y límites en `docs/VALIDATION.md` y decisiones/pendientes en `docs/WORK_LOG.md`. Mantener el historial real y recuperable, sin reconstruir fases históricas como si se hubieran ejecutado ahora. No hacer push automáticamente.
+
 ## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
 
 - Prioridad sobre la política visual3.2.3: se revierte el umbral global0,85 a0,70 y el corte obligatorio por incertidumbre. `PitchTrace` conserva originales y enlaza solo extremos medidos coherentes (≤80cents,≤4 omisiones,≤1s); ausencias reales/intervalos largos cortan. No crear frecuencias intermedias ni promover ruido prolongado.

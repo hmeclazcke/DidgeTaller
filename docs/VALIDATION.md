@@ -1,5 +1,19 @@
 # Registro de validación
 
+## Adopción de Git y punto de partida — 21/10/2026
+
+Solicitud: conservar el estado acumulado y establecer commits verificables por fase. Sin cambios al código de la app ni a su versión `3.2.4-beta1/10`.
+
+- Identidad configurada y efectiva de autor/committer comprobada antes del primer commit: Hernán A. Meclazcke, mediante `git config --get user.name`, `git config --get user.email` y `git var GIT_AUTHOR_IDENT` / `GIT_COMMITTER_IDENT`. No se modificó la configuración global ni se sustituyó el autor.
+- Estado inicial: un único commit `4f90893` (`Primer commit`), 28 archivos modificados y 115 nuevos del proyecto. Revisión de rutas, diffs, archivos nuevos, índices de capturas y jerarquías XML de UI; sin audio, credenciales ni archivos generados en la selección. Los atributos `password="false"` de las jerarquías Android no son contraseñas guardadas. Las capturas conservadas son evidencia de UI del proyecto; sus resultados históricos no se vuelven a contar como pruebas actuales.
+- Entorno comprobado: Windows, JBR **21.0.11**, Platform 35 y Build Tools 35.0.0 disponibles; bytecode objetivo 17. `gradlew.bat :app:testDebugUnitTest --console=plain`: **BUILD SUCCESSFUL in 51s**, 104 pruebas en 11 suites, cero fallos, errores u omitidos. `gradlew.bat :app:assembleDebug --console=plain`: **BUILD SUCCESSFUL in 4s**. Los XML permanecen en `app/build/test-results/testDebugUnitTest/`, excluidos de Git.
+- Commit de partida **`3f0510f`**, `chore(project): checkpoint existing 3.2.4-beta1 state`: 143 archivos preparados por rutas revisadas; `git diff --cached --check` aprobado, sin rutas privadas/generadas. Preserva los cambios acumulados, sin reconstruir commits funcionales retrospectivos ni modificar `4f90893`.
+- Segunda fase: reglas permanentes en `AGENTS.md` y exclusiones adicionales de audio privado, credenciales, fixtures locales y cachés Kotlin/nativas en `.gitignore`. La compilación creó transitoriamente `.kotlin/sessions/*.salive`: la selección de rutas lo detectó y excluyó antes de preparar archivos. No se borró ese caché ni se incluyó en el commit de partida.
+- Verificación de exclusiones con `git check-ignore`: 34 rutas representativas privadas/generadas correctamente ignoradas y seis controles de fuente, tests, documentación, capturas y wrapper no ignorados. También se comprobó `.WAV` en mayúsculas en este repositorio Windows (`core.ignorecase=true`). Sin crear archivos de prueba. `git diff --check` aprobado; ninguna ruta privada/generada rastreada según la revisión de nombres. `git diff --exit-code 3f0510f -- app` confirma que la segunda fase no modifica la app; no requiere repetir las pruebas JVM ni la compilación.
+- Alcance: esta iteración verifica JVM y compilación; no ejecuta instrumentación, instalaciones ni operaciones en Samsung. Las advertencias existentes de `jvmTarget` y `ArrowForward` obsoletos no impidieron las tareas. Validación física/acústica pendiente según los registros siguientes.
+
+Recuperación del código verificado: `3f0510f` (`3.2.4-beta1/10`); el commit posterior de política Git conserva el mismo código e incorpora las reglas permanentes. Consultar `git log --oneline` para identificar el cierre. Los respaldos y audios privados siguen fuera del repositorio.
+
 ## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
 
 APK **3.2.4-beta1/10**,11277304 bytes, SHA-256 `6fe6bcdcfb976acd5124e1f91b43fabddefb41a534677fd6f6ec8c8611c1c1a6`. Mismo paquete/firma; JDK17.0.20, bytecode17/SDK35, sin dependencias/permisos nuevos. Checkpoint previo `checkpoints/before-3.2.4`; cierre `checkpoints/latest.txt`.

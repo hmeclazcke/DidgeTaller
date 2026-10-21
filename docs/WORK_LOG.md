@@ -1,5 +1,14 @@
 # Registro de trabajo
 
+## Adopción de Git profesional — 21/10/2026
+
+- Revisados estado, identidad configurada/efectiva y exclusiones antes de crear commits. Se conservó el commit histórico `4f90893` y toda la implementación existente, sin cambios al código de la app.
+- Punto de partida `3f0510f`, `chore(project): checkpoint existing 3.2.4-beta1 state`: 143 archivos de fuente, tests y documentación/evidencias revisadas. Preparación por rutas explícitas; sin WAV privados, respaldos, builds, cachés ni credenciales.
+- Validación nueva: 104 pruebas JVM/11 suites sin fallos, errores u omitidos; APK debug compilado. JBR21.0.11, SDK35. No se repitieron pruebas instrumentadas ni se operó sobre dispositivos.
+- Reglas permanentes incorporadas al inicio de `AGENTS.md`; `.gitignore` ampliado para audio privado, fixtures locales, credenciales y cachés Kotlin/nativas. La guarda de selección rechazó inicialmente un caché `.salive` generado durante Gradle; se excluyó de la selección sin borrar archivos. No hubo fallos de compilación o tests.
+- Verificados 34 casos de exclusión, seis controles de inclusión y WAV en mayúsculas mediante `git check-ignore`; revisión de whitespace y ausencia de privados/generados rastreados aprobada. Segunda fase limitada a cinco archivos de política/documentación, con `app/` idéntico al punto de partida; no se repiten pruebas de app por esos cambios.
+- Próximas fases: commits pequeños después de validar cada funcionalidad, revisión del índice antes de cada commit e informe final de hashes/estado/recuperación. No push ni reescritura del historial. Las validaciones físicas pendientes de 3.2.4 siguen pendientes.
+
 ## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
 
 - Baseline preservada en `checkpoints/before-3.2.4`, sin reset/stash/commit global. Comparación selectiva contra3.2.2: regresión por umbral0,85 y corte automático de enlaces. Revertidos; presentación0,70 con puentes limitados entre extremos medidos, sin reconstruir frecuencias ni alterar originales.

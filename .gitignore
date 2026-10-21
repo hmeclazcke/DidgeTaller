@@ -12,3 +12,36 @@ local.properties
 captures/
 checkpoints/
 backups/
+
+# Kotlin and native build caches
+.kotlin/
+.cxx/
+.externalNativeBuild/
+
+# Private recordings, exports and local diagnostic fixtures
+*.wav
+*.pcm
+*.mp3
+*.m4a
+*.flac
+*.ogg
+*.part
+/recordings/
+/exports/
+*-real-fixtures.json
+
+# Local credentials and signing material
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+key.properties
+keystore.properties
+signing.properties
+signing-*.properties
+credentials.json
+secrets.properties
+/secrets/
+/credentials/

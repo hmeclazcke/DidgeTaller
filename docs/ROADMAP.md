@@ -1,5 +1,11 @@
 # Hoja de ruta priorizada — Didge Taller
 
+## Control de versiones — 21/10/2026
+
+- [x] Preservar el estado acumulado `3.2.4-beta1/10` en el commit `3f0510f`, con identidad existente y selección revisada sin privados/generados; 104 JVM y APK debug aprobados.
+- [x] Establecer reglas permanentes de Git en `AGENTS.md` y ampliar `.gitignore` para audios privados, credenciales y cachés locales.
+- Regla continua: un commit por fase funcional compilable y verificada; conservar fallos documentados, revisar el índice e informar hashes/estado/recuperación. Push solo con autorización explícita.
+
 ## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
 
 - [x] Revertir umbral visual0,85/segmentación excesiva; recuperar tendencia con originales intactos y silencios reales diferenciados.
