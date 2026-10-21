@@ -111,9 +111,10 @@ object PitchTrace {
                 val prior=result[idx].point;val gap=point.timeMs-prior.timeMs
                 val jump=cents(hz,prior.hz!!)
                 val weakUnsupportedEnd=(point.confidence<.90 && !backed) || (prior.confidence<.90 && !result[idx].backed)
+                val weakRegisterChange=jump>=600 && min(point.confidence,prior.confidence)<.90
                 gap in 1..1200 && (omitted==0 || (omitted<=4 && gap<=1000 && jump<=80)) &&
                     // Preserve the estimate as a point, but do not imply a supported pitch sweep.
-                    !(instrument==InstrumentProfile.DIDGERIDOO && jump>=300 && weakUnsupportedEnd)
+                    !(instrument==InstrumentProfile.DIDGERIDOO && (weakRegisterChange || (jump>=300 && weakUnsupportedEnd)))
             }
             val prior=before?.let {result[it].point}
             val variation=prior?.hz?.let {cents(hz,it)}

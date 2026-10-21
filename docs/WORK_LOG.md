@@ -1,6 +1,8 @@
-## 21/10/2026 ? 3.2.6, diagn?stico reproducible
+## 21/10/2026 — 3.2.6, diagnóstico reproducible
 
-Preservada base `309135e`. Diagn?stico opcional del estimador real y decisi?n LivePitch compartida con ViewModel. Tres WAV privados ?ntegros; p?rdidas por baja periodicidad reproducidas, no por renderer. Candidatos largos de 19:17 requieren comparaci?n ac?stica antes de cualquier correcci?n. 9 JVM focalizadas + reproducci?n privada y assembleDebug aprobados; 652 ventanas iguales a la base. Informes locales ignorados, sin cambios DSP a?n.
+Etapas B–C: ninguna de cinco alternativas acústicas demostró una mejora suficientemente fiable; YIN y umbrales se conservan. El replay nominal no produce33Hz; la extensión experimental sí encuentra períodos33Hz fuertes, sin demostrar una octava incorrecta. Se separan dos enlaces débiles entre grupos respaldados de36/66Hz sin borrar puntos; Medir explica señal presente sin frecuencia confiable. Tests focalizados, compilación y4 UI en emulador aprobados; capturas de curva/estado incierto revisadas. La vocalización física sigue pendiente. Corregida codificación de acentos de esta documentación tras detectar la conversión del pipe de PowerShell; no se reescribe el commit previo.
+
+Preservada base `309135e`. Diagnóstico opcional del estimador real y decisión LivePitch compartida con ViewModel. Tres WAV privados íntegros; pérdidas por baja periodicidad reproducidas, no por renderer. Candidatos largos de 19:17 requieren comparación acústica antes de cualquier corrección. 9 JVM focalizadas + reproducción privada y assembleDebug aprobados; 652 ventanas iguales a la base. Informes locales ignorados, sin cambios DSP aún.
 
 # Registro de trabajo
 

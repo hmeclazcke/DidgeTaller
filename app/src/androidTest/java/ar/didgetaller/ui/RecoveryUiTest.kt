@@ -108,6 +108,9 @@ class RecoveryUiTest {
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
             capture("$name-silence")
+            compose.runOnIdle {callback(PitchDetector.Reading(confidence=.52,rms=.10));assertEquals(0.0,vm.filteredHz,0.0)}
+            compose.onNodeWithText("Señal presente · frecuencia incierta").assertIsDisplayed()
+            capture("$name-uncertain")
             compose.runOnIdle {phase.value=SessionPhase.IDLE;vm.microphoneStop()}
         }
         meter(InstrumentProfile.DIDGERIDOO,70.0,listOf(1.0,.4,.2),"measure-drone")
@@ -117,7 +120,15 @@ class RecoveryUiTest {
     }
 
     @Test fun historicalAndLatestTimelinesRetainDurationOriginalsAndUsefulCurves(){
-        val source=File(compose.activity.getExternalFilesDir(null),"v325-real-fixtures.json")
+        inspectTimelines("v325-real-fixtures.json","real")
+    }
+
+    @Test fun privateWavDetectorTimelinesPreserveOriginalsAndTimeExtent(){
+        inspectTimelines("v326-real-fixtures.json","wav-output")
+    }
+
+    private fun inspectTimelines(name:String,prefix:String){
+        val source=File(compose.activity.getExternalFilesDir(null),name)
         assumeTrue("Fixture privado local requerido",source.isFile)
         val raw=JSONArray(source.readText());val store=RecordingStore(app)
         val items=(0 until raw.length()).map {i->
@@ -126,12 +137,12 @@ class RecoveryUiTest {
             val frames=(s.getLong("durationMs")*44100/1000).toInt()
             s.getString("label") to store.save(WavCodec.encode(ShortArray(frames),frames,44100),points,s.getLong("createdAt"))
         }
-        show();library();capture("real-library")
+        show();library();capture("$prefix-library")
         for((label,item) in items){
-            open(item);capture("$label-detail")
+            open(item);capture("$prefix-$label-detail")
             val area=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
             assertEquals(item.durationMs.toDouble(),area.x.high,1.0)
-            compose.onNodeWithTag("expand-plot").performScrollTo().performClick();capture("$label-fullscreen")
+            compose.onNodeWithTag("expand-plot").performScrollTo().performClick();capture("$prefix-$label-fullscreen")
             val trace=PitchTrace.build(item.timeline,item.instrument)
             if(InstrumentationRegistry.getArguments().getString("baseline")!="true")
                 assertTrue(trace.count {!it.uncertain}>=item.timeline.count {it.hz!=null}*.70)

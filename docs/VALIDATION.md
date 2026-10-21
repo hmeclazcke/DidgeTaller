@@ -1,8 +1,25 @@
-## Diagn?stico 3.2.6 ? etapa A, 21/10/2026
+## Diagnóstico y presentación 3.2.6 — etapas A–C, 21/10/2026
+
+Se conserva el DSP tras comparar cinco alternativas sobre los tres WAV: desplazar el soporte hacia el final (12288/8192 muestras), ampliar a32768, pasar bajos400Hz y extender el rango inferior a25Hz. Informes privados en `checkpoints/v326-experiments*`. Las ventanas completas comparables son256/121/275; las finales parciales siguen en el reporte principal.
+
+| Variante | Admitidos 19:04 / 19:17 / 19:26 | Observación |
+|---|---|---|
+| Actual | 163 / 48 / 129 | Referencia, sin cambios |
+| Soporte tardío12288 | 162 / 48 / 127 | Gana10/5/8 y pierde11/5/10 lecturas |
+| Soporte tardío8192 | 163 / 49 / 127 | Gana17/8/13 y pierde17/7/15 |
+| Ventana32768 | 162 / 49 / 135 | No comparable en las dos primeras ventanas; prolonga9/4/10 lecturas sobre ventanas originalmente de RMS bajo |
+| Pasabajos400 | 165 / 62 / 146 | Añade candidatos77–124Hz y períodos largos ambiguos; no demuestra recuperación correcta de F0 |
+| Límite25Hz | 163 / 63 / 172 | Añade períodos31–34Hz, no corrige automáticamente a66Hz |
+
+En 19:17, el replay nominal **no entrega33Hz**: entrega35–36,6Hz en3,07–7,89s y pierde muchas lecturas energéticas en9–16s. Al permitir25Hz solo en el experimento aparecen33,2–34,1Hz en13,65–15,70s, con periodicidad de hasta0,968. El espectro contiene familias competidoras: cerca de67/134/201Hz y181Hz en el primer tramo; cerca de66/132/196Hz y307Hz durante el tramo posterior. La banda grave no basta para declarar F0=66Hz; componentes fuera de su serie armónica favorecen períodos largos o ambigüedad. No se puede atribuir únicamente al balance armónico ni afirmar un error de octava demostrado. No hay etiquetas exactas de cada vocal. En19:26,7–12s conserva muchas lecturas alrededor68Hz,24–30s es ambiguo y40–47s conserva pocas; son tramos compatibles con el orden aportado, no una segmentación fonética validada.
+
+Corrección de presentación: un cambio Didgeridoo≥600c con periodicidad mínima de sus extremos<0,90 separa los grupos aunque ambos tengan apoyo local. No elimina muestras, no duplica Hz, no altera la escala ni se aplica a flauta. Las otras reglas3.2.5 siguen iguales. En19:17 se eliminan exactamente dos conexiones engañosas (3,065s y8,081s); muestras admitidas/incertidumbres permanecen48/2. Otros dos WAV: mismos puntos y conexiones. Colores sin cambios. Medir distingue «Señal presente · frecuencia incierta» de «sin señal» y mantieneHz vacío; nunca retiene la última nota como actual.
+
+Pruebas focalizadas de presentación aprobadas: RegisterTransition2, PitchRecovery10, FundamentalRepair7 y replay privado1; compile/assembleDebug/assembleDebugAndroidTest correctos. RecoveryUiTest4 casos aprobados solo en emulador: tres series reales, históricos, colores y callback real de Medir con perfiles/silencio/incertidumbre. Capturas privadas inspeccionadas: curva19:17 sin barridos verticales y estado incierto. Los timelines reales usan WAV silencioso de soporte en emulador; no son reproducción acústica ni prueba física.
 
 Base limpia `309135e`, identidad Git configurada comprobada; fuente y hashes preservados en `checkpoints/before-3.2.6`. Los tres WAV externos coinciden con su README y se abren solo en lectura. Reportes privados CSV: `app/build/reports/real-audio/baseline`; no se versionan ni empaquetan audios.
 
-Reproducci?n con `Pcm16WavReader ? PitchStream ? PitchDetector ? LivePitch ? PitchTrace`. `LivePitch` extrae literalmente la aceptaci?n y suavizado existentes del ViewModel, sin modificar par?metros. Observador opcional registra candidato, periodicidad, m?nimos CMNDF, soporte temporal, rechazo, Hz UI/guardados y presentaci?n. La autocorrelaci?n normalizada sobre la ventana completa es una comparaci?n independiente, no una etiqueta correcta.
+Reproducción con `Pcm16WavReader → PitchStream → PitchDetector → LivePitch → PitchTrace`. `LivePitch` extrae literalmente la aceptación y suavizado existentes del ViewModel, sin modificar parámetros. Observador opcional registra candidato, periodicidad, mínimos CMNDF, soporte temporal, rechazo, Hz UI/guardados y presentación. La autocorrelación normalizada sobre la ventana completa es una comparación independiente, no una etiqueta correcta.
 
 | WAV (hora) | Ventanas | Hz admitidos | RMS <0,005 | Periodicidad insuficiente |
 |---|---:|---:|---:|---:|
@@ -10,9 +27,9 @@ Reproducci?n con `Pcm16WavReader ? PitchStream ? PitchDetector ? LivePitch ? Pit
 | 19:17 | 122 | 48 | 24 | 50 |
 | 19:26 | 276 | 129 | 62 | 85 |
 
-Las p?rdidas energ?ticas se producen antes de la UI: candidato con periodicidad <0,65. En 19:17, 3,07?7,89 s hay estimaciones de 35?36,6 Hz; varios m?nimos largos tambi?n aparecen en autocorrelaci?n, mientras 60?69 Hz compiten con menor periodicidad. No est? demostrado que sean simplemente octavas falsas. No se duplica la frecuencia ni se modifica DSP en esta etapa. Los l?mites de vocales no est?n etiquetados con exactitud.
+Las pérdidas energéticas se producen antes de la UI: candidato con periodicidad <0,65. En 19:17, 3,07–7,89 s hay estimaciones de 35–36,6 Hz; varios mínimos largos también aparecen en autocorrelación, mientras 60–69 Hz compiten con menor periodicidad. No está demostrado que sean simplemente octavas falsas. No se duplica la frecuencia ni se modifica DSP en esta etapa. Los límites de vocales no están etiquetados con exactitud.
 
-Validaci?n: compilaci?n y 9 pruebas focalizadas aprobadas (AcousticReliability, LivePitch, PitchDiagnostic), m?s la prueba opcional sobre los tres WAV. Comparaci?n contra las clases preservadas de `309135e`: igualdad exacta de Hz/confianza/RMS en 652 ventanas completas. Los reportes del stream incluyen dos ventanas finales parciales adicionales. `DIDGE_TALLER_FIXTURES` habilita la prueba privada; sin esa variable se omite. `DIDGE_DIAGNOSTIC_LABEL` separa reportes antes/despu?s. No atribuir a esta instrumentaci?n una correcci?n de vocalizaci?n.
+Validación: compilación y 9 pruebas focalizadas aprobadas (AcousticReliability, LivePitch, PitchDiagnostic), más la prueba opcional sobre los tres WAV. Comparación contra las clases preservadas de `309135e`: igualdad exacta de Hz/confianza/RMS en 652 ventanas completas. Los reportes del stream incluyen dos ventanas finales parciales adicionales. `DIDGE_TALLER_FIXTURES` habilita la prueba privada; sin esa variable se omite. `DIDGE_DIAGNOSTIC_LABEL` separa reportes antes/después. No atribuir a esta instrumentación una corrección de vocalización.
 
 # Registro de validación
 

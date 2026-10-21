@@ -248,7 +248,7 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         vm.sessionPhase==SessionPhase.SAVING -> "Analizando y guardando la sesión"
         !capturing -> "Listo para medir"
         vm.reading.rms<0.005 -> "Escuchando · sin señal"
-        hz<=0 -> "Detectando · señal baja o inestable"
+        hz<=0 -> "Señal presente · frecuencia incierta"
         vm.stableReading -> "Nota estable"
         else -> "Detectando nota"
     }
