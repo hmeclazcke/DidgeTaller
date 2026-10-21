@@ -1,5 +1,12 @@
 # Registro de trabajo
 
+## 3.2.5 — enlaces sin barridos espurios, 21/10/2026
+
+- La inspección de las capturas detectó un barrido desde un ataque débil aislado91Hz hacia el tramo74Hz. Se conserva su punto original, pero un salto≥300c no se une si un extremo tiene periodicidad<0,90 y carece de apoyo temporal dentro de±4 lecturas/1s. No se elimina la lectura ni se aplica a flauta; toots/retornos respaldados y ataques moderados permanecen conectados. Dos regresiones nuevas verifican ambos lados del límite funcional, sin forzar notas.
+- 120 JVM sin fallos/errores/omitidos y ambos APK compilados. Foco anterior de10 casos de gráficos aprobado; se ejecuta nueva regresión del APK final después de la revisión visual. Prueba UI de Medir reforzada: ahora exige nota/Hz visibles y timeline del callback, no solo estado del ViewModel; fixture sintético explícito, sin AudioRecord ni WAV real. Ajustada se captura con el panel cerrado.
+- El usuario ubicó la «I» en los últimos15s de la sesión51,5s. Contraste de PCM existente en solo lectura:18/81 ventanas aceptadas,25 bajo RMS0,005 y38 con energía pero periodicidad insuficiente; mediana de las aceptadas64,53Hz. Autocorrelación detecta además un transitorio fuerte rechazado por YIN. Experimento aislado de ventana reciente recuperó alguna lectura pero podía admitir≈97Hz ante período fuerte≈65Hz; rechazado, sin incorporar al detector. No afirmar corrección física de la «I» ni atribuir todos los huecos a silencio/error.
+- Corrección de conteo: el foco inicial AcousticReliability+FluteAnalysis tuvo12 pruebas(6+6), no14 como dice el mensaje del commit17a8420; ese commit se conserva sin reescribir. Los resultados XML completos son la fuente de verdad.
+
 ## 3.2.5 — recuperación de Fundamental y colores, 21/10/2026
 
 - Recuperada selectivamente la semántica de color del código3.2 (ZIP completo), centralizada en `PitchTrace`: variación entre extremos medidos y periodicidad mínima de ambos. Verde≤25c/≥0,90; amarillo≤60c,0,80–0,90 o falta de vecino; naranja>60c o<0,80. Cursor permite consultar ambas medidas; enlace sobre omisiones es discontinuo. Sin cambios al espectrograma/gestos/cámaras/transporte.
@@ -11,7 +18,7 @@
 
 - Base limpia `56c2e81`; copia recuperable de 73 archivos con SHA-256 en `checkpoints/before-3.2.5/source.zip` y `manifest.json`. Código completo confirmado en ZIP3.2, checkpoint3.2.2 y before3.2.4; after3.2.3 es parcial, after3.2.4 sí contiene fuente. No rollback global.
 - YIN y MicrophoneEngine idénticos entre3.2 y3.2.4; mismo umbral DSP0,65/RMS0,005 y configuración didgeridoo. Se conserva YIN intacto. Extraída la ventana/cadencia real del micrófono a `PitchStream` para probar ese mismo camino con PCM por chunks; parámetros congelados por captura y resultados pendientes de una captura anterior no llegan a otra sesión/perfil.
-- 14 pruebas focalizadas AcousticReliability/FluteAnalysis y assembleDebug aprobados. Seis casos nuevos cubren balances armónicos/vocales sintéticas, amplitud/transiciones, silencio/ruido/reanudación, toot en rango ampliado, flauta y lecturas parciales/cadencia. No se atribuye validación física de la «I».
+- 12 pruebas focalizadas AcousticReliability/FluteAnalysis y assembleDebug aprobados. Seis casos nuevos cubren balances armónicos/vocales sintéticas, amplitud/transiciones, silencio/ruido/reanudación, toot en rango ampliado, flauta y lecturas parciales/cadencia. No se atribuye validación física de la «I».
 - Respaldo fresco Samsung solo lectura:64 archivos/15 WAV con hashes verificados. Sesión reciente51.500ms/275 lecturas,125 con frecuencia,117 principales/15 segmentos en3.2.4; su WAV confirma51,5s. En ventanas PCM cercanas hay amplitud baja y periodicidad insuficiente: no demuestra una regresión del detector ni identifica qué tramo correspondía a la vocal.
 
 ## Adopción de Git profesional — 21/10/2026

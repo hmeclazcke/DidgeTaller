@@ -63,4 +63,18 @@ class PitchRecoveryTest {
         assertTrue(PlotScales.pitch(raw,true).window.low<44)
         assertTrue(PitchTrace.build(raw,didge).any {it.point.hz==44.0})
     }
+    @Test fun weakUnbackedOnsetStaysOriginalWithoutDrawingAnUnsupportedSweep(){
+        val raw=points(listOf(null,91.1151,74.6530,74.5649,74.7)).mapIndexed {i,p->if(i==1)p.copy(confidence=.8611) else p}
+        val trace=PitchTrace.build(raw,didge)
+        assertEquals(4,trace.size);assertSame(raw[1],trace.first().point)
+        assertFalse(trace.first().uncertain);assertNull(trace[1].previous)
+        assertNotNull(trace[2].previous);assertTrue(trace.drop(1).all {it.backed})
+        assertTrue(PlotScales.overview(raw).window.high<91)
+    }
+    @Test fun ordinaryWeakAttackRemainsConnectedWithoutDemandingStableNeighbours(){
+        val raw=points(listOf(null,77.8,72.0,72.1)).mapIndexed {i,p->if(i==1)p.copy(confidence=.8) else p}
+        val trace=PitchTrace.build(raw,didge)
+        assertEquals(3,trace.size);assertTrue(trace.all {!it.uncertain})
+        assertEquals(2,trace.count {it.previous!=null})
+    }
 }

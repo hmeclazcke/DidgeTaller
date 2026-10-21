@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 import ar.didgetaller.TallerViewModel
+import ar.didgetaller.SessionPhase
 import ar.didgetaller.audio.MicrophoneEngine
 import ar.didgetaller.core.*
 import ar.didgetaller.data.RecordingStore
@@ -58,7 +59,8 @@ class RecoveryUiTest {
             SessionAnalysis.Point(i*185L,hz,if(hz==null)0.0 else if(i>=68).73 else .97)
         }
         val item=RecordingStore(app).save(WavCodec.encode(ShortArray(44100*18),44100*18,44100),raw)
-        show();library();capture("colours-library");open(item);capture("colours-detail")
+        show();compose.runOnIdle {vm.renameSession(item,"Variación y periodicidad · serie sintética")}
+        library();capture("colours-library");open(item);capture("colours-detail")
         val pixels=compose.onNodeWithTag("time-chart").captureToImage().toPixelMap()
         val found=IntArray(3)
         for(x in 0 until pixels.width)for(y in 0 until pixels.height){
@@ -70,8 +72,12 @@ class RecoveryUiTest {
         }
         assertTrue("All three colours must reach actual Canvas pixels: ${found.toList()}",found.all {it>5})
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick();capture("colours-fullscreen")
+        val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
         compose.onNodeWithTag("viewer-tools").performClick()
-        compose.onNodeWithText("Vista ajustada").performScrollTo().performClick();capture("colours-fitted")
+        compose.onNodeWithText("Vista ajustada").performScrollTo().performClick();back()
+        assertTrue(compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow].y.span<general.y.span)
+        capture("colours-fitted")
+        compose.onNodeWithTag("viewer-tools").performClick()
         compose.onNodeWithTag("show-uncertain").performScrollTo().performClick();capture("colour-help")
         compose.runOnIdle {assertEquals(raw,RecordingStore(app).list().single().timeline)}
     }
@@ -86,16 +92,23 @@ class RecoveryUiTest {
             val callback=MicrophoneEngine::class.java.getDeclaredField("onReading").apply {isAccessible=true}.get(mic) as (PitchDetector.Reading)->Unit
             // The transport is not used: deterministic PCM enters the production reading callback.
             val listening=TallerViewModel::class.java.getDeclaredField("listening\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<Boolean>
-            compose.runOnIdle {listening.value=true}
+            val phase=TallerViewModel::class.java.getDeclaredField("sessionPhase\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<SessionPhase>
+            val started=TallerViewModel::class.java.getDeclaredField("sessionStartedAtMs\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<Long>
+            val timeline=TallerViewModel::class.java.getDeclaredField("sessionTimeline\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<List<SessionAnalysis.Point>>
+            // A capture UI fixture with no writer or AudioRecord: never claims physical recording.
+            compose.runOnIdle {listening.value=true;started.value=android.os.SystemClock.elapsedRealtime();timeline.value=emptyList();phase.value=SessionPhase.CAPTURING}
             val stream=PitchStream(profile,includeVisuals=false)
             val pcm=ShortArray(66150){i->(weights.mapIndexed {h,w->w*sin(2*PI*hz*(h+1)*i/44100)}.sum()/weights.sum()*12000).toInt().toShort()}
             val readings=pcm.asList().chunked(4096).mapNotNull {stream.append(it.toShortArray())}
-            compose.runOnIdle {readings.forEach(callback);assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument)}
+            readings.forEach {r->compose.runOnIdle {callback(r)};android.os.SystemClock.sleep(profile.analysisChunks*93L)}
+            compose.runOnIdle {assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument);assertEquals(readings.size,vm.sessionTimeline.size)}
+            compose.onNodeWithText("Nota estable").assertIsDisplayed()
+            compose.onNodeWithText(hzLabel(vm.filteredHz)).assertIsDisplayed()
             capture(name)
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
             capture("$name-silence")
-            compose.runOnIdle {vm.microphoneStop()}
+            compose.runOnIdle {phase.value=SessionPhase.IDLE;vm.microphoneStop()}
         }
         meter(InstrumentProfile.DIDGERIDOO,70.0,listOf(1.0,.4,.2),"measure-drone")
         meter(InstrumentProfile.NATIVE_AMERICAN_FLUTE,440.0,listOf(.15,1.0,.2),"measure-flute")
@@ -120,7 +133,8 @@ class RecoveryUiTest {
             assertEquals(item.durationMs.toDouble(),area.x.high,1.0)
             compose.onNodeWithTag("expand-plot").performScrollTo().performClick();capture("$label-fullscreen")
             val trace=PitchTrace.build(item.timeline,item.instrument)
-            assertTrue(trace.count {!it.uncertain}>=item.timeline.count {it.hz!=null}*.70)
+            if(InstrumentationRegistry.getArguments().getString("baseline")!="true")
+                assertTrue(trace.count {!it.uncertain}>=item.timeline.count {it.hz!=null}*.70)
             assertEquals(item.timeline,store.list().first {it.id==item.id}.timeline)
             back();back()
         }
