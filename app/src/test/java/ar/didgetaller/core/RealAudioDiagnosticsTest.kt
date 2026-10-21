@@ -45,13 +45,14 @@ class RealAudioDiagnosticsTest {
                     rows+=listOf(position/44100.0,reading.rms,d.candidateHz?:0.0,reading.confidence,d.reason,
                         reading.hz,live.hz,Music.pitch(live.hz)?.midi?:"",live.storedHz?:"",
                         d.offsetSamples,d.comparedSamples,reference.first,reference.second,
-                        d.minima.joinToString("|"){"%.3f:%.5f".format(Locale.ROOT,it.hz,it.confidence)}).joinToString(",")
+                        d.minima.joinToString("|"){"%.3f:%.5f".format(Locale.ROOT,it.hz,it.confidence)},
+                        stream.instrument.name,live.hz>0 && live.hz!=reading.hz).joinToString(",")
                 }
                 println("REAL ${file.name} duration=${source.frameCount/44100.0} windows=${points.size} accepted=$valid lowAmplitude=$quiet lowPeriodicity=$uncertain")
             }
             val trace=PitchTrace.build(points,InstrumentProfile.DIDGERIDOO)
             val samples=trace.associateBy {it.point.timeMs}
-            val header="end_s,rms,candidate_hz,confidence,reason,detector_hz,ui_hz,midi,stored_hz,comparison_offset,comparison_samples,reference_hz,reference_ac,minima,graph_reason,previous_ms,tone"
+            val header="end_s,rms,candidate_hz,confidence,reason,detector_hz,ui_hz,midi,stored_hz,comparison_offset,comparison_samples,reference_hz,reference_ac,minima,profile,display_smoothed,graph_reason,previous_ms,tone"
             File(report,file.nameWithoutExtension+".csv").printWriter().use {out ->
                 out.println(header)
                 rows.forEachIndexed {i,row ->val s=samples[points[i].timeMs]

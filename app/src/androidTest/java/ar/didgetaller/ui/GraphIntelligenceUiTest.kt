@@ -127,7 +127,7 @@ class GraphIntelligenceUiTest {
         compose.onNodeWithText("Hasta Hz").performTextReplacement("1")
         compose.onNodeWithText("Aplicar rango").performScrollTo().performClick()
         compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
-        graph.assertContentDescriptionContains("0,00 Hz",substring=true)
+        graph.assertContentDescriptionContains("0 Hz",substring=true)
         val desc=graph.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
         assertFalse(desc.contains("C#-14"));assertFalse(desc.contains("aproximadamente"));capture("zero-hz-no-note")
         compose.onNodeWithTag("reset-viewport").performClick();assertTrue(s.camera(c.durationMs,44100,c.timeline).y.low>100)

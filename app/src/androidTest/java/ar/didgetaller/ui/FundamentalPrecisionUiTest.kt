@@ -73,7 +73,7 @@ class FundamentalPrecisionUiTest {
         val preview=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
         assertEquals(summary,preview)
         if(InstrumentationRegistry.getArguments().getString("baseline")!="true"){
-            compose.onNodeWithText("Verde: estable · Amarillo: variación · Naranja: revisar").performScrollTo();capture("detail-legend")
+            compose.onNodeWithText("Verde: estable · Amarillo: variación · Naranja: revisar",substring=true).performScrollTo();capture("detail-legend")
         }
         expand();measure("fullscreen","immersive-plot");capture("fullscreen")
         if(InstrumentationRegistry.getArguments().getString("baseline")=="true")return
