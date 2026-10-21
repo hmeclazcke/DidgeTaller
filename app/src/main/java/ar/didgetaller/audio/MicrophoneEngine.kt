@@ -7,6 +7,7 @@ import android.media.MediaRecorder
 import android.os.Handler
 import android.os.Looper
 import ar.didgetaller.core.PitchDetector
+import ar.didgetaller.core.PitchStream
 import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.ProgressiveWavWriter
 import java.io.File
@@ -81,9 +82,8 @@ class MicrophoneEngine(
         }
     }
     private fun readLoop(record:AudioRecord) {
-        val profile=instrument;val frame=profile.windowSamples
-        val rolling=ShortArray(frame);val chunk=ShortArray(CHUNK)
-        var filled=0; var frames=0
+        // Freeze one consistent profile/range for this capture. UI changes require stopping first.
+        val stream=PitchStream(instrument,minHz,maxHz);val chunk=ShortArray(CHUNK)
         try {
             while(active.get() && audio===record && !Thread.currentThread().isInterrupted) {
                 val n=record.read(chunk,0,CHUNK,AudioRecord.READ_BLOCKING)
@@ -101,16 +101,9 @@ class MicrophoneEngine(
                     }
                 }
                 if(reachedLimit)finishRecording()
-                if(filled+n<=frame){System.arraycopy(chunk,0,rolling,filled,n);filled+=n}
-                else if(n>=frame){System.arraycopy(chunk,n-frame,rolling,0,frame);filled=frame}
-                else {
-                    System.arraycopy(rolling,n,rolling,0,frame-n)
-                    System.arraycopy(chunk,0,rolling,frame-n,n)
-                    filled=frame
-                }
-                if(filled==frame && ++frames%profile.analysisChunks==0){
-                    val result=PitchDetector.analyze(rolling,RATE,minHz,maxHz)
-                    mainHandler.post {if(active.get())onReading(result)}
+                stream.append(chunk,n)?.let {result->
+                    // A queued result from an older capture must not reach a new profile/session.
+                    mainHandler.post {if(active.get() && audio===record)onReading(result)}
                 }
             }
         }catch(ex:Exception){if(active.get() && audio === record)mainHandler.post {onError("Falló la captura: ${ex.message}")}}

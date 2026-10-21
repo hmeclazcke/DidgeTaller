@@ -1,5 +1,12 @@
 # Registro de trabajo
 
+## 3.2.5 — fase de captura verificada, 21/10/2026
+
+- Base limpia `56c2e81`; copia recuperable de 73 archivos con SHA-256 en `checkpoints/before-3.2.5/source.zip` y `manifest.json`. Código completo confirmado en ZIP3.2, checkpoint3.2.2 y before3.2.4; after3.2.3 es parcial, after3.2.4 sí contiene fuente. No rollback global.
+- YIN y MicrophoneEngine idénticos entre3.2 y3.2.4; mismo umbral DSP0,65/RMS0,005 y configuración didgeridoo. Se conserva YIN intacto. Extraída la ventana/cadencia real del micrófono a `PitchStream` para probar ese mismo camino con PCM por chunks; parámetros congelados por captura y resultados pendientes de una captura anterior no llegan a otra sesión/perfil.
+- 14 pruebas focalizadas AcousticReliability/FluteAnalysis y assembleDebug aprobados. Seis casos nuevos cubren balances armónicos/vocales sintéticas, amplitud/transiciones, silencio/ruido/reanudación, toot en rango ampliado, flauta y lecturas parciales/cadencia. No se atribuye validación física de la «I».
+- Respaldo fresco Samsung solo lectura:64 archivos/15 WAV con hashes verificados. Sesión reciente51.500ms/275 lecturas,125 con frecuencia,117 principales/15 segmentos en3.2.4; su WAV confirma51,5s. En ventanas PCM cercanas hay amplitud baja y periodicidad insuficiente: no demuestra una regresión del detector ni identifica qué tramo correspondía a la vocal.
+
 ## Adopción de Git profesional — 21/10/2026
 
 - Revisados estado, identidad configurada/efectiva y exclusiones antes de crear commits. Se conservó el commit histórico `4f90893` y toda la implementación existente, sin cambios al código de la app.
