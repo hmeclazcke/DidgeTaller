@@ -1,5 +1,65 @@
 # Registro de validación
 
+## Recovery & Acoustic Reliability 3.2.5 — 21/10/2026
+
+APK **3.2.5-beta1/11**,11.543.314 bytes, SHA-256 `0a9bbfb7a780900432b3872e693031d38b3af924743ea0dc68bfc112ea1a149a`. JBR21.0.11/bytecode17/SDK35; paquete/firma/dependencias/permisos conservados. La recuperación de presentación está verificada; **la pérdida física durante «I» sigue abierta**.
+
+### Recuperación y causas comprobadas
+
+Git inicial limpio en `56c2e81`, con3 commits reales, no solamente el histórico `4f90893`. Copia adicional previa:73 archivos de fuente/configuración, ZIP211.071 bytes y hashes comprobados en `checkpoints/before-3.2.5/`. ZIP3.2 contiene53 Kotlin y configuración;3.2.2-final contiene59 archivos de fuente y su manifiesto verifica101 archivos; before3.2.4 contiene61 de fuente; after3.2.4 contiene63 y verifica142 hashes. after3.2.3 contiene solo9 archivos de fuente: es parcial, no un respaldo completo. No se restauraron directorios ni se volvió al commit histórico.
+
+Comparación real de fuente3.2/3.2.1/3.2.2/3.2.3/3.2.4: YIN no cambió desde3.2, ni el rango/ventana/cadencia didgeridoo, gate RMS0,005 o aceptación DSP0,65. El cambio anterior3.1→3.2 agregó el camino de flauta a tasa completa y ajustes exclusivos de ese registro, conservando el camino grave/4. ViewModel3.2.2 y3.2.4 idénticos: didgeridoo muestra Hz>0 del detector; flauta exige rango y0,80. Hz/confianza originales se guardan, no la frecuencia suavizada del medidor. `PitchTrace` no interviene en el callback del micrófono. Conversión musical, persistencia, reanálisis y cachés no cambiaron en3.2.5.
+
+La regresión de color sí es demostrable:3.2/3.2.2 calculaban color por cents/confianza;3.2.3/3.2.4 reemplazaron ese cálculo por verde constante en ambos renderers. La fragmentación combina ausencias originales, el umbral visual0,85 de3.2.3, y reglas acumuladas de bordes/modo dominante. Se recuperó selectivamente la semántica de color y se reemplazaron esas decisiones de presentación, sin copiar módulos históricos enteros.
+
+### Conducta de presentación
+
+Admisión de estimaciones desde0,65, igual que DSP; valores inválidos/fuera de perfil/bajo umbral no generan una tendencia. Resumen histórico sigue0,70. Períodos breves bajos:≤4 puntos, retorno medido por ambos lados, separación≤400ms, total≤1s y relación1,5/2/3/4±80c; no se usa un modo global. Retornos únicos débiles exigen extremos coherentes≤80c, vecinos≤400ms y retorno≤600ms; múltiplos2/3/4 con periodicidad<0,92, o excursión didgeridoo≥100c con periodicidad<0,90. Saltos didgeridoo≥600c frente a dos vecinos coherentes, periodicidad<0,90 y sin apoyo propio en±4 lecturas/1s quedan inciertos accesibles. No son errores físicos confirmados.
+
+Además, un salto≥300c con extremo débil<0,90 sin ese apoyo queda como punto sin barrido; no se elimina. Ataques moderados, cambios respaldados y flauta siguen conectados. Tras≤4 omisiones, extremos dentro de80c y≤1s pueden enlazarse con trazo discontinuo; no se crean frecuencias intermedias. Ausencia clara, tiempos invertidos y pausas largas cortan. General usa puntos corroborados temporalmente o≥0,90 si representan al menos la mitad y son≥3; de lo contrario usa toda la tendencia. Extiende a todos los eventos respaldados, incluidos toots breves; originales y rango completo permanecen disponibles.
+
+Color compartido por tarjeta/detalle/fullscreen: verde≤25c y periodicidad≥0,90; amarillo hasta60c, periodicidad0,80–0,90 o falta de vecino; naranja>60c o periodicidad<0,80. Se toma la periodicidad más débil del enlace. El cursor expone periodicidad/variación y los originales con razón. Son medidas diferentes, no probabilidad calibrada ni confirmación acústica. No se mezclan con la paleta STFT.
+
+### Comparación de sesiones originales
+
+Fuente: respaldo Samsung en solo lectura. Métricas ejecutadas contra clases compiladas del código real3.2.2,3.2.4 y3.2.5, no reconstrucciones desde README. La comparación visual usa esos APK y los mismos timelines con WAV silencioso en almacenamiento aislado del emulador; no reanaliza ni sustituye originales del teléfono.
+
+| Serie | Frecuencias guardadas | Principales/enlaces3.2.2 |3.2.4|3.2.5|General3.2.5|
+|---|---:|---:|---:|---:|---|
+|Re·D2,17,32s|49/91|43/35|40/33|47/38|60,61–85,71Hz|
+|Mib·Eb2,7,72s|30/40|26/23|20/19|25/23|44,61–90,15Hz|
+|Reciente,51,5s|125/275|121/104|117/102|122/103|58,69–83,00Hz|
+
+No se optimizó solo el conteo de enlaces. Retención de frecuencias3.2.5:95,9%/83,3%/97,6%. D2 pasa de7 a9 componentes porque se recuperan originales y un ataque aislado queda sin barrido; tramo mayor14 puntos/2.399ms frente a13/2.217ms. Eb2 conserva el inicio respaldado alrededor de50Hz en naranja, en lugar de borrarlo por modo global: tramo mayor24 puntos/5.384ms frente a20/4.267ms. Reciente:19 componentes frente a15, con originales aislados recuperados; los tramos principales de34/33 puntos y6.131/5.938ms se conservan, sin reconstruir150 ausencias. Colores verde/amarillo/naranja: D2=11/7/29, Eb2=0/14/11, reciente=73/27/22. La ausencia de verde en Eb2 refleja su periodicidad guardada, no un fallo del renderer.
+
+El eje reciente hasta≈50s es correcto: WAV51.500ms y viewport temporal0–51.500. Las regiones vacías no se eliminan con zoom ni se rellenan para hacer parecer mejor la medición.
+
+### Vocal «I»: resultado y límite real
+
+El usuario ubicó la vocal en los últimos15s; se inspeccionó36,5–51,5s del WAV respaldado. Con YIN actual,81 ventanas:18 estimadas(mediana64,53Hz),25 con RMS<0,005 y38 energéticas no aceptadas. En40–48,5s solo2/46 se aceptan. Autocorrelación normalizada independiente sobre PCM detecta un transitorio fuerte alrededor de37,15s rechazado por YIN; entre las38 ventanas energéticas rechazadas solo1 supera0,80 de autocorrelación máxima en35–220Hz(mediana0,462). Los tiempos de captura son callbacks, no ventanas PCM alineadas exactamente.
+
+Hay pérdida de amplitud/periodicidad en la señal guardada y también ambigüedad del estimador; no puede atribuirse todo a silencio, al instrumento o al teléfono. Un experimento aislado de ventana más reciente aumentó18→20/81 estimaciones, pero podía admitir≈97Hz ante un período fuerte≈65Hz: se rechazó, YIN del APK sigue intacto. Las seis pruebas PCM nuevas sí mantienen70Hz ante cambios de balance armónico/amplitud y reanudación; no prueban una vocalización física. Hace falta una prueba dirigida con referencia independiente para resolver este punto, no otra bajada ciega de umbrales.
+
+### Validación ejecutada
+
+`gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest --console=plain`: **BUILD SUCCESSFUL**, **120 JVM**, cero fallos/errores/omitidos.16 casos nuevos:6 de streaming PCM y10 de presentación. `PitchStream` es la ventana/cadencia usada por AudioRecord, no un pipeline paralelo solo para tests; parámetros congelados por captura y callback condicionado a su AudioRecord original. Toot sintético205Hz probado con rango ampliado220; el inicial140 no promete ese registro. Flauta200–1600Hz, armónicos dominantes/melodía/silencios, persistencia y regreso al perfil didgeridoo aprobados. No se identifica automáticamente señal fuera de rango desde ausencia de estimación.
+
+**42 casos instrumentados distintos del APK final**:40 regresión y2 recreación/rotación real de MainActivity, exclusivamente `emulator-5554`. Incluyen reproducción/seek/selección/bucle, Vista amplia con captura, Atrás, cámaras/zoom/pan/Reset, swipe/Deshacer, datos/asociaciones y flauta. Los tests nuevos verifican colores en píxeles del Canvas, nota/Hz visibles en Medir y originales/duración. Medir usa PCM controlado en el callback real y estado de captura aislado sin escritor/AudioRecord: sus imágenes no son una grabación física. Logs y hash del APK: `checkpoints/v325-release-*.log/.json`.
+
+Fallos investigados y corregidos: expectativas de descarte indiscriminado, guarda que omitía retorno del toot, import de test, acceso al estado delegado y fixture1s insuficiente para cinco lecturas. Una variante de escala y el experimento DSP se descartaron. Revisión visual adicional retiró el barrido del ataque débil y protegió los ataques moderados con regresiones específicas. No se cuentan ejecuciones fallidas/interrumpidas como aprobadas. El mensaje del commit17a8420 dice14 en el foco inicial; el conteo correcto fue12(6+6), aclarado sin reescribirlo.
+
+Matriz final:6 repeticiones aprobadas(3 casos en360dp/fuente1,3 y3 en420dp/fuente1,5), excluidas del conteo42 distintos. Todos los informes `v325-release-regression/rotation/360/420.json` corresponden al mismo SHA del APK final. Comparaciones históricas adicionales:1 caso contra3.2.4 y1 contra3.2.2, excluidos del conteo del APK final. La primera regresión118 JVM/42 UI se repitió después de la revisión visual del ataque aislado; el cierre usa120 JVM y el APK posterior. [22 capturas nativas revisadas](screenshots/v325-final/README.md), sin composiciones ni imágenes generadas. No se volvió a atribuir a Samsung una medida física del área del espectrograma tomada en otra entrega.
+
+### Samsung e integridad
+
+Samsung SM-G990E `R5CT21KTQ8W`: micrófono inactivo y respaldo fresco `backups/samsung-before-3.2.5-20261021-184836`,64 archivos/15 WAV, hashes contrastados antes de instalar. Paquete `ar.didgetaller`, versión10→11 y certificado común `fbf54fbe12161bdbf5adbfb9d906961511e9b49a715be8eac8f886e01292b7b2` verificados. `adb -s R5CT21KTQ8W install -r …` → **Success**; `am start -W` → **Status: ok**, proceso23680 y buffer de crash sin fatal. APK instalado igual al compilado.
+
+Revisión a18:49:09: **64/64 hashes intactos**, sin archivos nuevos ni diferencias runtime; índice/ajustes/relaciones conservados, **15 sesiones y15 WAV indexados/legibles**. Informe `checkpoints/v325-samsung-update.json`; respaldo vigente en `backups/latest.txt`. Sin instrumentación, clear, uninstall, restauración, grabación ni reproducción de sus sesiones. El usuario aclaró que el borrado histórico fue autorizado; esta iteración no lo atribuye a un accidente.
+
+Se preservan33 de los40 Kotlin main anteriores byte a byte; siete modificados y uno nuevo(`PitchStream`). YIN, WavAnalysis, datos, reproducción, STFT, cámara/gestos, navegación y simulación intactos; no migración ni cambio de versiones de caché. Código recuperable `42924ec`, base anterior `56c2e81`; cierre fuente+manifiesto en `checkpoints/after-3.2.5`, indicado por `checkpoints/latest.txt`. Git usa la identidad configurada; sin push ni reescritura histórica.
+
+Pendiente: vocalización física con referencia independiente, gesto físico, sincronía audible,15min/batería y TalkBack completo. Instalar/arrancar no valida esos puntos. La nueva versión no promete una línea continua durante los huecos del WAV reciente.
+
 ## Adopción de Git y punto de partida — 21/10/2026
 
 Solicitud: conservar el estado acumulado y establecer commits verificables por fase. Sin cambios al código de la app ni a su versión `3.2.4-beta1/10`.

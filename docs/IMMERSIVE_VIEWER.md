@@ -1,5 +1,9 @@
 # Visor acústico 3.1
 
+## Recuperación 3.2.5 — 21/10/2026
+
+Se conserva cámara/gestos/insets/transporte. `PitchTrace` separa estimaciones originales, conexiones y calidad visual; las tres superficies comparten color por variación y periodicidad, con valores consultables en el cursor. Las conexiones que omiten estimaciones son discontinuas. Los saltos débiles sin apoyo temporal pueden quedar como puntos originales, sin implicar un barrido. General limita el peso de puntos débiles aislados; mantiene cambios/toots respaldados y acceso explícito al rango completo. No hay decimación de F0, interpolación ni reescritura de datos. Reglas, métricas y límites físicos: [VALIDATION](VALIDATION.md).
+
 ## Reparación de Fundamental 3.2.4 — 21/10/2026
 
 La política visual3.2.3 queda reemplazada: umbral0,70 y enlaces limitados entre extremos medidos coherentes tras incertidumbres breves, sin muestras interpoladas. Silencios reales/pausas largas cortan. Tarjeta/detalle/fullscreen usan la misma tendencia; originales y razones disponibles en herramientas. Criterios completos y comparación Re·D2/Mib·Eb2 en VALIDATION. General incluye toda la tendencia respaldada y contexto; no se cambia zoom, Reset ni propiedad de cámaras.

@@ -1,5 +1,15 @@
 # Hoja de ruta priorizada — Didge Taller
 
+## Recovery & Acoustic Reliability 3.2.5 — 21/10/2026
+
+- [x] Comparar fuente histórica verificable, preservar estado/hashes y aplicar recuperación selectiva sin tocar YIN ni originales.
+- [x] Probar el pipeline PCM del micrófono con balances armónicos, amplitud, aire, silencios, reanudación, toot ampliado y flauta; impedir callbacks de capturas anteriores.
+- [x] Recuperar colores compartidos y continuidad respaldada, puntos originales sin barridos espurios, General robusta y ejes/visor/gestos conservados.
+- [x] 120 JVM y APK/app-test compilados. Evidencia final UI/Samsung en VALIDATION.
+- [x] 42 casos UI distintos y6 repeticiones360/420dp/fuentes1,3/1,5;22 capturas nativas revisadas. Samsung install-r/Success,64 hashes y15 sesiones/WAV conservados tras respaldo fresco.
+- [ ] Resolver la pérdida física durante «I» con referencia independiente y eventos bien delimitados; el WAV real muestra ambigüedad, no prueba una frecuencia continua única.
+- [ ] Gesto físico, sincronía audible,15min/batería y TalkBack completo.
+
 ## Control de versiones — 21/10/2026
 
 - [x] Preservar el estado acumulado `3.2.4-beta1/10` en el commit `3f0510f`, con identidad existente y selección revisada sin privados/generados; 104 JVM y APK debug aprobados.

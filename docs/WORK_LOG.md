@@ -1,5 +1,11 @@
 # Registro de trabajo
 
+## Cierre verificable 3.2.5 — 21/10/2026
+
+- Código final `42924ec`:120 JVM,42 casos UI distintos y6 repeticiones de matriz sobre el mismo APK SHA `0a9bbfb7a780900432b3872e693031d38b3af924743ea0dc68bfc112ea1a149a`. Se repitió la regresión tras corregir el barrido detectado visualmente; fallos/experimentos previos no cuentan como aprobados.22 capturas nativas revisadas y comparación real con APK3.2.2/3.2.4; métricas y límites en VALIDATION.
+- Samsung actualizado por install-r/Success y arranque correcto; respaldo fresco18:48:36 de64 archivos/15 WAV,64 hashes intactos tras actualizar,15 sesiones/WAV indexados/legibles, APK instalado idéntico. Sin operaciones destructivas ni instrumentación física. Cierre recuperable fuente+hashes en `checkpoints/after-3.2.5`; anterior `before-3.2.5` conservado.
+- La «I» no se declara resuelta: señal real ambigua y un transitorio perdido, sin frecuencia física de referencia para decidir entre períodos alternativos. No se incorporó el experimento YIN. Próximo paso musical: prueba de vocales con referencia independiente y eventos delimitados; también siguen pendientes gesto físico/audio audible/15min/TalkBack.
+
 ## 3.2.5 — enlaces sin barridos espurios, 21/10/2026
 
 - La inspección de las capturas detectó un barrido desde un ataque débil aislado91Hz hacia el tramo74Hz. Se conserva su punto original, pero un salto≥300c no se une si un extremo tiene periodicidad<0,90 y carece de apoyo temporal dentro de±4 lecturas/1s. No se elimina la lectura ni se aplica a flauta; toots/retornos respaldados y ataques moderados permanecen conectados. Dos regresiones nuevas verifican ambos lados del límite funcional, sin forzar notas.

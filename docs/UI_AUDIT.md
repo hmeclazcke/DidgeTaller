@@ -1,5 +1,9 @@
 # Auditoría de interfaz — Didge Taller 3.1
 
+## Recovery 3.2.5 — 21/10/2026
+
+Comparación nativa de las mismas series en APK3.2.2,3.2.4 y3.2.5, más fixtures explícitos de variación/periodicidad y PCM controlado de Medir. La revisión detectó un barrido engañoso desde un ataque débil aislado; se conserva como punto, sin unirlo al tramo respaldado. Los colores vuelven a expresar métricas y las conexiones sobre omisiones son discontinuas. Los huecos del registro reciente no desaparecen artificialmente: gran parte ya existe en la captura. La prueba exige los tres colores en píxeles reales del Canvas y nota/Hz visibles en Medir; Ajustada se inspecciona con el panel cerrado. Matriz, capturas e integridad: [VALIDATION](VALIDATION.md) y [evidencia](screenshots/v325-final/README.md). No es validación acústica física.
+
 ## Reparación selectiva de Fundamental 3.2.4 — 21/10/2026
 
 La revisión de3.2.3 usó un fixture demasiado favorable al filtro: las **lecturas exactas** Re·D2/Mib·Eb2 reproducen la fragmentación que denunció el usuario. Se compararon visualmente las mismas series en APK3.2.2/8,3.2.3/9 y3.2.4/10, con fechas/duración/resumen originales y WAV silenciosos de soporte solo en emulador. Ahora Re·D2 recupera33 enlaces frente a15 y Mib·Eb2,19 frente a5; sus huecos reales permanecen. No se presentan estas capturas como prueba física del audio.
