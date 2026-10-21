@@ -71,7 +71,8 @@ class FundamentalRepairUiTest {
             if(!baseline){
                 assertTrue("Useful curve in $label",trace.count {it.previous!=null}>=if(label=="D2")28 else 18)
                 val camera=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
-                assertTrue(camera.y.low>45 && camera.y.high<100)
+                // Recovery keeps the early backed ~50Hz group instead of deleting it by global mode.
+                assertTrue(camera.y.low>40 && camera.y.high<100)
                 assertEquals(item.timeline,RecordingStore(app).list().first {it.id==item.id}.timeline)
             }
             back();back()

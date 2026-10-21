@@ -13,7 +13,7 @@ class FundamentalRepairTest {
     }
     @Test fun isolatedLowAndHighOutliersDoNotBreakTheMainCurveOrScale(){
         for(spike in listOf(35.0,62.0,82.4,140.0,200.0)){
-            val raw=points(70.1,70.2,spike,70.1,70.2)
+            val raw=points(70.1,70.2,spike,70.1,70.2).mapIndexed {i,p->if(i==2)p.copy(confidence=.8) else p}
             val t=PitchTrace.build(raw,didge)
             assertTrue(t[2].uncertain);assertEquals(1,t[3].previous);assertTrue(t[3].bridged)
             assertSame(raw[2],t[2].point);assertEquals(3,t.count {it.previous!=null})
@@ -51,7 +51,7 @@ class FundamentalRepairTest {
         assertEquals(raw,t.map {it.point})
     }
     @Test fun cardTraceRetainsOnlyOriginalEndpointsAndUsefulContinuity(){
-        val raw=(0..999).map {SessionAnalysis.Point(it*180L,if(it%50==25)62.0 else 70.0,.8)}
+        val raw=(0..999).map {SessionAnalysis.Point(it*180L,if(it%50==25)62.0 else 70.0,if(it%50==25).72 else .8)}
         val t=PitchTrace.build(raw,didge)
         assertEquals(1000,t.size);assertEquals(20,t.count {it.uncertain})
         assertEquals(979,t.count {it.previous!=null})

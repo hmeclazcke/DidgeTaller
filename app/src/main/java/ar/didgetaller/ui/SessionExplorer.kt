@@ -44,7 +44,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
         if(s.plot==AcousticPlot.PITCH){
             val points=sessionPlotPoints(vm,item)
-            Text("Línea: tendencia",style=MaterialTheme.typography.bodySmall)
+            Text("Verde: estable · Amarillo: variación · Naranja: revisar",style=MaterialTheme.typography.bodySmall)
             if(s.pitch(points).valid==0)Text("Sin lecturas confiables · el audio se conserva",style=MaterialTheme.typography.bodySmall)
         }
         if(s.plot==AcousticPlot.SPECTRUM && vm.recordingAnalysis.result==null)Text("Tocá «Analizar grabación» para obtener el espectro real.",style=MaterialTheme.typography.bodySmall)

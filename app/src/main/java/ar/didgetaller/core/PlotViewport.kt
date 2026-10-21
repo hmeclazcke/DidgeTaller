@@ -49,16 +49,25 @@ data class PitchViewRange(val window:AxisWindow,val clipped:Int,val valid:Int)
 object PlotScales {
     /** Shared robust context. Excluded/uncertain original values remain explicitly inspectable. */
     fun overview(points:List<SessionAnalysis.Point>,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):PitchViewRange {
-        // Quantiles describe the main regime; extend to EVERY supported reading so a rare,
-        // short toot is visible. Robustness comes from classification, not deleting notes.
-        val full=pitch(points,instrument=instrument)
-        val values=PitchTrace.build(points,instrument).filterNot {it.uncertain}.map {it.point.hz!!}.sorted()
+        // A lone weak point remains inspectable but need not determine General's domain.
+        // Repeated notes (including short toots) and strong singleton estimates are included.
+        val trace=PitchTrace.build(points,instrument)
+        val backed=BooleanArray(trace.size)
+        trace.forEachIndexed {i,s->s.previous?.let {j->
+            if(abs(1200*log2(s.point.hz!!/trace[j].point.hz!!))<=80){backed[i]=true;backed[j]=true}
+        }}
+        val primary=trace.filterNot {it.uncertain}
+        val corroborated=trace.filterIndexed {i,s->!s.uncertain && (backed[i] || s.point.confidence>=.90)}
+        val fit=if(corroborated.size>=3 && corroborated.size*2>=primary.size)corroborated else primary
+        val fitPoints=fit.map {it.point}
+        val full=pitch(fitPoints,instrument=instrument)
+        val values=fitPoints.map {it.hz!!}.sorted()
         if(values.isEmpty())return full
         val middle=values[values.size/2]
         val padding=max(.6,(values.last()-values.first())*.08)
         val window=AxisWindow(max(0.0,min(min(full.window.low,values.first()-padding),middle/2.0.pow(.25))),
             max(max(full.window.high,values.last()+padding),middle*2.0.pow(.25)))
-        return full.copy(window=window,clipped=values.count {it !in window.low..window.high})
+        return full.copy(window=window,valid=primary.size,clipped=primary.count {it.point.hz!! !in window.low..window.high})
     }
     fun pitch(points:List<SessionAnalysis.Point>,includeAll:Boolean=false,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):PitchViewRange {
         val values=PitchTrace.build(points,instrument).filter {includeAll || !it.uncertain}.map {it.point.hz!!}.sorted()

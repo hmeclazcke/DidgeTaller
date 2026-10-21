@@ -26,7 +26,7 @@ class FundamentalPrecisionTest {
         raw[2]=raw[2].copy(confidence=.89)
         val trace=PitchTrace.build(raw,didge)
         assertEquals(PitchTrace.Reason.ISOLATED_RETURN,trace[2].reason);assertEquals(1,trace[3].previous)
-        assertTrue(PitchTrace.build(raw.map {it.copy(confidence=.98)},didge)[2].uncertain)
+        assertFalse(PitchTrace.build(raw.map {it.copy(confidence=.98)},didge)[2].uncertain)
         // Unequal context is not a supported return: retain an uncertain musical interpretation.
         raw[3]=raw[3].copy(hz=79.0)
         assertFalse(PitchTrace.build(raw,didge)[2].uncertain)
@@ -79,12 +79,13 @@ class FundamentalPrecisionTest {
         val reversed=points(listOf(70.0,70.0,70.0)).reversed()
         assertTrue(PitchTrace.build(reversed,didge).all {it.previous==null})
     }
-    @Test fun realCaptureReleaseAndBreathExamplesAreUncertainWithoutClaimingPitchError(){
+    @Test fun realCaptureReleaseAndBreathExamplesRemainVisibleWithoutInventingPitchError(){
         // Read-only Samsung index: these are delivery timestamps, not PCM window positions.
         val raw=listOf(SessionAnalysis.Point(4520,72.1422,.9963),SessionAnalysis.Point(4698,71.6606,.9953),
             SessionAnalysis.Point(4880,66.8456,.7868),SessionAnalysis.Point(5080,null,.5215))
         val trace=PitchTrace.build(raw,didge)
-        assertEquals(PitchTrace.Reason.NOTE_EDGE,trace.last().reason);assertEquals(2,PlotScales.overview(raw).valid)
+        assertFalse(trace.last().uncertain);assertEquals(3,PlotScales.overview(raw).valid)
+        assertEquals(PitchTrace.Tone.REVIEW,trace.last().tone)
         val release=points(listOf(70.7498,71.9726,65.4191,null)).toMutableList()
         release[2]=release[2].copy(confidence=.9047)
         assertFalse(PitchTrace.build(release,didge)[2].uncertain)
@@ -92,7 +93,7 @@ class FundamentalPrecisionTest {
         assertFalse(PitchTrace.build(attack,didge).first().uncertain)
         val onset=listOf(SessionAnalysis.Point(14359,null,.3667),SessionAnalysis.Point(14534,91.1151,.8611),
             SessionAnalysis.Point(14735,74.6530,.9026),SessionAnalysis.Point(14919,74.5649,.8546))
-        assertEquals(PitchTrace.Reason.NOTE_EDGE,PitchTrace.build(onset,didge).first().reason)
+        assertFalse(PitchTrace.build(onset,didge).first().uncertain)
     }
     @Test fun allPresentationsKeepDiscontinuitiesAtCardResolution(){
         val raw=points(List(1000){70.0}).toMutableList();raw[450]=raw[450].copy(hz=140.0,confidence=.8)

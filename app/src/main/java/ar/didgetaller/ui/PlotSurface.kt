@@ -26,6 +26,11 @@ import kotlin.math.*
 internal val spanish=Locale.forLanguageTag("es-AR")
 internal val PlotDataArea=SemanticsPropertyKey<androidx.compose.ui.geometry.Rect>("PlotDataArea")
 internal val PlotWindow=SemanticsPropertyKey<PlotViewport>("PlotWindow")
+internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
+    PitchTrace.Tone.STABLE->Color(0xFF8FE0BD)
+    PitchTrace.Tone.MODERATE->Color(0xFFE9D285)
+    PitchTrace.Tone.REVIEW->Color(0xFFEBA16E)
+}
 internal fun hzLabel(hz:Double)=if(hz.isFinite() && hz>0)"%.1f Hz".format(spanish,hz) else "— Hz"
 internal fun axisLabel(value:Double,span:Double)=when {span<.1->"%.4f";span<10->"%.2f";span<100->"%.1f";else->"%.0f"}.format(spanish,if(abs(value)<1e-12)0.0 else value)
 
@@ -118,8 +123,9 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                     for(sample in pitchTrace){val p=sample.point;val hz=p.hz!!
                         if(sample.uncertain){if(state.showUncertain)drawCircle(Color(0xFFEBA16E),3f,Offset(x(p.timeMs.toDouble()),y(hz)),style=Stroke(1.5f));continue}
                         val prior=sample.previous?.let {pitchTrace[it].point}
-                        val color=traceA
-                        if(prior?.hz!=null && p.timeMs-prior.timeMs<=1200)drawLine(color,Offset(x(prior.timeMs.toDouble()),y(prior.hz)),Offset(x(p.timeMs.toDouble()),y(hz)),2.3f)
+                        val color=pitchColor(sample.tone)
+                        if(prior?.hz!=null && p.timeMs-prior.timeMs<=1200)drawLine(color,Offset(x(prior.timeMs.toDouble()),y(prior.hz)),Offset(x(p.timeMs.toDouble()),y(hz)),2.3f,
+                            pathEffect=if(sample.bridged)PathEffect.dashPathEffect(floatArrayOf(5f,5f)) else null)
                         else drawCircle(color,2.5f,Offset(x(p.timeMs.toDouble()),y(hz)))
                     }
                 }

@@ -349,9 +349,10 @@ private fun SessionGraph(points:List<SessionAnalysis.Point>,durationMs:Long,modi
             if(!sample.uncertain){
                 val before=sample.previous?.let {trace[it].point}
                 if(before!=null) {
-                    drawLine(accent,Offset(x(before),y(before)),Offset(x(point),y(point)),
-                        strokeWidth=if(compact)3f else 4f,cap=StrokeCap.Round)
-                } else drawCircle(accent,if(compact)2f else 4f,Offset(x(point),y(point)))
+                    drawLine(pitchColor(sample.tone),Offset(x(before),y(before)),Offset(x(point),y(point)),
+                        strokeWidth=if(compact)3f else 4f,cap=StrokeCap.Round,
+                        pathEffect=if(sample.bridged)androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(5f,5f)) else null)
+                } else drawCircle(pitchColor(sample.tone),if(compact)2f else 4f,Offset(x(point),y(point)))
             }
         }}
         cursorMs?.let {time ->

@@ -1,5 +1,12 @@
 # Registro de trabajo
 
+## 3.2.5 — recuperación de Fundamental y colores, 21/10/2026
+
+- Recuperada selectivamente la semántica de color del código3.2 (ZIP completo), centralizada en `PitchTrace`: variación entre extremos medidos y periodicidad mínima de ambos. Verde≤25c/≥0,90; amarillo≤60c,0,80–0,90 o falta de vecino; naranja>60c o<0,80. Cursor permite consultar ambas medidas; enlace sobre omisiones es discontinuo. Sin cambios al espectrograma/gestos/cámaras/transporte.
+- Retirados el modo dominante global y el descarte de bordes≥100c junto a ausencias. Presentación admite las estimaciones que YIN acepta desde0,65, sin cambiar resumen≥0,70 ni originales. Exclusión contextual limitada a retornos débiles aislados, períodos bajos breves con retorno medido a ambos lados y saltos≥600c sin apoyo en±4 lecturas/1s frente a dos vecinos coherentes; no afirma error físico. General usa corroboración temporal o periodicidad≥0,90 si cubren al menos la mitad de las lecturas; notas/toots respaldados y Mostrar todos preservados.
+- 36 JVM focalizadas aprobadas y luego8 de color tras hacer amarillo el punto sin vecino; APK/app-test compilados. Tres casos UI nuevos aprobados por focos: píxeles de los tres colores/datos intactos, Medir con PCM controlado y perfiles, series reales D2/Eb2/reciente con WAV silencioso de soporte. Fallos previos conservados en checkpoints: expectativa antigua de filtrar una excursión sin caída de evidencia, dos guardas que ocultaban el toot/retorno corregidas, import del test, reflexión sobre estado delegado y fixture de1s insuficiente para cinco lecturas estables corregido a1,5s. No contar ejecuciones fallidas como aprobadas.
+- Comparación JVM ejecutada sobre código real compilado de3.2.2/3.2.4, además del actual. Re·D2:43/40/47 puntos principales de49 frecuencias guardadas; Mib·Eb2:26/20/25 de30; reciente:121/117/122 de125. La reciente dura51,5s reales; no se rellenan150 ausencias. La variante inicial que amplió demasiado General fue rechazada; rango corregido reciente≈58,7–83Hz. La regresión completa, matriz y actualización segura se registran al cierre.
+
 ## 3.2.5 — fase de captura verificada, 21/10/2026
 
 - Base limpia `56c2e81`; copia recuperable de 73 archivos con SHA-256 en `checkpoints/before-3.2.5/source.zip` y `manifest.json`. Código completo confirmado en ZIP3.2, checkpoint3.2.2 y before3.2.4; after3.2.3 es parcial, after3.2.4 sí contiene fuente. No rollback global.

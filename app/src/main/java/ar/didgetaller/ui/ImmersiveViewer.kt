@@ -102,7 +102,9 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                         val hz=sample.point.hz!!
                         if(sample.uncertain) return@let "${hzLabel(hz)} · estimación incierta: ${sample.reason?.label} · confianza %.3f (YIN), sin nota confirmada".format(spanish,sample.point.confidence)
                         val musical=Music.pitch(hz)!!
-                        "${hzLabel(hz)} · ${musical.note} · %+.1f cents (A4=440)".format(spanish,musical.cents)
+                        "${hzLabel(hz)} · ${musical.note} · %+.1f cents (A4=440) · periodicidad %.3f · variación %s".format(spanish,musical.cents,sample.point.confidence,
+                            sample.variationCents?.let {"%.0f cents".format(spanish,it)} ?: "sin vecino")+
+                            if(sample.bridged)" · enlace de presentación" else ""
                     } ?: "Sin lectura confiable cercana")
                     AcousticPlot.WAVE->{val wave=visual.wave;val frame=time*visual.rate/1000
                         if(wave!=null && frame in wave.start until wave.end){val i=((frame-wave.start)*wave.min.size/(wave.end-wave.start)).toInt().coerceIn(wave.min.indices)
@@ -291,6 +293,7 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session,s:Explorer
             TextButton(onClick={s.extendedPitchRange=false;s.cameras[s.plot]=camera.copy(y=range.window);s.follow=false}){Text("Vista ajustada")}
         }
         val trace=remember(points,s.instrument){PitchTrace.build(points,s.instrument)}
+        Text("Verde: variación ≤25 cents y periodicidad ≥0,90. Amarillo: hasta60 cents, periodicidad 0,80–0,90 o sin vecino previo. Naranja: mayor variación o periodicidad <0,80. Se usa el extremo más débil del enlace; estabilidad y periodicidad son medidas distintas. El color no confirma una nota. Trazo discontinuo: enlace de presentación entre extremos medidos, sin muestras intermedias.",style=MaterialTheme.typography.bodySmall)
         val uncertain=trace.count {it.uncertain}
         Text("${range.clipped} fuera de Ajustada · $uncertain originales excluidos de la tendencia. Se omiten excursiones aisladas sin vaciar la curva; intervalos breves de incertidumbre unen solo extremos medidos próximos. Ausencia clara o prolongada deja un hueco. Los valores originales no se corrigen ni se rellenan. Confianza YIN no es probabilidad de acierto.",style=MaterialTheme.typography.bodySmall)
         Row(verticalAlignment=Alignment.CenterVertically){Text("Mostrar lecturas originales / inciertas",Modifier.weight(1f));Switch(checked=s.showUncertain,onCheckedChange={s.showUncertain=it},modifier=Modifier.testTag("show-uncertain"))}
