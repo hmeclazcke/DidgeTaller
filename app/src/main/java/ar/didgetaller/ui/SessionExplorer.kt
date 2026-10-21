@@ -44,11 +44,11 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
         if(s.plot==AcousticPlot.PITCH){
             val points=sessionPlotPoints(vm,item)
-            Text("Verde: estable · Amarillo: variación · Naranja: revisar",style=MaterialTheme.typography.bodySmall)
+            Text("Frecuencia en Hz · Verde: estable · Amarillo: variación · Naranja: revisar",style=MaterialTheme.typography.bodySmall)
             if(s.pitch(points).valid==0)Text("Sin lecturas confiables · el audio se conserva",style=MaterialTheme.typography.bodySmall)
         }
         if(s.plot==AcousticPlot.SPECTRUM && vm.recordingAnalysis.result==null)Text("Tocá «Analizar grabación» para obtener el espectro real.",style=MaterialTheme.typography.bodySmall)
-        if(s.plot!=AcousticPlot.PITCH)Text("Tocá el gráfico para explorar con zoom y desplazamiento en dos ejes.",style=MaterialTheme.typography.bodySmall)
+        if(s.plot!=AcousticPlot.PITCH)Text((if(s.plot==AcousticPlot.SPECTROGRAM)"Frecuencia en Hz. " else "")+"Tocá el gráfico para explorar con zoom y desplazamiento en dos ejes.",style=MaterialTheme.typography.bodySmall)
         FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
             TextButton(onClick={tools=!tools}){Text(if(tools)"Ocultar escalas" else "Escalas y rangos")}
             TextButton(onClick={fragments=!fragments}){Text(if(fragments)"Ocultar fragmentos" else "Selección y fragmentos")}

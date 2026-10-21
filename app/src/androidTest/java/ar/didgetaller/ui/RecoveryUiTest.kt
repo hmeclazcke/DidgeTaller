@@ -60,7 +60,11 @@ class RecoveryUiTest {
         }
         val item=RecordingStore(app).save(WavCodec.encode(ShortArray(44100*18),44100*18,44100),raw)
         show();compose.runOnIdle {vm.renameSession(item,"Variación y periodicidad · serie sintética")}
-        library();capture("colours-library");open(item);capture("colours-detail")
+        library();capture("colours-library");open(item)
+        val heading=compose.onNodeWithText("Explorar el audio").performScrollTo().fetchSemanticsNode()
+        assertEquals(heading.size.height.toFloat(),heading.boundsInRoot.height,1f)
+        capture("session-heading")
+        compose.onNodeWithTag("time-chart").performScrollTo();capture("colours-detail")
         val pixels=compose.onNodeWithTag("time-chart").captureToImage().toPixelMap()
         val found=IntArray(3)
         for(x in 0 until pixels.width)for(y in 0 until pixels.height){

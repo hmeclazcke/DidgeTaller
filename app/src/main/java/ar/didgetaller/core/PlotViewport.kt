@@ -88,6 +88,9 @@ object PlotScales {
         val approximate=window.span/(maximum-1);val base=10.0.pow(floor(log10(approximate)))
         val factor=approximate/base;val step=base*when {factor<=1->1;factor<=2->2;factor<=5->5;else->10}
         val start=ceil(window.low/step)*step
-        return (0..maximum).map {start+it*step}.filter {it<=window.high+step*1e-8}
+        val ticks=(0..maximum).map {start+it*step}.filter {it<=window.high+step*1e-8}
+        // A rounded step can exceed the visible span (e.g. 47.9 s / two intervals).
+        // Endpoints remain useful when there are not even two round marks.
+        return if(ticks.size>=2)ticks else (0 until maximum).map {window.value(it.toDouble()/(maximum-1))}
     }
 }

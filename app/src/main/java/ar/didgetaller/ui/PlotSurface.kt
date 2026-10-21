@@ -26,13 +26,32 @@ import kotlin.math.*
 internal val spanish=Locale.forLanguageTag("es-AR")
 internal val PlotDataArea=SemanticsPropertyKey<androidx.compose.ui.geometry.Rect>("PlotDataArea")
 internal val PlotWindow=SemanticsPropertyKey<PlotViewport>("PlotWindow")
+internal val PlotXLabels=SemanticsPropertyKey<List<String>>("PlotXLabels")
+internal val PlotXLabelBounds=SemanticsPropertyKey<List<androidx.compose.ui.geometry.Rect>>("PlotXLabelBounds")
 internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
     PitchTrace.Tone.STABLE->Color(0xFF8FE0BD)
     PitchTrace.Tone.MODERATE->Color(0xFFE9D285)
     PitchTrace.Tone.REVIEW->Color(0xFFEBA16E)
 }
 internal fun hzLabel(hz:Double)=if(hz.isFinite() && hz>0)"%.1f Hz".format(spanish,hz) else "— Hz"
-internal fun axisLabel(value:Double,span:Double)=when {span<.1->"%.4f";span<10->"%.2f";span<100->"%.1f";else->"%.0f"}.format(spanish,if(abs(value)<1e-12)0.0 else value)
+internal fun axisLabel(value:Double,span:Double):String {
+    val label=when {span<.1->"%.4f";span<10->"%.2f";span<100->"%.1f";else->"%.0f"}.format(spanish,if(abs(value)<1e-12)0.0 else value)
+    return if(',' in label)label.trimEnd('0').trimEnd(',') else label
+}
+
+internal data class PlacedAxisLabel(val text:String,val center:Float,val width:Float)
+internal fun placeAxisLabels(ticks:List<Double>,window:AxisWindow,width:Float,gap:Float,
+    format:(Double)->String,measure:(String)->Float):List<PlacedAxisLabel> {
+    if(width<=0)return emptyList()
+    val result=mutableListOf<PlacedAxisLabel>()
+    for(tick in ticks){val text=format(tick);val measured=measure(text)
+        if(measured>width)continue
+        val center=(window.fraction(tick)*width).toFloat().coerceIn(measured/2,width-measured/2)
+        if(result.lastOrNull()?.let {center-measured/2<it.center+it.width/2+gap}==true)continue
+        result+=PlacedAxisLabel(text,center,measured)
+    }
+    return result
+}
 
 /** All four render adapters share axes, clipping, coordinates and cursor overlay. */
 @Composable
@@ -56,9 +75,11 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         if(state.plot==AcousticPlot.PITCH)PitchAxis.ticks(camera.y,((dimensions.height-top-bottom)/(textSize*2.8f)).toInt()) else emptyList()
     }
     val labelGap=with(density){4.dp.toPx()}
+    val yTicks=if(state.plot==AcousticPlot.PITCH)pitchTicks.map {it.hz} else
+        PlotScales.ticks(camera.y,if((dimensions.height-top-bottom)/textSize<12)3 else 5,log)
     // Measure the exact strings with the same native Paint that renders them, including notes.
-    val requiredLeft=if(state.plot==AcousticPlot.PITCH)remember(pitchTicks,camera.y.span,textSize,labelGap){
-        val hzWidth=pitchTicks.maxOfOrNull {paint.measureText(axisLabel(it.hz,camera.y.span))} ?: 0f
+    val requiredLeft=if(state.plot in listOf(AcousticPlot.PITCH,AcousticPlot.SPECTROGRAM))remember(pitchTicks,yTicks,camera.y.span,textSize,labelGap){
+        val hzWidth=yTicks.maxOfOrNull {paint.measureText(axisLabel(it,camera.y.span))} ?: 0f
         val noteWidth=pitchTicks.maxOfOrNull {paint.measureText((if(it.approximate)"≈ " else "")+it.note.orEmpty())*.85f} ?: 0f
         max(hzWidth,noteWidth)+labelGap*2
     } else max(with(density){(if(state.plot==AcousticPlot.SPECTRUM)58.dp else 56.dp).toPx()},textSize*3.2f)
@@ -67,6 +88,10 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     SideEffect {if(!state.gestureActive)settledLeft=requiredLeft}
     val left=if(state.gestureActive)settledLeft else requiredLeft
     val pitchTrace=remember(points,state.instrument){PitchTrace.build(points,state.instrument)}
+    val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
+    val xTicks=PlotScales.ticks(camera.x,if(plotWidth/textSize<30)3 else 5)
+    val xLabels=placeAxisLabels(xTicks,camera.x,plotWidth,labelGap*2,
+        {if(state.plot.temporal)seconds(it.toLong()) else axisLabel(it,camera.x.span)+" Hz"},paint::measureText)
 
     fun data(position:Offset):Pair<Double,Double>{
         val w=(dimensions.width-left-right).coerceAtLeast(1f);val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
@@ -97,15 +122,16 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     }
     Canvas(modifier.background(palette).then(gesture).testTag(if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
         .semantics {contentDescription="${state.plot.title}. ${if(state.plot.temporal)"Tiempo" else "Frecuencia"} ${axisLabel(camera.x.low,camera.x.span)} a ${axisLabel(camera.x.high,camera.x.span)}. ${if(state.plot==AcousticPlot.PITCH)"Eje Hz y nota base. "+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)"aproximadamente" else ""} ${it.note.orEmpty()}"} else ""} ${if(immersive)"Arrastrar y ampliar en dos ejes. Mantener para inspeccionar." else "Tocar para abrir visor."}"}
-        .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera}
+        .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
+            this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
         .onSizeChanged {dimensions=it}) {
         // Navigation/configuration transitions can measure a temporarily collapsed surface.
         if(size.width<=left+right+textSize || size.height<=top+bottom+textSize*2)return@Canvas
         val w=(size.width-left-right).coerceAtLeast(1f);val h=(size.height-top-bottom).coerceAtLeast(1f)
         fun x(value:Double)=(camera.x.fraction(value)*w).toFloat()
         fun y(value:Double)=((1-camera.y.fraction(value,log))*h).toFloat()
-        val xt=PlotScales.ticks(camera.x,if(w/textSize<30)3 else 5)
-        val yt=if(state.plot==AcousticPlot.PITCH)pitchTicks.map {it.hz} else PlotScales.ticks(camera.y,if(h/textSize<12)3 else 5,log)
+        val xt=xTicks
+        val yt=yTicks
         translate(left,top){
             clipRect(0f,0f,w,h){
                 if(state.plot==AcousticPlot.SPECTROGRAM && bitmap!=null)visual.spectrogram?.let {tile ->
@@ -153,21 +179,20 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                 val label=axisLabel(tick,camera.y.span)
                 val musical=pitchTicks.firstOrNull {it.hz==tick}
                 val baseline=y(tick).coerceIn(textSize,if(musical?.note!=null)max(textSize,h-textSize*1.15f) else h-textSize/4)
-                drawContext.canvas.nativeCanvas.drawText(label,if(state.plot==AcousticPlot.PITCH)-labelGap else -7f,baseline,paint)
+                drawContext.canvas.nativeCanvas.drawText(label,-labelGap,baseline,paint)
                 musical?.note?.let {note->
                     paint.textSize=textSize*.85f;paint.alpha=195
                     drawContext.canvas.nativeCanvas.drawText((if(musical.approximate)"≈ " else "")+note,-labelGap,baseline+textSize,paint)
                     paint.textSize=textSize;paint.alpha=255
                 }
             }
-            xt.forEach {tick ->val label=if(state.plot.temporal)seconds(tick.toLong()) else axisLabel(tick,camera.x.span)+" Hz";paint.textAlign=android.graphics.Paint.Align.CENTER
-                val half=(paint.measureText(label)/2).coerceAtMost(w/2);drawContext.canvas.nativeCanvas.drawText(label,x(tick).coerceIn(half,w-half),h+textSize*1.5f,paint)}
+            xLabels.forEach {label ->paint.textAlign=android.graphics.Paint.Align.CENTER
+                drawContext.canvas.nativeCanvas.drawText(label.text,label.center,h+textSize*1.5f,paint)}
         }
         paint.textAlign=android.graphics.Paint.Align.LEFT
-        if(state.plot==AcousticPlot.PITCH){
-            paint.textAlign=android.graphics.Paint.Align.RIGHT
-            drawContext.canvas.nativeCanvas.drawText("Hz",left-labelGap,textSize,paint)
-        }else drawContext.canvas.nativeCanvas.drawText(when(state.plot){AcousticPlot.WAVE->"amplitud";AcousticPlot.SPECTRUM->"dB rel";else->"Hz"},6f,textSize,paint)
+        // Hz is already identified by the detail legend / fullscreen range readout.
+        if(state.plot==AcousticPlot.WAVE || state.plot==AcousticPlot.SPECTRUM)
+            drawContext.canvas.nativeCanvas.drawText(if(state.plot==AcousticPlot.WAVE)"amplitud" else "dB rel",6f,textSize,paint)
     }
 }
 

@@ -1,5 +1,9 @@
 ## Diagnóstico y presentación 3.2.6 — etapas A–C, 21/10/2026
 
+Etapa D: ejes medidos con el Paint real y margen4+4dp tanto en Fundamental como en STFT; STFT deja de reservar56dp fijos. Números sin ceros decimales redundantes; notas compactas conservadas. Se elimina el Hz separado, identificado por la leyenda de detalle o el rango del visor. Los márgenes siguen congelados durante gestos. En el mismo fixture420dp/fuente1,0, STFT pasa de147 a69px de margen: datos817,5→895,5px (+9,54%). Fundamental ya medía sus etiquetas:75px antes/después, sin fingir una ganancia horizontal. No se tocaron cámaras/insets/gestos.
+
+El paso redondeado de50s podía dejar solo0s en47,9s; ahora hay al menos dos marcas candidatas, con supresión de etiquetas que colisionan según el texto medido. AxisLayout2 JVM aprobadas; AxisReliability UI aprobado a420dp/1,0,360dp/1,3 y420dp/1,5. Comparación real con APK3.2.5 extraído en lectura del Samsung y capturas antes/después del renderer. Recovery UI de colores/heading aprobado: «Explorar el audio» se ve completo al desplazarlo a la vista; el recorte previo corresponde al scroll de sesión, sin defecto de insets demostrado. Se conserva navegación y scroll.
+
 Se conserva el DSP tras comparar cinco alternativas sobre los tres WAV: desplazar el soporte hacia el final (12288/8192 muestras), ampliar a32768, pasar bajos400Hz y extender el rango inferior a25Hz. Informes privados en `checkpoints/v326-experiments*`. Las ventanas completas comparables son256/121/275; las finales parciales siguen en el reporte principal.
 
 | Variante | Admitidos 19:04 / 19:17 / 19:26 | Observación |
