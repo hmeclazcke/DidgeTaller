@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -47,7 +49,7 @@ class FundamentalRepairUiTest {
             items.forEach {(label,item)->vm.renameSession(item,"${if(label=="D2")"Re · D2" else "Mib · Eb2"} · lecturas reales")}
         }
         compose.setContent {nav=rememberNavController();TallerApp(vm,{}, {},{_,_,_->},nav)}
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
     }
     @After fun cleanup(){if(::vm.isInitialized)compose.runOnUiThread {owner.clear()};if(::app.isInitialized)app.clean()}
     private fun capture(name:String){

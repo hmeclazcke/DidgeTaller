@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -68,7 +70,7 @@ class SessionNavigationTest {
             TallerApp(vm, startMeasurement = {vm.startSession()}, toggleMic = {}, exportFile = { _, _, _ -> },
                 navController = navController)
         }
-        compose.onNodeWithText("Biblioteca", useUnmergedTree = true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo()
     }
 
@@ -78,7 +80,7 @@ class SessionNavigationTest {
     }
 
     private fun choosePlot(title:String){
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
         compose.onNodeWithText(title,useUnmergedTree=true).performClick()
         compose.waitUntil(5000){compose.onAllNodes(isPopup()).fetchSemanticsNodes().isEmpty()}
         compose.waitUntil(5000){compose.activity.hasWindowFocus()}
@@ -92,8 +94,8 @@ class SessionNavigationTest {
 
     private fun openAndPlay() {
         compose.onNodeWithTag("session-${session.id}").performClick()
-        compose.onNodeWithContentDescription("Volver a Sesiones").assertIsDisplayed()
-        compose.onNodeWithText("Reproducir").performScrollTo().performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
         compose.waitUntil { vm.playingId == session.id }
         compose.runOnIdle {
             assertEquals(TallerRoutes.Session, navController.currentDestination?.route)
@@ -104,8 +106,8 @@ class SessionNavigationTest {
     private fun assertReturnedToSameList(offset: Float) {
         awaitDisplayed("library-list")
         compose.onNodeWithTag("library-list").assertIsDisplayed()
-        compose.onNodeWithText("Sesiones").assertIsSelected()
-        compose.onNodeWithContentDescription("Volver a Sesiones").assertDoesNotExist()
+        compose.onNodeWithText(uiText(R.string.ui_sessions)).assertIsSelected()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).assertDoesNotExist()
         assertEquals(offset, scrollOffset(), 1f)
         compose.runOnIdle {
             assertEquals(TallerRoutes.Library, navController.currentDestination?.route)
@@ -135,7 +137,7 @@ class SessionNavigationTest {
         assertReturnedToSameList(offset)
         // Reopening must be a fresh, stopped player, with exactly one detail in the stack.
         openAndPlay()
-        compose.onNodeWithContentDescription("Volver a Sesiones").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         assertReturnedToSameList(offset)
     }
 
@@ -144,17 +146,17 @@ class SessionNavigationTest {
         compose.onNodeWithTag("session-${session.id}").performScrollTo()
         val offset = scrollOffset()
         openAndPlay()
-        compose.onNodeWithContentDescription("Volver a Sesiones").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         assertReturnedToSameList(offset)
     }
 
     @Test fun changingSectionReleasesPlaybackAndDoesNotRestoreAnAbandonedDetail() {
         val offset = scrollOffset()
         openAndPlay()
-        compose.onNodeWithText("Medir", useUnmergedTree = true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_measure), useUnmergedTree = true).performClick()
         compose.onNodeWithTag("measure-screen").assertIsDisplayed()
         compose.runOnIdle { assertNull(vm.playingId) }
-        compose.onNodeWithText("Biblioteca", useUnmergedTree = true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
         assertReturnedToSameList(offset)
     }
 
@@ -164,7 +166,7 @@ class SessionNavigationTest {
         val beforeIndex=prefs.getString("recordings",null)
         val bytes=store.file(recoveredId).readBytes()
         compose.onNodeWithTag("session-$recoveredId").performScrollTo().performClick()
-        compose.onNodeWithText("Analizar grabación").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_analyze_recording)).performScrollTo().performClick()
         compose.waitUntil(20000) {vm.recordingAnalysis.result!=null || vm.recordingAnalysis.error!=null}
         compose.runOnIdle {
             val result=vm.recordingAnalysis.result!!
@@ -174,14 +176,14 @@ class SessionNavigationTest {
             assertEquals(beforeIndex,prefs.getString("recordings",null))
             assertArrayEquals(bytes,store.file(recoveredId).readBytes())
         }
-        compose.onNodeWithText("H1 candidato",substring=true).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_h_candidate, 1),substring=true).performScrollTo().assertIsDisplayed()
         val screenshot=File(application.getExternalFilesDir(null),"phase-a-synthetic-66hz.png")
         screenshot.outputStream().use {output ->
             compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,output)
         }
-        compose.onNodeWithText("Reproducir").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
         compose.waitUntil {vm.playingId==recoveredId && !vm.playbackPaused}
-        playAction("Pausar")
+        playAction(uiText(R.string.ui_pause))
         compose.runOnIdle {assertTrue(vm.playbackPaused)}
         assertEquals(beforeIndex,prefs.getString("recordings",null))
         assertArrayEquals(bytes,store.file(recoveredId).readBytes())
@@ -198,12 +200,12 @@ class SessionNavigationTest {
         // Extend only this isolated emulator fixture. It is synthetic; no microphone is opened.
         RandomAccessFile(file,"rw").use {wav -> wav.setLength(44L+dataSize);wav.seek(0);wav.write(header)}
         compose.onNodeWithTag("session-$recoveredId").performScrollTo().performClick()
-        compose.onNodeWithText("Analizar grabación").performScrollTo().performClick()
-        compose.onNodeWithText("Cancelar análisis").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Analizando audio",substring=true).assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_analyze_recording)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_cancel_analysis)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_analyzing_audio).substringBefore('%').trimEnd(),substring=true).assertIsDisplayed()
         compose.runOnIdle {assertTrue(vm.recordingAnalysis.running);assertTrue(vm.recordingAnalysis.progress in 0..99)}
-        compose.onNodeWithText("Cancelar análisis").performClick()
-        compose.onNodeWithText("Análisis cancelado.").assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_cancel_analysis)).performClick()
+        compose.onNodeWithText(uiText(R.string.diagnostic_analysis_canceled)).assertIsDisplayed()
         compose.runOnIdle {assertFalse(vm.recordingAnalysis.running);assertNull(vm.recordingAnalysis.result)}
         assertEquals(beforeIndex,prefs.getString("recordings",null))
         assertEquals(44L+dataSize,file.length())
@@ -215,9 +217,9 @@ class SessionNavigationTest {
         val before=prefs.getString("recordings",null)
         store.file(session.id).writeBytes(ByteArray(64)) // isolated test fixture only
         compose.onNodeWithTag("session-${session.id}").performClick()
-        compose.onNodeWithText("Analizar grabación").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_analyze_recording)).performScrollTo().performClick()
         compose.waitUntil(10000) {vm.recordingAnalysis.error!=null}
-        compose.onNodeWithText("No es un WAV RIFF válido.").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.diagnostic_not_a_valid_riff_wav)).performScrollTo().assertIsDisplayed()
         assertEquals(before,prefs.getString("recordings",null))
     }
 
@@ -254,7 +256,7 @@ class SessionNavigationTest {
         row.performTouchInput {up()}
         compose.waitUntil(5000){vm.sessions.none {it.id==session.id}}
         assertArrayEquals(bytes,store.file(session.id).readBytes())
-        compose.onNodeWithText("Deshacer").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_undo)).performClick()
         compose.waitUntil {vm.sessions.any {it.id==session.id}}
         assertArrayEquals(bytes,store.file(session.id).readBytes())
         assertTrue(vm.trashedSessions.none {it.id==session.id})
@@ -264,11 +266,11 @@ class SessionNavigationTest {
         val instrument=InstrumentationRegistry.getInstrumentation()
         instrument.uiAutomation.grantRuntimePermission(application.packageName,android.Manifest.permission.RECORD_AUDIO)
         val original=vm.sessions.map {it.id}.toSet()
-        compose.onNodeWithText("Medir",useUnmergedTree=true).performClick()
-        compose.onNodeWithText("Iniciar medición").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_measure),useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil {vm.sessionPhase==ar.didgetaller.SessionPhase.CAPTURING}
         Thread.sleep(1200)
-        compose.onNodeWithText("Detener y guardar",substring=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_stop_and_save),substring=true).performClick()
         compose.waitUntil(10000){vm.sessionPhase==ar.didgetaller.SessionPhase.IDLE && vm.sessions.size==original.size+1}
         compose.runOnIdle {
             assertFalse(vm.listening)
@@ -276,13 +278,13 @@ class SessionNavigationTest {
             assertTrue(saved.durationMs>=500);assertTrue(vm.sessionFile(saved).length()>44100)
             ar.didgetaller.core.Pcm16WavReader(vm.sessionFile(saved)).use {assertEquals(44100,it.sampleRate)}
         }
-        compose.onNodeWithText("Iniciar medición").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil {vm.sessionPhase==ar.didgetaller.SessionPhase.CAPTURING}
         Thread.sleep(700)
         compose.runOnUiThread {vm.onAppStopped()}
         compose.waitUntil(10000){vm.sessionPhase==ar.didgetaller.SessionPhase.IDLE && vm.sessions.size==original.size+2}
         assertFalse(vm.listening)
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.runOnIdle {assertEquals(original.size+2,RecordingStore(application).list().size)}
     }
 
@@ -291,15 +293,15 @@ class SessionNavigationTest {
         // Let the save snackbar leave; it otherwise intercepts taps near the bottom of the viewport.
         compose.waitUntil(10000){vm.message.isBlank()}
         compose.onNodeWithTag("session-${session.id}").performClick()
-        compose.onNodeWithText("Asociar un diseño…").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_associate_a_design)).performScrollTo().performClick()
         compose.onNodeWithText("Perfil UI de prueba").performClick()
         compose.waitUntil(10000){vm.associatedSimulation!=null}
-        compose.onNodeWithText("SIMULACIÓN",substring=true).performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("AUDIO · sesión",substring=true).performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Marcadores").performScrollTo().performClick()
-        compose.onNodeWithText("Marcar posible toot").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_simulation_model_resonances),substring=true).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_audio_fundamental, uiText(R.string.ui_session)),substring=true).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_markers)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_mark_possible_toot)).performScrollTo().performClick()
         compose.runOnIdle {assertEquals(1,vm.markers.size);assertEquals("Posible toot",vm.markers.single().type)}
-        compose.onNodeWithContentDescription("Volver a Sesiones").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         compose.onNodeWithTag("session-${session.id}").performClick()
         compose.waitUntil {vm.markers.size==1 && vm.associatedSimulation!=null}
         compose.runOnIdle {assertNotNull(vm.associatedDesignId)}
@@ -310,15 +312,15 @@ class SessionNavigationTest {
         openAndPlay()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("acoustic-viewer").assertIsDisplayed()
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).assertDoesNotExist()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).assertDoesNotExist()
         assertEquals(session.id,vm.playingId)
-        choosePlot("Espectrograma")
+        choosePlot(uiText(R.string.ui_spectrogram))
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null || vm.workspace.state.error!=null}
         assertNull(vm.workspace.state.error);assertTrue(vm.workspace.state.spectrogram!!.reference>0)
-        choosePlot("Forma de onda")
+        choosePlot(uiText(R.string.ui_waveform))
         compose.waitUntil(20000){vm.workspace.state.wave!=null}
         assertTrue(vm.workspace.state.wave!!.max.any {it>0.05})
-        compose.onNodeWithContentDescription("Acercar").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_zoom_in)).performClick()
         compose.waitUntil(10000){vm.workspace.state.wave?.let {it.end-it.start<vm.workspace.state.frames}==true}
         val explorer=vm.explorer(session.id)
         val before=explorer.camera(session.durationMs,44100,session.timeline)
@@ -326,36 +328,36 @@ class SessionNavigationTest {
         compose.runOnIdle {val after=explorer.cameras[AcousticPlot.WAVE]!!;assertTrue(after.x.low>before.x.low);assertTrue(after.y.low>before.y.low);assertFalse(explorer.follow)}
         compose.onNodeWithTag("reset-viewport").performClick()
         compose.runOnIdle {assertEquals(-1.0,explorer.cameras[AcousticPlot.WAVE]!!.y.low,0.0)}
-        compose.onNodeWithContentDescription("Herramientas").performClick()
-        compose.onNodeWithText("Marcar inicio").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_mark_start)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("immersive-plot").performTouchInput {click(androidx.compose.ui.geometry.Offset(width*.3f,height*.5f))}
-        compose.onNodeWithContentDescription("Herramientas").performClick()
-        compose.onNodeWithText("Marcar fin").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_mark_end)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("immersive-plot").performTouchInput {click(androidx.compose.ui.geometry.Offset(width*.65f,height*.5f))}
         compose.runOnIdle {assertNotNull(explorer.region)}
-        compose.onNodeWithContentDescription("Herramientas").performClick()
-        compose.onNodeWithText("Analizar fragmento").performScrollTo().performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_analyze_excerpt)).performScrollTo().performClick()
         compose.waitUntil(20000){vm.recordingAnalysis.result!=null || vm.recordingAnalysis.error!=null}
         compose.runOnIdle {assertNull(vm.recordingAnalysis.error);assertEquals(66.1,vm.recordingAnalysis.result!!.summary!!.typicalHz,.3)}
         compose.onNodeWithTag("loop-fragment").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.runOnIdle {vm.seekPlayback(session,0)}
         compose.waitUntil(5000){vm.playbackPositionMs().toLong() in explorer.region!!}
-        playAction("Pausar")
+        playAction(uiText(R.string.ui_pause))
         compose.waitUntil {vm.playbackPaused};val position=vm.playbackPositionMs();Thread.sleep(180)
         assertTrue(kotlin.math.abs(position-vm.playbackPositionMs())<=80)
-        choosePlot("Armónicos")
+        choosePlot(uiText(R.string.ui_harmonics))
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
         android.util.Log.i("PrecisionBack","before route=${navController.currentDestination?.route} popups=${compose.onAllNodes(isPopup()).fetchSemanticsNodes().size} focus=${compose.activity.hasWindowFocus()} lifecycle=${compose.activity.lifecycle.currentState}")
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
         android.util.Log.i("PrecisionBack","after route=${navController.currentDestination?.route}")
         awaitDisplayed("session-detail");assertEquals(session.id,vm.playingId)
-        compose.onNodeWithContentDescription("Volver a Sesiones").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         assertNull(vm.playingId)
-        compose.onNodeWithText("Comparar dos sesiones").performScrollTo().performClick()
-        compose.onNodeWithText("Comparar",useUnmergedTree=true).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_compare_two_sessions)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_compare),useUnmergedTree=true).performScrollTo().performClick()
         compose.waitUntil(30000){vm.comparison.a!=null || vm.comparison.error!=null}
         assertNull(vm.comparison.error);assertEquals(66.1,vm.comparison.a!!.summary!!.typicalHz,.3)
         compose.onNodeWithTag("spectrum-chart").performScrollTo().assertIsDisplayed()
@@ -373,9 +375,9 @@ class SessionNavigationTest {
         compose.runOnIdle {assertNotNull(state.inspected);assertTrue(state.inspected!!.contains("cents"))}
         graph.performTouchInput {doubleClick(center)}
         compose.runOnIdle {assertEquals(initial,state.cameras[AcousticPlot.PITCH])}
-        compose.onNodeWithContentDescription("Acercar").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_zoom_in)).performClick()
         compose.runOnIdle {vm.seekPlayback(session,1000)}
-        compose.onNodeWithContentDescription("Seguir").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_follow)).performClick()
         compose.waitUntil {val view=state.cameras[AcousticPlot.PITCH]!!;vm.playbackPositionMs().toDouble() in view.x.low..view.x.high}
         graph.performTouchInput {swipe(center,center+androidx.compose.ui.geometry.Offset(-50f,50f),400)}
         compose.runOnIdle {assertFalse(state.follow)}
@@ -384,7 +386,7 @@ class SessionNavigationTest {
         compose.runOnIdle {assertEquals(manuallyMoved,state.cameras[AcousticPlot.PITCH])}
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
         awaitDisplayed("session-detail")
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).assertIsDisplayed()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.runOnIdle {assertEquals(manuallyMoved,state.cameras[AcousticPlot.PITCH])}
     }
@@ -399,12 +401,12 @@ class SessionNavigationTest {
         compose.onNodeWithTag("session-$recoveredId").performScrollTo().performClick()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.waitUntil(20000){vm.workspace.state.frames==39_690_000L}
-        choosePlot("Espectrograma")
-        compose.onNodeWithContentDescription("Herramientas").performClick()
-        compose.onNodeWithText("Cancelar visualización").performScrollTo().performClick()
+        choosePlot(uiText(R.string.ui_spectrogram))
+        compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_cancel_visualization)).performScrollTo().performClick()
         compose.runOnIdle {assertFalse(vm.workspace.state.loading);assertEquals("Visualización cancelada.",vm.workspace.state.error)}
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
-        choosePlot("Forma de onda")
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
+        choosePlot(uiText(R.string.ui_waveform))
         compose.waitUntil(30000){vm.workspace.state.wave!=null}
         val overviewMs=android.os.SystemClock.elapsedRealtime()-start
         compose.runOnIdle {vm.explorer(recoveredId).cameras[AcousticPlot.WAVE]=ar.didgetaller.core.PlotViewport(ar.didgetaller.core.AxisWindow(600000.0,600010.0),ar.didgetaller.core.AxisWindow(-1.0,1.0))}
@@ -438,29 +440,29 @@ class SessionNavigationTest {
     @Test fun spectrogramRangesKeepReferenceAndSpectrumOffersRealPeakInspectionAndAudio(){
         compose.onNodeWithTag("session-${session.id}").performClick()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
-        choosePlot("Espectrograma")
+        choosePlot(uiText(R.string.ui_spectrogram))
         val state=vm.explorer(session.id)
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null && state.spectrumReference>0}
         val reference=state.spectrumReference
         assertTrue(reference>0)
-        compose.onNodeWithContentDescription("Herramientas").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
         compose.onNodeWithText("100 Hz").performScrollTo().performClick()
         compose.onNodeWithTag("log-frequency").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.waitUntil(20000){vm.workspace.state.spectrogram?.let {it.logarithmic && kotlin.math.abs(it.highHz-100.0)<1e-8}==true}
         assertEquals(reference,state.spectrumReference,0.0);assertTrue(vm.workspace.state.spectrogram!!.lowHz>0)
-        choosePlot("Armónicos")
-        compose.onNodeWithContentDescription("Herramientas").performClick()
+        choosePlot(uiText(R.string.ui_harmonics))
+        compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
         compose.onNodeWithTag("viewer-analyze-tools").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.waitUntil(20000){vm.recordingAnalysis.result!=null || vm.recordingAnalysis.error!=null}
         assertNull(vm.recordingAnalysis.error)
         val density=compose.activity.resources.displayMetrics.density
         compose.onNodeWithTag("immersive-plot").performTouchInput {click(androidx.compose.ui.geometry.Offset(58*density+(width-70*density)*66.1f/500,center.y))}
-        compose.runOnIdle {assertTrue(state.inspected?.contains("H1 candidato")==true);assertTrue(state.inspected!!.contains("dB rel"))}
-        playAction("Reproducir")
+        compose.runOnIdle {assertTrue(state.inspected?.contains(uiText(R.string.ui_h_candidate, 1))==true);assertTrue(state.inspected!!.contains("dB rel"))}
+        playAction(uiText(R.string.ui_play))
         compose.waitUntil {vm.playingId==session.id && !vm.playbackPaused}
-        playAction("Pausar");assertTrue(vm.playbackPaused)
+        playAction(uiText(R.string.ui_pause));assertTrue(vm.playbackPaused)
     }
 
     private class NavigationTestApplication(context: Context) : Application() {

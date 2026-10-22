@@ -5,6 +5,7 @@ import ar.didgetaller.R
 import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.Music
 import ar.didgetaller.core.PitchTrace
+import ar.didgetaller.data.RecordingStore
 
 /** Presentation labels only: stored enum names, marker types and core diagnostics stay unchanged. */
 internal fun Context.instrumentLabel(profile: InstrumentProfile): String = getString(when (profile) {
@@ -36,6 +37,12 @@ internal fun Context.noteBase(hz: Double): String {
     val pitch = Music.pitch(hz) ?: return "—"
     return resources.getStringArray(R.array.note_base_names)[Math.floorMod(pitch.midi, 12)]
 }
+
+/** A fallback is UI text; a stored name, even an identical one, is user content. */
+internal fun Context.sessionName(session: RecordingStore.Session): String =
+    if (session.hasStoredName) session.name else getString(
+        if (session.recovered) R.string.ui_recovered_audio else R.string.recording_name_fallback
+    )
 
 internal fun Context.markerLabel(type: String): String = when (type) {
     "Posible toot" -> getString(R.string.marker_possible_toot)

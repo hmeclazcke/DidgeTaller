@@ -28,6 +28,7 @@ def read(folder):
         else:
             value = item.text or ""
             assert value.strip(), f"Empty resource: {folder}/{name}"
+            assert "\ufffd" not in value, f"Invalid Unicode replacement character: {folder}/{name}"
         result[name] = (item.tag, value)
     return result
 

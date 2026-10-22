@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -44,7 +46,7 @@ class StudioViewerTest {
         path.outputStream().use {compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)}
     }
     @Test fun landscapeAndPortraitEvidence(){
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         compose.runOnIdle {vm.preview(item.id).plot=AcousticPlot.SPECTROGRAM}
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
@@ -60,10 +62,10 @@ class StudioViewerTest {
         assertTrue("The graph must dominate",plot.height/root.height>=.70f)
         assertTrue("Data, excluding axes",area.height/root.height>=if(compose.activity.resources.configuration.fontScale>1.2f).60f else .65f)
         capture("spectrogram-landscape")
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick()
-        compose.onNodeWithText("Fundamental").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performClick()
         capture("fundamental-landscape")
-        compose.onNodeWithTag("immersive-plot").assertContentDescriptionContains("Eje Hz y nota base",substring=true)
+        compose.onNodeWithTag("immersive-plot").assertContentDescriptionContains(uiText(R.string.ui_hz_axis_and_base_note),substring=true)
         val graph=compose.onNodeWithTag("immersive-plot")
         val pitchArea=graph.fetchSemanticsNode().config[PlotDataArea]
         graph.performTouchInput {longClick(androidx.compose.ui.geometry.Offset(pitchArea.left+pitchArea.width*.25f,pitchArea.center.y),800)}
@@ -72,29 +74,29 @@ class StudioViewerTest {
             assertTrue(vm.explorer(item.id).inspected!!.contains("cents"))
         }
         capture("fundamental-cursor-landscape")
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick()
-        compose.onNodeWithText("Forma de onda").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_waveform)).performClick()
         compose.runOnIdle {assertNull("A reading belongs to its graph",vm.explorer(item.id).inspected)}
         compose.waitUntil(30000){vm.workspace.state.wave!=null && !vm.workspace.state.loading}
         capture("wave-landscape")
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick()
-        compose.onNodeWithText("Armónicos").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_harmonics)).performClick()
         compose.runOnIdle {assertNull(vm.explorer(item.id).inspected);vm.analyzeRecording(item)}
         compose.waitUntil(30000){vm.recordingAnalysis.result!=null}
         capture("harmonics-landscape")
-        compose.onNodeWithContentDescription("Volver a la sesión").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_session)).performClick()
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
     }
     @Test fun fluteCapturePersistsProfileAndSessionUsesItsOwnProfile(){
         compose.onNodeWithTag("instrument-selector").performClick()
-        compose.onNodeWithText("Flauta nativa").performClick()
+        compose.onNodeWithText(uiText(R.string.instrument_native_flute)).performClick()
         capture("measure-flute")
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(compose.activity.packageName,android.Manifest.permission.RECORD_AUDIO)
         val previous=vm.sessions.map {it.id}.toSet()
-        compose.onNodeWithText("Iniciar medición").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil(10000){vm.listening && vm.sessionTimeline.size>=3}
         compose.onNodeWithTag("instrument-selector").assertIsNotEnabled()
-        compose.onNodeWithText("Detener y guardar").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).performClick()
         compose.waitUntil(10000){vm.sessionPhase==ar.didgetaller.SessionPhase.IDLE && vm.sessions.any {it.id !in previous}}
         val captured=vm.sessions.first {it.id !in previous};extraFixtures+=captured.id
         assertEquals(InstrumentProfile.NATIVE_AMERICAN_FLUTE,captured.instrument)
@@ -110,7 +112,7 @@ class StudioViewerTest {
         val flute=store.save(WavCodec.encode(pcm,pcm.size,44100),points,instrument=InstrumentProfile.NATIVE_AMERICAN_FLUTE)
         extraFixtures+=flute.id
         compose.runOnIdle {vm.renameSession(flute,"Melodía sintética · Flauta");vm.selectInstrument(InstrumentProfile.DIDGERIDOO)}
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${flute.id}").performScrollTo().performClick()
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
         capture("flute-detail")
@@ -123,15 +125,15 @@ class StudioViewerTest {
             assertTrue(range.high>659);assertTrue(range.low<392)
         }
         capture("flute-fundamental-portrait")
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick()
-        compose.onNodeWithText("Espectrograma").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performClick()
         compose.waitUntil(30000){vm.workspace.state.spectrogram!=null && !vm.workspace.state.loading}
         compose.runOnIdle {assertEquals(2000.0,vm.explorer(flute.id).camera(flute.durationMs,44100,flute.timeline).y.high,0.0)}
         capture("flute-spectrogram-portrait")
         val layouts=mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
         compose.onNodeWithTag("viewer-time").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult){it(layouts)}
         assertFalse("Transport time must remain complete",layouts.single().isLineEllipsized(0))
-        compose.onNodeWithTag("immersive-plot").assertContentDescriptionContains("Espectrograma",substring=true)
-        assertFalse(compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString().contains("nota base"))
+        compose.onNodeWithTag("immersive-plot").assertContentDescriptionContains(uiText(R.string.ui_spectrogram),substring=true)
+        assertFalse(compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString().contains(uiText(R.string.ui_hz_axis_and_base_note)))
     }
 }

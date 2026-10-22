@@ -126,7 +126,7 @@ internal fun SpectrumChart(a:WavAnalysis.Result,b:WavAnalysis.Result?=null,showA
     val maxHz=min(a.sampleRate,b?.sampleRate ?: a.sampleRate)/2.0
     val labelSize=with(LocalDensity.current){11.sp.toPx()}
     Column(verticalArrangement=Arrangement.spacedBy(6.dp)) {
-        Text("${from.toInt()}–${to.toInt()} Hz · 0 a −80 dB rel",style=MaterialTheme.typography.labelSmall)
+        Text(stringResource(R.string.spectrum_frequency_caption, from.toInt(), to.toInt()),style=MaterialTheme.typography.labelSmall)
         Canvas(Modifier.fillMaxWidth().height(280.dp).background(Color(0xFF101B25)).testTag("spectrum-chart")
             .semantics {contentDescription=context.getString(R.string.ui_power_spectrum_harmonic_candidates_and_measured_peaks)}
             .chartGestures({x,_ ->val hz=from+x*(to-from)

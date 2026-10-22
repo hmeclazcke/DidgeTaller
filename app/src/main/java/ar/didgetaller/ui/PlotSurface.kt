@@ -83,7 +83,8 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val yTicks=if(state.plot==AcousticPlot.PITCH)pitchTicks.map {it.hz} else
         PlotScales.ticks(camera.y,if((dimensions.height-top-bottom)/textSize<12)3 else 5,log)
     // Measure the exact strings with the same native Paint that renders them, including notes.
-    val requiredLeft=if(state.plot in listOf(AcousticPlot.PITCH,AcousticPlot.SPECTROGRAM))remember(pitchTicks,yTicks,camera.y.span,textSize,labelGap){
+    val labelLocale=androidx.compose.ui.platform.LocalConfiguration.current.locales.toLanguageTags()
+    val requiredLeft=if(state.plot in listOf(AcousticPlot.PITCH,AcousticPlot.SPECTROGRAM))remember(pitchTicks,yTicks,camera.y.span,textSize,labelGap,labelLocale){
         val hzWidth=yTicks.maxOfOrNull {paint.measureText(axisLabel(it,camera.y.span))} ?: 0f
         val noteWidth=pitchTicks.maxOfOrNull {paint.measureText((if(it.approximate)"≈ " else "")+it.note.orEmpty())*.85f} ?: 0f
         max(hzWidth,noteWidth)+labelGap*2

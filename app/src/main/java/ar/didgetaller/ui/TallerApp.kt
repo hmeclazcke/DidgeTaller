@@ -2,6 +2,7 @@ package ar.didgetaller.ui
 
 import ar.didgetaller.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -102,7 +103,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
             navController.addOnDestinationChangedListener(listener)
             onDispose {navController.removeOnDestinationChangedListener(listener)}
         }
-        LaunchedEffect(vm.message) {if(vm.message.isNotBlank()) {snackbars.showSnackbar(vm.message,withDismissAction=true);vm.clearMessage()}}
+        LaunchedEffect(vm.message) {if(vm.message.isNotBlank()) {snackbars.showSnackbar(context.localizedDiagnostic(vm.message),withDismissAction=true);vm.clearMessage()}}
         LaunchedEffect(route){if(inDetail)snackbars.currentSnackbarData?.dismiss()}
         LaunchedEffect(vm.undoEntry) {vm.undoEntry?.let {entry ->
             val result=snackbars.showSnackbar(context.getString(R.string.ui_in_trash),actionLabel=context.getString(R.string.ui_undo),withDismissAction=true,duration=SnackbarDuration.Long)
@@ -232,7 +233,7 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     var instruments by remember {mutableStateOf(false)}
     Box {
         TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
-            Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)),maxLines=1)
+            Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)))
         }
         DropdownMenu(expanded=instruments,onDismissRequest={instruments=false}){
             InstrumentProfile.entries.forEach {profile->DropdownMenuItem(text={Text(context.instrumentLabel(profile))},onClick={vm.selectInstrument(profile);instruments=false})}
@@ -249,7 +250,7 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     val status=when {
         vm.requestingPermission -> context.getString(R.string.ui_waiting_for_microphone_permission)
         vm.permissionDenied -> context.getString(R.string.ui_permission_denied_enable_it_in_settings)
-        vm.microphoneError!=null -> context.getString(R.string.ui_capture_error, vm.microphoneError)
+        vm.microphoneError!=null -> context.getString(R.string.ui_capture_error, context.localizedDiagnostic(vm.microphoneError.orEmpty()))
         vm.sessionPhase==SessionPhase.SAVING -> context.getString(R.string.ui_analyzing_and_saving_session)
         !capturing -> context.getString(R.string.ui_ready_to_measure)
         vm.reading.rms<0.005 -> context.getString(R.string.ui_listening_no_signal)
@@ -501,7 +502,7 @@ private fun DesignerScreen(vm:TallerViewModel,export:(String,String,ByteArray)->
                 Text("${if(index==0)stringResource(R.string.ui_estimated_low_resonance) else stringResource(R.string.ui_resonance, index+1)}: ${context.noteLabel(hz)} · ${hzLabel(hz)}",fontSize=13.sp,color=accent,lineHeight=21.sp)
             }
         }else Text(stringResource(R.string.ui_calculating),color=muted)
-        Text(vm.measuredComparison(),color=muted,fontSize=12.sp)
+        Text(context.localizedDiagnostic(vm.measuredComparison()),color=muted,fontSize=12.sp)
     }
     FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
         Button(onClick={showSaveDialog=true}) {Text(stringResource(R.string.ui_save_design),fontSize=12.sp)}
@@ -648,7 +649,7 @@ private fun MeasurementsLibrary(vm:TallerViewModel,export:(String,String,ByteArr
     Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Text(stringResource(R.string.ui_legacy_readings),fontWeight=FontWeight.SemiBold)
-            Text(stringResource(R.string.ui_measurements_without_audio, vm.measurements.size),color=muted,fontSize=12.sp)
+            Text(pluralStringResource(R.plurals.measurement_count, vm.measurements.size, vm.measurements.size),color=muted,fontSize=12.sp)
         }
         TextButton(onClick={oldestFirst=!oldestFirst}) {Text(if(oldestFirst)stringResource(R.string.ui_oldest_first) else stringResource(R.string.ui_newest_first))}
     }
@@ -702,9 +703,9 @@ private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->
                     val generated="Sesión ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm",Locale.getDefault()).format(java.util.Date(item.createdAt))}"
                     val customName=item.name!=generated
                     Row(verticalAlignment=Alignment.CenterVertically){
-                        Text(if(customName)item.name else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_session_without_a_note),Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                        Text(if(customName)context.sessionName(item) else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_session_without_a_note),Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                         Box {
-                            IconButton(onClick={menu=true}){Icon(Icons.Default.MoreVert,context.getString(R.string.ui_options_for_session, item.name))}
+                            IconButton(onClick={menu=true}){Icon(Icons.Default.MoreVert,context.getString(R.string.ui_options_for_session, context.sessionName(item)))}
                             DropdownMenu(expanded=menu,onDismissRequest={menu=false}){
                                 DropdownMenuItem(text={Text(stringResource(R.string.ui_move_to_trash))},onClick={menu=false;vm.deleteSession(item)})
                             }
@@ -717,7 +718,7 @@ private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->
                     if(item.timeline.isNotEmpty())SessionGraph(item.timeline,item.durationMs,Modifier.fillMaxWidth().height(48.dp),compact=true,instrument=item.instrument,tag="summary-${item.id}")
                     Text("${context.instrumentLabel(item.instrument)} · ${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
                     Text(item.summary?.let {stringResource(R.string.ui_stability_ff3f29, stabilityLabel(it.stabilityPercent))} ?: stringResource(R.string.ui_wav_available_for_analysis),color=orange,style=MaterialTheme.typography.bodySmall)
-                    if(item.legacy && item.name!=(if(item.recovered)context.getString(R.string.ui_recovered_audio) else context.getString(R.string.ui_legacy_recording)))Text(if(item.recovered)stringResource(R.string.ui_recovered_audio) else stringResource(R.string.ui_legacy_recording),color=muted,style=MaterialTheme.typography.bodySmall)
+                    if(item.legacy && context.sessionName(item)!=(if(item.recovered)context.getString(R.string.ui_recovered_audio) else context.getString(R.string.ui_legacy_recording)))Text(if(item.recovered)stringResource(R.string.ui_recovered_audio) else stringResource(R.string.ui_legacy_recording),color=muted,style=MaterialTheme.typography.bodySmall)
                 }
             }
         }
@@ -729,7 +730,7 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
                           export:(RecordingStore.Session)->Unit,onBack:()->Unit,onExpand:(AcousticPlot)->Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
     var rename by remember(item.id) {mutableStateOf(false)}
-    var name by remember(item.id) {mutableStateOf(item.name)}
+    var name by remember(item.id) {mutableStateOf(context.sessionName(item))}
     var delete by remember(item.id) {mutableStateOf(false)}
     var cursor by remember(item.id) {mutableIntStateOf(0)}
     LaunchedEffect(vm.playingId,vm.playbackPaused,item.id) {
@@ -741,17 +742,17 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
     }
     var more by rememberSaveable(item.id){mutableStateOf(false)}
     Panel {
-        Text(item.name,style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+        Text(context.sessionName(item),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         Text(item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_note_not_determined),style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)
         Text(item.summary?.let {hzLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_view_changes_in_fundamental) else stringResource(R.string.ui_no_reliable_frequency),color=accent,style=MaterialTheme.typography.headlineSmall)
         Text("${context.instrumentLabel(item.instrument)} · ${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
         Text(item.summary?.let {stringResource(R.string.ui_stability_ff3f29, stabilityLabel(it.stabilityPercent))} ?: stringResource(R.string.ui_audio_available_for_analysis),color=orange,style=MaterialTheme.typography.bodySmall)
         TextButton(onClick={more=!more}){Text(if(more)stringResource(R.string.ui_less_information) else stringResource(R.string.ui_session_details))}
         if(more){
-            Text(item.name,style=MaterialTheme.typography.bodyMedium)
+            Text(context.sessionName(item),style=MaterialTheme.typography.bodyMedium)
             Text(stringResource(R.string.ui_mb_local_wav, item.sizeBytes/1024.0/1024.0),style=MaterialTheme.typography.bodySmall)
             item.summary?.let {summary->
-                Text(stringResource(R.string.ui_of_readings_belong_to_the_predominant_note_typical_range_usable_readings, summary.stabilityPercent, hzLabel(summary.lowHz), hzLabel(summary.highHz), summary.validPoints),style=MaterialTheme.typography.bodySmall)
+                Text(pluralStringResource(R.plurals.session_summary_readings, summary.validPoints, summary.stabilityPercent, hzLabel(summary.lowHz), hzLabel(summary.highHz), summary.validPoints),style=MaterialTheme.typography.bodySmall)
             } ?: Text(if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_there_are_different_notes_with_no_predominant_note_explore_the_time_series) else stringResource(R.string.ui_not_enough_associated_readings_you_can_analyze_the_wav_without_modifying_it),style=MaterialTheme.typography.bodySmall)
         }
     }

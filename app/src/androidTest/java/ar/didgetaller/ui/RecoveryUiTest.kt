@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -50,7 +52,7 @@ class RecoveryUiTest {
         file.outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)};bitmap.recycle()
     }
     private fun back(){Espresso.pressBackUnconditionally();compose.waitForIdle()}
-    private fun library(){compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()}
+    private fun library(){compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()}
     private fun open(item:RecordingStore.Session){compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick();compose.onNodeWithTag("time-chart").performScrollTo()}
 
     @Test fun allSurfacesRenderVariationAndPeriodicityWithOriginalDataIntact(){
@@ -61,7 +63,7 @@ class RecoveryUiTest {
         val item=RecordingStore(app).save(WavCodec.encode(ShortArray(44100*18),44100*18,44100),raw)
         show();compose.runOnIdle {vm.renameSession(item,"Variación y periodicidad · serie sintética")}
         library();capture("colours-library");open(item)
-        val heading=compose.onNodeWithText("Explorar el audio").performScrollTo().fetchSemanticsNode()
+        val heading=compose.onNodeWithText(uiText(R.string.ui_explore_audio)).performScrollTo().fetchSemanticsNode()
         assertEquals(heading.size.height.toFloat(),heading.boundsInRoot.height,1f)
         capture("session-heading")
         compose.onNodeWithTag("time-chart").performScrollTo();capture("colours-detail")
@@ -78,7 +80,7 @@ class RecoveryUiTest {
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick();capture("colours-fullscreen")
         val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
         compose.onNodeWithTag("viewer-tools").performClick()
-        compose.onNodeWithText("Vista ajustada").performScrollTo().performClick();back()
+        compose.onNodeWithText(uiText(R.string.ui_fitted_view)).performScrollTo().performClick();back()
         assertTrue(compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow].y.span<general.y.span)
         capture("colours-fitted")
         compose.onNodeWithTag("viewer-tools").performClick()
@@ -106,14 +108,14 @@ class RecoveryUiTest {
             val readings=pcm.asList().chunked(4096).mapNotNull {stream.append(it.toShortArray())}
             readings.forEach {r->compose.runOnIdle {callback(r)};android.os.SystemClock.sleep(profile.analysisChunks*93L)}
             compose.runOnIdle {assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument);assertEquals(readings.size,vm.sessionTimeline.size)}
-            compose.onNodeWithText("Nota estable").assertIsDisplayed()
+            compose.onNodeWithText(uiText(R.string.ui_stable_note)).assertIsDisplayed()
             compose.onNodeWithText(hzLabel(vm.filteredHz)).assertIsDisplayed()
             capture(name)
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
             capture("$name-silence")
             compose.runOnIdle {callback(PitchDetector.Reading(confidence=.52,rms=.10));assertEquals(0.0,vm.filteredHz,0.0)}
-            compose.onNodeWithText("Señal presente · frecuencia incierta").assertIsDisplayed()
+            compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).assertIsDisplayed()
             capture("$name-uncertain")
             compose.runOnIdle {phase.value=SessionPhase.IDLE;vm.microphoneStop()}
         }

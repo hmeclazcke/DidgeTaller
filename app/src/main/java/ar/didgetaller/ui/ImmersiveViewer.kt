@@ -2,6 +2,7 @@ package ar.didgetaller.ui
 
 import ar.didgetaller.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 
 import android.app.Activity
 import android.content.Context
@@ -66,6 +67,11 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                          immersive:Boolean=false,onExpand:()->Unit={}) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val s=if(immersive)vm.explorer(item.id) else vm.preview(item.id);val visual=vm.workspace.state
+    val language=LocalConfiguration.current.locales.toLanguageTags()
+    LaunchedEffect(s,language){
+        if(s.inspectionLanguage!=null && s.inspectionLanguage!=language)s.inspected=null
+        s.inspectionLanguage=language
+    }
     val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs.coerceAtLeast(2)
     val analysis=vm.recordingAnalysis.takeIf {it.sessionId==item.id}
     val result=analysis?.result
@@ -206,7 +212,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
             if(state.plot==AcousticPlot.SPECTRUM && recording?.result==null && recording?.running!=true)
                 TextButton(onClick={vm.analyzeRecording(item)},modifier=Modifier.align(Alignment.Center).testTag("viewer-analyze")){Text(stringResource(R.string.ui_analyze_recording))}
             if(visual.error!=null)TextButton(onClick={vm.workspace.open(item)},modifier=Modifier.align(Alignment.Center)){
-                Text(stringResource(R.string.ui_retry, visual.error),color=MaterialTheme.colorScheme.error)
+                Text(stringResource(R.string.ui_retry, context.localizedDiagnostic(visual.error.orEmpty())),color=MaterialTheme.colorScheme.error)
             }
             if(state.plot==AcousticPlot.SPECTROGRAM)Row(Modifier.align(Alignment.TopEnd).padding(end=12.dp).heightIn(min=16.dp),verticalAlignment=Alignment.CenterVertically){
                 Text("−${state.rangeDb.toInt()}",style=MaterialTheme.typography.labelSmall)
@@ -247,7 +253,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
                 Text(if(recording?.endMs!=null)stringResource(R.string.ui_excerpt_spectrum) else stringResource(R.string.ui_full_recording_spectrum_h_candidate),style=MaterialTheme.typography.bodySmall)
                 TextButton(onClick={if(recording?.running==true)vm.cancelRecordingAnalysis() else vm.analyzeRecording(item)},modifier=Modifier.testTag("viewer-analyze-tools")){Text(if(recording?.running==true)stringResource(R.string.ui_cancel_analysis) else stringResource(R.string.ui_analyze_recording))}
             }
-            (visual.error ?: recording?.error)?.let {Text(it,color=MaterialTheme.colorScheme.error)}
+            (visual.error ?: recording?.error)?.let {Text(context.localizedDiagnostic(it),color=MaterialTheme.colorScheme.error)}
             PlotTools(vm,item)
             FragmentTools(vm,item)
             TextButton(onClick={tools=false}){Text(stringResource(R.string.ui_back_to_chart))}
@@ -294,7 +300,7 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session,s:Explorer
     }
     if(s.plot==AcousticPlot.PITCH){
         val range=s.pitch(points)
-        Text(stringResource(R.string.ui_readings_in_the_trend_overview_shows_their_range_fitted_magnifies_the_variatio, range.valid),style=MaterialTheme.typography.bodySmall)
+        Text(pluralStringResource(R.plurals.trend_reading_count, range.valid, range.valid),style=MaterialTheme.typography.bodySmall)
         Row {
             TextButton(onClick={s.extendedPitchRange=false;s.cameras[s.plot]=camera.copy(y=s.overview(points).window);s.follow=false}){Text(stringResource(R.string.ui_overview))}
             TextButton(onClick={s.extendedPitchRange=false;s.cameras[s.plot]=camera.copy(y=range.window);s.follow=false}){Text(stringResource(R.string.ui_fitted_view))}

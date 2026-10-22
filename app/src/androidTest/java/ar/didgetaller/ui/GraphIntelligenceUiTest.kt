@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -48,7 +50,7 @@ class GraphIntelligenceUiTest {
             vm.renameSession(a,"Drone estable · fixture");vm.renameSession(b,"Melodía · fixture");vm.renameSession(c,"Periodicidad ambigua · fixture")
         }
         compose.setContent {nav=rememberNavController();TallerApp(vm,{}, {},{_,_,_->},nav)}
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
     }
     @After fun cleanup(){if(::vm.isInitialized)compose.runOnUiThread {owner.clear()};if(::app.isInitialized)app.clean()}
     private fun capture(name:String){
@@ -68,7 +70,7 @@ class GraphIntelligenceUiTest {
     }
     private fun tools(action:String){
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithText(action).performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.waitUntil(5000){compose.activity.hasWindowFocus()}
     }
     private fun zoom(){
@@ -98,15 +100,15 @@ class GraphIntelligenceUiTest {
     @Test fun generalFittedExtremeZoomResetAndGraphKindsStayCoherent(){
         open(a);expand();capture("drone-general")
         val general=vm.explorer(a.id).camera(a.durationMs,44100,a.timeline)
-        tools("Vista ajustada");assertTrue(vm.explorer(a.id).camera(a.durationMs,44100,a.timeline).y.span<2);capture("drone-fitted")
+        tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(a.id).camera(a.durationMs,44100,a.timeline).y.span<2);capture("drone-fitted")
         repeat(3){zoom()}
         compose.onNodeWithTag("viewer-tools").performClick()
-        repeat(10){compose.onNodeWithText("Alejar",useUnmergedTree=true).performScrollTo().performClick()}
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        repeat(10){compose.onNodeWithText(uiText(R.string.ui_zoom_out),useUnmergedTree=true).performScrollTo().performClick()}
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         assertEquals(general.y,vm.explorer(a.id).camera(a.durationMs,44100,a.timeline).y)
         compose.onNodeWithTag("reset-viewport").performClick()
         assertEquals(general,compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]);capture("after-extreme-reset")
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick();compose.onNodeWithText("Espectrograma").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick();compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performClick()
         compose.waitUntil(30000){vm.workspace.state.bitmap!=null && !vm.workspace.state.loading}
         assertEquals(500.0,vm.explorer(a.id).camera(a.durationMs,44100,a.timeline).y.high,0.0)
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed();capture("spectrogram-portrait")
@@ -115,18 +117,18 @@ class GraphIntelligenceUiTest {
         open(c);expand()
         val trace=PitchTrace.build(c.timeline,c.instrument);assertEquals(1,trace.count {it.uncertain})
         val s=vm.explorer(c.id);assertTrue(s.camera(c.durationMs,44100,c.timeline).y.low>100)
-        tools("Mostrar todos los valores");assertTrue(s.showUncertain);capture("uncertain-original")
+        tools(uiText(R.string.ui_show_all_values));assertTrue(s.showUncertain);capture("uncertain-original")
         val graph=compose.onNodeWithTag("immersive-plot");val area=graph.fetchSemanticsNode().config[PlotDataArea]
         graph.performTouchInput {longClick(Offset(area.left+area.width*(4500f/c.durationMs),area.center.y),800)}
-        assertTrue(s.inspected!!.contains("estimación incierta"));assertTrue(s.inspected!!.contains("42,9 Hz"));assertFalse(s.inspected!!.contains("cents"))
+        assertTrue(s.inspected!!.contains(uiUncertainEstimatePrefix()));assertTrue(s.inspected!!.contains(hzLabel(42.9)));assertFalse(s.inspected!!.contains("cents"))
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("complete-reading").assertTextEquals(s.inspected!!);capture("uncertain-reading")
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         // The exact-range tool is the intentional escape hatch outside data-driven zoom limits.
-        compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithText("Ingresar rango exacto…").performScrollTo().performClick()
-        compose.onNodeWithText("Desde Hz").performTextReplacement("0")
-        compose.onNodeWithText("Hasta Hz").performTextReplacement("1")
-        compose.onNodeWithText("Aplicar rango").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithText(uiText(R.string.ui_enter_exact_range)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_from, "Hz")).performTextReplacement("0")
+        compose.onNodeWithText(uiText(R.string.ui_to, "Hz")).performTextReplacement("1")
+        compose.onNodeWithText(uiText(R.string.ui_apply_range)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         graph.assertContentDescriptionContains("0 Hz",substring=true)
         val desc=graph.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
         assertFalse(desc.contains("C#-14"));assertFalse(desc.contains("aproximadamente"));capture("zero-hz-no-note")

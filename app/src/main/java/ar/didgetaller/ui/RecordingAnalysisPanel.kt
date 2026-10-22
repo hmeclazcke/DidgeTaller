@@ -2,6 +2,7 @@ package ar.didgetaller.ui
 
 import ar.didgetaller.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,13 +36,13 @@ internal fun RecordingAnalysisPanel(vm:TallerViewModel,item:RecordingStore.Sessi
             } else Button(onClick={vm.analyzeRecording(item,force=state?.result!=null)}) {
                 Text(if(state?.result!=null)stringResource(R.string.ui_analyze_again) else stringResource(R.string.ui_analyze_recording))
             }
-            state?.error?.let {Text(it,color=colors.error,fontSize=13.sp)}
+            state?.error?.let {Text(context.localizedDiagnostic(it),color=colors.error,fontSize=13.sp)}
             state?.result?.let {result ->
                 val summary=result.summary
                 Text(summary?.let {"${context.noteLabel(it.typicalHz)} · ${hzLabel(it.typicalHz)}"} ?:
                     if(item.instrument==ar.didgetaller.core.InstrumentProfile.NATIVE_AMERICAN_FLUTE && result.validWindowFraction>=.5)context.getString(R.string.ui_changing_notes_no_predominant_note) else context.getString(R.string.ui_uncertain_fundamental),
                     color=colors.primary,fontSize=22.sp,fontWeight=FontWeight.Bold)
-                Text(stringResource(R.string.ui_hz_sample_rate_spectral_windows_up_to_s_per_window, result.sampleRate, result.windows, result.spectrum.fftSize.toDouble()/result.sampleRate),
+                Text(pluralStringResource(R.plurals.spectral_window_summary, result.windows, result.sampleRate, result.windows, result.spectrum.fftSize.toDouble()/result.sampleRate),
                     color=colors.onSurfaceVariant,fontSize=12.sp)
                 if(item.instrument==ar.didgetaller.core.InstrumentProfile.NATIVE_AMERICAN_FLUTE)
                     Text(stringResource(R.string.ui_fundamental_ms_windows_ms_hop, item.instrument.windowSamples*1000/result.sampleRate, item.instrument.windowSamples*500/result.sampleRate),color=colors.onSurfaceVariant,fontSize=12.sp)

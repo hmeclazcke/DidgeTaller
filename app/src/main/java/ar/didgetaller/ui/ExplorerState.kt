@@ -29,6 +29,7 @@ class ExplorerState(val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDO
     var rangeDb by mutableDoubleStateOf(70.0)
     var spectrumReference by mutableDoubleStateOf(0.0)
     var inspected by mutableStateOf<String?>(null)
+    internal var inspectionLanguage: String? = null
     var gestureActive by mutableStateOf(false)
     var showUncertain by mutableStateOf(false)
     // Broad physical/custom ranges require an explicit action, never a pinch zoom-out.

@@ -63,7 +63,7 @@ internal fun LibraryTools(vm:TallerViewModel,onCompare:()->Unit) {
         if(showTrash) {
             Text(stringResource(R.string.ui_files_are_kept_until_you_empty_the_trash_you_can_restore_them_even_after_closi),style=MaterialTheme.typography.bodySmall)
             vm.trashedSessions.forEach {item ->key(item.id) {
-                Text(item.name);TextButton(onClick={vm.restore("session",item.id)}) {Text(stringResource(R.string.ui_restore_session))}
+                Text(context.sessionName(item));TextButton(onClick={vm.restore("session",item.id)}) {Text(stringResource(R.string.ui_restore_session))}
             }}
             vm.trashedDesigns.forEach {item ->key(item.id) {
                 Text(item.name);TextButton(onClick={vm.restore("design",item.id)}) {Text(stringResource(R.string.ui_restore_design))}

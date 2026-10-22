@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -37,16 +39,16 @@ class ViewerRotationTest {
         if(::item.isInitialized)store.delete(item.id) // Only the UUID this test created, never existing sessions.
     }
     @Test fun actualRecreationAndLandscapeKeepPlayerCameraSelectionAndBackStack(){
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
-        compose.onNodeWithText("Reproducir").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
         compose.waitUntil {vm.playingId==item.id && !vm.playbackPaused}
         compose.runOnIdle {vm.seekPlayback(item,4000)}
         compose.waitUntil {vm.playbackPositionMs() in 3900..6000}
-        compose.onNodeWithText("Pausar").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_pause)).performClick()
         val position=vm.playbackPositionMs()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
-        compose.onNodeWithContentDescription("Acercar").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_zoom_in)).performClick()
         val state=vm.explorer(item.id)
         compose.runOnIdle {state.regionStart=3000;state.regionEnd=7000}
         val camera=state.cameras[state.plot]
@@ -67,13 +69,13 @@ class ViewerRotationTest {
         assertTrue(bounds.width>bounds.height);assertTrue(bounds.height>120*compose.activity.resources.displayMetrics.density)
         val path=File(compose.activity.getExternalFilesDir(null),"ui-audit/v31-after-landscape.png").apply {parentFile!!.mkdirs()}
         path.outputStream().use {compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)}
-        compose.onNodeWithContentDescription("Volver a la sesión").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_session)).performClick()
         // Check the live player before pausing it. This avoids waiting for a continuously
         // changing playback cursor to become Espresso-idle across the orientation/inset transition.
         compose.runOnUiThread {assertEquals(item.id,vm.playingId);assertFalse(vm.playbackPaused);vm.togglePlayback(item)}
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
         compose.runOnIdle {assertEquals(item.id,vm.playingId)}
-        compose.onNodeWithContentDescription("Volver a Sesiones").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         compose.onNodeWithTag("library-list").assertIsDisplayed()
         compose.runOnIdle {assertNull(vm.playingId);assertEquals(0,vm.playbackPositionMs())}
     }
@@ -82,6 +84,6 @@ class ViewerRotationTest {
         compose.runOnIdle {vm.onPermissionResult(false,true);assertTrue(vm.permissionDenied)}
         compose.activityRule.scenario.recreate()
         compose.runOnIdle {assertFalse(vm.permissionDenied);assertFalse(vm.listening);assertEquals(ar.didgetaller.SessionPhase.IDLE,vm.sessionPhase)}
-        compose.onNodeWithText("Iniciar medición").assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).assertIsDisplayed()
     }
 }

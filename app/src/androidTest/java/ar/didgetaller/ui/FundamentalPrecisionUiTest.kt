@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -45,7 +47,7 @@ class FundamentalPrecisionUiTest {
             vm.renameSession(drone,"Drone con retornos · fixture");vm.renameSession(toot,"Toot breve · fixture");vm.renameSession(flute,"Flauta melódica · fixture")
         }
         compose.setContent {TallerApp(vm,{}, {},{_,_,_->},rememberNavController())}
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
     }
     @After fun cleanup(){if(::vm.isInitialized)compose.runOnUiThread {owner.clear()};if(::app.isInitialized)app.clean()}
     private fun capture(name:String){
@@ -59,7 +61,7 @@ class FundamentalPrecisionUiTest {
     private fun expand(){compose.onNodeWithTag("expand-plot").performScrollTo().performClick();compose.onNodeWithTag("immersive-plot").assertIsDisplayed()}
     private fun tools(action:String){
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithText(action).performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick();compose.waitUntil(5000){compose.activity.hasWindowFocus()}
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick();compose.waitUntil(5000){compose.activity.hasWindowFocus()}
     }
     private fun measure(name:String,tag:String){
         val node=compose.onNodeWithTag(tag).fetchSemanticsNode();val area=node.config[PlotDataArea]
@@ -73,7 +75,7 @@ class FundamentalPrecisionUiTest {
         val preview=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
         assertEquals(summary,preview)
         if(InstrumentationRegistry.getArguments().getString("baseline")!="true"){
-            compose.onNodeWithText("Verde: estable · Amarillo: variación · Naranja: revisar",substring=true).performScrollTo();capture("detail-legend")
+            compose.onNodeWithText(uiText(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),substring=true).performScrollTo();capture("detail-legend")
         }
         expand();measure("fullscreen","immersive-plot");capture("fullscreen")
         if(InstrumentationRegistry.getArguments().getString("baseline")=="true")return
@@ -85,21 +87,21 @@ class FundamentalPrecisionUiTest {
     }
     @Test fun originalInspectionFittedPinchAndReset(){
         open(drone);expand();val general=vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline)
-        tools("Vista ajustada");assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).y.span<4);capture("fitted")
+        tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).y.span<4);capture("fitted")
         val graph=compose.onNodeWithTag("immersive-plot");val area=graph.fetchSemanticsNode().config[PlotDataArea];val delta=Offset(area.width*.12f,area.height*.12f)
         graph.performTouchInput {pinch(area.center-delta,area.center+delta,area.center-delta*1.7f,area.center+delta*1.7f,450)}
         assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).x.span<general.x.span)
         compose.onNodeWithTag("reset-viewport").performClick();assertEquals(general,graph.fetchSemanticsNode().config[PlotWindow])
-        tools("Mostrar todos los valores");capture("original")
+        tools(uiText(R.string.ui_show_all_values));capture("original")
         val expanded=graph.fetchSemanticsNode().config[PlotDataArea]
         val x=vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).x.fraction(2160.0).toFloat()
         graph.performTouchInput {longClick(Offset(expanded.left+expanded.width*x,expanded.center.y),800)}
-        assertTrue(vm.explorer(drone.id).inspected!!.contains("estimación incierta"));assertTrue(vm.explorer(drone.id).inspected!!.contains("60,0 Hz"))
+        assertTrue(vm.explorer(drone.id).inspected!!.contains(uiUncertainEstimatePrefix()));assertTrue(vm.explorer(drone.id).inspected!!.contains(hzLabel(60.0)))
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("complete-reading").assertTextEquals(vm.explorer(drone.id).inspected!!);capture("inspection")
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("show-uncertain").performScrollTo().performClick()
         assertFalse(vm.explorer(drone.id).showUncertain)
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("reset-viewport").performClick();assertEquals(general,graph.fetchSemanticsNode().config[PlotWindow]);capture("reset")
     }
     @Test fun shortTootAndFluteRemainVisible(){

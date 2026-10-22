@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+
 import android.Manifest
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
@@ -57,7 +59,7 @@ class PrecisionUiTest {
         return item
     }
     private fun detail(item:RecordingStore.Session){
-        compose.onNodeWithText("Biblioteca",useUnmergedTree=true).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo()
         capture("library-same-session")
         compose.onNodeWithTag("session-${item.id}").performClick()
@@ -65,13 +67,13 @@ class PrecisionUiTest {
         capture("fundamental-detail")
     }
     private fun pick(title:String){
-        compose.onNodeWithContentDescription("Cambiar gráfico").performClick();compose.onNodeWithText(title).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick();compose.onNodeWithText(title).performClick()
         compose.waitUntil(5000){compose.activity.hasWindowFocus()}
     }
     @Test fun systemBackFromWideReturnsToMeasureRepeatedlyWithoutFinishingActivity(){
         capture("measure-normal")
         repeat(3){
-            compose.onNodeWithText("Vista amplia").performScrollTo().performClick()
+            compose.onNodeWithText(uiText(R.string.ui_wide_view)).performScrollTo().performClick()
             compose.onNodeWithTag("measure-wide-screen").assertIsDisplayed()
             if(it==0)capture("measure-wide")
             val resources=compose.activity.resources
@@ -91,7 +93,7 @@ class PrecisionUiTest {
         val before=vm.sessions.map {it.id}.toSet()
         compose.runOnIdle {vm.microphoneStart()}
         compose.waitUntil(10000){vm.listening}
-        compose.onNodeWithText("Vista amplia").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_wide_view)).performScrollTo().performClick()
         Espresso.pressBackUnconditionally()
         compose.waitUntil(5000){!vm.fullScreen}
         compose.onNodeWithTag("measure-screen").assertIsDisplayed()
@@ -100,14 +102,14 @@ class PrecisionUiTest {
     @Test fun wideSystemBackKeepsSameActiveCaptureTimelineAndWav(){
         InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(compose.activity.packageName,Manifest.permission.RECORD_AUDIO)
         val previous=vm.sessions.map {it.id}.toSet()
-        compose.onNodeWithText("Iniciar medición").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil(10000){vm.listening && vm.sessionTimeline.size>=4}
         val start=vm.sessionStartedAtMs
         val prefix=vm.sessionTimeline.toList()
         val partial=File(compose.activity.filesDir,"recordings").listFiles()!!.single {it.extension=="part"}
         repeat(3){
             val size=partial.length()
-            compose.onNodeWithText("Vista amplia").performScrollTo().performClick()
+            compose.onNodeWithText(uiText(R.string.ui_wide_view)).performScrollTo().performClick()
             compose.onNodeWithTag("measure-wide-screen").assertIsDisplayed()
             if(it==0)capture("measure-wide-capturing")
             Espresso.pressBackUnconditionally()
@@ -118,7 +120,7 @@ class PrecisionUiTest {
                 assertEquals(prefix,vm.sessionTimeline.take(prefix.size));assertTrue(partial.exists() && partial.length()>=size)
             }
         }
-        compose.onNodeWithText("Detener y guardar").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).performClick()
         compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE && vm.sessions.any {it.id !in previous}}
         val saved=vm.sessions.filter {it.id !in previous};owned+=saved.map {it.id}
         assertEquals(1,saved.size);assertTrue(saved.single().timeline.size>=prefix.size)
@@ -132,8 +134,8 @@ class PrecisionUiTest {
         compose.runOnIdle {assertSame(item.timeline,sessionPlotPoints(vm,item))}
         capture("fundamental-general")
         compose.onNodeWithTag("viewer-tools").performClick()
-        compose.onNodeWithText("Vista ajustada").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_fitted_view)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span<2)}
         capture("fundamental-fitted")
         val graph=compose.onNodeWithTag("immersive-plot")
@@ -147,15 +149,15 @@ class PrecisionUiTest {
         capture("tools-complete-reading")
         android.util.Log.i("PrecisionLayout","reading size=${layouts.single().size} lines=${layouts.single().lineCount} widthOverflow=${layouts.single().didOverflowWidth} heightOverflow=${layouts.single().didOverflowHeight} text=$reading")
         assertFalse(layouts.single().hasVisualOverflow)
-        compose.onNodeWithText("Vista general").performScrollTo().performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_overview)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("reset-viewport").performClick()
         compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span>20);assertEquals(reading,state.inspected)}
     }
     @Test fun continuousRadialPinchPanRotationAndResetUseDataCoordinates(){
         val item=fixture();detail(item)
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
-        pick("Espectrograma")
+        pick(uiText(R.string.ui_spectrogram))
         compose.waitUntil(30000){vm.workspace.state.spectrogram!=null && !vm.workspace.state.loading}
         capture("spectrogram-portrait")
         val graph=compose.onNodeWithTag("immersive-plot");val state=vm.explorer(item.id)
@@ -203,18 +205,18 @@ class PrecisionUiTest {
         compose.onNodeWithTag("log-frequency").performScrollTo().performClick()
         compose.runOnIdle {val y=state.camera(item.durationMs,44100,item.timeline).y;assertTrue(y.low>0 && y.high>y.low && y.high<=22050.00001)}
         compose.onNodeWithTag("log-frequency").performClick()
-        compose.onNodeWithText("Volver al gráfico").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("reset-viewport").performClick()
-        pick("Forma de onda");compose.waitUntil(30000){vm.workspace.state.wave!=null && !vm.workspace.state.loading}
+        pick(uiText(R.string.ui_waveform));compose.waitUntil(30000){vm.workspace.state.wave!=null && !vm.workspace.state.loading}
         pinch(true,1.3f)
         assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span<2)
-        pick("Armónicos");compose.runOnIdle {vm.analyzeRecording(item)}
+        pick(uiText(R.string.ui_harmonics));compose.runOnIdle {vm.analyzeRecording(item)}
         compose.waitUntil(30000){vm.recordingAnalysis.result!=null}
         pinch(true,1.3f)
         assertTrue(state.camera(item.durationMs,44100,item.timeline).x.span<500)
         compose.onNodeWithTag("rotate-viewer").performClick()
         compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_PORTRAIT}
-        compose.onNodeWithContentDescription("Volver a la sesión").performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_session)).performClick()
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
     }
 }

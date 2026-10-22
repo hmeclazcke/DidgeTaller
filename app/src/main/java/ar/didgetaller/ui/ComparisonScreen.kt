@@ -24,9 +24,9 @@ private fun SessionPicker(label:String,items:List<RecordingStore.Session>,select
     val context = androidx.compose.ui.platform.LocalContext.current
     var expanded by remember {mutableStateOf(false)}
     Box {
-        OutlinedButton(onClick={expanded=true},modifier=Modifier.fillMaxWidth()) {Text("$label: "+(items.find {it.id==selected}?.name ?: stringResource(R.string.ui_choose_session)),maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)}
+        OutlinedButton(onClick={expanded=true},modifier=Modifier.fillMaxWidth()) {Text("$label: "+(items.find {it.id==selected}?.let {context.sessionName(it)} ?: stringResource(R.string.ui_choose_session)),maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)}
         DropdownMenu(expanded=expanded,onDismissRequest={expanded=false},modifier=Modifier.heightIn(max=350.dp)) {
-            items.forEach {item ->DropdownMenuItem(text={Text(item.name+" · "+(item.summary?.let {hzLabel(it.typicalHz)} ?: stringResource(R.string.ui_no_analysis)))},onClick={onSelect(item.id);expanded=false})}
+            items.forEach {item ->DropdownMenuItem(text={Text(context.sessionName(item)+" · "+(item.summary?.let {hzLabel(it.typicalHz)} ?: stringResource(R.string.ui_no_analysis)))},onClick={onSelect(item.id);expanded=false})}
         }
     }
 }
@@ -56,7 +56,7 @@ internal fun ComparisonScreen(vm:TallerViewModel) {
         if(!valid)Text(stringResource(R.string.ui_choose_two_sessions_and_a_valid_interval_within_each_recording),color=MaterialTheme.colorScheme.secondary)
         if(state.running){LinearProgressIndicator(progress={state.progress/100f},modifier=Modifier.fillMaxWidth());Text(stringResource(R.string.ui_comparing, state.progress));TextButton(onClick={vm.cancelComparison()}){Text(stringResource(R.string.ui_cancel_comparison))}}
         else Button(onClick={vm.compare(first!!,second!!,ms(aStart) ?: 0,ms(aEnd),ms(bStart) ?: 0,ms(bEnd))},enabled=valid){Text(stringResource(R.string.ui_compare))}
-        state.error?.let {Text(it,color=MaterialTheme.colorScheme.error)}
+        state.error?.let {Text(context.localizedDiagnostic(it),color=MaterialTheme.colorScheme.error)}
         if(state.a!=null && state.b!=null){
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                 listOf(context.getString(R.string.ui_a_only),context.getString(R.string.ui_b_only),context.getString(R.string.ui_both)).forEachIndexed {i,label ->FilterChip(selected=show==i,onClick={show=i},label={Text(label)})}

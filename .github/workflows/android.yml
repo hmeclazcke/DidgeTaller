@@ -27,6 +27,8 @@ jobs:
         run: ./gradlew --no-daemon :app:assembleDebug
       - name: Compile instrumented tests
         run: ./gradlew --no-daemon :app:assembleDebugAndroidTest
+      - name: Validate English and Spanish resources
+        run: python3 tools/check_localization.py
       - name: Informational JVM coverage
         run: ./gradlew --no-daemon :app:jacocoDebugUnitTestReport
       - name: Informational Detekt audit

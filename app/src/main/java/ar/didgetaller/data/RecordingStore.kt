@@ -16,7 +16,9 @@ class RecordingStore(context: Context) {
     data class Session(
         val id:String, val name:String, val createdAt:Long, val durationMs:Long, val sizeBytes:Long,
         val summary:SessionAnalysis.Summary?, val timeline:List<SessionAnalysis.Point>,
-        val legacy:Boolean, val recovered:Boolean=false, val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO
+        val legacy:Boolean, val recovered:Boolean=false, val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO,
+        // In-memory provenance only; never serialized or used by WAV recovery.
+        val hasStoredName:Boolean=true
     )
     private val directory=File(context.filesDir,"recordings").apply { mkdirs() }
     private val prefs=context.getSharedPreferences("local_data",Context.MODE_PRIVATE)
@@ -45,7 +47,7 @@ class RecordingStore(context: Context) {
             }.orEmpty()
             Session(id,item.optString("name","Grabación"),item.optLong("createdAt"),
                 item.optLong("durationMs"),file.length(),summary,samples,!item.has("timeline"),
-                item.optBoolean("recovered",false),InstrumentProfile.fromStored(item.optString("instrument")))
+                item.optBoolean("recovered",false),InstrumentProfile.fromStored(item.optString("instrument")),hasStoredName=item.has("name"))
         }
         val known=indexed.mapTo(mutableSetOf()) {it.id}
         val recovered=directory.listFiles().orEmpty().mapNotNull {candidate ->
@@ -54,7 +56,7 @@ class RecordingStore(context: Context) {
             if(id in known || !runCatching {UUID.fromString(id).toString()==id}.getOrDefault(false))return@mapNotNull null
             Session(id,"Audio recuperado",candidate.lastModified(),
                 duration(candidate),
-                candidate.length(),null,emptyList(),true,true)
+                candidate.length(),null,emptyList(),true,true,hasStoredName=false)
         }
         return (indexed+recovered).filter {includeTrash || it.id !in trash.ids("session")}.sortedByDescending {it.createdAt}
     }
