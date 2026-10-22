@@ -85,6 +85,7 @@ internal fun RecordingSettings(vm:TallerViewModel) {
     if(!vm.fullScreen)Column {
         TextButton(onClick={expanded=!expanded}){Text(stringResource(R.string.ui_limit_min_settings, vm.recordingLimitSeconds/60))}
         if(expanded) {
+            val packageInfo = remember(context) { context.packageManager.getPackageInfo(context.packageName, 0) }
             Text(stringResource(R.string.ui_leaving_the_app_stops_and_saves_the_session_audio_is_not_recorded_in_the_backg),style=MaterialTheme.typography.bodySmall)
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                 listOf(1,5,15,30).forEach {minutes ->
@@ -92,6 +93,12 @@ internal fun RecordingSettings(vm:TallerViewModel) {
                 }
             }
             Text(stringResource(R.string.ui_available_space_mb_15_min_76_mb_of_audio, vm.availableMegabytes()),style=MaterialTheme.typography.bodySmall)
+            Text(
+                stringResource(R.string.app_version, packageInfo.versionName.orEmpty(), androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(packageInfo)),
+                modifier = Modifier.padding(top = 8.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

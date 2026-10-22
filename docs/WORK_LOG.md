@@ -1,3 +1,11 @@
+## 2026-10-22 - App version and native acoustic splash
+
+- Added the installed package version to the existing expandable recording settings, with English/Spanish resources and no new screen or version/toolchain changes. Find it through Measure/Medir -> Limit/Límite settings/ajustes; current values are `3.2.6-beta1`, build 12. Identical-version rebuilds require APK hashes to distinguish exactly.
+- Added a static didgeridoo/wave vector for Android 12+ framework splash, preserving launcher artwork and startup behavior. The base window uses the same dark background. No protected engine, WAV lifecycle, persistence, chart, UI navigation, localization architecture or README changes.
+- One debug build and existing JVM suite passed (135 passed, one optional skip); resource parity passed. Inspected vector preview and emulator English settings. Android splash transition and Spanish placement remain visual checks; no broad matrix or unrelated expensive checks run locally.
+- Explicitly authorized Samsung update completed after fresh verified backup/signature/package/version/permission checks: install-r Success, launch ok, installed bytes/version match. All 18 sessions/WAVs and runtime permission grants/flags preserved; only Android's ActivityThread runtime identifier XML changed. Evidence and private backup stay ignored. See VALIDATION.md for hashes, counts and limitations.
+- Prior localization commit `728d13f` now has fully completed/successful Actions #10. This UI change is committed/pushed as one focused phase; report its actual asynchronous CI state separately. Recoverable starting point is `728d13f`; preserve subsequent work before any recovery.
+
 ## 2026-10-22 - Localization completion and bilingual verification
 
 - Completed the English-default/Spanish migration after first-stage commit `886834f`: 478 strings, five plural keys and 24 note-array entries per language. Resources cover all known application-authored UI text; technical notation, internal keys, historical names and unknown native error details remain intentional exceptions. `DiagnosticText.kt` localizes existing string-only diagnostics without changing protected engines. In-memory name provenance translates missing/orphan labels while preserving identical saved names; no schema or recovery modification.

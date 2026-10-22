@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Artwork fits the Android 12 splash icon's central 192 dp safe circle. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="288"
+    android:viewportHeight="288">
+    <!-- Tapered timber tube and flared bell. -->
+    <path
+        android:fillColor="#E8BD87"
+        android:pathData="M91,83 Q97,77 105,79 L145,158 Q154,174 169,185 Q169,195 156,202 Q137,197 130,179 L91,91 Q89,87 91,83 Z" />
+    <path
+        android:fillColor="#B17B50"
+        android:pathData="M99,83 L141,173 Q148,190 160,198 L156,202 Q137,197 130,179 L91,91 Q89,87 91,83 Q95,81 99,83 Z" />
+    <path
+        android:fillColor="#0C1519"
+        android:pathData="M145,193 Q153,185 164,185 Q168,190 158,198 Q150,197 145,193 Z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F8DFC0"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M96,85 L133,164" />
+    <!-- Sound pulses follow the instrument's open bell. -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#8DE0BF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M177,164 Q187,176 182,190 M190,149 Q210,171 200,197 M202,134 Q229,164 218,200" />
+</vector>

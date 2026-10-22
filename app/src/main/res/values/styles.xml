@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.DidgeTaller" parent="android:style/Theme.Material.Light.NoActionBar">
+    <style name="Theme.DidgeTaller.Base" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#0C1519</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">#0C1519</item>
         <item name="android:navigationBarColor">#0C1519</item>
     </style>
+    <style name="Theme.DidgeTaller" parent="Theme.DidgeTaller.Base" />
 </resources>

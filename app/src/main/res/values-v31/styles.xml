@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DidgeTaller" parent="Theme.DidgeTaller.Base">
+        <item name="android:windowSplashScreenBackground">#0C1519</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_didge</item>
+    </style>
+</resources>
