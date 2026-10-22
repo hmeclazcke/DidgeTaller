@@ -21,7 +21,8 @@ class MicrophoneEngine(
     private val onReading: (PitchDetector.Reading)->Unit,
     private val onRecordingStopped: ()->Unit,
     private val onRecordingReady: (File)->Unit,
-    private val onError: (String)->Unit
+    private val onError: (String)->Unit,
+    private val onRecordingFailed: (String)->Unit = onError
 ) {
     companion object { const val RATE=44100; const val MAX_RECORD_SECONDS=900; private const val FRAME=16384; private const val CHUNK=4096 }
     private val active=AtomicBoolean(false)
@@ -76,9 +77,10 @@ class MicrophoneEngine(
             writer.also {writer=null}
         }
         if(finished!=null) {
-            runCatching {finished.close()}.onFailure {mainHandler.post {onError("No se pudo cerrar el WAV: ${it.message}")}}
+            val finalization=runCatching {finished.close()}
             mainHandler.post(onRecordingStopped)
-            onRecordingReady(finished.file)
+            finalization.onSuccess {onRecordingReady(finished.file)}
+                .onFailure {error ->mainHandler.post {onRecordingFailed("No se pudo cerrar el WAV: ${error.message}. La captura queda pendiente de recuperación.")}}
         }
     }
     private fun readLoop(record:AudioRecord) {

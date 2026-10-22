@@ -183,6 +183,11 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
         }
+    },onRecordingFailed={error ->
+        if(sessionPhase==SessionPhase.CAPTURING)finishSession()
+        pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE;listening=false
+        microphoneError=error;message=error
+        if(cleared)sessionExecutor.shutdown()
     },onError={error ->
         microphoneError=error;message=error
         if(sessionPhase==SessionPhase.CAPTURING)finishSession() else listening=false

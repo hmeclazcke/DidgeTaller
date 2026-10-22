@@ -1,3 +1,75 @@
+# WAV close-failure handoff fix — 2026-10-22
+
+This section resolves the separate engine handoff defect left open below. The
+complete-frame recovery implementation from `71e7d33` is preserved unchanged.
+
+## Root cause and terminal outcomes
+
+`MicrophoneEngine.finishRecording` detached its writer, caught an exception from
+`close()`, posted an error, then unconditionally called `onRecordingReady`.
+The ViewModel could therefore import/index the file and replace the error with
+"session saved". Header write, file sync and handle close exceptions all escape
+the writer's `close()` into this same incorrect success path. A readable checkpoint
+does not establish that finalization succeeded.
+
+The engine now emits ready only when `close()` returns successfully. A failed
+close posts stopped followed by a dedicated terminal failure callback on the main
+thread. The ViewModel ends CAPTURING/SAVING, keeps the failure visible, returns to
+IDLE and releases its persistence executor if already cleared. It never submits
+an import for that failure. The existing lock detaches the writer once, so repeated
+finish calls do not retry its closed instance or generate another outcome.
+
+| Failure / outcome | Handling |
+| --- | --- |
+| Initialization fails | Existing start failure; no active capture to hand off. Unchanged. |
+| Read/write fails, but writer closes successfully | Existing capture error is reported; accepted audio may still enter normal persistence. Successful close does not claim uninterrupted capture. No read/write error behavior changed here. |
+| Header write, sync or close throws | No ready/import callback, even if header/PCM are readable. Keep the partial for independent recovery; report failure and end the session state. |
+| Close succeeds | Existing ready path; import still validates/repairs complete frames before rename/index, as in `71e7d33`. |
+| No complete audio frames | Existing import rejection; an empty/header-only partial is not represented as a saved session. |
+| Persistence itself fails | Existing save error path; no automatic import retry was added. |
+
+## Audio preservation and retries
+
+No new deletion, truncation, repair or rename occurs in the failure callback.
+The same UUID `.part` remains in the recordings directory with its current bytes.
+Existing pending recovery can later reopen it, validate the fixed capture format,
+recover complete physical frames and promote it once. This is recovery after a
+failed finalization, not a retroactive claim that the failed close succeeded.
+Invalid partials remain unmodified for investigation. Existing index records,
+timestamps, UUID-based design associations and markers are not rewritten.
+
+No automatic close retry or immediate recovery is attempted: the writer marks
+itself closed before finalization, so calling its close again cannot prove success.
+The existing collision checks prevent overwriting a destination or importing twice.
+Unsaved in-memory pitch timelines/profile/timestamps are not journaled to the WAV;
+startup recovery remains audio-only with the existing orphan-session metadata.
+No new metadata format or fabricated analysis is introduced by this fix.
+
+## Deterministic regression method and limits
+
+`RecordingHandoffTest` exercises the real engine, writer, Android Handler, ViewModel
+and storage on an emulator without starting AudioRecord. Four tests cover stale
+and already-readable checkpoint close failures, normal completion/repeated finish,
+and failures during CAPTURING/SAVING plus after ViewModel clearance. Assertions
+check no ready/import on failure, one stopped/error outcome, exact retained bytes,
+return to IDLE, executor shutdown after clearance, unchanged stored metadata and
+associations, and exactly-once pending recovery with exact synthetic PCM.
+
+Test-only reflection attaches a synthetic writer to the private completion path
+and closes only that writer's RandomAccessFile handle. This produces a real
+IOException on header finalization without altering production APIs for fault
+injection. Tests depend on debug field/method names and must be updated if those
+internals are renamed. Before production changes, three tests failed for the
+expected handoff/import behavior and normal completion passed. This is a controlled
+completion-path test, not a microphone or acoustic/device recording test.
+
+Isolated sync-only failure, failure of the handle's close operation itself, raw
+partial OS writes, power loss and concurrent callback races are not reproduced.
+Those close-stage exceptions share the inspected catch/result gate, but the test
+does not establish hardware durability or handle release under every OS failure.
+No Samsung, private WAVs, existing user sessions, DSP, charts or internationalization
+were touched. Exact validation commands/results and CI state are in VALIDATION.md.
+
 # WAV capture recovery fix — 2026-10-22
 
 This section supersedes the stale-header behavior and proposed rejection-only
