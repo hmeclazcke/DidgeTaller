@@ -25,6 +25,8 @@ jobs:
         run: ./gradlew --no-daemon :app:testDebugUnitTest
       - name: Compilar APK
         run: ./gradlew --no-daemon :app:assembleDebug
+      - name: Compile instrumented tests
+        run: ./gradlew --no-daemon :app:assembleDebugAndroidTest
       - name: Informational JVM coverage
         run: ./gradlew --no-daemon :app:jacocoDebugUnitTestReport
       - name: Informational Detekt audit
