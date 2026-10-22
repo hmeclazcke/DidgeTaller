@@ -64,7 +64,7 @@ class RecordingStore(context: Context) {
         directory.listFiles().orEmpty().filter {it.extension=="part"}.forEach {partial ->
             val id=partial.nameWithoutExtension
             if(runCatching {UUID.fromString(id).toString()==id}.getOrDefault(false))runCatching {
-                if(ProgressiveWavWriter.repair(partial) && !file(id).exists() && partial.renameTo(file(id)))count++
+                if(!file(id).exists() && ProgressiveWavWriter.repair(partial) && partial.renameTo(file(id)))count++
             }
         }
         return count
@@ -72,6 +72,8 @@ class RecordingStore(context: Context) {
     @Synchronized fun importCapture(partial:File,points:List<SessionAnalysis.Point>,createdAt:Long,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
         require(partial.parentFile?.canonicalFile==directory.canonicalFile && partial.extension=="part")
         val id=partial.nameWithoutExtension;val destination=file(id)
+        check(!destination.exists()){"No se pudo conservar la captura."}
+        require(ProgressiveWavWriter.repair(partial)){"Captura parcial sin muestras completas."}
         val duration=Pcm16WavReader(partial).use {it.frameCount*1000/it.sampleRate}
         check(!destination.exists() && partial.renameTo(destination)){"No se pudo conservar la captura."}
         return indexCapture(id,duration,points,createdAt,instrument)

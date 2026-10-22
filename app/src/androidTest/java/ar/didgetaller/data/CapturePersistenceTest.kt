@@ -42,7 +42,9 @@ class CapturePersistenceTest {
 
     @After fun removeOnlyOwnedFixtures() {
         if (!::context.isInitialized) return
-        (context as ContextWrapper).baseContext.deleteSharedPreferences("$preferences-local_data")
+        val target = (context as ContextWrapper).baseContext
+        target.deleteSharedPreferences("$preferences-local_data")
+        target.deleteSharedPreferences("$preferences-session_tools")
         directory.deleteRecursively()
     }
 
@@ -54,6 +56,8 @@ class CapturePersistenceTest {
         val partial = File(store.file(saved.id).parentFile, "${saved.id}.part")
         ProgressiveWavWriter(partial, 8000).use { it.append(shortArrayOf(90, -80), 2) }
         val incoming = partial.readBytes()
+        incoming[40] = 0 // A stale size must not be rewritten when the UUID already has a WAV.
+        partial.writeBytes(incoming)
         val prefs = context.getSharedPreferences("local_data", 0)
         val index = prefs.getString("recordings", null)
 
@@ -68,7 +72,7 @@ class CapturePersistenceTest {
         assertEquals(InstrumentProfile.NATIVE_AMERICAN_FLUTE, reopened.instrument)
     }
 
-    @Test fun incompleteImportPreservesPartialAndCanBeRetriedExactlyOnceAfterRepair() {
+    @Test fun importBeforeFirstCheckpointRecoversExactlyOnce() {
         val store = RecordingStore(context)
         val partial = store.newCapture()
         val source = File(directory, "snapshot-source.part")
@@ -77,16 +81,7 @@ class CapturePersistenceTest {
             writer.append(pcm, pcm.size)
             partial.writeBytes(source.readBytes()) // Exact pre-close on-disk header and PCM.
         }
-        val interrupted = partial.readBytes()
-        val prefs = context.getSharedPreferences("local_data", 0)
-        val index = prefs.getString("recordings", null)
-        assertThrows(IllegalArgumentException::class.java) { store.importCapture(partial, emptyList(), 456L) }
-        assertArrayEquals(interrupted, partial.readBytes())
-        assertEquals(index, prefs.getString("recordings", null))
-        assertFalse(store.file(partial.nameWithoutExtension).exists())
-
-        assertTrue(ProgressiveWavWriter.repair(partial))
-        val expected = partial.readBytes()
+        val expected = WavCodec.encode(pcm, pcm.size, 8000)
         val saved = store.importCapture(partial, emptyList(), 456L)
         assertFalse(partial.exists())
         assertArrayEquals(expected, store.file(saved.id).readBytes())
@@ -95,7 +90,7 @@ class CapturePersistenceTest {
             assertEquals(pcm.size, reader.read(0, decoded))
             assertArrayEquals(pcm, decoded)
         }
-        assertThrows(java.io.FileNotFoundException::class.java) { store.importCapture(partial, emptyList(), 456L) }
+        assertThrows(IllegalStateException::class.java) { store.importCapture(partial, emptyList(), 456L) }
         val reopened = RecordingStore(context).list().single()
         assertEquals(saved.id, reopened.id)
         assertTrue(reopened.timeline.isEmpty())
@@ -103,8 +98,7 @@ class CapturePersistenceTest {
         assertArrayEquals(expected, store.file(saved.id).readBytes())
     }
 
-    /** Characterizes a known import limitation, not the desired behavior of a future fix. */
-    @Test fun staleCheckpointImportExposesOnlyHeaderFramesDespitePreservedTail() {
+    @Test fun staleCheckpointImportRecoversEveryCompleteFrameAndPreservesMetadata() {
         val store = RecordingStore(context)
         val partial = store.newCapture()
         val source = File(directory, "checkpoint-source.part")
@@ -115,13 +109,71 @@ class CapturePersistenceTest {
         }
         val interrupted = partial.readBytes()
         assertEquals(44L + 12000L * 2, partial.length())
-        val saved = store.importCapture(partial, emptyList(), 456L)
-        assertEquals(1000L, saved.durationMs) // Only the checkpoint is exposed, not all 1500ms.
-        assertArrayEquals(interrupted, store.file(saved.id).readBytes()) // Tail bytes are not deleted.
-        Pcm16WavReader(store.file(saved.id)).use { assertEquals(8000L, it.frameCount) }
+        val id = partial.nameWithoutExtension
+        val tools = SessionToolsStore(context)
+        val design = UUID.randomUUID().toString()
+        tools.associate(id, design)
+        tools.addMarker(id, 1250, "manual", "Synthetic tail")
+        val extras = context.getSharedPreferences("session_tools", 0).getString("extras", null)
+        val points = listOf(SessionAnalysis.Point(0, 440.0, .95), SessionAnalysis.Point(1250, 442.0, .96))
+        val saved = store.importCapture(partial, points, 456L, InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+        assertEquals(id, saved.id)
+        assertEquals(1500L, saved.durationMs)
+        val expected = ShortArray(8000) { 1234 } + ShortArray(4000) { -4321 }
+        assertArrayEquals(WavCodec.encode(expected, expected.size, 8000), store.file(saved.id).readBytes())
+        assertArrayEquals(interrupted.copyOfRange(44, interrupted.size), store.file(saved.id).readBytes().copyOfRange(44, interrupted.size))
+        Pcm16WavReader(store.file(saved.id)).use { reader ->
+            assertEquals(12000L, reader.frameCount)
+            val decoded = ShortArray(12000)
+            assertEquals(12000, reader.read(0, decoded))
+            assertArrayEquals(expected, decoded)
+        }
         val reopened = RecordingStore(context).list().single()
-        assertEquals(1000L, reopened.durationMs)
+        assertEquals(id, reopened.id)
+        assertEquals(456L, reopened.createdAt)
+        assertEquals(points, reopened.timeline)
+        assertEquals(saved.summary, reopened.summary)
+        assertEquals(InstrumentProfile.NATIVE_AMERICAN_FLUTE, reopened.instrument)
+        assertEquals(design, SessionToolsStore(context).designId(id))
+        assertEquals(1250L, SessionToolsStore(context).markers(id).single().timeMs)
+        assertEquals(extras, context.getSharedPreferences("session_tools", 0).getString("extras", null))
+        assertEquals(1500L, reopened.durationMs)
         assertEquals(44L + 12000L * 2, reopened.sizeBytes)
         assertEquals(0, RecordingStore(context).recoverPending()) // Already renamed to .wav.
+    }
+
+    @Test fun pendingRecoveryRepairsTornCheckpointOnceAndPreservesMalformedCapture() {
+        val store = RecordingStore(context)
+        val pcm = shortArrayOf(Short.MIN_VALUE, -1, 0, Short.MAX_VALUE)
+        val expected = WavCodec.encode(pcm, pcm.size, 44100)
+        val partial = store.newCapture()
+        val torn = expected.copyOf(expected.size + 1)
+        for (offset in 4..7) torn[offset] = 0xff.toByte()
+        for (offset in 40..43) torn[offset] = 0
+        torn[torn.lastIndex] = 99
+        partial.writeBytes(torn)
+        val malformed = store.newCapture()
+        val invalid = expected.copyOf().apply { this[34] = 8 }
+        malformed.writeBytes(invalid)
+        val prefs = context.getSharedPreferences("local_data", 0)
+        val index = prefs.getString("recordings", null)
+
+        assertThrows(IllegalArgumentException::class.java) { store.importCapture(malformed, emptyList(), 456L) }
+        assertEquals(index, prefs.getString("recordings", null))
+        assertArrayEquals(invalid, malformed.readBytes())
+        assertEquals(1, store.recoverPending())
+        val recovered = store.file(partial.nameWithoutExtension)
+        assertFalse(partial.exists())
+        assertArrayEquals(expected, recovered.readBytes())
+        repeat(2) {
+            assertEquals(0, RecordingStore(context).recoverPending())
+            assertArrayEquals(expected, recovered.readBytes())
+            assertArrayEquals(invalid, malformed.readBytes())
+        }
+        val session = store.list().single()
+        assertEquals(partial.nameWithoutExtension, session.id)
+        assertTrue(session.recovered)
+        assertTrue(session.timeline.isEmpty())
+        assertNull(session.summary)
     }
 }

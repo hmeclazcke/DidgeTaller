@@ -1,4 +1,71 @@
-# WAV capture reliability characterization — 2026-10-22
+# WAV capture recovery fix — 2026-10-22
+
+This section supersedes the stale-header behavior and proposed rejection-only
+approach in the historical characterization below. Only owned capture `.part`
+files are repaired; existing `.wav` files and the general reader are unchanged.
+
+## Root cause and correction
+
+`RecordingStore.importCapture` previously read duration from a checkpoint header
+and renamed/indexed the partial without checking the physically present PCM.
+An actual pre-close snapshot with 12,000 complete frames at 8 kHz was imported
+as 8,000 frames / 1,000 ms, despite retaining all 24,044 file bytes.
+
+Import now calls the existing `ProgressiveWavWriter.repair` before reading duration
+or renaming/indexing. Repair validates the writer's fixed 44-byte PCM16 mono
+header, including its rate (8–192 kHz, matching the reader), format, byte rate,
+alignment and chunk identifiers. Only the RIFF/data size fields may differ:
+checkpoint writes can leave them stale, inconsistent or torn. Unsupported headers
+are rejected before mutation, and files with no complete frame stay untouched.
+RIFF size overflow is rejected before writing.
+
+For accepted captures, data length is `floor((fileLength - 44) / 2) * 2`.
+Both RIFF and data lengths are rewritten and synced. Every complete PCM frame
+survives unchanged; at most one incomplete trailing byte is removed. No samples
+are invented or padded. Repeated repair produces identical bytes. Import and
+startup recovery check for an existing destination before repairing, so a UUID
+collision changes neither capture. Rename retains the UUID and existing indexing
+retains caller-supplied timestamps, instrument and timeline. Design associations
+and markers remain attached to that UUID without changing their stored JSON.
+
+## Regression evidence
+
+- Before production edits, the converted emulator characterization failed with
+  `expected:<1500> but was:<1000>`. Two new JVM boundaries also failed: accepting
+  an incompatible header and reporting recovery of a half-frame-only partial.
+- The stale-checkpoint regression now checks 1,500 ms / 12,000 decoded frames,
+  exact PCM bytes, exact final header, reload, metadata, design association and
+  a marker inside the formerly inaccessible tail.
+- A pre-first-checkpoint capture imports directly, exactly once. A duplicate
+  import is rejected and leaves one unchanged session with no invented analysis.
+- Startup recovery repairs inconsistent/torn size fields plus an odd final byte
+  exactly once. Malformed bit depth stays unchanged through rejected import and
+  repeated startup recovery. Collision fixtures include a stale data length.
+- Three added JVM tests cover malformed immutable header fields, lengths
+  0/43/44/45 without complete frames, and repeatable torn-checkpoint repair at
+  the production 44.1 kHz rate. Existing finalization tests remain in place.
+
+Full JVM suite: **134 passed, one opt-in private replay skipped** (135 discovered).
+Emulator persistence suites: **12 passed** (four capture tests and eight existing
+LocalPersistenceTest cases). APKs, JaCoCo and Detekt build successfully; exact
+commands, logs and CI evidence are recorded in [VALIDATION.md](VALIDATION.md).
+Writer JVM line/branch coverage is 100% / 82.81%; no Android coverage was collected.
+
+## Remaining limits
+
+No complete, physically present PCM frame is lost on the supported fixed-format
+recovery path. A lone byte cannot reconstruct a PCM16 frame and is discarded.
+Audio never written to disk, hardware/OS corruption, actual write/sync/rename
+faults and power-loss durability are outside this guarantee. Malformed or
+oversized partials remain on disk for investigation, without attempted guessing.
+The overflow guard is inspected; a multi-gigabyte fixture was not allocated.
+Historical WAVs already imported with stale headers are intentionally untouched;
+this change is not a migration. The separate engine close-failure handoff,
+concurrent stop/callback ordering and real microphone lifecycle remain unchanged
+and require separate work. Tests use synthetic PCM and owned temporary files;
+no Samsung operations or private recording access occurred.
+
+# Historical WAV capture reliability characterization — 2026-10-22
 
 Scope: seven focused tests, production unchanged from `486aa5e`. Synthetic PCM
 and test-owned temporary files only. No new libraries or changes to DSP, UI,

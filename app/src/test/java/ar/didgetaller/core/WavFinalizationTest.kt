@@ -89,4 +89,44 @@ class WavFinalizationTest {
         assertArrayEquals(repaired, snapshot.readBytes())
         assertArrayEquals(WavCodec.encode(pcm, pcm.size, 8000), active.readBytes())
     }
+
+    @Test fun repairRejectsMalformedCaptureHeadersWithoutChangingBytes() {
+        // Only the RIFF/data lengths may be stale or torn in our fixed capture header.
+        for (offset in listOf(0, 8, 12, 16, 20, 22, 24, 28, 32, 34, 36)) {
+            val file = temporary.newFile("malformed-$offset.part")
+            val malformed = WavCodec.encode(pcm, pcm.size, 8000)
+            malformed[offset] = (malformed[offset].toInt() xor 1).toByte()
+            file.writeBytes(malformed)
+            assertThrows("Header offset $offset", IllegalArgumentException::class.java) {
+                ProgressiveWavWriter.repair(file)
+            }
+            assertArrayEquals(malformed, file.readBytes())
+        }
+    }
+
+    @Test fun repairLeavesPartialsWithoutCompleteFramesUntouched() {
+        val header = WavCodec.encode(ShortArray(0), 0, 8000)
+        for (length in listOf(0, 43, 44, 45)) {
+            val file = temporary.newFile("empty-$length.part")
+            val original = header.copyOf(length)
+            file.writeBytes(original)
+            assertFalse(ProgressiveWavWriter.repair(file))
+            assertArrayEquals(original, file.readBytes())
+        }
+    }
+
+    @Test fun repairIgnoresInterruptedSizeFieldsAndRetainsAllCompleteFrames() {
+        val file = temporary.newFile("torn-checkpoint.part")
+        val expected = WavCodec.encode(pcm, pcm.size, 44100)
+        val interrupted = expected.copyOf(expected.size + 1)
+        for (offset in 4..7) interrupted[offset] = 0xff.toByte()
+        for (offset in 40..43) interrupted[offset] = 0
+        interrupted[interrupted.lastIndex] = 99
+        file.writeBytes(interrupted)
+        repeat(2) {
+            assertTrue(ProgressiveWavWriter.repair(file))
+            assertArrayEquals(expected, file.readBytes())
+            Pcm16WavReader(file).use { assertEquals(pcm.size.toLong(), it.frameCount) }
+        }
+    }
 }

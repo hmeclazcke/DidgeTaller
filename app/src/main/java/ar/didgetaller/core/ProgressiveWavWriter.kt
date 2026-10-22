@@ -3,6 +3,8 @@ package ar.didgetaller.core
 import java.io.Closeable
 import java.io.File
 import java.io.RandomAccessFile
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 /** PCM16 mono, constant memory. Checkpoint headers are repaired from actual length after a crash. */
 class ProgressiveWavWriter(val file:File,val sampleRate:Int=44100,
@@ -32,11 +34,18 @@ class ProgressiveWavWriter(val file:File,val sampleRate:Int=44100,
         private fun writeHeader(output:RandomAccessFile,bytes:Long){val pos=output.filePointer;output.seek(4);le32(output,36+bytes);output.seek(40);le32(output,bytes);output.seek(pos)}
         /** Only for our UUID.part files, never for arbitrary historic WAVs. */
         fun repair(file:File):Boolean {
-            if(file.length()<=44)return false
+            if(file.length()<46)return false
             RandomAccessFile(file,"rw").use {output ->
-                val signature=ByteArray(4);output.readFully(signature)
-                require(signature.toString(Charsets.US_ASCII)=="RIFF"){"Captura parcial no compatible."}
+                val header=ByteArray(44);output.readFully(header)
+                val rate=ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN).getInt(24)
+                require(rate in 8000..192000){"Captura parcial no compatible."}
+                val expected=WavCodec.encode(ShortArray(0),0,rate)
+                // Checkpoint size writes can be stale or interrupted; all other fields are fixed.
+                require(header.indices.all {it in 4..7 || it in 40..43 || header[it]==expected[it]}) {
+                    "Captura parcial no compatible."
+                }
                 val bytes=(output.length()-44)/2*2
+                require(bytes<=0xffffffffL-36){"Captura parcial demasiado grande."}
                 output.setLength(44+bytes);writeHeader(output,bytes);output.fd.sync()
             }
             return true
