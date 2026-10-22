@@ -2,7 +2,8 @@
 
 - Added the instruction-only `ub-mode` skill at `.agents/skills/ub-mode/SKILL.md`, implementing the user's Uncle Bob-inspired methodology and project-specific safety constraints. Kept optional Kotlin analysis/mutation tools optional and uninstalled. Added a short AGENTS.md reference, explicit `$ub-mode` invocation, and prospective English writing policy; retained existing rules and historical text.
 - Native Codex CLI skill discovery passed from root and nested Kotlin source directory: enabled repository skill, expected YAML metadata, and no loading errors. The Python helper lacked PyYAML; no installation or false claim of execution. Instructions, manual discovery steps, validation limits, and evidence locations are recorded in VALIDATION.md.
-- Scope is agent configuration and these existing records only. No application, Gradle, DSP, UI, Samsung, private fixtures, or workflow changes. Commit/push are explicitly authorized for this installation; the resulting remote CI status will be checked. Recovery baseline: `dc61960`; preserve subsequent work before recovery.
+- Installation commit `bd7d42d`, `chore(agent): install repository-local ub-mode skill`, pushed to origin/main. GitHub Actions run #4 `39779474236` completed successfully, including JVM tests, APK compilation, and artifact upload. No workflow changes were needed.
+- Scope remains agent configuration and these existing records only: no application, Gradle, DSP, UI, Samsung, or private fixture changes. Final documentation-only result commit uses `[skip ci]` to avoid repeating the same validated build. Installed-skill recovery point: `bd7d42d`; prior baseline: `dc61960`. Preserve subsequent work before recovery.
 
 ## 22/10/2026 — Corrección exclusiva de GitHub Actions
 
