@@ -1,3 +1,9 @@
+## 2026-10-22 — Install repository-local ub-mode
+
+- Added the instruction-only `ub-mode` skill at `.agents/skills/ub-mode/SKILL.md`, implementing the user's Uncle Bob-inspired methodology and project-specific safety constraints. Kept optional Kotlin analysis/mutation tools optional and uninstalled. Added a short AGENTS.md reference, explicit `$ub-mode` invocation, and prospective English writing policy; retained existing rules and historical text.
+- Native Codex CLI skill discovery passed from root and nested Kotlin source directory: enabled repository skill, expected YAML metadata, and no loading errors. The Python helper lacked PyYAML; no installation or false claim of execution. Instructions, manual discovery steps, validation limits, and evidence locations are recorded in VALIDATION.md.
+- Scope is agent configuration and these existing records only. No application, Gradle, DSP, UI, Samsung, private fixtures, or workflow changes. Commit/push are explicitly authorized for this installation; the resulting remote CI status will be checked. Recovery baseline: `dc61960`; preserve subsequent work before recovery.
+
 ## 22/10/2026 — Corrección exclusiva de GitHub Actions
 
 - Causa confirmada en logs del run39767278472: setup-android v3 pide `tools`, retirado del SDK; Gradle no llegó a ejecutarse. Se actualiza a v4 con `platform-tools` explícito y se migran checkout/setup-java/upload-artifact a releases estables con Node24, verificadas en sus repositorios oficiales. JDK17 y versiones/tareas del proyecto conservados.

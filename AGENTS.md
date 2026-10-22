@@ -1,5 +1,11 @@
 # AGENTS.md — Didge Taller (Kotlin / Android)
 
+## Agent engineering skill and language — 2026-10-22
+
+Use the local [`ub-mode`](.agents/skills/ub-mode/SKILL.md) skill for code implementation, debugging, bug fixes, refactoring, and code review; it can also be invoked explicitly as `$ub-mode`. Existing repository safety, data-protection, testing, and Git requirements take precedence over the skill.
+
+Write new agent instructions, technical documentation, and commit messages in English. Preserve existing project text and historical commits; this rule does not request a project-wide translation.
+
 ## Git obligatorio — 21/10/2026 (regla permanente y prioritaria)
 
 Estas reglas reemplazan las indicaciones históricas de Git ausente o de no crear un commit del estado acumulado. El punto de partida preservado es `3f0510f` (`3.2.4-beta1/10`); el commit histórico `4f90893` se conserva intacto.

@@ -1,3 +1,20 @@
+## Repository-local ub-mode skill installation — 2026-10-22
+
+- Scope: agent configuration only, starting from clean `main` at `dc61960`. Created `.agents/skills/ub-mode/SKILL.md` with YAML `name: ub-mode` and a description covering implementation, debugging, bug fixes, refactoring, and code review. Reviewed the full requested Work/Right/Practice methodology, Kotlin tool compatibility, audio/visualization safeguards, Android data protection, and Git/CI authorization requirements. The skill is instruction-only and has no required tool dependencies.
+- Added a short English link and explicit `$ub-mode` invocation to AGENTS.md, with existing safety/testing/Git requirements taking precedence. Added the user's prospective English policy for new instructions, technical documentation, and commit messages; preserved all previous project text and historical commits.
+- The bundled skill-creator `quick_validate.py` could not run because PyYAML is not installed. No dependency was installed. Instead, `codex-cli 0.163.0` generated its local protocol schema and a focused probe used only `initialize` and `skills/list` with `forceReload: true`: the native Codex loader parsed the YAML, returned the expected name/description/path, `scope: repo`, `enabled: true`, and no ub-mode loading errors from both the repository root and `app/src/main`. No model turn was started. Probe/schema/evidence remain ignored under checkpoints; this verifies actual discovery, not guaranteed implicit selection on every prompt.
+- Manual review checks the complete methodology and unavailable-tool fallback: Detekt, coverage, CPD, and mutation tools are optional future choices only. No Detekt, CPD, coverage, mutation-testing, Java-oriented utilities, Gradle plugins, or dependencies were installed or executed. Configuration checks and diff review replace unrelated application tests for this instruction-only change. `git diff --check` and comparisons against `dc61960` verify no changes to Kotlin, Gradle, Android resources/configuration, DSP, wrapper, or GitHub Actions. No Samsung operations or private data changes.
+- Commit/push and any triggered CI result will be checked after publishing the validated configuration. Existing Git identity, staged-path review, sensitive-file exclusions, and normal non-forced push rules apply.
+
+To verify discovery in a new Codex CLI session:
+
+```powershell
+Set-Location 'C:\projects\DidgeTaller'
+codex
+```
+
+Inside Codex, run `/skills` and find `ub-mode`, or type `$` and select it. Invoke it explicitly with a prompt such as `$ub-mode Review PitchTrace without changing files.` Codex can select it implicitly when the task matches its name/description; discovery does not guarantee activation for every prompt. If it is missing from the list, restart Codex and check for skill-loading errors. See the [official OpenAI skill documentation](https://learn.chatgpt.com/docs/build-skills) for repository discovery and explicit/implicit invocation.
+
 ## Corrección de CI Android — 22/10/2026
 
 - Base limpia `ab5ca26`, rama `main` sincronizada. Runs GitHub #1 (`39766933483`) y #2 (`39767278472`) fallaron antes de Gradle: `setup-android@v3` ejecutó `sdkmanager tools`, paquete inexistente; tests y APK quedaron omitidos. Logs y anotaciones de #2 confirman también Node20 obsoleto y deprecación de setup-java v4.
