@@ -1,0 +1,16 @@
+# Measurement-only task, deliberately separate from the normal audit counts.
+config:
+  validation: true
+  warningsAsErrors: true
+
+console-reports:
+  active: false
+
+complexity:
+  active: true
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 0
+  CognitiveComplexMethod:
+    active: true
+    threshold: 0

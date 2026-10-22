@@ -1,0 +1,17 @@
+# Keep default rules and thresholds; add cognitive complexity to the initial audit.
+# No baseline, broad suppressions, formatting plugin, or automatic correction.
+config:
+  validation: true
+  warningsAsErrors: true
+
+complexity:
+  CognitiveComplexMethod:
+    active: true
+    threshold: 15
+
+console-reports:
+  active: true
+  exclude:
+    - 'FindingsReport'
+    - 'FileBasedFindingsReport'
+    - 'LiteFindingsReport'

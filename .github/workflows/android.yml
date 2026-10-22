@@ -25,6 +25,17 @@ jobs:
         run: ./gradlew --no-daemon :app:testDebugUnitTest
       - name: Compilar APK
         run: ./gradlew --no-daemon :app:assembleDebug
+      - name: Informational Detekt audit
+        run: ./gradlew --no-daemon detekt detektComplexity
+      - name: Summarize Detekt reports
+        run: python3 tools/detekt_summary.py
+      - name: Upload Detekt reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: DidgeTaller-Detekt
+          path: build/reports/detekt/
+          if-no-files-found: error
       - uses: actions/upload-artifact@v7
         with:
           name: DidgeTaller-Kotlin-APK
