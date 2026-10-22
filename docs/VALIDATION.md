@@ -1,3 +1,10 @@
+## Corrección de CI Android — 22/10/2026
+
+- Base limpia `ab5ca26`, rama `main` sincronizada. Runs GitHub #1 (`39766933483`) y #2 (`39767278472`) fallaron antes de Gradle: `setup-android@v3` ejecutó `sdkmanager tools`, paquete inexistente; tests y APK quedaron omitidos. Logs y anotaciones de #2 confirman también Node20 obsoleto y deprecación de setup-java v4.
+- Workflow: `android-actions/setup-android@v4` con `packages: 'platform-tools'`; `actions/checkout@v7`, `actions/setup-java@v6` y `actions/upload-artifact@v7`. Releases oficiales estables comprobadas por API:4.0.4/7.0.1/6.1.0/7.0.2 respectivamente; los cuatro action.yml declaran Node24. Se conserva Temurin17, SDK35/build-tools35.0.0 y ambos comandos originales `./gradlew --no-daemon :app:testDebugUnitTest` / `./gradlew --no-daemon :app:assembleDebug`. `chmod +x ./gradlew` solo en el runner: el índice local confirma modo100644, insuficiente para ejecutar directamente en Ubuntu.
+- Validación previa al push: actionlint1.7.12 oficial, archivo descargado en checkpoints con SHA-256 contrastado contra su manifiesto (`6e7241b51e6817ea6a047693d8e6fed13b31819c9a0dd6c5a726e1592d22f6e9`); `actionlint .github/workflows/android.yml` sin diagnósticos. `git diff --check` aprobado y diff contra `ab5ca26` sin cambios en app, configuración Gradle ni wrapper. Identidad Git configurada y efectiva del usuario comprobada.
+- Resultado remoto de esta corrección pendiente de ejecutar tras el push; se registrará al finalizar, sin atribuir a la validación YAML la ejecución de tests Android. Scripts, metadatos y logs descargados bajo checkpoints, ignorados por Git. Sin operaciones sobre Samsung ni código funcional.
+
 ## Vinculación con GitHub privado — 22/10/2026
 
 Alcance: publicar el historial existente en `https://github.com/hmeclazcke/DidgeTaller.git`, por pedido explícito del usuario. Código y versión de la app conservados.

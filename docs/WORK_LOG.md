@@ -1,3 +1,9 @@
+## 22/10/2026 — Corrección exclusiva de GitHub Actions
+
+- Causa confirmada en logs del run39767278472: setup-android v3 pide `tools`, retirado del SDK; Gradle no llegó a ejecutarse. Se actualiza a v4 con `platform-tools` explícito y se migran checkout/setup-java/upload-artifact a releases estables con Node24, verificadas en sus repositorios oficiales. JDK17 y versiones/tareas del proyecto conservados.
+- Se habilita ejecución de gradlew solo en Ubuntu mediante un paso chmod: modo100644 comprobado, sin modificar el wrapper ni su modo local. actionlint1.7.12 y revisión de diff aprobados; commit/push autorizados por el usuario para comprobar el resultado real en Actions. Seguimiento remoto pendiente al preparar este registro.
+- Alcance: workflow y evidencia documental. Sin cambios de app, datos privados ni Samsung. Fuente recuperable anterior `ab5ca26`; logs de diagnóstico y herramientas locales ignorados en checkpoints.
+
 ## 22/10/2026 — Repositorio privado en GitHub
 
 - Pedido explícito de vincular y subir el Git existente, conservando historial y código. Estado inicial limpio en `main`,12 commits, HEAD `1fbfb12`, sin remotos. Auditoría completa de rutas y contenidos históricos, incluidos eliminados:464 blobs, sin WAV privados, respaldos, claves Android ni credenciales detectados. Capturas documentales/ícono y wrapper revisados; coincidencias `password="false"` descartadas como atributos de UI, no secretos.
