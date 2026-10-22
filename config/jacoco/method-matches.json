@@ -1,0 +1,74 @@
+[
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
+    "source_sha256_lf": "2b26cc47e6663c167b97c3975455d661a1cd531839b442de93545205f616b005",
+    "owner": "ar/didgetaller/core/PitchDetector",
+    "name": "analyzeWithDiagnostics",
+    "descriptor": "([SIIIZLkotlin/jvm/functions/Function1;)Lar/didgetaller/core/PitchDetector$Reading;",
+    "declaration_line": 26,
+    "bytecode_line": 28
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
+    "source_sha256_lf": "2b26cc47e6663c167b97c3975455d661a1cd531839b442de93545205f616b005",
+    "owner": "ar/didgetaller/core/PitchDetector",
+    "name": "spectrum",
+    "descriptor": "([SI)Ljava/util/List;",
+    "declaration_line": 106,
+    "bytecode_line": 107
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+    "source_sha256_lf": "3a1965bec1c813edf6bf6ded1459fd8967daafa9151cec9411e512bdb9785450",
+    "owner": "ar/didgetaller/core/PitchTrace",
+    "name": "build",
+    "descriptor": "(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)Ljava/util/List;",
+    "declaration_line": 90,
+    "bytecode_line": 91
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+    "source_sha256_lf": "3a1965bec1c813edf6bf6ded1459fd8967daafa9151cec9411e512bdb9785450",
+    "owner": "ar/didgetaller/core/PitchTrace",
+    "name": "isolated",
+    "descriptor": "(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchTrace$Reason;",
+    "declaration_line": 31,
+    "bytecode_line": 32
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+    "source_sha256_lf": "3a1965bec1c813edf6bf6ded1459fd8967daafa9151cec9411e512bdb9785450",
+    "owner": "ar/didgetaller/core/PitchTrace",
+    "name": "tone",
+    "descriptor": "(DLjava/lang/Double;)Lar/didgetaller/core/PitchTrace$Tone;",
+    "declaration_line": 25,
+    "bytecode_line": 25
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
+    "source_sha256_lf": "2854c774f5c4298d4568b850e66c9155dfe83d17af730d5ca314d4c38a1373b0",
+    "owner": "ar/didgetaller/core/PitchStream",
+    "name": "append",
+    "descriptor": "([SI)Lar/didgetaller/core/PitchDetector$Reading;",
+    "declaration_line": 16,
+    "bytecode_line": 17
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/LivePitch.kt",
+    "source_sha256_lf": "38c0eb5bb76af0446c5eec7bc8bf3694ae268f72a0d7edf89c80a3eb13b21d6c",
+    "owner": "ar/didgetaller/core/LivePitch",
+    "name": "next",
+    "descriptor": "(Lar/didgetaller/core/LivePitch$State;Lar/didgetaller/core/PitchDetector$Reading;Lar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/LivePitch$State;",
+    "declaration_line": 11,
+    "bytecode_line": 12
+  },
+  {
+    "source": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+    "source_sha256_lf": "c8b1b3f66d620664c6e94e2c762acc52f3457ed869ee54e0751dcc667b403343",
+    "owner": "ar/didgetaller/core/AxisDomain",
+    "name": "transform",
+    "descriptor": "(Lar/didgetaller/core/AxisWindow;DDD)Lar/didgetaller/core/AxisWindow;",
+    "declaration_line": 23,
+    "bytecode_line": 24
+  }
+]

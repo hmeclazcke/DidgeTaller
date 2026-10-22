@@ -25,10 +25,21 @@ jobs:
         run: ./gradlew --no-daemon :app:testDebugUnitTest
       - name: Compilar APK
         run: ./gradlew --no-daemon :app:assembleDebug
+      - name: Informational JVM coverage
+        run: ./gradlew --no-daemon :app:jacocoDebugUnitTestReport
       - name: Informational Detekt audit
         run: ./gradlew --no-daemon detekt detektComplexity
       - name: Summarize Detekt reports
         run: python3 tools/detekt_summary.py
+      - name: Summarize JVM coverage and reviewed method matches
+        run: python3 tools/coverage_summary.py
+      - name: Upload JVM coverage reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: DidgeTaller-JVM-Coverage
+          path: app/build/reports/jacoco/debug/
+          if-no-files-found: error
       - name: Upload Detekt reports
         if: always()
         uses: actions/upload-artifact@v7

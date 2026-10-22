@@ -2,6 +2,46 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    jacoco
+}
+
+jacoco {
+    toolVersion = "0.8.15"
+}
+
+tasks.withType<Test>().configureEach {
+    extensions.configure<JacocoTaskExtension> {
+        // Instrument project code only; do not instrument Android/JDK/dependencies.
+        includes = listOf("ar.didgetaller.*")
+    }
+}
+
+tasks.register<JacocoReport>("jacocoDebugUnitTestReport") {
+    group = "verification"
+    description = "Reports debug JVM coverage without enforcing a coverage threshold."
+    dependsOn("testDebugUnitTest")
+    executionData(layout.buildDirectory.file("jacoco/testDebugUnitTest.exec"))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    classDirectories.setFrom(files(
+        layout.buildDirectory.dir("tmp/kotlin-classes/debug"),
+        layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
+    ).asFileTree.matching {
+        include("ar/didgetaller/**/*.class")
+        exclude("**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest*.class", "**/*\$WhenMappings.class")
+        // Keep lambda/ComposableSingletons classes: they can contain handwritten code.
+        // JaCoCo's Kotlin/Compose bytecode filters handle compiler scaffolding.
+    })
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/debug/html"))
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/debug/coverage.xml"))
+    }
+    doFirst {
+        check(classDirectories.files.any { it.extension == "class" }) { "No production class files found for coverage." }
+        check(executionData.files.all { it.isFile && it.length() > 0 }) { "Missing JVM coverage execution data." }
+    }
 }
 
 android {
