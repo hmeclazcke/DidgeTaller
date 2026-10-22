@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="session_playback_time">%1$s / %2$s</string>
     <string name="app_version">Versión %1$s · compilación %2$d</string>
     <string name="ui_digital_amplitude_1_to_1">"Amplitud digital · −1 a +1"</string>
     <string name="ui_logarithmic">"logarítmica"</string>

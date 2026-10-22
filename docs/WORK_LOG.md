@@ -1,3 +1,10 @@
+## 2026-10-22 - Session chart playback controls
+
+- Placed the existing playback buttons and always-visible elapsed/total time directly below the chart inside its existing card. A content slot keeps SessionDetail's existing player callbacks and cursor as the single source for both tabs. Audio file actions remain separate below the chart; no engine, classification, persistence, navigation or chart-rendering changes.
+- Added one focused real-MediaPlayer regression using existing isolated synthetic fixtures. It fails before the UI change, then passes with paused/playing tab continuity, seek, restart, time display and control placement. Two existing playback/navigation tests also passed. A one-second asynchronous startup timeout required a test-only five-second wait; assertions stayed intact, and only that case was repeated.
+- One debug build, 135 passing JVM tests/one optional skip and bilingual resource validation succeeded. Reviewed native English screenshots of both tabs with the same 2.3-second cursor/time. Spanish layout and physical synchronization remain unverified in this task; no broad matrix or Samsung access. Details and exact local logs are in VALIDATION.md.
+- Focused phase starts at `283b343`; commit and push the validated changes normally, report actual CI status and preserve later work before any recovery.
+
 ## 2026-10-22 - App version and native acoustic splash
 
 - Added the installed package version to the existing expandable recording settings, with English/Spanish resources and no new screen or version/toolchain changes. Find it through Measure/Medir -> Limit/Límite settings/ajustes; current values are `3.2.6-beta1`, build 12. Identical-version rebuilds require APK hashes to distinguish exactly.

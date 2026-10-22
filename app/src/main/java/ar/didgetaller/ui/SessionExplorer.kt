@@ -33,7 +33,8 @@ internal fun LabCard(title:String,content:@Composable ColumnScope.()->Unit) {
 }
 
 @Composable
-internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,onExpand:(AcousticPlot)->Unit) {
+internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,onExpand:(AcousticPlot)->Unit,
+                            playbackControls:@Composable ()->Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val s=vm.preview(item.id)
     var tools by rememberSaveable(item.id){mutableStateOf(false)}
@@ -46,6 +47,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         }
         OutlinedButton(onClick={onExpand(s.plot)},modifier=Modifier.fillMaxWidth().testTag("expand-plot")){Text(stringResource(R.string.ui_full_screen))}
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        playbackControls()
         if(s.plot==AcousticPlot.PITCH){
             val points=sessionPlotPoints(vm,item)
             Text(stringResource(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),style=MaterialTheme.typography.bodySmall)

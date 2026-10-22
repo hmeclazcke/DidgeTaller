@@ -129,6 +129,44 @@ class SessionNavigationTest {
         }
     }
 
+    @Test fun chartTransportPreservesTimeAndPlaybackAcrossTabs() {
+        compose.onNodeWithTag("session-${session.id}").performClick()
+        compose.onNodeWithText("00:00 / 00:20").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
+        compose.waitUntil(5000) { vm.playingId==session.id && !vm.playbackPaused && vm.playbackPositionMs()>200 }
+        val playingPosition=vm.playbackPositionMs()
+        compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performScrollTo().performClick()
+        compose.runOnIdle {
+            assertEquals(session.id,vm.playingId);assertFalse(vm.playbackPaused)
+            assertTrue(vm.playbackPositionMs()>=playingPosition)
+        }
+        compose.onNodeWithText(uiText(R.string.ui_pause)).performScrollTo().performClick()
+        compose.runOnIdle { vm.seekPlayback(session,2300) }
+        compose.waitUntil(5000) { kotlin.math.abs(vm.playbackPositionMs()-2300)<80 }
+        compose.waitUntil(5000) { compose.onAllNodesWithText("00:02 / 00:20").fetchSemanticsNodes().size==1 }
+        fun capture(name:String) {
+            compose.onNodeWithTag("time-chart").performScrollTo()
+            File(compose.activity.getExternalFilesDir(null),"session-player-$name.png").outputStream().use {
+                InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().compress(Bitmap.CompressFormat.PNG,100,it)
+            }
+        }
+        capture("spectrogram")
+        val pausedPosition=vm.playbackPositionMs()
+        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.onNodeWithText("00:02 / 00:20").performScrollTo().assertIsDisplayed()
+        compose.runOnIdle {
+            assertTrue(vm.playbackPaused)
+            assertEquals(pausedPosition.toDouble(),vm.playbackPositionMs().toDouble(),80.0)
+        }
+        val play=compose.onNodeWithText(uiText(R.string.ui_play)).fetchSemanticsNode().boundsInRoot
+        val graph=compose.onNodeWithTag("time-chart").fetchSemanticsNode().boundsInRoot
+        assertTrue("Playback controls belong below the chart",play.top>=graph.bottom)
+        capture("fundamental")
+        compose.onNodeWithText(uiText(R.string.ui_restart)).performScrollTo().performClick()
+        compose.waitUntil(5000) { !vm.playbackPaused && vm.playbackPositionMs()<1500 }
+        compose.onNodeWithText(uiText(R.string.ui_pause)).performClick()
+    }
+
     @Test fun systemBackPopsDetailPreservesScrollAndStopsPlayback() {
         val offset = scrollOffset()
         assertTrue(offset > 0)

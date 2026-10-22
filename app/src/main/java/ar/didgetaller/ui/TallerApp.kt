@@ -756,22 +756,25 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
             } ?: Text(if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_there_are_different_notes_with_no_predominant_note_explore_the_time_series) else stringResource(R.string.ui_not_enough_associated_readings_you_can_analyze_the_wav_without_modifying_it),style=MaterialTheme.typography.bodySmall)
         }
     }
-    Panel(context.getString(R.string.ui_audio)) {
+    SessionExplorer(vm,item,cursor.toLong(),onExpand) {
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             Button(onClick={vm.togglePlayback(item)},modifier=Modifier.heightIn(min=50.dp)) {
                 Text(if(vm.playingId==item.id && !vm.playbackPaused)stringResource(R.string.ui_pause) else stringResource(R.string.ui_play))
             }
             OutlinedButton(onClick={vm.restartPlayback(item)},modifier=Modifier.heightIn(min=50.dp)) {Text(stringResource(R.string.ui_restart))}
+            Box(Modifier.heightIn(min=50.dp),contentAlignment=Alignment.Center) {
+                Text(stringResource(R.string.session_playback_time, formatDuration(cursor.toLong()), formatDuration(item.durationMs)),
+                    color=blue,fontSize=12.sp)
+            }
         }
-        if(vm.playingId==item.id) Text("${formatDuration(cursor.toLong())} / ${formatDuration(item.durationMs)}",
-            color=blue,fontSize=12.sp)
+    }
+    Panel(context.getString(R.string.ui_audio)) {
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             TextButton(onClick={export(item)}) {Text(stringResource(R.string.ui_export_wav))}
             TextButton(onClick={rename=true}) {Text(stringResource(R.string.ui_rename))}
             TextButton(onClick={delete=true}) {Text(stringResource(R.string.ui_delete_d7b82b))}
         }
     }
-    SessionExplorer(vm,item,cursor.toLong(),onExpand)
     SessionRelations(vm,item)
     if(rename)AlertDialog(onDismissRequest={rename=false},title={Text(stringResource(R.string.ui_rename_session))},
         text={OutlinedTextField(value=name,onValueChange={name=it},label={Text(stringResource(R.string.ui_name))},singleLine=true)},
