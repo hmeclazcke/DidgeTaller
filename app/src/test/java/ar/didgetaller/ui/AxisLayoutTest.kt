@@ -3,6 +3,7 @@ package ar.didgetaller.ui
 import ar.didgetaller.core.*
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.Locale
 
 class AxisLayoutTest {
     @Test fun longAndOffsetTimeWindowsAlwaysOfferAtLeastTwoMarks(){
@@ -18,6 +19,18 @@ class AxisLayoutTest {
             assertTrue(placed.all {it.center-it.width/2>=0 && it.center+it.width/2<=width})
             placed.zipWithNext().forEach {(a,b)->assertTrue(b.center-b.width/2>=a.center+a.width/2+8)}
         }
-        assertEquals("70",axisLabel(70.0,40.0));assertEquals("70,25",axisLabel(70.25,1.0))
+        assertEquals("70",axisLabel(70.0,40.0))
+    }
+
+    @Test fun axisNumbersFollowLocaleWithoutTrailingZeros() {
+        val original = Locale.getDefault()
+        try {
+            for ((locale, expected) in listOf(Locale.ENGLISH to "70.25", Locale.forLanguageTag("es-AR") to "70,25", Locale.GERMAN to "70,25")) {
+                Locale.setDefault(locale)
+                assertEquals(expected, axisLabel(70.25, 1.0))
+                assertEquals("70", axisLabel(70.0, 1.0))
+                assertEquals("0", axisLabel(-0.0, 1.0))
+            }
+        } finally { Locale.setDefault(original) }
     }
 }

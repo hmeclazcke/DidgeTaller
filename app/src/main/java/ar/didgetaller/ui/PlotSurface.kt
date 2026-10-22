@@ -1,5 +1,8 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+import androidx.compose.ui.res.stringResource
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,7 +26,7 @@ import ar.didgetaller.core.*
 import java.util.Locale
 import kotlin.math.*
 
-internal val spanish=Locale.forLanguageTag("es-AR")
+internal val displayLocale:Locale get()=Locale.getDefault()
 internal val PlotDataArea=SemanticsPropertyKey<androidx.compose.ui.geometry.Rect>("PlotDataArea")
 internal val PlotWindow=SemanticsPropertyKey<PlotViewport>("PlotWindow")
 internal val PlotXLabels=SemanticsPropertyKey<List<String>>("PlotXLabels")
@@ -33,10 +36,11 @@ internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
     PitchTrace.Tone.MODERATE->Color(0xFFE9D285)
     PitchTrace.Tone.REVIEW->Color(0xFFEBA16E)
 }
-internal fun hzLabel(hz:Double)=if(hz.isFinite() && hz>0)"%.1f Hz".format(spanish,hz) else "— Hz"
+internal fun hzLabel(hz:Double)=if(hz.isFinite() && hz>0)"%.1f Hz".format(displayLocale,hz) else "— Hz"
 internal fun axisLabel(value:Double,span:Double):String {
-    val label=when {span<.1->"%.4f";span<10->"%.2f";span<100->"%.1f";else->"%.0f"}.format(spanish,if(abs(value)<1e-12)0.0 else value)
-    return if(',' in label)label.trimEnd('0').trimEnd(',') else label
+    val label=when {span<.1->"%.4f";span<10->"%.2f";span<100->"%.1f";else->"%.0f"}.format(displayLocale,if(abs(value)<1e-12)0.0 else value)
+    val separator=java.text.DecimalFormatSymbols.getInstance(displayLocale).decimalSeparator
+    return if(separator in label)label.trimEnd('0').trimEnd(separator) else label
 }
 
 internal data class PlacedAxisLabel(val text:String,val center:Float,val width:Float)
@@ -59,6 +63,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     val density=LocalDensity.current
     val textSize=with(density){11.sp.toPx()}
     val right=with(density){12.dp.toPx()}
@@ -121,7 +126,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         }
     }
     Canvas(modifier.background(palette).then(gesture).testTag(if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
-        .semantics {contentDescription="${state.plot.title}. ${if(state.plot.temporal)"Tiempo" else "Frecuencia"} ${axisLabel(camera.x.low,camera.x.span)} a ${axisLabel(camera.x.high,camera.x.span)}. ${if(state.plot==AcousticPlot.PITCH)"Eje Hz y nota base. "+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)"aproximadamente" else ""} ${it.note.orEmpty()}"} else ""} ${if(immersive)"Arrastrar y ampliar en dos ejes. Mantener para inspeccionar." else "Tocar para abrir visor."}"}
+        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
             this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
         .onSizeChanged {dimensions=it}) {
@@ -192,7 +197,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         paint.textAlign=android.graphics.Paint.Align.LEFT
         // Hz is already identified by the detail legend / fullscreen range readout.
         if(state.plot==AcousticPlot.WAVE || state.plot==AcousticPlot.SPECTRUM)
-            drawContext.canvas.nativeCanvas.drawText(if(state.plot==AcousticPlot.WAVE)"amplitud" else "dB rel",6f,textSize,paint)
+            drawContext.canvas.nativeCanvas.drawText(if(state.plot==AcousticPlot.WAVE)context.getString(R.string.ui_amplitude) else "dB rel",6f,textSize,paint)
     }
 }
 

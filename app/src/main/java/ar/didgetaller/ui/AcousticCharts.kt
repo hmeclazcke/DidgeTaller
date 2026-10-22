@@ -1,5 +1,8 @@
 package ar.didgetaller.ui
 
+import ar.didgetaller.R
+import androidx.compose.ui.res.stringResource
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.*
@@ -24,7 +27,7 @@ import ar.didgetaller.audio.VisualState
 import ar.didgetaller.core.*
 import kotlin.math.*
 
-internal fun seconds(ms:Long)="%.2f s".format(spanish,ms/1000.0)
+internal fun seconds(ms:Long)="%.2f s".format(displayLocale,ms/1000.0)
 internal val traceA=Color(0xFF84DDC1)
 internal val traceB=Color(0xFFFFC582)
 private val playColor=Color(0xFF9AD8FF)
@@ -64,6 +67,7 @@ internal fun Modifier.chartGestures(onTap:(Float,Float)->Unit,onTransform:(Float
 internal fun TimeChart(kind:Int,visual:VisualState,points:List<SessionAnalysis.Point>,start:Long,end:Long,
                        lowHz:Double,highHz:Double,log:Boolean,cursor:Long,selected:Long,region:LongRange?,
                        onTap:(Long,Double)->Unit,onTransform:(Float,Float,Float)->Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     val colors=MaterialTheme.colorScheme
     val image=remember(visual.bitmap){visual.bitmap?.asImageBitmap()}
     val labelSize=with(LocalDensity.current){11.sp.toPx()}
@@ -72,9 +76,9 @@ internal fun TimeChart(kind:Int,visual:VisualState,points:List<SessionAnalysis.P
     val minFreq=if(log)max(lowHz,visual.rate/32768.0) else lowHz
     fun frequency(y:Float)=if(log)minFreq*(highHz/minFreq).pow(1-y.toDouble()) else lowHz+(highHz-lowHz)*(1-y)
     Column(verticalArrangement=Arrangement.spacedBy(5.dp)) {
-        Text(if(kind==2)"Amplitud digital · −1 a +1" else "${minFreq.toInt()}–${highHz.toInt()} Hz · ${if(log)"logarítmica" else "lineal"}",style=MaterialTheme.typography.labelSmall)
+        Text(if(kind==2)stringResource(R.string.ui_digital_amplitude_1_to_1) else "${minFreq.toInt()}–${highHz.toInt()} Hz · ${if(log)stringResource(R.string.ui_logarithmic) else stringResource(R.string.ui_linear)}",style=MaterialTheme.typography.labelSmall)
         Canvas(Modifier.fillMaxWidth().height(280.dp).background(Color(0xFF101B25)).testTag("time-chart")
-            .semantics {contentDescription=when(kind){0->"Frecuencia fundamental en el tiempo";1->"Espectrograma real del WAV";else->"Forma de onda del WAV"}}
+            .semantics {contentDescription=when(kind){0->context.getString(R.string.ui_fundamental_frequency_over_time);1->context.getString(R.string.ui_spectrogram_of_the_original_wav);else->context.getString(R.string.ui_wav_waveform)}}
             .chartGestures({x,y ->onTap(start+(span*x).toLong(),frequency(y))},onTransform)) {
             val width=size.width;val height=size.height
             repeat(5){i ->drawLine(colors.outlineVariant,Offset(0f,i*height/4),Offset(width,i*height/4),0.6f)}
@@ -105,12 +109,13 @@ internal fun TimeChart(kind:Int,visual:VisualState,points:List<SessionAnalysis.P
                 drawContext.canvas.nativeCanvas.drawText(label,6f,(i*height/4+labelSize).coerceAtMost(height-3),labelPaint)}
         }
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text(seconds(start),style=MaterialTheme.typography.labelSmall);Text(seconds(end),style=MaterialTheme.typography.labelSmall)}
-        Text(when(kind){0->"Verde: periodicidad alta y poca variación · amarillo: variación media · naranja: mayor incertidumbre · hueco: sin dato";1->"Violeta → azul → verde → amarillo: energía creciente. Azul claro vertical: reproducción.";else->"Envolvente mínimo/máximo; al ampliar se muestran las muestras reales. Azul claro: reproducción."},style=MaterialTheme.typography.bodySmall)
+        Text(when(kind){0->stringResource(R.string.ui_green_high_periodicity_and_little_variation_yellow_moderate_variation_orange_g);1->stringResource(R.string.ui_purple_blue_green_yellow_increasing_energy_light_blue_vertical_line_playback);else->stringResource(R.string.ui_minimum_maximum_envelope_zoom_in_to_see_the_actual_samples_light_blue_playback)},style=MaterialTheme.typography.bodySmall)
     }
 }
 
 @Composable
 internal fun SpectrumChart(a:WavAnalysis.Result,b:WavAnalysis.Result?=null,showA:Boolean=true,showB:Boolean=true,normalize:Boolean=true) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     var from by remember(a,b){mutableDoubleStateOf(0.0)}
     var to by remember(a,b){mutableDoubleStateOf(min(2000.0,a.sampleRate/2.0))}
     var selected by remember(a,b){mutableStateOf<HarmonicAnalysis.Peak?>(null)}
@@ -123,7 +128,7 @@ internal fun SpectrumChart(a:WavAnalysis.Result,b:WavAnalysis.Result?=null,showA
     Column(verticalArrangement=Arrangement.spacedBy(6.dp)) {
         Text("${from.toInt()}–${to.toInt()} Hz · 0 a −80 dB rel",style=MaterialTheme.typography.labelSmall)
         Canvas(Modifier.fillMaxWidth().height(280.dp).background(Color(0xFF101B25)).testTag("spectrum-chart")
-            .semantics {contentDescription="Espectro de potencia; candidatos armónicos y picos medidos"}
+            .semantics {contentDescription=context.getString(R.string.ui_power_spectrum_harmonic_candidates_and_measured_peaks)}
             .chartGestures({x,_ ->val hz=from+x*(to-from)
                 fun adjusted(r:WavAnalysis.Result,reference:Double)=r.harmonics.peaks.map {if(normalize || reference<=0 || common<=0)it else it.copy(relativeDb=it.relativeDb+10*log10(reference/common))}
                 selected=(if(showA)adjusted(a,referenceA) else emptyList()).plus(if(showB && b!=null)adjusted(b,referenceB) else emptyList()).filter {it.hz in from..to}.minByOrNull {abs(it.hz-hz)}?.takeIf {abs(it.hz-hz)<(to-from)*.06}},
@@ -155,12 +160,12 @@ internal fun SpectrumChart(a:WavAnalysis.Result,b:WavAnalysis.Result?=null,showA
             repeat(4){i ->val hz=from+(to-from)*i/3;val px=i*size.width/3
                 drawContext.canvas.nativeCanvas.drawText("${hz.toInt()} Hz",px.coerceAtMost(size.width-labelSize*4),size.height-5,paint)}
         }
-        Text("Pellizcá para ampliar · arrastrá horizontalmente · tocá un pico",style=MaterialTheme.typography.bodySmall)
+        Text(stringResource(R.string.ui_pinch_to_zoom_drag_horizontally_tap_a_peak),style=MaterialTheme.typography.bodySmall)
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-            androidx.compose.material3.OutlinedButton(onClick={val span=max(10.0,(to-from)/2);val center=selected?.hz ?: (to+from)/2;from=(center-span/2).coerceIn(0.0,maxHz-span);to=from+span}){Text("Ampliar espectro")}
-            androidx.compose.material3.TextButton(onClick={from=0.0;to=maxHz}){Text("Ver todo")}
+            androidx.compose.material3.OutlinedButton(onClick={val span=max(10.0,(to-from)/2);val center=selected?.hz ?: (to+from)/2;from=(center-span/2).coerceIn(0.0,maxHz-span);to=from+span}){Text(stringResource(R.string.ui_zoom_into_spectrum))}
+            androidx.compose.material3.TextButton(onClick={from=0.0;to=maxHz}){Text(stringResource(R.string.ui_show_all))}
         }
-        selected?.let {p ->Text("${hzLabel(p.hz)} · %.1f dB rel · ".format(p.relativeDb)+(p.order?.let {"H$it candidato"} ?: "pico sin asignar")+(p.deviationCents?.let {" · %+.1f cents".format(it)} ?: ""),style=MaterialTheme.typography.bodyMedium,modifier=Modifier.testTag("selected-peak"))}
-        Text(if(b==null)"Línea: energía medida · guías tenues: múltiplos teóricos · H?: candidatos, no confirmaciones." else "A: verde continua · B: naranja discontinua. ${if(normalize)"Cada espectro se refiere a su propio máximo." else "Referencia digital común al mayor pico de A/B; sin calibración SPL."}",style=MaterialTheme.typography.bodySmall)
+        selected?.let {p ->Text("${hzLabel(p.hz)} · %.1f dB rel · ".format(p.relativeDb)+(p.order?.let {stringResource(R.string.ui_h_candidate, it)} ?: stringResource(R.string.ui_unassigned_peak))+(p.deviationCents?.let {" · %+.1f cents".format(it)} ?: ""),style=MaterialTheme.typography.bodyMedium,modifier=Modifier.testTag("selected-peak"))}
+        Text(if(b==null)stringResource(R.string.ui_line_measured_energy_faint_guides_theoretical_multiples_h_candidates_not_confi) else stringResource(R.string.ui_a_solid_green_b_dashed_orange, if(normalize)stringResource(R.string.ui_each_spectrum_uses_its_own_maximum_as_reference) else stringResource(R.string.ui_shared_digital_reference_at_the_highest_peak_in_a_b_no_spl_calibration)),style=MaterialTheme.typography.bodySmall)
     }
 }
