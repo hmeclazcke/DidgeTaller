@@ -1,7 +1,9 @@
 ## 22/10/2026 — Corrección exclusiva de GitHub Actions
 
 - Causa confirmada en logs del run39767278472: setup-android v3 pide `tools`, retirado del SDK; Gradle no llegó a ejecutarse. Se actualiza a v4 con `platform-tools` explícito y se migran checkout/setup-java/upload-artifact a releases estables con Node24, verificadas en sus repositorios oficiales. JDK17 y versiones/tareas del proyecto conservados.
-- Se habilita ejecución de gradlew solo en Ubuntu mediante un paso chmod: modo100644 comprobado, sin modificar el wrapper ni su modo local. actionlint1.7.12 y revisión de diff aprobados; commit/push autorizados por el usuario para comprobar el resultado real en Actions. Seguimiento remoto pendiente al preparar este registro.
+- Se habilita ejecución de gradlew solo en Ubuntu mediante un paso chmod: modo100644 comprobado, sin modificar el wrapper ni su modo local. actionlint1.7.12, comparación exacta de comandos Gradle y revisión de diff aprobados. Commit `fd0a558`, `fix(ci): replace obsolete Android tools and Node 20 actions`, subido a origin/main.
+- Run #3 `39776045256` del mismo SHA: success en todos los pasos, incluidos tests JVM, assembleDebug y artefacto APK12424756817. Desaparecen el fallo por tools y las advertencias Node20; no aparece un siguiente error. Persisten avisos de deprecación de sdkmanager/jvmTarget/ArrowForward y migración de Ubuntu, fuera de esta corrección y sin fallo. Evidencia y límites en VALIDATION.
+- Registro final solo documental con `[skip ci]` para evitar repetir el mismo workflow y código ya aprobados. Se mantiene la ejecución normal de tests y build en los siguientes pushes sin esa marca. Punto recuperable de CI: `fd0a558`; conservar primero cualquier trabajo posterior.
 - Alcance: workflow y evidencia documental. Sin cambios de app, datos privados ni Samsung. Fuente recuperable anterior `ab5ca26`; logs de diagnóstico y herramientas locales ignorados en checkpoints.
 
 ## 22/10/2026 — Repositorio privado en GitHub
