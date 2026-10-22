@@ -1,3 +1,10 @@
+## 2026-10-22 - Acoustic uncertainty UI and delivery
+
+- Core commit `bb92981` preserves bounded diagnostic evidence without modifying accepted frequencies. Added optional localized details on Measure plus discreet uncertainty feedback, keeping candidate Hz separate from notes and chart data. No Session screen changes or historical-data assumptions. English/Spanish use standard resources; candidate/reason Text semantics are tested.
+- UI regression failed before implementation, then passed in en/es with real pipeline PCM injection and isolated persistence. Existing didgeridoo/flute meter regression also passed. Native screenshots were reviewed; no clipped status/candidate text observed at the tested configuration. Normal scrolling exposes lower details. Physical audio, full font/layout matrix and TalkBack traversal remain unverified.
+- Final JVM/debug/release/app-test/JaCoCo/Detekt validation passed: 140 JVM cases, two optional skips; the separate private test checks six verified real windows and passed. Two distinct emulator cases / three successful executions, preserving the synthetic session JSON/WAV exactly. No Samsung access, private audio mutation, second estimator or correction of vocalization I. Exact commands/results and limits are in VALIDATION.md and ACOUSTIC_UNCERTAINTY.md.
+- Deliver as a second small local commit; no push/CI in this iteration. Recoverable pre-change reference is `33792ba`, with later work preserved before recovery. The remaining acoustic question is which competing period, if any, represents a reliable drone fundamental during I; this change records and communicates uncertainty rather than resolving it.
+
 ## 2026-10-22 - Bounded acoustic uncertainty evidence
 
 - Inspection confirmed that the existing optional YIN observer is disconnected from normal microphone results, while LivePitch and SessionAnalysis correctly preserve missing Hz. Chose an optional Reading diagnostic, transported by PitchStream through the existing callback, plus a 128-entry in-memory scalar history in the ViewModel. No MicrophoneEngine lifecycle or persistence changes; existing accepted Hz remain authoritative.

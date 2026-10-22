@@ -246,6 +246,7 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     }
     val capturing=vm.sessionPhase==SessionPhase.CAPTURING
     val hz=if(capturing)vm.filteredHz else 0.0
+    val signal=vm.acousticSample?.signal
     val note=listOf(context.noteBase(hz), Music.pitch(hz)?.note.orEmpty())
     val status=when {
         vm.requestingPermission -> context.getString(R.string.ui_waiting_for_microphone_permission)
@@ -253,8 +254,8 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         vm.microphoneError!=null -> context.getString(R.string.ui_capture_error, context.localizedDiagnostic(vm.microphoneError.orEmpty()))
         vm.sessionPhase==SessionPhase.SAVING -> context.getString(R.string.ui_analyzing_and_saving_session)
         !capturing -> context.getString(R.string.ui_ready_to_measure)
-        vm.reading.rms<0.005 -> context.getString(R.string.ui_listening_no_signal)
-        hz<=0 -> context.getString(R.string.ui_signal_present_uncertain_frequency)
+        signal==ar.didgetaller.core.AcousticDiagnostics.Signal.NO_RELEVANT_SIGNAL || (signal==null && vm.reading.rms<0.005) -> context.getString(R.string.ui_listening_no_signal)
+        signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || hz<=0 -> context.getString(R.string.ui_signal_present_uncertain_frequency)
         vm.stableReading -> context.getString(R.string.ui_stable_note)
         else -> context.getString(R.string.ui_detecting_note)
     }
@@ -295,7 +296,8 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
             }
             Text(hzLabel(hz),fontSize=if(vm.fullScreen)46.sp else 36.sp,
                 fontWeight=FontWeight.Bold,color=accent)
-            Text(status,color=if(vm.microphoneError!=null || vm.permissionDenied)orange else muted,
+            Text(status,modifier=Modifier.testTag("acoustic-signal-status"),
+                color=if(vm.microphoneError!=null || vm.permissionDenied || (capturing && signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH))orange else muted,
                 textAlign=TextAlign.Center,fontSize=15.sp)
         }
     }
@@ -307,7 +309,8 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
                 Text(stringResource(R.string.ui_cents_relative_to, if(cents>0) "+" else "", cents, note.getOrElse(1){stringResource(R.string.ui_the_nearby_note)}),
                     color=ink,fontSize=13.sp)
                 CentMeter(cents)
-            } else Text(stringResource(R.string.ui_play_a_sustained_note_silence_is_preserved_as_a_pause_in_the_chart),color=muted,fontSize=13.sp)
+            } else Text(stringResource(if(signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || vm.reading.rms>=.005)
+                R.string.acoustic_uncertain_help else R.string.ui_play_a_sustained_note_silence_is_preserved_as_a_pause_in_the_chart),color=muted,fontSize=13.sp)
             if(!vm.fullScreen && vm.sessionTimeline.size>2)
                 SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true,instrument=vm.instrument)
         }
@@ -315,6 +318,7 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         Text(stringResource(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in),
             color=muted,fontSize=14.sp,lineHeight=21.sp)
     }
+    if(!vm.fullScreen)AcousticDiagnosticsPanel(vm.acousticSample,vm.recentAcousticDiagnostics.size)
     if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
         Text(if(vm.maxHz==140)stringResource(R.string.ui_range_35_140_hz_extend_to_220) else stringResource(R.string.ui_range_35_220_hz_return_to_140))
     }

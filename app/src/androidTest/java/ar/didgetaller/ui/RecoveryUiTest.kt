@@ -125,6 +125,75 @@ class RecoveryUiTest {
         compose.runOnIdle {assertEquals(35,vm.minHz);assertEquals(140,vm.maxHz)}
     }
 
+    @Suppress("UNCHECKED_CAST")
+    @Test fun acousticUncertaintyDetailsDoNotBecomeNotesOrPersistedMeasurements(){
+        val store=RecordingStore(app)
+        val pcm=ShortArray(44100)
+        val saved=store.save(WavCodec.encode(pcm,pcm.size,44100),emptyList(),1234L)
+        val originalWav=store.file(saved.id).readBytes()
+        val prefs=app.getSharedPreferences("local_data",Context.MODE_PRIVATE)
+        val originalIndex=prefs.getString("recordings",null)
+        show()
+        val mic=TallerViewModel::class.java.getDeclaredField("mic").apply {isAccessible=true}.get(vm)
+        val callback=MicrophoneEngine::class.java.getDeclaredField("onReading").apply {isAccessible=true}.get(mic) as (PitchDetector.Reading)->Unit
+        fun <T> state(name:String)=TallerViewModel::class.java.getDeclaredField(name+"\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<T>
+        compose.runOnIdle {
+            state<Boolean>("listening").value=true
+            state<Long>("sessionStartedAtMs").value=android.os.SystemClock.elapsedRealtime()
+            state<SessionPhase>("sessionPhase").value=SessionPhase.CAPTURING
+        }
+        fun deliver(samples:ShortArray) {
+            val stream=PitchStream(InstrumentProfile.DIDGERIDOO,includeVisuals=false)
+            val reading=samples.asList().chunked(4096).mapNotNull {stream.append(it.toShortArray())}.last()
+            compose.runOnIdle {callback(reading)}
+        }
+        val random=java.util.Random(326)
+        val noise=ShortArray(20480){(random.nextInt(12000)-6000).toShort()}
+        deliver(noise)
+        compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("acoustic-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("acoustic-diagnostic-candidate").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("acoustic-diagnostic-values").assertExists()
+        compose.onNodeWithTag("acoustic-diagnostic-reason").assertExists()
+        compose.onNodeWithTag("acoustic-diagnostic-candidate").assertTextEquals(
+            uiText(R.string.acoustic_diagnostics_candidate,vm.acousticSample!!.candidateHz!!))
+        compose.onNodeWithTag("acoustic-diagnostic-reason").assertTextEquals(
+            uiText(R.string.acoustic_diagnostics_reason,uiText(R.string.acoustic_reason_low_periodicity)))
+        compose.runOnIdle {
+            assertEquals(AcousticDiagnostics.Signal.UNCERTAIN_PITCH,vm.acousticSample!!.signal)
+            assertNotNull(vm.acousticSample!!.candidateHz);assertEquals(0.0,vm.filteredHz,0.0)
+            assertTrue(vm.sessionTimeline.all {it.hz==null})
+            assertTrue(PitchTrace.build(vm.sessionTimeline,vm.instrument).isEmpty())
+        }
+        capture("uncertainty-details")
+        deliver(ShortArray(20480){(12000*sin(2*PI*70*it/44100)).toInt().toShort()})
+        compose.runOnIdle {
+            assertEquals(AcousticDiagnostics.Signal.ACCEPTED_PITCH,vm.acousticSample!!.signal)
+            assertEquals(70.0,vm.filteredHz,.1);assertEquals(70.0,vm.sessionTimeline.last().hz!!,.1)
+        }
+        deliver(ShortArray(20480))
+        compose.onNodeWithText(uiText(R.string.ui_listening_no_signal)).performScrollTo().assertIsDisplayed()
+        compose.runOnIdle {
+            assertEquals(AcousticDiagnostics.Signal.NO_RELEVANT_SIGNAL,vm.acousticSample!!.signal)
+            assertNull(vm.acousticSample!!.candidateHz);assertNull(vm.sessionTimeline.last().hz)
+        }
+        deliver(noise)
+        compose.runOnIdle {
+            state<SessionPhase>("sessionPhase").value=SessionPhase.IDLE
+            vm.microphoneStop()
+            assertEquals(4,vm.recentAcousticDiagnostics.size)
+            assertNotNull(vm.acousticSample)
+        }
+        compose.onNodeWithTag("acoustic-diagnostic-candidate").performScrollTo().assertIsDisplayed()
+        compose.runOnIdle {
+            vm.selectInstrument(InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+            assertNull(vm.acousticSample);assertTrue(vm.recentAcousticDiagnostics.isEmpty())
+        }
+        compose.onNodeWithTag("acoustic-diagnostics-toggle").assertDoesNotExist()
+        assertEquals(originalIndex,prefs.getString("recordings",null))
+        assertArrayEquals(originalWav,store.file(saved.id).readBytes())
+    }
+
     @Test fun historicalAndLatestTimelinesRetainDurationOriginalsAndUsefulCurves(){
         inspectTimelines("v325-real-fixtures.json","real")
     }

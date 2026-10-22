@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="acoustic_diagnostics_title">Signal diagnostics</string>
+    <string name="acoustic_diagnostics_hide">Hide signal diagnostics</string>
+    <string name="acoustic_diagnostics_latest">Last observed frame · diagnostic evidence, not a saved measurement</string>
+    <string name="acoustic_diagnostics_values">RMS: %1$.4f · YIN periodicity: %2$.3f</string>
+    <string name="acoustic_diagnostics_candidate">YIN candidate: %1$.2f Hz · diagnostic only</string>
+    <string name="acoustic_diagnostics_retained">Recent frames in memory: %1$d / %2$d. Cleared on a new capture or instrument change.</string>
+    <string name="acoustic_diagnostics_reason">Reason: %1$s</string>
+    <string name="acoustic_state_low">Below the signal detection threshold</string>
+    <string name="acoustic_state_accepted">Fundamental accepted by the current profile</string>
+    <string name="acoustic_uncertain_help">Sound is present without a reliable fundamental; the chart gap is preserved.</string>
+    <string name="acoustic_reason_low_periodicity">Insufficient periodicity</string>
+    <string name="acoustic_reason_outside_range">Outside the detector range</string>
+    <string name="acoustic_reason_no_minimum">No usable YIN minimum</string>
+    <string name="acoustic_reason_insufficient_data">Insufficient analysis data</string>
+    <string name="acoustic_reason_profile_gate">Does not meet the current instrument acceptance criteria</string>
+    <string name="acoustic_reason_unknown">Analysis is inconclusive</string>
     <string name="session_playback_time">%1$s / %2$s</string>
     <string name="app_version">Version %1$s · build %2$d</string>
     <string name="ui_digital_amplitude_1_to_1">"Digital amplitude · −1 to +1"</string>

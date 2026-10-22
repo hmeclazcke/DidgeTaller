@@ -38,6 +38,16 @@ latest diagnostic display; it is not synthesized or inferred from a historical n
 - SessionAnalysis points, summaries, LivePitch and PitchTrace are unchanged. Diagnostic
   candidates do not enter charts, musical note labels, saved measurements or links.
 
+## Interface
+
+Measure reuses its existing three-way status, with a discreet amber uncertainty label
+and explanatory text that preserves the chart gap. Normal view offers a collapsed
+Signal diagnostics button. Expanded details show the last observed state, RMS,
+periodicity, a candidate explicitly marked diagnostic-only, a localized rejection
+reason and the retained frame count/limit. These are ordinary localized Text/Button
+semantics in English and Spanish. The last-frame label remains explicit after stopping;
+this is not a saved measurement or a historical Session chart annotation.
+
 ## Verification and limits
 
 Synthetic regressions cover silence, a known periodic drone, energetic noise, unchanged
@@ -51,4 +61,10 @@ audio is committed or included in the APK; the test verifies its hash before and
 This change does not resolve the physical vocalization I. RMS measures recorded energy,
 and YIN periodicity is not certainty about which acoustic source or period is the drone.
 There is no second estimator, frequency correction, threshold relaxation or gap filling.
-See VALIDATION.md and WORK_LOG.md for actual commands, results and UI follow-up.
+Focused emulator tests additionally verify all three states through the real reading
+callback, localized candidate/reason labels, no promotion to notes or PitchTrace, a
+byte-identical existing synthetic session index/WAV, retention after stop and reset on
+profile change. Native English/Spanish screenshots were inspected. This is controlled
+PCM injection, not microphone hardware or audible TalkBack validation. No full layout
+matrix, physical capture/durability or sustained battery/performance test is claimed.
+See VALIDATION.md and WORK_LOG.md for actual commands and results.
