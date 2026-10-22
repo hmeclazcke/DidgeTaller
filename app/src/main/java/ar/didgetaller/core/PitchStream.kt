@@ -26,6 +26,11 @@ class PitchStream(
             pcm.copyInto(window,keep,0,count);filled=window.size
         }
         if(filled<window.size || ++updates%instrument.analysisChunks!=0)return null
-        return PitchDetector.analyzeWithDiagnostics(window,44100,minHz,maxHz,includeVisuals,observe)
+        var diagnostic:PitchDetector.Diagnostic?=null
+        val reading=PitchDetector.analyzeWithDiagnostics(window,44100,minHz,maxHz,includeVisuals) {
+            diagnostic=it
+            observe?.invoke(it)
+        }
+        return reading.copy(diagnostic=diagnostic)
     }
 }

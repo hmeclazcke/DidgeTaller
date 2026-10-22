@@ -1,3 +1,9 @@
+## 2026-10-22 - Bounded acoustic uncertainty evidence
+
+- Inspection confirmed that the existing optional YIN observer is disconnected from normal microphone results, while LivePitch and SessionAnalysis correctly preserve missing Hz. Chose an optional Reading diagnostic, transported by PitchStream through the existing callback, plus a 128-entry in-memory scalar history in the ViewModel. No MicrophoneEngine lifecycle or persistence changes; existing accepted Hz remain authoritative.
+- Three states distinguish detector low amplitude, profile-accepted pitch and uncertain pitch. A stricter flute rejection stays uncertain. Evidence resets on a new successful microphone start or profile selection, remains bounded after stop and is never stored in session JSON/WAVs. Historical null points remain unknown. See ACOUSTIC_UNCERTAINTY.md for architecture and limitations.
+- Regression failed before transport, then synthetic checks and one explicit private six-window test passed without changing accepted Hz/periodicity or private audio hashes. Core JVM/debug validation is logged in VALIDATION.md. Next phase: discreet localized uncertainty feedback and optional diagnostic details, with focused emulator checks. No fix for physical I is claimed, and no Samsung operation is authorized or performed in this task.
+
 ## 2026-10-22 - Session chart playback controls
 
 - Placed the existing playback buttons and always-visible elapsed/total time directly below the chart inside its existing card. A content slot keeps SessionDetail's existing player callbacks and cursor as the single source for both tabs. Audio file actions remain separate below the chart; no engine, classification, persistence, navigation or chart-rendering changes.

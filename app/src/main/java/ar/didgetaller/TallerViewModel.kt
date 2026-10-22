@@ -1,6 +1,7 @@
 package ar.didgetaller
 
 import ar.didgetaller.core.LivePitch
+import ar.didgetaller.core.AcousticDiagnostics
 
 import android.app.Application
 import android.os.Handler
@@ -62,6 +63,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         instrument=profile;tools.setInstrument(profile);minHz=profile.minHz;maxHz=profile.initialMaxHz
         mic.instrument=profile;mic.minHz=minHz;mic.maxHz=maxHz
         reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0
+        clearAcousticDiagnostics()
     }
     var recordingLimitSeconds by mutableStateOf(tools.limitSeconds());private set
     var undoEntry by mutableStateOf<UndoEntry?>(null);private set
@@ -128,6 +130,10 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     var requestingPermission by mutableStateOf(false);private set
     var microphoneError by mutableStateOf<String?>(null);private set
     var reading by mutableStateOf(PitchDetector.Reading());private set
+    private val diagnosticHistory=AcousticDiagnostics()
+    var acousticSample by mutableStateOf<AcousticDiagnostics.Sample?>(null);private set
+    val recentAcousticDiagnostics:List<AcousticDiagnostics.Sample> get()=diagnosticHistory.samples
+    private fun clearAcousticDiagnostics(){diagnosticHistory.clear();acousticSample=null}
     var filteredHz by mutableStateOf(0.0); private set
     var lastMeasuredHz by mutableStateOf(0.0); private set
     var listening by mutableStateOf(false);private set
@@ -158,6 +164,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val mic=MicrophoneEngine(onReading={incoming ->
         reading=incoming
         val live=LivePitch.next(LivePitch.State(filteredHz,consecutiveReadings,lastMeasuredHz),incoming,instrument)
+        acousticSample=incoming.diagnostic?.let {diagnosticHistory.record(SystemClock.elapsedRealtime(),incoming,live,instrument)}
         filteredHz=live.hz;consecutiveReadings=live.consecutive;lastMeasuredHz=live.lastMeasuredHz
         if(sessionPhase==SessionPhase.CAPTURING) {
             sessionTimeline=sessionTimeline+SessionAnalysis.Point(
@@ -235,7 +242,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         stopPlayback()
         microphoneError=null;permissionDenied=false
         listening=mic.start()
-        if(listening) {permissionAvailable();reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0}
+        if(listening) {permissionAvailable();reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0;clearAcousticDiagnostics()}
     }
     fun startSession() {
         if(sessionPhase!=SessionPhase.IDLE)return
