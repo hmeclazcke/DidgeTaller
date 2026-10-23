@@ -1,3 +1,45 @@
+## Additional October 23 recordings: analytical extension — 2026-10-23
+
+- Started at clean `main/32b97fb`, one documentation commit ahead of cached
+  `origin/main/170bcf9`. Production sources match the prior source lock. The other
+  conflicted worktree is untouched. No production, Gradle, fixture or device changes.
+- Verified both newly supplied private originals: mono PCM16/44100 Hz, 523908 and
+  1920996 frames, 11.88 and 43.56 s. All declared frames readable. Both SHA-256
+  values match after processing. Paths/hashes/audio/plots stay in ignored storage.
+- Reused frozen RMS/STFT selection and the existing compiled Kotlin and native C
+  replay. Selected cores before estimator execution; selection SHA-256
+  `8c893c4c436d0e63c15b1725db8b71b790c710507014e8b0179da716800ab11f`.
+  Common nominal N=16384, hop8192, first center12288, 35–140 Hz, unchanged gates;
+  internal time/spectral supports remain different. No new phonetic listening
+  validation or independently known real-WAV physical F0 is claimed.
+- New replay: 62+232=294 complete windows, 37 bounded C calls, 403 frequency
+  outputs bit-identical between observer/control libraries, maximum input 90112
+  samples. No historical estimator rerun. Actual saved-WAV adapter used through
+  the established local C process bridge; no new JNI/device validation is claimed.
+- Single-drone core: 37/37 agreement within both 25/50 cents, medians 70.251/70.254 Hz.
+  Longer clip normal 1: 18/18, 69.598/69.591 Hz. Normal 2: 14 eligible, one pair
+  disagreeing at 35/65.952 Hz, 13 SWIPE-only. Combined new normal: 55/56 pairs agree,
+  69 eligible. Five-recording totals reuse cached old rows: 124 eligible, 108 pairs,
+  16 SWIPE-only, 96/108 within 25 cents, 97/108 within 50 cents. No YIN-only/neither.
+- I cores: 35/35 and 22/22 both accepted; 14/35 and 10/22 agree within 25/50 cents.
+  Actual YIN reproduces 85/114–116-Hz choices while SWIPE stays near 68 Hz. Deeper
+  later YIN minima do not supersede its first accepted dip. Whole-bout rejection
+  categories and narrower user annotations are separately retained in the report.
+- Focused Java `SupportProbe` calls actual production diagnostics on fixed PCM
+  centers. Its accepted Hz/periodicity match replay rows. An onset 50.450-Hz result
+  passes full-window RMS despite sub-gate leading comparison support; a middle
+  35-Hz result instead has high-energy comparison support. These are distinct
+  mechanisms; no correction or blanket low-note suppression was implemented.
+- Local commands, exact classpath and results live in the ignored
+  `checkpoints/experiments/stable-drone-comparison/oct23/REPORT.md` and
+  `run-command.json`. Ran `run_extension.py`, `analyze.py`, `evidence.py`,
+  `run_support_probe.py`, `plots.py`, `validate.py` with the existing pitch-resolution
+  Python environment. Source/audio/selection locks, timing grid, thresholds,
+  differences, denominators and diagnostic parity checks pass. Reviewed three
+  comparison PNGs plus the estimator-blind selection plots.
+- No packages installed, uploads, app tests/builds, emulator/Samsung operations,
+  performance claims, CI run or automatic push. Production behavior is unchanged.
+
 ## Stable normal-drone agreement investigation — 2026-10-23
 
 - Started clean at main/170bcf9. Re-read AGENTS.md, ub-mode, required context,

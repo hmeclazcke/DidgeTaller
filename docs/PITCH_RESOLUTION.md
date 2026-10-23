@@ -158,6 +158,75 @@ Commands, before/after results, Android performance, native/UI checks and privat
 artifact locations are recorded in [VALIDATION.md](VALIDATION.md). Original WAVs,
 session formats, names, associations and settings are unchanged.
 
+## Additional private recordings: aligned comparison follow-up
+
+The two previously unavailable October 23 recordings were subsequently supplied
+and analyzed at `32b97fb`, with unchanged production sources from `170bcf9`.
+The earlier absence statements describe the earlier investigation. This extension
+reuses its frozen selection thresholds, actual Kotlin/C implementations, cadence,
+acceptance policies and metric functions; it does not repeat the historical dataset.
+Private filenames, input hashes, source PCM and plots remain local. Here **A** is
+the single-drone clip (11.88 s), **B** the two-vocalization clip (43.56 s); both are
+mono PCM16 at 44100 Hz.
+
+The musician's playing-condition sequence is combined with estimator-blind
+RMS/STFT selection. These are audio-defined stationary cores, not independently
+verified physical-F0 labels. Entire nominal windows must fit inside each core.
+
+| Clip / condition | Core, seconds | Eligible | Both accepted | SWIPE′ only | YIN / SWIPE′ median Hz | Agreement ≤25 / ≤50 cents |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| A normal | 2.31788–9.51788 | 37 | 37 | 0 | 70.251 / 70.254 | 37/37 / 37/37 |
+| B normal 1 | 2.96788–6.71788 | 18 | 18 | 0 | 69.598 / 69.591 | 18/18 / 18/18 |
+| B normal 2 | 24.01788–27.01788 | 14 | 1 | 13 | 35.000* / 65.952 | 0/1 / 0/1 |
+| B I 1 | 10.36788–16.26788; 16.31788–17.71788 | 35 | 35 | 0 | 85.179 / 68.008 | 14/35 / 14/35 |
+| B I 2 | 33.26788–37.61788 | 22 | 22 | 0 | 114.997 / 68.346 | 10/22 / 10/22 |
+
+There are no YIN-only or both-rejected observations in these cores. *Only one
+YIN value is accepted in B normal 2; its median does not describe a persistent
+35-Hz curve.* Twelve of its raw candidates are near 66 Hz and two at 35 Hz.
+Thirteen fail periodicity acceptance despite substantial signal energy. The one
+accepted 35-Hz observation is centered at 24.79891 s. Thus problematic middle-drone
+behavior is not unique to the earlier recording, although its sustained accepted
+35–37-Hz regime is not reproduced continuously here.
+
+The new normal cores agree in **55/56 matched pairs (98.21%)**, with **69 eligible
+windows** and 13 SWIPE′-only observations. Across all five annotated/sequence-supported
+recordings, the normal-core totals become **124 eligible, 108 both accepted,
+16 SWIPE′-only**, no YIN-only/neither: **96/108 (88.89%) within 25 cents** and
+**97/108 (89.81%) within 50 cents**. Per-recording results above remain essential:
+the high matched-pair percentage does not erase YIN's missing second normal body.
+
+Both I cores have complete acceptance but substantial disagreement. First I:
+YIN has 14 observations near 68 Hz, four near 85 Hz and 17 near 114 Hz, so its
+85.179-Hz median is a multimodal summary, not a sustained note. Second I: ten
+near 68 Hz and twelve near 115–116 Hz. SWIPE′ stays near 68 Hz. These accepted
+conflicts persist for seconds inside the selected cores, not only at boundaries.
+Actual YIN diagnostics reproduce its first-CMNDF-dip choice even when a later
+68-Hz minimum is deeper. Spectra retain low components near 66–67 Hz while
+341–345-Hz peaks dominate. Neither this nor division of an upper peak proves
+the physical source frequency or a causal explanation for 115 Hz.
+
+Coverage remains conditional: over the complete energetic I bouts, YIN accepts
+44/44 and 34/35, versus SWIPE′ 41/44 and 32/35. These observations do not establish
+general SWIPE′ superiority or override the earlier known-F0 regressions.
+
+A separate onset diagnostic in A finds YIN 50.450 Hz at center 1.95048 s. Its
+full-window RMS passes at 0.05951, but the leading comparison-support union has
+RMS 0.000257; the later attack supplies the energy. This identifies a testable
+support-consistency concern, distinct from energetic middle-drone ambiguity.
+The attack's descending estimates and release discrepancies remain visible.
+Both estimators reject all 82 low-energy non-boundary windows across A/B; weak
+unclassified events and boundary overlaps are retained separately.
+
+**Decision: preserve separate hypotheses; do not fuse automatically.** A rejection-only
+fallback would miss accepted 85/115-Hz conflicts, and averaging creates unsupported
+pitches. Source-support consistency is a concrete regression target, but this
+analytical task changes no estimator, gate, chart, detector selection or stored data.
+The physical drone/source distinction remains unresolved without an independent
+reference. The reproducible private extension is under
+`checkpoints/experiments/stable-drone-comparison/oct23/` (`REPORT.md`, aligned and
+classified CSVs, summary, three comparison plots and validation record).
+
 ## Measurement contract
 
 Three quantities must remain separate:

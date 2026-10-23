@@ -1,3 +1,25 @@
+## October 23 private recording follow-up — 2026-10-23
+
+- Extended the existing aligned comparison at clean `32b97fb` after both missing
+  private originals became available. Preserved the source lock, thresholds,
+  selection rules and cached historical observations; processed only 294 new
+  complete windows. Original hashes unchanged, no application/device changes.
+- Normal-drone agreement is conditional: 37/37 and 18/18 matched estimates agree
+  within 25/50 cents, but the second normal body has 13 YIN rejections and one
+  accepted 35-Hz result against SWIPE near 66 Hz. Thus central problems are not
+  unique to the previous clip; its continuous lower YIN register was not replicated.
+- Both I cores reproduce accepted conflicts near 85/115 versus 68 Hz. Actual YIN
+  diagnostics identify its first-dip selection despite a deeper later 68-Hz minimum.
+  A separate onset low reading exposes differing energy-gate/comparison support.
+  These are concrete observations, not proof of physical source F0 or a validated fix.
+- Keep estimators separately inspectable. Neither numeric averaging nor a simple
+  rejection-only fallback resolves accepted conflicts. Prior controlled SWIPE
+  regressions remain relevant; no fusion or production policy change is justified.
+- Private reproducible report/CSV/plots/probes remain in the ignored experiment
+  extension. PITCH_RESOLUTION adds shareable derived results, VALIDATION records
+  checks and limits. No automatic push; the existing unpushed documentation commit
+  and unrelated worktree are preserved.
+
 ## Stable normal-drone YIN/SWIPE comparison — 2026-10-23
 
 - Investigated the concrete same-time agreement question at clean source baseline
