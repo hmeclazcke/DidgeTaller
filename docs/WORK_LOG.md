@@ -1,3 +1,21 @@
+## UX audit: recording lifecycle correction — 2026-10-23
+
+- Started clean at main/67b541d with two unpushed documentation commits; fetch
+  confirms origin/main remains170bcf9. Preserved the other worktree and all history.
+- Reproduced a P1 workflow defect on the API37 emulator: rotating during active
+  wide measurement entered SAVING because onAppStopped stopped the microphone
+  before checking isChangingConfigurations. This was historical behavior, but
+  violates the current requirement to preserve an in-progress recording on rotation.
+- Moved only the configuration-change guard ahead of microphoneStop. The retained
+  ViewModel keeps the existing capture; actual backgrounding still stops/saves.
+  No DSP, capture engine, WAV writer, session format or detector selection changes.
+- Added an actual Activity/AudioRecord regression: preserve start time/timeline/
+  progressive file through landscape, edge Back to normal measurement and portrait;
+  actual background lifecycle saves exactly once. It failed before the fix and
+  passed afterward. No synthetic detection accuracy or Samsung test is implied.
+- Debug/app-test builds and JVM suite pass in the working tree, which also contains
+  a separate UI-polish change. Broader UI validation is recorded separately.
+
 ## October 23 private recording follow-up — 2026-10-23
 
 - Extended the existing aligned comparison at clean `32b97fb` after both missing

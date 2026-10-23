@@ -125,6 +125,51 @@ class PrecisionUiTest {
         val saved=vm.sessions.filter {it.id !in previous};owned+=saved.map {it.id}
         assertEquals(1,saved.size);assertTrue(saved.single().timeline.size>=prefix.size)
     }
+    @Test fun rotationAndEdgeBackPreserveCaptureButBackgroundStillSavesOnce(){
+        val instrumentation=InstrumentationRegistry.getInstrumentation()
+        instrumentation.uiAutomation.grantRuntimePermission(compose.activity.packageName,Manifest.permission.RECORD_AUDIO)
+        val previous=store.list().map {it.id}.toSet()
+        try {
+            compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
+            compose.waitUntil(10000){vm.sessionPhase==SessionPhase.CAPTURING && vm.sessionTimeline.size>=3}
+            val start=vm.sessionStartedAtMs
+            val prefix=vm.sessionTimeline.toList()
+            val partial=File(compose.activity.filesDir,"recordings").listFiles()!!.single {it.extension=="part"}
+            compose.onNodeWithText(uiText(R.string.ui_wide_view)).performScrollTo().performClick()
+            compose.runOnUiThread {compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE}
+            compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_LANDSCAPE}
+            compose.onNodeWithTag("measure-wide-screen").assertIsDisplayed()
+            compose.runOnIdle {
+                assertSame(vm,ViewModelProvider(compose.activity)[TallerViewModel::class.java])
+                assertEquals(SessionPhase.CAPTURING,vm.sessionPhase)
+                assertEquals(start,vm.sessionStartedAtMs)
+                assertEquals(prefix,vm.sessionTimeline.take(prefix.size))
+                assertTrue(partial.exists())
+            }
+            capture("capture-landscape")
+            val resources=compose.activity.resources
+            val mode=resources.getIdentifier("config_navBarInteractionMode","integer","android")
+            assertEquals("Run this regression with gesture navigation",2,resources.getInteger(mode))
+            val metrics=resources.displayMetrics
+            val fd=instrumentation.uiAutomation.executeShellCommand("input swipe 1 ${metrics.heightPixels/2} ${metrics.widthPixels/3} ${metrics.heightPixels/2} 450")
+            android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use {it.readBytes()}
+            compose.waitUntil(5000){!vm.fullScreen}
+            compose.onNodeWithTag("measure-screen").assertIsDisplayed()
+            compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertEquals(start,vm.sessionStartedAtMs)}
+            compose.runOnUiThread {compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT}
+            compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_PORTRAIT}
+            compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertTrue(vm.listening)}
+            compose.activityRule.scenario.moveToState(androidx.lifecycle.Lifecycle.State.CREATED)
+            compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE && store.list().any {it.id !in previous}}
+            compose.activityRule.scenario.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
+            compose.runOnIdle {assertFalse(vm.listening);assertFalse(compose.activity.isFinishing)}
+            assertEquals(1,store.list().count {it.id !in previous})
+        } finally {
+            compose.runOnUiThread {vm.microphoneStop()}
+            compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE}
+            owned+=store.list().filter {it.id !in previous}.map {it.id}
+        }
+    }
     @Test fun canonicalPitchAndBothScalesAndCompleteInspectionRemainAvailable(){
         val item=fixture();detail(item)
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()

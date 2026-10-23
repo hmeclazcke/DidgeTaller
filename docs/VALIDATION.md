@@ -1,3 +1,24 @@
+## UX audit: recording lifecycle regression — 2026-10-23
+
+- Baseline main/67b541d, clean; fetched origin/main still170bcf9. Devices were
+  enumerated; every device command selects emulator-5554. Samsung untouched.
+- Added PrecisionUiTest.rotationAndEdgeBackPreserveCaptureButBackgroundStillSavesOnce.
+  Red run on the current pre-fix APK: expected CAPTURING, actual SAVING after
+  real landscape recreation. Log: checkpoints/ux-polish/rotation-red-ui.log.
+- Corrected onAppStopped's configuration guard ordering only. Stable working-tree
+  command: gradlew.bat :app:testDebugUnitTest :app:assembleDebug
+  :app:assembleDebugAndroidTest, BUILD SUCCESSFUL; JVM XML:160 tests,157 passed,
+  three opt-in private-fixture tests skipped, zero failures/errors.
+- The new emulator regression passes after the fix: same retained ViewModel,
+  recording start, timeline prefix and progressive WAV survive actual rotation
+  and an Android edge Back gesture. Returning to portrait preserves capture;
+  Activity moving to CREATED saves once and resume does not restart recording.
+  Broader regression log: checkpoints/ux-polish/regression-ui.log. Its remaining
+  cases were still in progress when this focused lifecycle phase completed.
+- No physical-device operation, private audio replay, estimator modification,
+  signing/package change or original-data migration. UI polish and visual matrix
+  validation are reported separately; this is not physical acoustic validation.
+
 ## Additional October 23 recordings: analytical extension — 2026-10-23
 
 - Started at clean `main/32b97fb`, one documentation commit ahead of cached

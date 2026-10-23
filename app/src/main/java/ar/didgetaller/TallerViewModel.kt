@@ -431,7 +431,10 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         val cents=(1200*ln(real/simulated)/ln(2.0)).toInt()
         return "Medido ${Music.hzText(real)} · Modelo ${Music.hzText(simulated)} · Desvío $cents cents (aprox.)"
     }
-    fun onAppStopped(changingConfiguration:Boolean=false){microphoneStop();if(changingConfiguration)return
+    fun onAppStopped(changingConfiguration:Boolean=false){
+        // The retained ViewModel owns capture across Activity recreation, not a background service.
+        if(changingConfiguration)return
+        microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();workspace.cancel();cancelComparison()}
     override fun onCleared(){
         cleared=true;onAppStopped();executor.shutdownNow()
