@@ -1,3 +1,98 @@
+## Product UX polish and visual closure — 2026-10-23
+
+Scope and priorities are in [UI_AUDIT](UI_AUDIT.md); reviewed synthetic-only
+before/after captures are indexed in [screenshots](screenshots/ux-polish/README.md).
+The starting point was clean `67b541d`, two documentation commits ahead of fetched
+`origin/main/170bcf9`. The lifecycle correction was committed separately as
+`4c5c5c2`; remaining work concerns UI, localization, focused tests and documentation.
+
+### Executed checks and actual failures
+
+- Baseline debug/app-test assembly succeeded. Six existing UIAuditTest cases
+  passed, producing 29 baseline captures across measurement, Laboratory, Library,
+  session/analysis, four immersive charts, empty states and rename dialog.
+- New comparison-discovery and accessible-seek regressions failed before the UI
+  change. An additional comparison touch-target assertion then failed; explicit
+  minimum 48-dp sizing and a localized accessible name were added. Do not count
+  those development failures as passes.
+- Broad stabilized replay: 49 cases across PrecisionUiTest, SessionNavigationTest,
+  ViewerRotationTest, UIAuditTest, SwipeComparisonUiTest, RecordingHandoffTest
+  and LocalizationUiTest. 48 passed; one new audit case failed only when capturing
+  a modal sheet with two Compose roots. The screenshot helper now captures the
+  native window for that sheet; rerunning that complete case passed. The 48 other
+  cases were not repeated merely to claim a single 49/49 run.
+- The first visual matrix passed 4 compact and 5 large-phone cases, including
+  the real flute-profile recording/session test. Actual native landscape capture
+  inspection nevertheless exposed offscreen frequency/status in wide measurement.
+  An added visibility assertion reproduced the defect. The short-height layout
+  now places note and readout side by side and combines the instrument/capture
+  heading. Enlarged-text review also prompted a tighter note size and an assertion
+  on the complete, unclipped secondary note-label bounds.
+- After that layout correction, all 6 PrecisionUiTest cases passed. The final
+  strengthened rotation/visibility/edge-Back/background-save regression additionally
+  passed at the typical, compact Spanish 150% and large English 130% configurations.
+  Earlier chart/transport/comparison matrix evidence remains applicable: those
+  components did not change in the final wide-layout correction.
+- Across broad replay, corrected case, matrices and targeted repetitions,
+  **51 distinct UI cases have passed**. This is a combined inventory, not a claim
+  that all ran in one successful invocation or under every configuration.
+- Final JVM XML:160 tests,157 passed, three opt-in private-fixture cases skipped,
+  zero failures/errors. Debug and app-test APKs built successfully. Detekt and
+  JaCoCo report generation succeeded; Detekt remains informational with existing
+  and Compose/style findings, not a zero-findings gate. No coverage percentage
+  or mutation score is claimed.
+
+### Observable behavior
+
+- The existing chart card now has header full-screen access, Play/Restart,
+  larger elapsed/total text and an accessible seek slider. Detail reuses the
+  existing 80-ms MediaPlayer position helper also used by the immersive viewer.
+  A paused 5-s seek was checked against actual player position and chart cursor
+  with 80-ms tolerance. Active playback survives chart changes; camera state
+  survives returning to Fundamental. No independent timer/player was introduced.
+- Advanced diagnostics contains the saved-session comparison and selected-window
+  inspector. Opening it leaves SWIPE off; explicit activation is required.
+  Collapsing keeps the active legend; switching off cancels/restores. Existing
+  English/Spanish SWIPE tests still verify identical chart pixels after disabling,
+  missing estimates, playback, zoom/pan and independent session instrument profiles.
+- Actual MainActivity rotation/Back tests preserve the capture start/timeline/
+  progressive WAV, return wide→normal rather than exiting, and save exactly once
+  on actual background lifecycle. Session viewer Back and recreation preserve
+  playback/camera until leaving the session, when playback stops. Completed Android
+  edge gestures were exercised on API 37 gesture navigation; physical predictive
+  animation and full cancelled-gesture behavior were not separately certified.
+- New control labels are localized; comparison has a measured minimum 48-dp target.
+  The existing dark palette now supplies surface-container tokens for dialogs/
+  sheets. Full TalkBack traversal, audible alignment, external SAF destination
+  handling and some secondary/legacy dialogs remain explicit validation limits.
+
+### Environment, commands and safety
+
+Only `emulator-5554` (API 37,x86_64) was used:1080×2400 at 420 dpi (~411×914 dp),
+font scale 1.0/English;480 dpi (360×800 dp),font scale 1.5/Spanish;360 dpi (480×1067 dp),
+font scale 1.3/English. Portrait and actual landscape were captured. Android light/dark
+modes were exercised; the application itself has one intentional dark theme.
+The emulator's density 420,font scale 1.0,default app locale and Android light mode were
+restored after the matrix. No Samsung command, package/signature/version change,
+new dependency or private acoustic replay was performed.
+
+Commands used `gradlew.bat :app:testDebugUnitTest :app:assembleDebug
+:app:assembleDebugAndroidTest`, then `gradlew.bat detekt
+:app:jacocoDebugUnitTestReport`. Test-only screenshot changes used the app-test
+assembly task; final enlarged-text build and quality logs are `large-text-build.log`
+and `ready-quality.log`. Installation was exclusively `adb -s emulator-5554 install
+-r` for the debug/test APKs, followed by explicit `shell am instrument -w -r -e class`
+selection. No unqualified connected-device task was used.
+
+Ignored `checkpoints/ux-polish/` contains exact commands in `run-matrix.ps1`
+(including `-WideOnly`), individual logs, before/after inventories and
+`validate_result.py` / `summary-validation.json`. Native/C/core, audio/data,
+PitchTrace, PlotSurface, ExplorerState and navigation routes match the baseline;
+no original recording, index, association or historical measurement was modified.
+New UI tests compare owned WAV bytes, and existing session tests verify recovery,
+index preservation, Undo and finalization. APK inspection finds no audio fixtures.
+Only synthetic/emulator captures are versioned. No push or new CI run was requested.
+
 ## UX audit: recording lifecycle regression — 2026-10-23
 
 - Baseline main/67b541d, clean; fetched origin/main still170bcf9. Devices were

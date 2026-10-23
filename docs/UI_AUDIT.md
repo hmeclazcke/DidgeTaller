@@ -1,5 +1,65 @@
 # Auditoría de interfaz — Didge Taller 3.1
 
+## Product polish audit — 2026-10-23
+
+Baseline: clean `main/67b541d`, two documentation commits ahead of fetched
+`origin/main/170bcf9`. Existing history and the separate conflicted worktree remain
+intact. This review concerns interaction and presentation, not pitch accuracy.
+YIN, optional SWIPE′, instrument ranges, PitchTrace and saved samples are unchanged.
+
+### Screen and interaction inventory
+
+| Area | Reviewed surfaces and state ownership | Rendered/interacted evidence |
+| --- | --- | --- |
+| Navigation | Measure, wide Measure, Laboratory home and four tools, Library tabs, session detail, comparison, four immersive charts; NavHost owns Back | Actual route/Back tests and emulator screenshots; no new BackHandler |
+| Measurement | Instrument menu, capture limit/settings, idle/listening/uncertain/permission states, note/Hz/cents, live trace, acoustic diagnostics, start/stop/save | Actual emulator AudioRecord plus presentation fixtures; ordinary/wide and rotation coverage |
+| Laboratory | Design presets, bore points/dimensions, simulated resonances, save/export; live spectrum; inverse search/progress/cancel/apply; guide | Baseline matrix and final layout matrix; slider semantics reviewed; numerical engines untouched |
+| Library | Sessions, Designs, legacy measurements, menus, recovered/no-analysis/empty states, swipe/Undo/trash/restore, session comparison | Isolated synthetic library, native navigation and delete/Undo tests; legacy detail reviewed in source |
+| Session | Metadata/rename/delete/export, shared player, four chart tabs, viewport/selection/loop, WAV analysis, markers, design association, glossary | Synthetic-WAV player/seek tests and chart inventory; export callbacks and some secondary dialogs reviewed in source |
+| Immersive viewer | Chart menu, transport/follow, reset/zoom/pan/inspection, rotation, scales/ranges, excerpt tools and advanced diagnostics | Actual viewer/rotation/edge-Back tests and portrait/landscape screenshots |
+| Localization/theme | English/Spanish strings and formats, increased text size, semantic control names, application dark palette | Emulator layout matrix and localization tests; the app intentionally has one dark theme, including when Android uses light mode |
+
+The OS document picker/export destination, complete TalkBack traversal, physical
+predictive-Back animation and audible playback alignment are not certified by
+these screenshots or automated tests. No Samsung or private acoustic fixture is
+used. Test PCM/sessions are explicitly synthetic and isolated or individually owned.
+
+### Prioritized findings and minimal corrections
+
+| Priority | Observed issue / impact | Evidence and correction |
+| --- | --- | --- |
+| P0 | No crash, unintended data loss or blocked flow reproduced in the exercised inventory | This is bounded evidence, not proof of absence across all devices |
+| P1 | Rotation closes an active recording unexpectedly | Actual Activity test entered SAVING instead of CAPTURING; check configuration change before stopping capture, retaining normal background-save policy |
+| P1 | Short landscape wide measurement pushes frequency/status below the visible area | Native screenshot and a failing visibility assertion; use a height-dependent two-column note/readout card and combine the instrument label with the capture heading |
+| P1 | Playback seeking is hidden under excerpt/selection tools | Add a labeled position slider next to Play/Restart and elapsed/total time in the existing chart card; reuse the player and existing clock |
+| P1 | Estimator comparison is prominent in ordinary Fundamental analysis | Move switch and signal-window inspector into collapsed Advanced diagnostics; keep the active chart legend visible and preserve deliberate activation/cancellation |
+| P1 | Sliders and the comparison switch lack self-contained accessible names | Add localized semantics to playback/comparison, dimensions and inverse-design targets; explicitly size comparison touch target to at least 48 dp |
+| P2 | A separate full-width full-screen action pushes the chart down | Move that action into the existing card heading; no new screen or layout system |
+| P2 | Dialog/sheet container colors inherit a purple Material default inconsistent with the app palette | Complete the existing dark surface-container tokens; preserve meaningful chart colors |
+| P2 | Advanced numerical/chart controls remain dense and some repeated labels need richer accessibility context | Preserve working controls; record remaining work rather than restructuring the explorer |
+
+The normal screen does not gain algorithm selection. In a saved session, use
+**Advanced diagnostics → Compare pitch estimators**; Spanish:
+**Diagnósticos avanzados → Comparar estimadores de tono**. Full-screen access is
+under **Tools → Advanced diagnostics**. Opening diagnostics does not run SWIPE′;
+collapsing an enabled comparison keeps its explicit legend, and its switch turns
+it off. Closing diagnostics cancels a pending selected-window inspection.
+
+### Playback and chart contract
+
+The chart card already owned transport before this task. It now includes a seek
+slider and a larger elapsed/total label. Both detail and immersive adapters use
+the existing 80-ms MediaPlayer position helper; there is no second player or
+wall-clock prediction. A slider drag previews only the thumb; release seeks the
+existing player. Chart time remains the player's reported position. Tabs preserve
+playback and their cameras; preview/immersive cameras retain their existing
+separate owners. MediaPlayer polling/seeks remain approximate, not sample-accurate
+or guaranteed gapless. There is no acoustic reclassification or visual smoothing.
+
+Before/after evidence, configurations, actual counts and remaining limitations are
+recorded in [VALIDATION](VALIDATION.md) and the [screenshot index](screenshots/ux-polish/README.md).
+Historical audits below remain unchanged.
+
 ## Real Audio Diagnostics 3.2.6 — 21/10/2026
 
 La serie nominal de19:17 contiene grupos reales de estimaciones35–36/60–68Hz; se conservan completos y se retiran dos enlaces que sugerían un barrido amplio con periodicidad débil. Las otras dos series y colores no cambian. Las capturas de esos datos privados quedan locales; las evidencias versionadas usan fixtures sintéticos explícitos. Medir muestra incertidumbre sin fingir una nota actual. STFT: margen147→69px, ancho útil+9,54% en el mismo fixture1080px/420dpi/fuente1,0. Fundamental ya medía75px; no se afirma una reducción inexistente. Unidad Hz en leyenda/rango, etiquetas X medidas sin superposición y fallback cuando el paso redondeado solo dejaba0s. Título de sesión íntegro al desplazarlo a la vista; scroll/insets/navegación intactos. Validación y límites acústicos en [VALIDATION](VALIDATION.md).

@@ -2,18 +2,21 @@
 
 ## Use it on Android
 
-Open **Library → Sessions → a didgeridoo session → Fundamental** and enable
-**Compare pitch estimators**. The original YIN curve remains visible. A dashed
+Open **Library → Sessions → a didgeridoo session → Advanced diagnostics** and enable
+**Compare pitch estimators**. View the result on **Fundamental**. The original YIN curve remains visible. A dashed
 purple SWIPE′ curve appears after local WAV analysis; its legend explicitly says
 **experimental**. The same curves are available in the full-screen viewer, where
-**Tools** also contains the switch. In Spanish, use **Biblioteca → Sesiones →
-Fundamental → Comparar estimadores de tono**.
+**Tools → Advanced diagnostics** also contains the switch. In Spanish, use
+**Biblioteca → Sesiones → [sesión] → Diagnósticos avanzados → Comparar estimadores de tono**.
 
 Playback, inspection, zoom and pan use the chart's existing time/frequency
 projection. Inspection reports the nearest SWIPE′ sample within half a hop,
 without interpolating a frequency. Disable comparison to restore the original
 camera and chart. The existing **Signal evidence at selection** inspector remains
-independent and available.
+independent and available in the same advanced section. Collapsing that section
+keeps a deliberately enabled comparison active; its chart legend remains visible.
+Opening diagnostics alone never starts SWIPE′. Turn off the comparison switch to
+cancel processing and restore the original chart.
 
 The feature needs no network, Python, desktop software or model downloads.
 It supports 44,100-Hz didgeridoo WAVs, including existing and new app recordings.

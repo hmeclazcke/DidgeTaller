@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -69,7 +70,9 @@ private val appColors=darkColorScheme(
     secondaryContainer=Color(0xFF2C4B49),onSecondaryContainer=ink,
     primaryContainer=Color(0xFF234A40),onPrimaryContainer=ink,
     tertiary=blue,onTertiary=background,tertiaryContainer=Color(0xFF23414D),onTertiaryContainer=ink,
-    inverseSurface=Color(0xFFD7E7E1),inverseOnSurface=background,inversePrimary=Color(0xFF245F49)
+    inverseSurface=Color(0xFFD7E7E1),inverseOnSurface=background,inversePrimary=Color(0xFF245F49),
+    surfaceContainerLow=cardColor,surfaceContainer=cardColor,
+    surfaceContainerHigh=Color(0xFF263D42),surfaceContainerHighest=Color(0xFF2F484B),surfaceTint=accent
 )
 private val symbols=listOf("♪","◇","▣")
 
@@ -230,8 +233,9 @@ private fun Panel(title:String?=null,subtitle:String?=null,content:@Composable C
 @Composable
 private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
+    val compactWide=vm.fullScreen && androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp<500
     var instruments by remember {mutableStateOf(false)}
-    Box {
+    if(!compactWide)Box {
         TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
             Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)))
         }
@@ -267,22 +271,26 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         }
     }
     Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-        Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),Modifier.weight(1f),
-            color=if(capturing)orange else muted,fontSize=12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
+        Column(Modifier.weight(1f)) {
+            if(compactWide)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
+            Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
+                color=if(capturing)orange else muted,fontSize=12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
+        }
         TextButton(onClick=onPresentationToggle) {Text(if(vm.fullScreen)stringResource(R.string.ui_normal_view) else stringResource(R.string.ui_wide_view))}
     }
     Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(28.dp),color=cardColor) {
         Column(Modifier.background(Brush.verticalGradient(listOf(Color(0xFF1D3839),cardColor)))
-            .padding(horizontal=20.dp,vertical=if(vm.fullScreen)28.dp else 20.dp),
-            horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(8.dp)) {
+            .padding(horizontal=20.dp,vertical=if(compactWide)8.dp else if(vm.fullScreen)28.dp else 20.dp),
+            horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(if(compactWide)4.dp else 8.dp)) {
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
                 Text(stringResource(R.string.ui_fundamental_base_note),Modifier.weight(1f),color=muted,fontSize=12.sp)
                 if(capturing)Text("●  ${"%02d:%02d".format(elapsed/60,elapsed%60)}",color=orange,
                     fontWeight=FontWeight.Bold,fontSize=14.sp)
             }
-            BoxWithConstraints(Modifier.fillMaxWidth(),contentAlignment=Alignment.Center) {
+            @Composable fun noteDisplay() { BoxWithConstraints(Modifier.fillMaxWidth(),contentAlignment=Alignment.Center) {
                 val label=if(hz>0)note.first().uppercase(Locale.getDefault()) else "—"
-                val preferred=(maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(74f,155f)
+                val preferred=if(compactWide)(maxWidth.value*.3f).coerceIn(32f,44f)
+                    else (maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(74f,155f)
                 val measurer=androidx.compose.ui.text.rememberTextMeasurer()
                 val density=androidx.compose.ui.platform.LocalDensity.current
                 val width=measurer.measure(label,style=androidx.compose.ui.text.TextStyle(fontSize=preferred.sp,fontWeight=FontWeight.Bold),softWrap=false).size.width
@@ -290,15 +298,25 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
                 Column(horizontalAlignment=Alignment.CenterHorizontally) {
                     Text(label,fontSize=size,
                         fontWeight=FontWeight.Bold,lineHeight=size,color=ink,maxLines=1)
-                    Text(if(hz>0)note.getOrElse(1){""} else stringResource(R.string.ui_note_pending),color=blue,
-                        fontSize=if(vm.fullScreen)26.sp else 20.sp,fontWeight=FontWeight.Medium)
+                    Text(if(hz>0)note.getOrElse(1){""} else stringResource(R.string.ui_note_pending),modifier=Modifier.testTag("measurement-note-name"),color=blue,
+                        fontSize=if(compactWide)16.sp else if(vm.fullScreen)26.sp else 20.sp,fontWeight=FontWeight.Medium)
                 }
-            }
-            Text(hzLabel(hz),fontSize=if(vm.fullScreen)46.sp else 36.sp,
+            } }
+            @Composable fun readingDisplay() { Column(horizontalAlignment=Alignment.CenterHorizontally,
+                verticalArrangement=Arrangement.spacedBy(if(compactWide)4.dp else 8.dp)) {
+            Text(hzLabel(hz),modifier=Modifier.testTag("measurement-frequency"),fontSize=if(compactWide)28.sp else if(vm.fullScreen)46.sp else 36.sp,
                 fontWeight=FontWeight.Bold,color=accent)
             Text(status,modifier=Modifier.testTag("acoustic-signal-status"),
                 color=if(vm.microphoneError!=null || vm.permissionDenied || (capturing && signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH))orange else muted,
                 textAlign=TextAlign.Center,fontSize=15.sp)
+            } }
+            if(compactWide)Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                Box(Modifier.weight(1f)){noteDisplay()}
+                Box(Modifier.weight(1f)){readingDisplay()}
+            }else{
+                noteDisplay()
+                readingDisplay()
+            }
         }
     }
     if(capturing) {
@@ -545,7 +563,8 @@ private fun DimensionControl(label:String,value:Int,range:IntRange,unit:String,
         Text("$value $unit",fontSize=13.sp,fontWeight=FontWeight.Bold,color=ink)
     }
     Slider(value=value.toFloat(),onValueChange={onChange(it.roundToInt())},
-        valueRange=range.first.toFloat()..range.last.toFloat(),onValueChangeFinished=onCommit)
+        valueRange=range.first.toFloat()..range.last.toFloat(),onValueChangeFinished=onCommit,
+        modifier=Modifier.semantics { contentDescription=label })
 }
 
 @Composable
@@ -626,7 +645,8 @@ private fun TargetSlider(title:String,value:Double,range:ClosedFloatingPointRang
     Text(title,color=muted,fontSize=13.sp)
     Text("${context.noteLabel(value)} · ${hzLabel(value)}",color=accent,fontSize=13.sp)
     Slider(value=value.toFloat().coerceIn(range.start,range.endInclusive),
-        onValueChange={onChange(it.toDouble())},valueRange=range)
+        onValueChange={onChange(it.toDouble())},valueRange=range,
+        modifier=Modifier.semantics { contentDescription=title })
 }
 
 @Composable
@@ -736,14 +756,7 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
     var rename by remember(item.id) {mutableStateOf(false)}
     var name by remember(item.id) {mutableStateOf(context.sessionName(item))}
     var delete by remember(item.id) {mutableStateOf(false)}
-    var cursor by remember(item.id) {mutableIntStateOf(0)}
-    LaunchedEffect(vm.playingId,vm.playbackPaused,item.id) {
-        while(vm.playingId==item.id) {
-            cursor=vm.playbackPositionMs()
-            kotlinx.coroutines.delay(100)
-        }
-        if(vm.playingId!=item.id)cursor=0
-    }
+    val cursor=playbackCursor(vm,item)
     var more by rememberSaveable(item.id){mutableStateOf(false)}
     Panel {
         Text(context.sessionName(item),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
@@ -760,18 +773,7 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
             } ?: Text(if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_there_are_different_notes_with_no_predominant_note_explore_the_time_series) else stringResource(R.string.ui_not_enough_associated_readings_you_can_analyze_the_wav_without_modifying_it),style=MaterialTheme.typography.bodySmall)
         }
     }
-    SessionExplorer(vm,item,cursor.toLong(),onExpand) {
-        FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-            Button(onClick={vm.togglePlayback(item)},modifier=Modifier.heightIn(min=50.dp)) {
-                Text(if(vm.playingId==item.id && !vm.playbackPaused)stringResource(R.string.ui_pause) else stringResource(R.string.ui_play))
-            }
-            OutlinedButton(onClick={vm.restartPlayback(item)},modifier=Modifier.heightIn(min=50.dp)) {Text(stringResource(R.string.ui_restart))}
-            Box(Modifier.heightIn(min=50.dp),contentAlignment=Alignment.Center) {
-                Text(stringResource(R.string.session_playback_time, formatDuration(cursor.toLong()), formatDuration(item.durationMs)),
-                    color=blue,fontSize=12.sp)
-            }
-        }
-    }
+    SessionExplorer(vm,item,cursor,onExpand) { SessionTransport(vm,item,cursor) }
     Panel(context.getString(R.string.ui_audio)) {
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             TextButton(onClick={export(item)}) {Text(stringResource(R.string.ui_export_wav))}

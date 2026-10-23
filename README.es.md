@@ -18,8 +18,8 @@ Didge Taller funciona sin conexión, cuentas, publicidad ni acceso a la red. Las
 
 ### Escuchar y explorar
 
-La vista **Fundamental** de las sesiones de didgeridoo permite activar **Comparar
-estimadores de tono**: agrega una curva discontinua de **SWIPE′ · experimental**
+En las sesiones de didgeridoo, **Diagnósticos avanzados → Comparar
+estimadores de tono** agrega a Fundamental una curva discontinua de **SWIPE′ · experimental**
 junto a YIN, calculada sin conexión a partir del WAV de 44,1 kHz. Al desactivarla
 se recupera la vista original. No corrige mediciones ni confirma la frecuencia
 física del drone. La flauta conserva su análisis YIN. Ver [alcances y validación](docs/SWIPE_COMPARISON.md).

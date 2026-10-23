@@ -1,5 +1,21 @@
 # Visor acústico 3.1
 
+## UX lifecycle clarification — 2026-10-23
+
+The current measurement and wide-measurement destinations share the same retained
+capture owner. A configuration change must preserve that capture, its timeline,
+start time and progressive WAV. Actual backgrounding or leaving measurement still
+stops and saves; there is no background-recording service. This supersedes older
+statements below that capture stops during Activity recreation. The navigation
+back stack remains the owner of Back; no replacement BackHandler is introduced.
+
+Session detail and the immersive viewer now reuse the same position-polling helper
+(80-ms polling of MediaPlayer). The detail card includes a labeled seek slider;
+its drag preview does not replace the actual player cursor or reset chart cameras.
+Full screen is a header action. Experimental estimator controls live under
+Advanced diagnostics, including in the viewer tools sheet. Native pitch kernels,
+classification, captured samples, discontinuities and persisted data are unchanged.
+
 ## Recuperación 3.2.5 — 21/10/2026
 
 Se conserva cámara/gestos/insets/transporte. `PitchTrace` separa estimaciones originales, conexiones y calidad visual; las tres superficies comparten color por variación y periodicidad, con valores consultables en el cursor. Las conexiones que omiten estimaciones son discontinuas. Los saltos débiles sin apoyo temporal pueden quedar como puntos originales, sin implicar un barrido. General limita el peso de puntos débiles aislados; mantiene cambios/toots respaldados y acceso explícito al rango completo. No hay decimación de F0, interpolación ni reescritura de datos. Reglas, métricas y límites físicos: [VALIDATION](VALIDATION.md).

@@ -1,3 +1,33 @@
+## Product UX polish and audit closure — 2026-10-23
+
+- Reviewed all implemented screen families, routes and secondary surfaces in source;
+  exercised the main flows with isolated synthetic emulator recordings. UI_AUDIT
+  distinguishes rendered/interactive evidence from source-only and physical limits.
+- Kept the existing player/chart integration and strengthened it with shared clock
+  polling, an accessible seek slider and clearer elapsed/total text. Full-screen
+  access moves into the chart heading. Tabs, cameras, paused seeks, playback,
+  original WAVs and uncertainty gaps retain their existing owners/contracts.
+- Moved optional SWIPE comparison and signal-window inspection into Advanced
+  diagnostics. Opening it performs no analysis; explicit comparison still has
+  a visible experimental legend and switch-controlled cancellation. YIN/SWIPE
+  remain independent and unchanged, including flute behavior and all thresholds.
+- Added accessible names to key sliders/switch and explicit48-dp comparison target;
+  completed dark surface tokens so dialogs match the existing palette.
+- Actual screenshots exposed a second P1: short landscape wide measurement hid
+  Hz/status. Added a conditional two-column card and shared instrument/capture
+  heading, preserving vertical presentation. Strengthened visibility bounds under
+  large fonts instead of accepting a passing test with a clipped secondary label.
+- Broad 49-case replay had one modal-screenshot harness failure; corrected and
+  reran that case. Matrices and focused final checks pass; 51 distinct UI cases
+  have passed across runs. Final JVM:157 passed, three opt-in fixture skips;
+  debug APK and informational quality reports generated. Exact counts/limits are
+  in VALIDATION, with reviewed synthetic before/after screenshots.
+- Deferred full TalkBack traversal, audible/sample-accurate playback validation,
+  physical predictive animation and denser advanced/legacy controls. No P0 was
+  reproduced in the exercised inventory. No acoustic correction, persistence
+  change, private audio use, Samsung operation or push. Existing local commits and
+  the unrelated worktree remain preserved.
+
 ## UX audit: recording lifecycle correction — 2026-10-23
 
 - Started clean at main/67b541d with two unpushed documentation commits; fetch

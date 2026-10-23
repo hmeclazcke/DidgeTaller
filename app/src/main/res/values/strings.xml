@@ -541,4 +541,8 @@
     <string name="swipe_retry">Retry comparison</string>
     <string name="swipe_cursor">SWIPE′ (experimental): %1$s</string>
     <string name="swipe_missing">no estimate</string>
+    <string name="advanced_diagnostics">Advanced diagnostics</string>
+    <string name="advanced_diagnostics_hide">Hide advanced diagnostics</string>
+    <string name="advanced_diagnostics_help">Compare experimental pitch hypotheses on Fundamental, or inspect the selected audio window. Saved measurements remain unchanged.</string>
+    <string name="playback_seek_label">Playback position</string>
 </resources>

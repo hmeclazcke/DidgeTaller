@@ -146,6 +146,15 @@ class PrecisionUiTest {
                 assertEquals(prefix,vm.sessionTimeline.take(prefix.size))
                 assertTrue(partial.exists())
             }
+            compose.onNodeWithTag("acoustic-signal-status").assertIsDisplayed()
+            compose.onNodeWithTag("measurement-frequency").assertIsDisplayed()
+            val statusBounds=compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode().boundsInRoot
+            val frequencyBounds=compose.onNodeWithTag("measurement-frequency").fetchSemanticsNode().boundsInRoot
+            val transportBounds=compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).fetchSemanticsNode().boundsInRoot
+            assertTrue("Frequency and signal status fit above transport",maxOf(statusBounds.bottom,frequencyBounds.bottom)<=transportBounds.top)
+            val noteName=compose.onNodeWithTag("measurement-note-name").getUnclippedBoundsInRoot()
+            val transport=compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).getUnclippedBoundsInRoot()
+            assertTrue("The complete note label remains visible above transport",noteName.bottom<=transport.top)
             capture("capture-landscape")
             val resources=compose.activity.resources
             val mode=resources.getIdentifier("config_navBarInteractionMode","integer","android")

@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
@@ -127,6 +128,46 @@ class SessionNavigationTest {
             file.outputStream().use {InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().compress(Bitmap.CompressFormat.PNG,100,it)}
             throw e
         }
+    }
+
+    @Test fun advancedComparisonIsExplicitAndRemainsInspectableWhenCollapsed() {
+        val original = RecordingStore(application).file(session.id).readBytes()
+        compose.onNodeWithTag("session-${session.id}").performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
+        compose.runOnIdle { assertFalse(vm.swipeComparison.enabled); assertFalse(vm.swipeComparison.running) }
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").performScrollTo()
+            .assertContentDescriptionEquals(uiText(R.string.swipe_compare)).performClick()
+        compose.waitUntil(15000) { vm.swipeComparison.curve != null }
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
+        compose.onNodeWithTag("swipe-legend").assertExists()
+        compose.runOnIdle { assertTrue(vm.swipeComparison.enabled) }
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("swipe-legend").assertDoesNotExist()
+        assertArrayEquals(original, RecordingStore(application).file(session.id).readBytes())
+    }
+
+    @Test fun accessibleSeekUsesTheSamePlayerAndChartClockAcrossTabs() {
+        val original = RecordingStore(application).file(session.id).readBytes()
+        compose.onNodeWithTag("session-${session.id}").performClick()
+        compose.onNodeWithTag("session-playback-seek").performScrollTo()
+            .performSemanticsAction(SemanticsActions.SetProgress) { it(5000f) }
+        compose.waitUntil(10000) { kotlin.math.abs(vm.playbackPositionMs()-5000)<80 }
+        compose.waitUntil(5000) {
+            kotlin.math.abs(compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotPlaybackMs]-5000)<80
+        }
+        compose.onNodeWithText("00:05 / 00:20").assertExists()
+        val camera=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
+        compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
+        compose.waitUntil(5000) { vm.playbackPositionMs()>5200 && !vm.playbackPaused }
+        compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performScrollTo().performClick()
+        compose.runOnIdle { assertEquals(session.id,vm.playingId); assertFalse(vm.playbackPaused) }
+        compose.onNodeWithText(uiText(R.string.ui_pause)).performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.runOnIdle { assertEquals(camera,vm.preview(session.id).camera(session.durationMs,44100,session.timeline)) }
+        assertArrayEquals(original, RecordingStore(application).file(session.id).readBytes())
     }
 
     @Test fun chartTransportPreservesTimeAndPlaybackAcrossTabs() {

@@ -46,6 +46,11 @@ class SwipeComparisonUiTest {
     @Test fun englishComparisonPlaybackGesturesAndExactRestore()=compare("en")
     @Test fun spanishComparisonPlaybackGesturesAndExactRestore()=compare("es-AR")
 
+    private fun openComparison() {
+        if(compose.onAllNodesWithTag("swipe-compare-toggle").fetchSemanticsNodes().isEmpty())
+            compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+    }
+
     @Test fun comparisonIsReachableThroughTheActualApplicationNavigation() {
         assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         val target=InstrumentationRegistry.getInstrumentation().targetContext
@@ -58,6 +63,7 @@ class SwipeComparisonUiTest {
         compose.setContent {TallerApp(vm,{}, {}, {_,_,_->})}
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
+        openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.waitUntil(10000){vm.swipeComparison.curve!=null}
         compose.onNodeWithTag("time-chart").performScrollTo()
@@ -73,6 +79,7 @@ class SwipeComparisonUiTest {
         }
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_session)).performClick()
         compose.runOnIdle {assertTrue(vm.swipeComparison.enabled);assertNotNull(vm.swipeComparison.curve)}
+        openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.runOnIdle {assertFalse(vm.swipeComparison.enabled)}
     }
@@ -109,6 +116,7 @@ class SwipeComparisonUiTest {
         compose.onNodeWithTag("time-chart").performScrollTo()
         val camera=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
         val before=compose.onNodeWithTag("time-chart").captureToImage().asAndroidBitmap()
+        openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.waitUntil(10000){vm.swipeComparison.curve!=null || vm.swipeComparison.failed}
         compose.runOnIdle {assertFalse(vm.swipeComparison.failed);assertTrue(vm.swipeComparison.curve!!.samples.any {it.hz==null})}
@@ -140,6 +148,7 @@ class SwipeComparisonUiTest {
             compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
         }
         compose.runOnIdle {expanded.value=false;vm.preview(item.id).selectedMs=0}
+        openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-legend").assertDoesNotExist()
         compose.onNodeWithTag("time-chart").performScrollTo()

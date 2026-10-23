@@ -541,4 +541,8 @@
     <string name="swipe_retry">Reintentar comparación</string>
     <string name="swipe_cursor">SWIPE′ (experimental): %1$s</string>
     <string name="swipe_missing">sin estimación</string>
+    <string name="advanced_diagnostics">Diagnósticos avanzados</string>
+    <string name="advanced_diagnostics_hide">Ocultar diagnósticos avanzados</string>
+    <string name="advanced_diagnostics_help">Compará estimaciones experimentales en Fundamental o inspeccioná la ventana de audio seleccionada. Las mediciones guardadas se conservan.</string>
+    <string name="playback_seek_label">Posición de reproducción</string>
 </resources>

@@ -56,9 +56,16 @@ class UIAuditTest {
         compose.setContent {TallerApp(vm,{vm.startSession()},{if(vm.listening)vm.microphoneStop()else vm.microphoneStart()},{_,_,_->})}
     }
     @After fun close(){if(::vm.isInitialized)compose.runOnUiThread {owners.clear()};if(::application.isInitialized)application.clean()}
-    private fun shot(name:String,dialog:Boolean=false){
+    private fun shot(name:String,dialog:Boolean=false,nativeWindow:Boolean=false){
         compose.waitForIdle()
         val directory=File(application.getExternalFilesDir(null),"ui-audit").apply {mkdirs()}
+        if(nativeWindow){
+            // A modal sheet owns a second Compose root; capture the actual window instead.
+            val bitmap=InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
+            File(directory,"$prefix-$name.png").outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}
+            bitmap.recycle()
+            return
+        }
         val node=if(dialog)compose.onNode(isDialog()) else compose.onRoot()
         File(directory,"$prefix-$name.png").outputStream().use {node.captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)}
     }
@@ -67,6 +74,39 @@ class UIAuditTest {
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
         compose.onNodeWithText(title,useUnmergedTree=true).performClick()
     }
+    @Test fun productPolishEvidenceAndTouchTargets(){
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
+        compose.onNodeWithTag("session-playback-seek").performScrollTo()
+            .assertContentDescriptionEquals(uiText(R.string.playback_seek_label))
+            .performSemanticsAction(SemanticsActions.SetProgress){it(3000f)}
+        compose.waitUntil(10000){kotlin.math.abs(vm.playbackPositionMs()-3000)<80}
+        compose.onNodeWithTag("time-chart").performScrollTo();shot("pitch-transport")
+        compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performScrollTo().performClick()
+        compose.waitUntil(20000){vm.workspace.state.bitmap!=null && !vm.workspace.state.loading}
+        compose.onNodeWithTag("time-chart").performScrollTo();shot("spectrogram-transport")
+        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").performScrollTo()
+            .assertContentDescriptionEquals(uiText(R.string.swipe_compare))
+        val bounds=compose.onNodeWithTag("swipe-compare-toggle").fetchSemanticsNode().boundsInRoot
+        val density=compose.activity.resources.displayMetrics.density
+        assertTrue("Comparison has a 48dp accessible touch target: $bounds, density=$density",
+            bounds.width+1>=48*density && bounds.height+1>=48*density)
+        compose.onNodeWithTag("swipe-compare-toggle").performClick()
+        compose.waitUntil(20000){vm.swipeComparison.curve!=null}
+        shot("advanced-comparison")
+        compose.onNodeWithTag("saved-evidence-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("saved-evidence-inspect").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("time-chart").performScrollTo();shot("comparison-legend")
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick();shot("comparison-viewer")
+        compose.onNodeWithTag("viewer-tools").performClick()
+        compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().assertIsDisplayed()
+        shot("advanced-viewer",nativeWindow=true)
+    }
+
     @Test fun chartsInventory(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()

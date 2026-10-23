@@ -4,7 +4,7 @@ The explorer connects a saved recording to its pitch timeline, spectrogram, wave
 
 ## Open and listen
 
-Open **Library → Sessions / Biblioteca → Sesiones** and choose a recording. Play/Pause, Restart, and elapsed/total time sit with the session chart. File actions such as export and rename are separate. A session without reliable pitch still preserves its WAV.
+Open **Library → Sessions / Biblioteca → Sesiones** and choose a recording. Play/Pause, Restart, elapsed/total time and an accessible playback-position slider sit with the session chart. Drag the slider and release to seek; its preview does not replace the player's actual chart cursor. File actions such as export and rename are separate. A session without reliable pitch still preserves its WAV.
 
 Choose a chart, then open it full-screen for detailed exploration. Playback continues when changing charts or moving between detail and the full-screen viewer. Android Back returns to the session; leaving that session or backgrounding the app stops playback.
 
@@ -23,13 +23,19 @@ A spectrogram band, a pitch estimate, and a simulated bore resonance describe di
 
 ## Compare pitch estimators
 
-In a didgeridoo session's **Fundamental** view, enable **Compare pitch estimators**
+In a didgeridoo session, open **Advanced diagnostics / Diagnósticos avanzados**
+and enable **Compare pitch estimators / Comparar estimadores de tono**
 to compute a dashed purple **SWIPE′ · experimental** curve from the saved WAV.
 YIN remains visible. Both curves share zoom, pan and playback coordinates; the
-full-screen **Tools** panel also contains the switch. Disable it to recover the
+full-screen **Tools → Advanced diagnostics** section also contains the switch. Disable it to recover the
 original view. Processing is local, cancellable, and never rewrites saved pitches
 or audio. Agreement is not proof of the physical drone frequency. This comparison
 supports the app's 44.1-kHz didgeridoo recordings; flute sessions retain YIN only.
+
+Opening the advanced section does not schedule comparison. Collapsing it keeps
+an explicitly enabled comparison and its chart legend; use the switch to stop it.
+**Signal evidence at selection** remains a separate explicit request inside that
+section. Closing the advanced section cancels a pending selection inspection.
 See [SWIPE′ comparison](SWIPE_COMPARISON.md) for limitations and validation.
 
 ## Navigate and select

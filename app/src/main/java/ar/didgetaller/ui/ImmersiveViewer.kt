@@ -251,7 +251,6 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     if(tools)ModalBottomSheet(onDismissRequest={tools=false}){
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
             Text(stringResource(R.string.ui_explorer_tools),style=MaterialTheme.typography.titleLarge)
-            if(state.plot==AcousticPlot.PITCH)SwipeComparisonPanel(vm,item)
             Text(reading,modifier=Modifier.fillMaxWidth().testTag("complete-reading"),style=MaterialTheme.typography.bodySmall)
             if(state.plot==AcousticPlot.PITCH)Text(if(item.timeline.isEmpty())stringResource(R.string.ui_source_wav_reanalysis) else stringResource(R.string.ui_source_original_recording_readings_same_series_as_library),style=MaterialTheme.typography.bodySmall)
             Text(stringResource(R.string.ui_drag_along_both_axes_pinch_to_zoom_hold_to_inspect),style=MaterialTheme.typography.bodySmall)
@@ -266,6 +265,10 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
             (visual.error ?: recording?.error)?.let {Text(context.localizedDiagnostic(it),color=MaterialTheme.colorScheme.error)}
             PlotTools(vm,item)
             FragmentTools(vm,item)
+            if(state.plot==AcousticPlot.PITCH){
+                Text(stringResource(R.string.advanced_diagnostics),style=MaterialTheme.typography.titleMedium)
+                SwipeComparisonPanel(vm,item,showLegend=false)
+            }
             TextButton(onClick={tools=false}){Text(stringResource(R.string.ui_back_to_chart))}
         }
     }

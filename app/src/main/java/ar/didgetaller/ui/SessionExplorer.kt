@@ -24,10 +24,14 @@ import kotlinx.coroutines.delay
 import kotlin.math.*
 
 @Composable
-internal fun LabCard(title:String,content:@Composable ColumnScope.()->Unit) {
+internal fun LabCard(title:String,action:(@Composable ()->Unit)?=null,content:@Composable ColumnScope.()->Unit) {
     Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(20.dp),color=MaterialTheme.colorScheme.surface) {
         Column(Modifier.padding(16.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-            Text(title,style=MaterialTheme.typography.titleMedium);content()
+            Row(Modifier.fillMaxWidth(),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                Text(title,Modifier.weight(1f),style=MaterialTheme.typography.titleMedium)
+                action?.invoke()
+            }
+            content()
         }
     }
 }
@@ -41,15 +45,16 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
     var fragments by rememberSaveable(item.id){mutableStateOf(false)}
     var markers by rememberSaveable(item.id){mutableStateOf(false)}
     LaunchedEffect(item.id){vm.openTools(item)}
-    LabCard(context.getString(R.string.ui_explore_audio)) {
+    LabCard(context.getString(R.string.ui_explore_audio), action={
+        TextButton(onClick={onExpand(s.plot)},modifier=Modifier.testTag("expand-plot")){Text(stringResource(R.string.ui_full_screen))}
+    }) {
         ScrollableTabRow(selectedTabIndex=s.plot.ordinal,edgePadding=0.dp){
             AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind;s.inspected=null},text={Text(context.plotLabel(kind),maxLines=1)})}
         }
-        OutlinedButton(onClick={onExpand(s.plot)},modifier=Modifier.fillMaxWidth().testTag("expand-plot")){Text(stringResource(R.string.ui_full_screen))}
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled)SwipeLegend()
         playbackControls()
         if(s.plot==AcousticPlot.PITCH){
-            SwipeComparisonPanel(vm,item)
             val points=sessionPlotPoints(vm,item)
             Text(stringResource(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),style=MaterialTheme.typography.bodySmall)
             if(s.pitch(points).valid==0)Text(stringResource(R.string.ui_no_reliable_readings_audio_is_preserved),style=MaterialTheme.typography.bodySmall)
@@ -63,7 +68,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         }
         if(tools)PlotTools(vm,item,s)
         if(fragments)FragmentTools(vm,item,s)
-        SavedPitchEvidencePanel(vm,item,s.selectedMs)
+        AdvancedPitchDiagnostics(vm,item,s.selectedMs)
         if(markers){
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
                 TextButton(onClick={vm.addMarker(item,s.selectedMs,"Posible toot")}){Text(stringResource(R.string.ui_mark_possible_toot))}

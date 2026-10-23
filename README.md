@@ -98,7 +98,7 @@ See [Development](docs/DEVELOPMENT.md) for quality checks, wrapper troubleshooti
 
 The [Session explorer guide](docs/SESSION_EXPLORER.md) explains chart colors, missing readings, comparison, and Trash. The [Laboratory guide](README-LAB.md) covers the separate design workflow.
 
-To compare estimators, open a saved didgeridoo session's **Fundamental** view and enable **Compare pitch estimators / Comparar estimadores de tono**. SWIPE′ analyzes its WAV on the device. Disable the switch to return to the original chart.
+For an advanced comparison, open a saved didgeridoo session's **Advanced diagnostics / Diagnósticos avanzados** and enable **Compare pitch estimators / Comparar estimadores de tono**. SWIPE′ analyzes its WAV on the device and appears on Fundamental. Disable the switch to return to the original chart.
 
 ## Pitch detection and limitations
 
