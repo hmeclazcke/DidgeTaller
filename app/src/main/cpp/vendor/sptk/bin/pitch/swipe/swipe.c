@@ -424,7 +424,8 @@ vector pitch(matrix S, vector pc, double st) {
             }
         }
         if (maxv > st) { /* make sure it's big enough */
-            if (maxi == 0 || maxi == S.x - 1) p.v[j] = pc.v[0];
+            /* Retain the selected boundary; the upper boundary is not pc[0]. */
+            if (maxi == 0 || maxi == S.x - 1) p.v[j] = pc.v[maxi];
             else { /* general case */
                 tc2 = 1. / pc.v[maxi];
                 log2pc = swipe_log2(pc.v[maxi - 1]);

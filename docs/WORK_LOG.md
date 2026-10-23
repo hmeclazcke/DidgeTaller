@@ -1,3 +1,29 @@
+## SWIPE production consolidation review — 2026-10-23
+
+- Started at clean published dbed749, the user's manual commit; original main and
+  unrelated/conflicted worktree preserved. Checked actual execution paths rather
+  than assuming the optional comparison had already become the live detector.
+- Fixed a demonstrable SPTK boundary-selection defect: an upper-range maximum
+  no longer substitutes the minimum frequency. Known 140-Hz reference now gives
+  138.99 Hz rather than 35 Hz. Upstream notices and original/current hashes retained.
+- Fixed didgeridoo register connectors: >=600-cent changes separate the lines even
+  with high periodicity. All originals, short valid events and note groups remain
+  visible/inspectable; no added smoothing, octave correction or duration filter.
+  Flute/capture/storage behavior remains unchanged.
+- Did not promote SWIPE′ to the normal detector: held-out didgeridoo known-F0
+  accuracy remains 96/135 versus production YIN 125/135. Greater real-WAV coverage
+  does not override those controlled regressions. No unnecessary dual-detector
+  normal path exists; YIN remains normal, SWIPE′ optional and YIN diagnostics intact.
+- Replayed actual private pipelines; 654 decisions/raw fields and classifications
+  match their historical baseline. Boundary fix changes no real-WAV SWIPE′ output.
+  Low-frequency hypotheses exist before drawing and cannot all be called false.
+  October 23 files were absent locally, so no claim is made about their attacks,
+  pauses, vocalizations or reported 115-Hz excursions. Physical drone F0 unresolved.
+- Full JVM/build/quality, opt-in private replays and nine focused emulator tests
+  passed. Exact before/after counts, red failures, runtime/memory measurements and
+  limits are in VALIDATION.md; current engineering decision is in PITCH_RESOLUTION.md.
+  No Samsung access, private publication, recording mutation or history rewrite.
+
 ## Optional SWIPE′ pitch comparison on Android — 2026-10-23
 
 - Implemented the requested comparison inside saved-session Fundamental, rather

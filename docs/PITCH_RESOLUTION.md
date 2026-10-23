@@ -8,6 +8,79 @@ resource limits and Android validation.
 
 Evaluation date: 2026-10-23. **Decision: retain production YIN and add optional, read-only saved-WAV evidence inspection (outcome B).** None of the evaluated alternatives demonstrated a defensible improvement as the application's drone-pitch source. The physical drone frequency during the reported “I” vocalization remains unresolved.
 
+## Production consolidation review
+
+Reviewed on 2026-10-23 from clean, published `dbed749`, the user's manual commit.
+**Decision: do not promote the current SWIPE′ implementation to the normal
+didgeridoo detector.** Physical-phone feedback is useful user evidence, but the
+available controlled references still fail the previously defined acceptance bar.
+This decision does not claim that YIN identifies the physical drone correctly.
+
+The actual microphone path remains `AudioRecord → PitchStream → PitchDetector
+(YIN) → LivePitch → stored points → PitchTrace`. Saved-WAV reanalysis also uses
+YIN; Fundamental prefers original captured readings when available. SWIPE′ runs
+only after explicitly enabling its saved-WAV comparison. There is no simultaneous
+normal-path SWIPE′/YIN pair to eliminate and no silent fallback to another method.
+The optional signal inspector and regression tests retain direct YIN diagnostics.
+The Native American flute's detector/range are unchanged. No live SWIPE′ latency
+or capture-thread safety is inferred from an offline comparison benchmark.
+
+Two reproducible defects were corrected:
+
+1. **Native boundary candidate:** upstream `pitch()` returned `pc[0]` for a maximum
+   at either search boundary. It now returns `pc[maxi]`. The known 140-Hz reference
+   changes from 35 Hz to 138.99 Hz, removing ten two-octave errors in the existing
+   development reference windows. This retains the selected hypothesis; it does
+   not double low estimates. Seven vendor files remain byte-identical, with the
+   eighth file's original/current hashes and exact correction recorded in provenance.
+2. **Chart connector:** didgeridoo changes of at least 600 cents now break the
+   connector regardless of YIN periodicity. Both measured endpoints/groups remain
+   visible and inspectable. Confidence is not evidence of a continuous sweep
+   through the intervening frequencies. No new sample filter, low-note cutoff,
+   interpolation, held pitch or event-duration rule was added. Flute connectors
+   retain their existing policy.
+
+Only the existing SPTK candidate was rerun, using its original frozen configuration
+and dataset splits. The independent desktop build and Android JNI agree on the
+corrected synthetic boundary. On **didgeridoo-only held-out known waveform F0**:
+
+| Method | Correct / all | Accepted / all | Correct / accepted | Errors >50 cents | Integer-octave errors |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Production YIN | 125/135 | 125/135 | 100% | 0 | 0 |
+| SWIPE′ before boundary fix | 96/135 | 125/135 | 76.8% | 29 | 0 |
+| SWIPE′ after boundary fix | 96/135 | 125/135 | 76.8% | 29 | 0 |
+
+Thus, the boundary correction fixes a real defect but does not establish general
+superiority. Errors remain on pure 40/73.4-Hz controls and weak/missing-harmonic
+conditions. No thresholds were selected from these held-out cases. The unsafe
+flute SWIPE′ configuration is excluded from this decision.
+Both methods retain ten abstentions and zero false positives in the 31 held-out
+didgeridoo noise/pause windows. Both recover the known 69.567-Hz component in
+20/60 held-out interference windows; this separate component target is not the
+fundamental of the complete mixture. An additional local interpolation-arithmetic
+check reached only 105/135 correct reference windows and was not integrated.
+
+All 652 complete aligned SWIPE′ windows across the three October 21 WAVs are
+unchanged. The actual production-stream replay, including two partial-tail
+decisions, preserves all 654 original candidate/acceptance/display/stored fields
+and classifications. It removes no additional links on those recordings.
+Normal 3–8 s and “I” 9–17 s keep the coverage reported below. Increased coverage
+still does not prove the intended physical oscillator frequency.
+
+The October 21 replay contains three accepted YIN and four accepted SWIPE′
+hypotheses in 45–55 Hz before chart projection. Some have substantial RMS, others
+are close to the presence gate. They are estimator outputs, not invented chart
+coordinates. SWIPE′ already applies its native strength threshold; that score is
+not calibrated physical-pitch confidence and is not interchangeable with YIN
+periodicity. Their physical validity cannot be decided from level or brevity.
+The October 23 10:17/10:18 files were not found in the existing local fixtures or
+experiment inventory; those specific points, attacks/releases and 115-Hz events
+were **not tested**. No causal claim about dividing a 345-Hz component is made.
+
+Commands, before/after results, Android performance, native/UI checks and private
+artifact locations are recorded in [VALIDATION.md](VALIDATION.md). Original WAVs,
+session formats, names, associations and settings are unchanged.
+
 ## Measurement contract
 
 Three quantities must remain separate:

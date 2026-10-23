@@ -16,7 +16,7 @@ data class SwipeCurve(val samples: List<Sample>, val hopMs: Double, val minHz: I
         ?.takeIf { abs(it.timeMs - timeMs) <= hopMs / 2 }
 }
 
-/** Bounded, overlapping calls to the original SPTK SWIPE' kernel. No temporal correction. */
+/** Bounded, overlapping calls to the SPTK SWIPE' kernel. No temporal correction. */
 class SwipeAnalysis(private val kernel: (ShortArray, Int, Int, Int, Int, Int) -> DoubleArray = SwipeNative::estimate) {
     fun analyze(source: MonoPcmSource, instrument: InstrumentProfile,
                 cancelled: () -> Boolean = { false }, progress: (Int) -> Unit = {}): SwipeCurve {

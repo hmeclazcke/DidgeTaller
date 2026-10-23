@@ -10,6 +10,10 @@ No private audio, physical device or microphone input is shown.
   using MaterialTheme's light palette, six-second synthetic 70-Hz/harmonic WAV
   with a deliberately silent interval. Both curves retain the pause. This capture
   verifies Spanish copy and controls; it is not the application's default theme.
+- [Register separation](register-separation.png): production PlotSurface with
+  deterministic 35/70/140-Hz point groups. All three remain visible without
+  diagonal connectors between registers. A pixel assertion checks the absent
+  35→70-Hz sweep and visible segments; this is a chart fixture, not acoustic data.
 
 These illustrate comparative estimates and interaction, not physical pitch
 accuracy. English and Spanish tests also verified exact chart-pixel restoration

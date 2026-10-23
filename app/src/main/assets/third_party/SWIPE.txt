@@ -1,6 +1,6 @@
 SWIPE' from the SPTK sources distributed with pysptk 1.0.1.
 
-Native JNI integration by Didge Taller. No pitch-kernel modifications. Allocation wrappers and bounded block processing are integration changes.
+Native JNI integration by Didge Taller. The boundary-selection correction retains the selected upper candidate instead of substituting the minimum frequency. Allocation wrappers and bounded block processing are integration changes. Source provenance and the patch are documented in vendor/sptk/PROVENANCE.json.
 
 
 bin/pitch/swipe/COPYING

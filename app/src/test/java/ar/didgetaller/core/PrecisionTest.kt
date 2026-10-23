@@ -70,7 +70,7 @@ class PrecisionTest {
         val trace=PitchTrace.build(points,InstrumentProfile.DIDGERIDOO)
         assertEquals(6,trace.size);assertEquals(1,trace.count {it.uncertain})
         assertEquals(1,trace[3].previous);assertNull(trace[4].previous)
-        assertEquals(4,trace[5].previous)
+        assertNull(trace[5].previous) // Both genuine registers remain; no invented sweep.
         val overview=PlotScales.overview(points);assertTrue(overview.window.low<35)
         assertEquals(35.0,points[2].hz!!,0.0) // Original never changed.
     }

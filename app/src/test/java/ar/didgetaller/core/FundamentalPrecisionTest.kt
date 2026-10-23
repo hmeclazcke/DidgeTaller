@@ -39,9 +39,9 @@ class FundamentalPrecisionTest {
                 assertFalse(trace.any {it.uncertain});assertEquals(raw,trace.map {it.point})
                 val general=PlotScales.overview(raw).window
                 assertTrue(general.low<70 && general.high>207)
-                // The event and its internal continuity survive. A weak, abrupt register
+                // The event and its internal continuity survive. An abrupt register
                 // boundary is not evidence of a measured sweep between the two registers.
-                assertEquals(confidence>=.90,trace[100].previous!=null)
+                assertNull(trace[100].previous)
                 assertTrue(trace[101].previous!=null)
             }
         }

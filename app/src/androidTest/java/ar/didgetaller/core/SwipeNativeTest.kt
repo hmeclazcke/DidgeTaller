@@ -15,6 +15,13 @@ import kotlin.math.*
 class SwipeNativeTest {
     private fun emulator() = assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
     private data class Case(val name:String,val f0:Double,val harmonics:List<Double>)
+    @Test fun upperBoundaryNeverBecomesTheLowerBoundary() {
+        emulator()
+        val pcm=ShortArray(88200){i->(9000*sin(2*PI*140*i/44100)).toInt().toShort()}
+        val frequencies=SwipeNative.estimate(pcm,pcm.size,44100,8192,35,140).drop(1).dropLast(1)
+        assertTrue(frequencies.isNotEmpty())
+        frequencies.forEach {hz->assertTrue("140 Hz became $hz Hz",hz>0 && abs(1200*log2(hz/140))<=50)}
+    }
     @Test fun androidMatchesIndependentSptkGoldenIncludingKnownErrors() {
         emulator()
         val reference=InstrumentationRegistry.getInstrumentation().context.assets.open("swipe-reference.tsv")

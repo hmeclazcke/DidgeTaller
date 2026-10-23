@@ -29,7 +29,14 @@ The JNI library compiles the same legacy SPTK SWIPE′ C implementation used in 
 This is the spectral/prime-harmonic SWIPE′ implementation, not a new harmonic-peak
 detector. No estimator has been substituted for production YIN.
 
-Eight upstream files are byte-identical and individually hashed in
+The [production-consolidation review](PITCH_RESOLUTION.md#production-consolidation-review)
+retains that decision: the didgeridoo-only held-out references do not justify
+replacing YIN. A documented upstream boundary-selection defect has been corrected;
+it is not an octave filter.
+
+Seven upstream files are byte-identical. `swipe.c` has one documented correction:
+an upper-boundary strength maximum now returns that boundary candidate instead
+of the minimum frequency. Current hashes and the original patched-file hash are in
 [PROVENANCE.json](../app/src/main/cpp/vendor/sptk/PROVENANCE.json).
 The SWIPE/vector MIT and SPTK FFT/allocation BSD-style notices are retained in
 the source and in the APK's [third-party notice](../app/src/main/assets/third_party/SWIPE.txt).
@@ -108,8 +115,9 @@ The common RMS presence gate is applied to both references.
 These are coverage and hypothesis measurements, not physical pitch accuracy.
 The real recording has no independent moment-by-moment lip-oscillator reference.
 SWIPE′ still makes known synthetic errors: pure 35 Hz can yield about 37.08 Hz,
-pure 140 Hz can yield 35 Hz, and a missing-first-harmonic 35-Hz example can yield
-about 82 Hz. The golden tests preserve those failures rather than tuning them away.
+and a missing-first-harmonic 35-Hz example can yield about 82 Hz. The original
+pure-140-Hz → 35-Hz boundary bug now yields 138.99 Hz. The golden tests retain
+the remaining failures and explicitly test the corrected boundary.
 The prior held-out comparison favored production YIN overall; this overlay does
 not resolve the physical drone-frequency problem.
 

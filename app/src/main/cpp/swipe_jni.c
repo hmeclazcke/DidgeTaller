@@ -1,4 +1,4 @@
-/* Bounded JNI adapter for the unchanged SPTK SWIPE' implementation. */
+/* Bounded JNI adapter for SPTK SWIPE' with its documented boundary correction. */
 #include <jni.h>
 #include <math.h>
 #include <pthread.h>

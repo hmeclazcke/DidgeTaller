@@ -1,6 +1,8 @@
 """Generate synthetic golden data with the independently compiled legacy SPTK C library.
 
 Usage: python tools/generate_swipe_reference.py path/to/swipe.dll output.tsv
+Build the reference from the current vendored sources, including the documented
+boundary-selection correction; the original unpatched library has different 140-Hz output.
 No audio files or dependencies are downloaded. Test PCM generation is shared by contract
 with SwipeNativeTest (integer truncation of 9000 * harmonic sum, 44100 Hz, two seconds).
 """

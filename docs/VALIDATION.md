@@ -1,3 +1,91 @@
+## SWIPE production review and register reliability — 2026-10-23
+
+- Baseline was clean `main` at published `dbed749` (user's manual commit), equal
+  to origin/main after fetch. No assumption was made that Codex had committed the
+  previous work. AGENTS.md, ub-mode, required product/roadmap/validation context,
+  current native/JNI/Kotlin processing, licensing and existing experiments reviewed.
+  Other worktrees/history were preserved. No Samsung commands were issued.
+- Production decision: retain YIN as the normal didgeridoo detector. Current
+  SWIPE′ is optional saved-WAV analysis only; there was no continuous dual-detector
+  normal path to remove. Microphone uses PitchStream/PitchDetector/LivePitch, saved
+  reanalysis WavAnalysis uses YIN, and original captured samples remain canonical
+  for Fundamental. Flute stays on its existing full-rate YIN/range. No new fallback,
+  estimator substitution, confidence conversion, schema change or data migration.
+- TDD: new native known-140-Hz test failed with “140 Hz became 35.0 Hz”; chart test
+  failed because a strong measured 35→70 transition had a connector. Corrected
+  upstream boundary assignment pc[0]→pc[maxi], and cut didgeridoo connectors across
+  >=600 cents regardless of periodicity. Both endpoints/events remain; no filter
+  or low-frequency cutoff was introduced. The first full JVM run had two existing
+  assertions requiring the old strong-register connectors; updated only those
+  connector expectations while retaining raw-point/toot/continuity assertions.
+  Failed development logs remain ignored, not counted as passed validation.
+- Reused the frozen deterministic dataset and previous YIN CSV. Re-executed only
+  SPTK with the one-line correction, independently built using existing TinyCC;
+  no downloads/installations. Development known waveform F0: 84/124 correct versus
+  74/124 before (same 114 accepted); ten pure-140-Hz two-octave errors disappear,
+  now 138.993414 Hz. Held-out didgeridoo: YIN 125/135 correct, 125 accepted, zero
+  >50-cent errors; SWIPE′ before/after 96/135 correct, 125 accepted, 29 errors.
+  Accuracy among accepted: 100% versus 76.8%; both coverage 92.6%, ten abstentions,
+  zero integer-octave errors and zero false positives /31 negative windows.
+  No superiority or physical-frequency claim is supported. Separate held-out
+  69.567+182.221-Hz component target remains 20/60 for both methods. A bounded local
+  cubic-interpolation arithmetic check achieved only 105/135 and was not integrated.
+- All 652 complete aligned SWIPE′ real-WAV windows are unchanged by the boundary
+  fix. Actual production-stream tests replayed the three manifest-verified private
+  WAVs read-only. Against existing `real-audio/final` CSVs, all first 16 raw fields
+  match across 654 decisions (256/122/276 including two partial tails), graph
+  classification reasons match, and zero additional real-recording connectors
+  are removed. New register-cut behavior is demonstrated on known synthetic point
+  transitions, not falsely attributed to those recordings.
+- Pre-chart real outputs contain three YIN and four SWIPE′ accepted 45–55-Hz
+  hypotheses. They exist before projection; RMS ranges from substantial to near
+  the presence gate. Their physical correctness is unresolved, so no sample was
+  deleted or promoted. Native strength >0.3 is already enforced; RMS is only a
+  presence gate, not proof of pitch. Source-grid timestamps are monotonic and
+  aligned; old Android callback timestamps remain unchanged and are not treated
+  as independently calibrated oscillator timing. The October 23 10:17/10:18 WAVs
+  were not found locally; those specific points and 115-Hz events were not tested.
+- Native/metadata change: seven vendor files remain byte-identical. PROVENANCE.json
+  records the modified file's original and current SHA-256 and exact correction;
+  all MIT/BSD-style notices retained, APK notice updated. Independent desktop
+  golden changes only nine public pure-140-Hz rows (35→138.993414); the explicit
+  known-F0 regression additionally checks interior native output. No range or
+  threshold tuning. Native 44.1-kHz/35–140-Hz guard, four ABIs, bounded allocation
+  cleanup and 32-MiB cap remain unchanged. Unsafe flute configuration still rejected.
+- Full stabilized JVM/debug/test-APK, JaCoCo and informational Detekt/complexity
+  tasks passed (`final-validation.log`): 160 discovered, 157 passed, three optional
+  fixture tests skipped. All three opt-in private classes also passed separately
+  with DIDGE_TALLER_FIXTURES and DIDGE_DIAGNOSTIC_LABEL=swipe-consolidation
+  (`private-pipeline.log`). No test total is presented as a permanent project metric.
+  Standard command: `.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest :app:jacocoDebugUnitTestReport detekt detektComplexity --console=plain`.
+- Explicit emulator-5554/ranchu/API37/x86_64 instrumentation: nine distinct tests
+  passed in 80.825 s: four SwipeNativeTest cases (golden/noise, native boundary,
+  protected WAV parity/hash, bounded minute/cancellation), RegisterPresentationUiTest,
+  three SwipeComparisonUiTest cases (en/es and actual navigation), and existing
+  FundamentalPrecisionUiTest#shortTootAndFluteRemainVisible. No full instrumented
+  suite or physical-device test. The initial red native case is separate evidence.
+- Emulator offline analysis: 22.92-s private WAV/121 points in 1769.15 ms; synthetic
+  minute/321 points in 5126.86 ms. Tracked maximum native work: 2,209,916 B including
+  headers; maximum PCM read 180,224 B. Extra reader/result/VM memory is not included;
+  these are not process-wide peaks or proof of real-time capture/ARM/battery safety.
+  The 30-minute cancellation case remains bounded to one block. Production YIN
+  capture cost was not altered. Native numerical results match the independent
+  corrected reference within 0.01 Hz; original private outputs have zero delta.
+- Pixel assertions and reviewed [register capture](screenshots/swipe-comparison/register-separation.png)
+  verify both groups without a fictitious sweep. Brief valid low events, attacks,
+  releases, genuine register changes, flute policy and breathing gaps have JVM
+  coverage. Existing en/es comparison tests preserve viewport and exact chart
+  pixels on disable, WAV bytes/index/timeline and the independent signal inspector.
+  Localization parity passes (519 strings/five plurals/two arrays). No new UI text.
+- Detailed reproducible CSV/JSON, compiler command, failed/passed test logs and
+  screenshots remain ignored in `checkpoints/experiments/swipe-consolidation/`.
+  Public reproducibility uses focused native/JVM/UI regressions, the golden TSV,
+  source provenance and tools/generate_swipe_reference.py. Original recordings,
+  session names/design associations/settings and package/signing config unchanged.
+  Default promotion and the specific October 23 acoustic interpretation remain
+  unresolved; the current evidence does not justify silently deploying a new main
+  pitch estimator merely because its comparison curve is more continuous.
+
 ## Optional on-device SWIPE′ comparison — 2026-10-23
 
 - Clean baseline `600d70e`, original main synchronized with origin/main. AGENTS.md,
