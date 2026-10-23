@@ -22,6 +22,7 @@ Didge Taller works offline, without accounts, advertising, or network access. Re
 - **Fundamental**, **Spectrogram**, **Waveform**, and **Harmonics** views, with full-screen exploration, zoom, pan, cursor inspection, and reset controls.
 - Playback, seeking, excerpt selection, and looping, with a cursor tied to the audio player's position.
 - WAV analysis for the whole recording or a selected interval: power spectrum, harmonic candidates, pitch summaries, and spectral energy bands.
+- Optional saved-WAV signal inspection separates accepted periodicity, alternative periods, spectral-family candidates, and low-energy input without changing Fundamental. See the [engineering decision](docs/PITCH_RESOLUTION.md).
 - A/B comparison of sessions or excerpts, with overlaid spectra and optional normalization.
 
 ### Experiment with instrument design

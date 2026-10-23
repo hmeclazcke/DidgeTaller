@@ -22,6 +22,7 @@ Didge Taller funciona sin conexión, cuentas, publicidad ni acceso a la red. Las
 - Vistas de **Fundamental**, **Espectrograma**, **Forma de onda** y **Armónicos**, con exploración a pantalla completa, zoom, desplazamiento, inspección con cursor y restablecimiento de la vista.
 - Reproducción, búsqueda de posición, selección de fragmentos y bucle, con un cursor vinculado a la posición del reproductor.
 - Análisis del WAV completo o de un intervalo: espectro de potencia, candidatos armónicos, resúmenes de frecuencia y energía por bandas espectrales.
+- Inspección opcional de señal desde el WAV: separa periodicidad aceptada, períodos alternativos, familias espectrales candidatas y baja energía, sin cambiar Fundamental. Consultá la [decisión de ingeniería](docs/PITCH_RESOLUTION.md), en inglés.
 - Comparación A/B de sesiones o fragmentos con espectros superpuestos y normalización opcional.
 
 ### Experimentar con diseños

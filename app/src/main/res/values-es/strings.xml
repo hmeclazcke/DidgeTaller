@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="saved_evidence_title">Evidencia de señal en la selección</string>
+    <string name="saved_evidence_hide">Ocultar evidencia de señal</string>
+    <string name="saved_evidence_help">Inspeccioná una ventana del WAV original. La periodicidad acústica y los picos espectrales pueden discrepar. El ruido también puede alinear picos por azar. Ninguna alternativa confirma la nota física del drone ni cambia Fundamental.</string>
+    <string name="saved_evidence_inspect">Inspeccionar selección en %1$s</string>
+    <string name="saved_evidence_failed">No se pudo inspeccionar esta ventana de audio.</string>
+    <string name="saved_evidence_window">Ventana WAV: %1$s–%2$s. El resultado queda en esta ventana hasta volver a inspeccionar.</string>
+    <string name="saved_evidence_energy">La energía grabada supera el umbral de señal; esto no determina una frecuencia única.</string>
+    <string name="saved_evidence_accepted">Aceptada por el perfil YIN actual: %1$s</string>
+    <string name="saved_evidence_rejected">Candidata YIN rechazada: %1$s · solo diagnóstico</string>
+    <string name="saved_evidence_alternative">Periodicidad acústica adicional: %1$s</string>
+    <string name="saved_evidence_alternative_periodicity">Búsqueda ampliada a 25 Hz · periodicidad YIN %1$.3f · sin corrección de octava</string>
+    <string name="saved_evidence_families">Familias armónicas candidatas observadas: %1$s. No se atribuyen al drone.</string>
+    <string name="saved_evidence_lanes">%1$d–%2$d Hz · filas: YIN actual / periodicidad adicional / familias espectrales. Marcas separadas, sin notas inferidas.</string>
     <string name="acoustic_diagnostics_title">Diagnóstico de señal</string>
     <string name="acoustic_diagnostics_hide">Ocultar diagnóstico de señal</string>
     <string name="acoustic_diagnostics_latest">Última ventana observada · evidencia diagnóstica, no una medición guardada</string>

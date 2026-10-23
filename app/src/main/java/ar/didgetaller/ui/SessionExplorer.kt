@@ -62,6 +62,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         }
         if(tools)PlotTools(vm,item,s)
         if(fragments)FragmentTools(vm,item,s)
+        SavedPitchEvidencePanel(vm,item,s.selectedMs)
         if(markers){
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
                 TextButton(onClick={vm.addMarker(item,s.selectedMs,"Posible toot")}){Text(stringResource(R.string.ui_mark_possible_toot))}

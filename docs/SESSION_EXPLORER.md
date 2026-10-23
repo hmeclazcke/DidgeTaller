@@ -44,6 +44,8 @@ The tools and cursor expose original uncertain readings and classification detai
 
 ## Interpret the spectrogram and waveform
 
+For a selected position, **Signal evidence at selection / Evidencia de señal en la selección** offers an optional, explicit WAV-window inspection. It distinguishes accepted periodicity, a supported alternative search period, spectral-family candidates, and recorded energy. Results stay labeled at their inspected window until requested again. These separate markers never become notes or modify Fundamental; even noise can align spectral peaks. See the [engineering decision and limits](PITCH_RESOLUTION.md).
+
 The spectrogram uses a 32768-point STFT with a 16384-sample hop. At 44.1 kHz, that is about 743 ms per window, 372 ms per hop, and 1.346 Hz between bins. A larger display does not improve those underlying resolutions; short transitions can share a window.
 
 Colors use a relative reference held during the current exploration, not calibrated sound pressure. The palette progresses from purple through blue and green to yellow as energy increases. Spectrogram green has no relationship to Fundamental's pitch-quality green. Frequency ranges and linear/logarithmic scaling are display choices, not changes to microphone filtering.

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="saved_evidence_title">Signal evidence at selection</string>
+    <string name="saved_evidence_hide">Hide signal evidence</string>
+    <string name="saved_evidence_help">Inspect one window of the original WAV. Acoustic periodicity and spectral peaks can disagree. Noise can also align peaks by chance. No alternative confirms the physical drone note or changes Fundamental.</string>
+    <string name="saved_evidence_inspect">Inspect selection at %1$s</string>
+    <string name="saved_evidence_failed">This audio window could not be inspected.</string>
+    <string name="saved_evidence_window">WAV window: %1$s–%2$s. Results stay at this window until you inspect again.</string>
+    <string name="saved_evidence_energy">Recorded energy is above the signal threshold; this does not establish a unique pitch.</string>
+    <string name="saved_evidence_accepted">Accepted by current YIN profile: %1$s</string>
+    <string name="saved_evidence_rejected">Rejected YIN candidate: %1$s · diagnostic only</string>
+    <string name="saved_evidence_alternative">Additional acoustic periodicity: %1$s</string>
+    <string name="saved_evidence_alternative_periodicity">Expanded 25 Hz search · YIN periodicity %1$.3f · no octave correction</string>
+    <string name="saved_evidence_families">Observed harmonic-family candidates: %1$s. These are not assigned to the drone.</string>
+    <string name="saved_evidence_lanes">%1$d–%2$d Hz · rows: current YIN / additional periodicity / spectral families. Separate markers, no inferred notes.</string>
     <string name="acoustic_diagnostics_title">Signal diagnostics</string>
     <string name="acoustic_diagnostics_hide">Hide signal diagnostics</string>
     <string name="acoustic_diagnostics_latest">Last observed frame · diagnostic evidence, not a saved measurement</string>

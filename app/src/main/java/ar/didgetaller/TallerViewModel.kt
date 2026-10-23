@@ -2,6 +2,7 @@ package ar.didgetaller
 
 import ar.didgetaller.core.LivePitch
 import ar.didgetaller.core.AcousticDiagnostics
+import ar.didgetaller.core.SavedPitchEvidence
 
 import android.app.Application
 import android.os.Handler
@@ -41,6 +42,8 @@ data class RecordingAnalysisState(val sessionId:String?=null,val running:Boolean
                                   val result:WavAnalysis.Result?=null,val error:String?=null, val startMs:Long=0,val endMs:Long?=null)
 data class UndoEntry(val kind:String,val id:String)
 data class ComparisonState(val running:Boolean=false,val progress:Int=0,val a:WavAnalysis.Result?=null,val b:WavAnalysis.Result?=null,val error:String?=null)
+data class SavedEvidenceState(val sessionId:String?=null,val running:Boolean=false,
+    val result:SavedPitchEvidence.Snapshot?=null,val failed:Boolean=false)
 
 class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val store=LocalStore(application)
@@ -116,6 +119,27 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val analysisExecutor=Executors.newSingleThreadExecutor()
     private val analysisVersion=AtomicInteger(0)
     var recordingAnalysis by mutableStateOf(RecordingAnalysisState());private set
+    var savedEvidence by mutableStateOf(SavedEvidenceState());private set
+    private var evidenceJob:Job?=null
+
+    fun inspectSavedEvidence(item:RecordingStore.Session,positionMs:Long){
+        cancelSavedEvidence()
+        savedEvidence=SavedEvidenceState(item.id,running=true)
+        evidenceJob=viewModelScope.launch {
+            try {
+                val result=withContext(Dispatchers.IO){
+                    val task=currentCoroutineContext()
+                    Pcm16WavReader(sessionFile(item)).use {source->
+                        SavedPitchEvidence.inspect(source,positionMs,item.instrument){!task.isActive}
+                    }
+                }
+                ensureActive()
+                if(activeDetail==item.id)savedEvidence=SavedEvidenceState(item.id,result=result)
+            }catch(e:CancellationException){throw e}
+            catch(e:Exception){if(activeDetail==item.id)savedEvidence=SavedEvidenceState(item.id,failed=true)}
+        }
+    }
+    fun cancelSavedEvidence(){evidenceJob?.cancel();savedEvidence=SavedEvidenceState()}
     private var cleared=false
     private val main=Handler(Looper.getMainLooper())
     private val simVersion=AtomicInteger(0)
@@ -210,7 +234,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         inMeasurementDestination=measurement
         microphoneStop()
         if(activeDetail!=sessionId || sessionId==null){
-            stopPlayback();cancelRecordingAnalysis(clear=true);workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
+            stopPlayback();cancelRecordingAnalysis(clear=true);cancelSavedEvidence();workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
             activeDetail?.let {explorers.remove(it);previews.remove(it)}
         }
         activeDetail=sessionId
@@ -287,6 +311,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     fun deleteSession(item:RecordingStore.Session){
         if(playingId==item.id)stopPlayback()
         if(recordingAnalysis.sessionId==item.id)cancelRecordingAnalysis(clear=true)
+        if(savedEvidence.sessionId==item.id)cancelSavedEvidence()
         runCatching {trash.put("session",item.id);refreshLibrary();undoEntry=UndoEntry("session",item.id)}
             .onFailure {message="No se pudo mover a la papelera: ${it.message}"}
     }
@@ -367,7 +392,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         return "Medido ${Music.hzText(real)} · Modelo ${Music.hzText(simulated)} · Desvío $cents cents (aprox.)"
     }
     fun onAppStopped(changingConfiguration:Boolean=false){microphoneStop();if(changingConfiguration)return
-        stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();workspace.cancel();cancelComparison()}
+        stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();workspace.cancel();cancelComparison()}
     override fun onCleared(){
         cleared=true;onAppStopped();executor.shutdownNow()
         analysisVersion.incrementAndGet();analysisExecutor.shutdownNow()
