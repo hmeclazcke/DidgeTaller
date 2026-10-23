@@ -1,3 +1,100 @@
+## Optional on-device SWIPE′ comparison — 2026-10-23
+
+- Clean baseline `600d70e`, original main synchronized with origin/main. AGENTS.md,
+  ub-mode, product/roadmap/validation context, PITCH_RESOLUTION.md and ignored prior
+  SPTK experiments were reviewed. Other worktrees, including the conflicted old
+  documentation worktree, were untouched. Configured author/committer identities
+  matched before committing. No baseline or empty commit was created.
+- Reused byte-identical legacy SPTK C from the independently tested pysptk 1.0.1
+  distribution. Eight upstream SHA-256 hashes verified; MIT/BSD-style notices are
+  in source and APK assets. Added only a minimal header, bounded allocation/JNI
+  adapters and CMake/NDK build integration. No Python/model/runtime network access.
+  The first native build obtained pinned NDK 27.0.12077973/CMake 3.22.1 using
+  accepted SDK licenses and compiled all four ABIs. CI installs these explicitly.
+- TDD: SwipeAnalysisTest initially ran four tests with three expected behavioral
+  failures before the analyzer was implemented. A subsequent camera-restoration
+  test failed because comparison Reset changed the original extended-range flag;
+  retaining/restoring the original presentation flags fixed it. Both red logs
+  remain ignored. These were development failures, not successful validation.
+- The first native synthetic check found nondeterministic flute output on identical
+  PCM (approximately 426.9 versus 439.4 Hz). Source inspection found the final ERB
+  interpolation query outside the smallest FFT arrays for 200–1600 Hz. This task
+  deliberately restricts SWIPE′ to 44.1-kHz didgeridoo sessions, with native guards
+  before upstream execution; the production flute path is unchanged. No unsafe
+  flute results are presented as validated estimates. See SWIPE_COMPARISON.md.
+- Stabilized command:
+  `.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest :app:jacocoDebugUnitTestReport detekt detektComplexity --console=plain`
+  **BUILD SUCCESSFUL**. JVM XML: 157 discovered, 154 passed, three optional private
+  fixture tests skipped, zero failures/errors. Seven new JVM tests cover alignment,
+  bounded reads, presence gating, gaps/register jumps, short/unsupported/oversized
+  input, cancellation and exact camera/range restoration. JaCoCo and informational
+  Detekt/complexity reports generated; existing audit warnings remain, not a clean
+  static-analysis claim. Localization checker: 519 strings, five plurals, two arrays
+  with en/es positional-format parity.
+- Final guarded instrumentation used only `adb -s emulator-5554`, hardware ranchu,
+  API 37 x86_64, 1080×2400/density 420. Install/update of both APKs succeeded.
+  AndroidJUnitRunner class selection:
+  `ar.didgetaller.ui.SwipeComparisonUiTest,ar.didgetaller.core.SwipeNativeTest,ar.didgetaller.ui.SavedPitchEvidenceUiTest,ar.didgetaller.ui.SessionNavigationTest#immersiveViewportPinchInspectionResetAndBackPreserveSession`.
+  **Nine tests passed in 73.23 s**: three comparison UI cases (en/es and real
+  TallerApp navigation), three native numerical/resource cases, two existing
+  signal-evidence UI cases and one existing immersive navigation/camera regression.
+  A prior five-case focused run also passed; it is a repeat, not five extra distinct
+  cases. No full instrumented suite or physical-device operation was performed.
+- Native golden tests use deterministic public PCM and the independent Windows
+  legacy C library, not self-generated Android expectations. Pure 35/70/140 Hz,
+  weak/absent first harmonic, silence and broadband noise were checked, including
+  known SWIPE′ inaccuracies rather than only attractive outputs. Unsafe flute
+  configuration is rejected. Private numerical test used an emulator-only copy
+  outside the session library, passed as `swipeFixture`/`swipeReference` arguments.
+  Original private WAVs were only read, never bundled or committed.
+- All 121 aligned windows of the protected 19:17 recording match the prior whole-
+  signal SPTK output, including missing estimates: observed maximum delta 0 Hz,
+  asserted tolerance 0.01 Hz after the common RMS gate. Fully contained normal
+  3–8 s: SWIPE′ 25/25 accepted (63.84–68.56 Hz), baseline YIN 21/25. Confirmed
+  “I” 9–17 s: SWIPE′ 41/42 (62.53–66.49 Hz), baseline YIN 14/42. No physical
+  oscillator accuracy can be inferred from these coverage figures. Prior held-out
+  synthetic superiority of YIN remains unchanged; no new correction rule was tuned.
+- Final measured emulator analysis: protected 22.92-s WAV/121 points, **1709.94 ms**;
+  generated 60-s WAV-equivalent source/321 points, **4620.98 ms**. Maximum tracked
+  native allocations across blocks: **2,209,916 bytes**, including allocation
+  headers; largest PCM read: **180,224 bytes**. Reader byte buffer and Kotlin result
+  objects are additional; these are not whole-process peak-memory measurements.
+  A virtual 30-minute source was cancelled after one native block; a full 30-minute
+  wall-clock/battery run was not performed. Native calls cap input at 262,144 samples
+  and allocations at 32 MiB; retained curves cap at 20,000 points. No low-end-phone,
+  ARM runtime, thermal or battery claim is made. ARM ABIs compiled successfully.
+- Stripped native library sizes: arm64-v8a 35,192 B; armeabi-v7a 24,356 B; x86 38,460 B;
+  x86_64 35,176 B. No C++ runtime was introduced. Native ELF segment alignment and
+  packaged notices were inspected. Android estimates are offline/centered, not a
+  real-time detector. Historical YIN delivery timestamps remain unchanged.
+- Additional focused checks after the stabilized run added a weak-first-harmonic
+  golden case and a low-amplitude RMS assertion. The seven analyzer JVM tests and
+  the native synthetic parity test passed again; no production numerical rule
+  changed. ELF LOAD alignment was 0x4000 on all four ABIs; linked libraries were
+  only libm/libdl/libc. The APK notice matched its reviewed source bytes.
+  A final cancellation-error guard was compiled and the seven analyzer JVM tests
+  plus the English comparison UI case passed again (14.01 s for that UI repeat).
+  All 104 relative file/image references in the reviewed documentation exist;
+  the three original protected WAV hashes still match their fixture manifest.
+  Git attributes preserve the upstream files' exact bytes and whitespace instead
+  of normalizing the CRLF header or reformatting retained license notices.
+- UI checks cover explicit opt-in, experimental/dashed legend, shared projection,
+  advancing playback cursor, inspection, pinch/pan, independent preview/fullscreen
+  cameras, cancellation/exit and session instrument ownership. Disabling restores
+  both the original viewport and identical chart bitmap in en/es cases. Original
+  WAV bytes, session JSON and stored timelines compare exactly before/after. An
+  upstream native call already running finishes its bounded block on cancellation.
+- Reviewed real captures: [screenshots and capture conditions](screenshots/swipe-comparison/README.md).
+  An initial light-theme legend lacked contrast; the text now uses a darker purple
+  on light surfaces. Default app-theme and Spanish harness captures were inspected.
+  Signal evidence at selection remains present and its two existing tests pass.
+- Reproduction: public golden generator `tools/generate_swipe_reference.py`; native
+  tests and synthetic TSV in androidTest. Detailed private TSV, hashes, build/test
+  logs, verification.json and timings remain ignored under
+  `checkpoints/experiments/swipe-android/`; prior source/reference evidence remains
+  under `checkpoints/experiments/pitch-resolution/`. No Samsung, WAV mutation,
+  capture/YIN/PitchTrace logic change, schema migration or historical rewrite.
+
 ## Pitch engineering resolution and optional saved-WAV evidence — 2026-10-23
 
 - Clean baseline `4e6a06a`, main synchronized with origin/main; existing conflicted documentation worktree preserved untouched. Read AGENTS.md, ub-mode, required context, prior extended-range/filter/interference/normal-drone/harmonic-tracker/prototype/diagnostic evidence, production paths and tests. No baseline commit needed. Configured author/committer identities matched before the first commit. No microphone/Samsung/private-data mutation.

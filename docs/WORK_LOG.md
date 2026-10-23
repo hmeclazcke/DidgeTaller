@@ -1,3 +1,31 @@
+## Optional SWIPE′ pitch comparison on Android — 2026-10-23
+
+- Implemented the requested comparison inside saved-session Fundamental, rather
+  than replacing the baseline detector. Actual legacy SPTK C is built through a
+  small JNI library; numerical source files retain exact upstream hashes/notices.
+  Enabling the switch starts bounded local WAV analysis. Results are transient,
+  cancellable and share chart coordinates/playback/gestures with YIN. Disabling
+  restores the original camera and chart. The existing signal inspector is intact.
+- Restricted comparison to 44.1-kHz didgeridoo recordings after reproducing an
+  upstream out-of-bounds interpolation defect in the flute configuration. Native
+  guards prevent unsafe entry. Flute/live detection and persisted formats remain
+  untouched. This is a deliberate supported-scope limitation, not an unvalidated
+  repair of the upstream algorithm. No frequency was clamped or octave-corrected.
+- Android matches all 121 protected 19:17 reference windows and retains known
+  synthetic SWIPE′ errors. More accepted frames during normal drone and “I” are
+  useful comparative evidence, not proof of lip-driven frequency. The earlier
+  engineering decision to retain production YIN stands.
+- Relevant JVM/build/native/UI checks passed. English/Spanish UI tests verify
+  restored chart pixels, cancellation, playback, gestures and unchanged WAV/index;
+  the actual app navigation/theme was exercised. Performance/resource measurements,
+  failed development checks, provenance and limits are recorded in VALIDATION.md
+  and SWIPE_COMPARISON.md. New native build tools are pinned in app/CI configuration.
+- Technical follow-ups remain: independently validate physical source frequency;
+  investigate the unsafe upstream flute configuration separately; measure ARM/low-
+  end-phone battery/thermal behavior before broad performance claims. No Samsung
+  operations or automatic branch/worktree reconciliation were performed. Commit
+  and publish only this reviewed implementation if a normal fast-forward is safe.
+
 ## 2026-10-23 — Integrated pitch decision and saved signal evidence
 
 - Completed the requested end-to-end comparison rather than repeating rejected prefilters, blanket octave rules or the earlier approximate ensemble. Genuine pYIN and two independently sourced SWIPE implementations were executed alongside the actual production pipeline on one frozen development/held-out protocol and all three private WAVs. Source/model/license/runtime inspection kept external tools entirely outside the APK. PESTO was inspected but not installed because of its absent PyTorch/torchaudio runtime and unvalidated deployment, not because its small weights were assumed large.

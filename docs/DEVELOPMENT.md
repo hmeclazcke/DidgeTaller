@@ -8,6 +8,13 @@ The checked-in build uses JDK target 17, Gradle 8.13, Android Gradle Plugin 8.13
 
 SDK Manager provides Platform 35, platform tools, and build tools. [CI](../.github/workflows/android.yml) explicitly installs Build Tools 35.0.0. Let Android Studio create the local SDK configuration; `local.properties` is machine-specific and ignored by Git.
 
+The optional SWIPE′ comparison also builds a small C/JNI library using **NDK
+27.0.12077973** and **CMake 3.22.1**. Install these pinned versions through SDK
+Manager, or let Gradle obtain them after the Android SDK licenses are accepted.
+CI installs both explicitly. No Python installation is needed to build or run
+the app. See [SWIPE′ comparison](SWIPE_COMPARISON.md) for source notices and
+numerical-validation instructions.
+
 Use the checked-in wrapper rather than an independently installed Gradle:
 
 ```powershell

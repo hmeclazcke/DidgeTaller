@@ -531,4 +531,14 @@
     </plurals>
     <string name="spectrum_frequency_caption">%1$d–%2$d Hz · 0 to −80 dB rel</string>
     <string name="recording_name_fallback">Recording</string>
+    <string name="swipe_compare">Compare pitch estimators</string>
+    <string name="swipe_didgeridoo_only">SWIPE′ comparison is available for didgeridoo recordings only.</string>
+    <string name="swipe_yin">YIN · Fundamental</string>
+    <string name="swipe_experimental">SWIPE′ · experimental · dashed</string>
+    <string name="swipe_caution">Separate pitch hypotheses. Agreement does not establish the physical drone frequency. Missing estimates and register changes remain gaps.</string>
+    <string name="swipe_progress">Analyzing WAV on this device… %1$d%%</string>
+    <string name="swipe_failed">Comparison could not be completed within this device’s processing limits. The original chart and audio are preserved.</string>
+    <string name="swipe_retry">Retry comparison</string>
+    <string name="swipe_cursor">SWIPE′ (experimental): %1$s</string>
+    <string name="swipe_missing">no estimate</string>
 </resources>

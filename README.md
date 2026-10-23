@@ -23,6 +23,7 @@ Didge Taller works offline, without accounts, advertising, or network access. Re
 - Playback, seeking, excerpt selection, and looping, with a cursor tied to the audio player's position.
 - WAV analysis for the whole recording or a selected interval: power spectrum, harmonic candidates, pitch summaries, and spectral energy bands.
 - Optional saved-WAV signal inspection separates accepted periodicity, alternative periods, spectral-family candidates, and low-energy input without changing Fundamental. See the [engineering decision](docs/PITCH_RESOLUTION.md).
+- Optional, offline **SWIPE′** comparison overlays a dashed experimental pitch curve on Fundamental for 44.1-kHz didgeridoo sessions. YIN remains the baseline; [limitations and validation](docs/SWIPE_COMPARISON.md) explain why this is a hypothesis, not a corrected measurement.
 - A/B comparison of sessions or excerpts, with overlaid spectra and optional normalization.
 
 ### Experiment with instrument design
@@ -52,6 +53,8 @@ More [English and Spanish screenshots](docs/screenshots/localization/INDEX.md), 
 | Quality | JUnit 4, AndroidX/Compose instrumentation tests, GitHub Actions, Detekt 1.23.8, JaCoCo 0.8.15 |
 
 Versions are defined in the [root](build.gradle.kts) and [app](app/build.gradle.kts) Gradle files. The [manifest](app/src/main/AndroidManifest.xml) requests microphone access and has no Internet permission.
+
+SWIPE′ uses a small C/JNI library with retained [MIT/BSD-style upstream notices](app/src/main/assets/third_party/SWIPE.txt). Builds also require NDK 27.0.12077973 and CMake 3.22.1; Android SDK Manager/Gradle provides them. App use requires neither Python nor a desktop computer.
 
 ## Getting started
 
@@ -94,6 +97,8 @@ See [Development](docs/DEVELOPMENT.md) for quality checks, wrapper troubleshooti
 5. Use **Play / Reproducir**, **Pause / Pausar**, and **Restart / Reiniciar** to listen. Seek to a position or select an excerpt to loop. Android Back returns from the viewer to the session; leaving the session stops playback.
 
 The [Session explorer guide](docs/SESSION_EXPLORER.md) explains chart colors, missing readings, comparison, and Trash. The [Laboratory guide](README-LAB.md) covers the separate design workflow.
+
+To compare estimators, open a saved didgeridoo session's **Fundamental** view and enable **Compare pitch estimators / Comparar estimadores de tono**. SWIPE′ analyzes its WAV on the device. Disable the switch to return to the original chart.
 
 ## Pitch detection and limitations
 

@@ -49,6 +49,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
         playbackControls()
         if(s.plot==AcousticPlot.PITCH){
+            SwipeComparisonPanel(vm,item)
             val points=sessionPlotPoints(vm,item)
             Text(stringResource(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),style=MaterialTheme.typography.bodySmall)
             if(s.pitch(points).valid==0)Text(stringResource(R.string.ui_no_reliable_readings_audio_is_preserved),style=MaterialTheme.typography.bodySmall)

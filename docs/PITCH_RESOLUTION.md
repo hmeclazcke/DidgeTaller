@@ -1,5 +1,11 @@
 # Pitch estimation: engineering decision
 
+Android follow-up, 2026-10-23: the validated legacy SPTK implementation is now an
+optional, on-device comparison curve for 44.1-kHz didgeridoo sessions. It does
+not replace YIN or change the conclusions below. See [SWIPE′ comparison](SWIPE_COMPARISON.md)
+for configuration, numerical parity, the unsafe upstream flute configuration,
+resource limits and Android validation.
+
 Evaluation date: 2026-10-23. **Decision: retain production YIN and add optional, read-only saved-WAV evidence inspection (outcome B).** None of the evaluated alternatives demonstrated a defensible improvement as the application's drone-pitch source. The physical drone frequency during the reported “I” vocalization remains unresolved.
 
 ## Measurement contract

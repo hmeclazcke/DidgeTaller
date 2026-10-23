@@ -18,6 +18,12 @@ Didge Taller funciona sin conexión, cuentas, publicidad ni acceso a la red. Las
 
 ### Escuchar y explorar
 
+La vista **Fundamental** de las sesiones de didgeridoo permite activar **Comparar
+estimadores de tono**: agrega una curva discontinua de **SWIPE′ · experimental**
+junto a YIN, calculada sin conexión a partir del WAV de 44,1 kHz. Al desactivarla
+se recupera la vista original. No corrige mediciones ni confirma la frecuencia
+física del drone. La flauta conserva su análisis YIN. Ver [alcances y validación](docs/SWIPE_COMPARISON.md).
+
 - **Biblioteca de sesiones** con reproducción, cambio de nombre, exportación WAV y eliminación recuperable mediante la Papelera.
 - Vistas de **Fundamental**, **Espectrograma**, **Forma de onda** y **Armónicos**, con exploración a pantalla completa, zoom, desplazamiento, inspección con cursor y restablecimiento de la vista.
 - Reproducción, búsqueda de posición, selección de fragmentos y bucle, con un cursor vinculado a la posición del reproductor.
@@ -54,6 +60,11 @@ El [índice de capturas en inglés y español](docs/screenshots/localization/IND
 Las versiones están definidas en los archivos Gradle de la [raíz](build.gradle.kts) y del [módulo app](app/build.gradle.kts). El [manifiesto](app/src/main/AndroidManifest.xml) solicita acceso al micrófono y no incluye permiso de Internet.
 
 ## Primeros pasos
+
+Para compilar se necesitan también NDK 27.0.12077973 y CMake 3.22.1, disponibles
+en SDK Manager o mediante Gradle con las licencias aceptadas. La app no necesita
+Python ni una computadora para esta comparación. Se incluyen los
+[avisos de licencia del componente](app/src/main/assets/third_party/SWIPE.txt).
 
 Necesitás Git, Android Studio con un JDK de Gradle compatible con el proyecto (JDK 17 es la base documentada) y Android SDK Platform 35. No hace falta instalar Gradle por separado. La primera sincronización descarga la distribución del wrapper y las dependencias.
 

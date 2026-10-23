@@ -1,0 +1,15 @@
+{
+  "source": "pysptk 1.0.1 source distribution",
+  "source_archive_sha256": "78b1c9338bf795a41cdc3ff03fcd4699c401c323f54630bb71a19710078d0b3f",
+  "files": {
+    "bin/pitch/swipe/swipe.c": "9590802be5e2ccbe07e8014bfc3623ba4786d0100bb0241cd405b30e92e19017",
+    "bin/pitch/swipe/vector.c": "fbac00ba67408f74f4ae08f9352abe8f55c323f0b36c0b810a3c2b7f7edf303d",
+    "bin/pitch/swipe/vector.h": "c215c26e91d94991af97e428ad858b03998e55c4b6d2f86d59b17344a596da5e",
+    "bin/pitch/swipe/COPYING": "c4bed086ad2be702d5ccab0f6fc6a26fddcf8611abb511dd43b0fb8c1dca6cbe",
+    "bin/dllexport.h": "a68cf8751dccd411c813441c7dce30d357caef056b39eb7f62686af1e6886202",
+    "bin/fft/_fft.c": "47fc5f9ddd1f2bd3324e766a72916925572f7a9325984496176024f7e65d3246",
+    "bin/fftr/_fftr.c": "1c862c776b18deea906f09fb5802241cbaf533093ffdfcbcaf359596fb3b50b0",
+    "lib/getmem.c": "8c59ab557b0a115ec8d5b34a8dd0dae36a388d1ae6a720150bb30a40807c6d8b"
+  },
+  "changes": "Upstream files are byte-identical. A minimal SPTK.h declares only the FFT allocation API. Allocation calls are wrapped at compile time; numerical operations are unchanged."
+}

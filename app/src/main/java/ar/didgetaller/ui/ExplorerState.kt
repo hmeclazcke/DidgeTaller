@@ -42,8 +42,27 @@ class ExplorerState(val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDO
         if(pitchSource!==points){pitchSource=points;robustPitch=PlotScales.pitch(points,instrument=instrument);fullPitch=PlotScales.pitch(points,true,instrument);generalPitch=PlotScales.overview(points,instrument)}
         return if(all)fullPitch else robustPitch
     }
-    fun overview(points:List<SessionAnalysis.Point>):PitchViewRange {pitch(points);return generalPitch}
-    val cameras=mutableStateMapOf<AcousticPlot,PlotViewport>()
+    private var comparisonRange by mutableStateOf<AxisWindow?>(null)
+    private var originalExtendedRange=false
+    private var originalFollow=false
+    private val originalCameras=mutableStateMapOf<AcousticPlot,PlotViewport>()
+    private val comparisonCameras=mutableStateMapOf<AcousticPlot,PlotViewport>()
+    val cameras get()=if(plot==AcousticPlot.PITCH && comparisonRange!=null)comparisonCameras else originalCameras
+    fun configureComparisonRange(range:AxisWindow?) {
+        if(range==comparisonRange)return
+        if(comparisonRange==null && range!=null){originalExtendedRange=extendedPitchRange;originalFollow=follow}
+        if(range==null){extendedPitchRange=originalExtendedRange;follow=originalFollow}
+        comparisonCameras.clear()
+        if(range!=null)originalCameras[AcousticPlot.PITCH]?.let {camera->
+            comparisonCameras[AcousticPlot.PITCH]=camera.copy(y=AxisWindow(minOf(camera.y.low,range.low),maxOf(camera.y.high,range.high)))
+        }
+        comparisonRange=range
+    }
+    fun overview(points:List<SessionAnalysis.Point>):PitchViewRange {
+        pitch(points)
+        val range=comparisonRange ?: return generalPitch
+        return generalPitch.copy(window=AxisWindow(minOf(generalPitch.window.low,range.low),maxOf(generalPitch.window.high,range.high)))
+    }
     val region get()=if(regionEnd>regionStart)regionStart..regionEnd else null
     fun defaults(kind:AcousticPlot,duration:Long,rate:Int,points:List<SessionAnalysis.Point>):PlotViewport {
         val y=when(kind){AcousticPlot.PITCH->overview(points).window;AcousticPlot.WAVE->AxisWindow(-1.0,1.0);AcousticPlot.SPECTROGRAM->AxisWindow(if(logarithmic)rate/32768.0 else 0.0,instrument.spectralMaxHz.coerceAtMost(rate/2.0));AcousticPlot.SPECTRUM->AxisWindow(-80.0,0.0)}

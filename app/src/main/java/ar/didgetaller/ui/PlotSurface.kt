@@ -29,6 +29,8 @@ import kotlin.math.*
 internal val displayLocale:Locale get()=Locale.getDefault()
 internal val PlotDataArea=SemanticsPropertyKey<androidx.compose.ui.geometry.Rect>("PlotDataArea")
 internal val PlotWindow=SemanticsPropertyKey<PlotViewport>("PlotWindow")
+internal val PlotSwipeCount=SemanticsPropertyKey<Int>("PlotSwipeCount")
+internal val PlotPlaybackMs=SemanticsPropertyKey<Long>("PlotPlaybackMs")
 internal val PlotXLabels=SemanticsPropertyKey<List<String>>("PlotXLabels")
 internal val PlotXLabelBounds=SemanticsPropertyKey<List<androidx.compose.ui.geometry.Rect>>("PlotXLabelBounds")
 internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
@@ -61,6 +63,7 @@ internal fun placeAxisLabels(ticks:List<Double>,window:AxisWindow,width:Float,ga
 @Composable
 internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotViewport,points:List<SessionAnalysis.Point>,
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
+    swipe:SwipeCurve?=null,
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -95,6 +98,22 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val left=if(state.gestureActive)settledLeft else requiredLeft
     val pitchTrace=remember(points,state.instrument){PitchTrace.build(points,state.instrument)}
     val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
+    val swipePaths=remember(swipe,camera,dimensions,left,right,top,bottom,state.plot){
+        val path=Path();val dots=mutableListOf<Offset>()
+        if(swipe!=null && state.plot==AcousticPlot.PITCH){
+            val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
+            fun position(sample:SwipeCurve.Sample)=Offset((camera.x.fraction(sample.timeMs)*plotWidth).toFloat(),((1-camera.y.fraction(sample.hz!!))*h).toFloat())
+            for(i in swipe.samples.indices){
+                val sample=swipe.samples[i]
+                if(sample.hz==null || sample.timeMs<camera.x.low-swipe.hopMs || sample.timeMs>camera.x.high+swipe.hopMs)continue
+                val p=position(sample)
+                if(swipe.linked(i)){
+                    val previous=position(swipe.samples[i-1]);path.moveTo(previous.x,previous.y);path.lineTo(p.x,p.y)
+                }else if(!swipe.linked(i+1))dots+=p
+            }
+        }
+        path to dots
+    }
     val xTicks=PlotScales.ticks(camera.x,if(plotWidth/textSize<30)3 else 5)
     val xLabels=placeAxisLabels(xTicks,camera.x,plotWidth,labelGap*2,
         {if(state.plot.temporal)seconds(it.toLong()) else axisLabel(it,camera.x.span)+" Hz"},paint::measureText)
@@ -129,6 +148,8 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     Canvas(modifier.background(palette).then(gesture).testTag(if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
         .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
+            this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
+            this[PlotPlaybackMs]=cursor
             this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
         .onSizeChanged {dimensions=it}) {
         // Navigation/configuration transitions can measure a temporarily collapsed surface.
@@ -160,6 +181,10 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                             pathEffect=if(sample.bridged)PathEffect.dashPathEffect(floatArrayOf(5f,5f)) else null)
                         else drawCircle(color,2.5f,Offset(x(p.timeMs.toDouble()),y(hz)))
                     }
+                }
+                if(state.plot==AcousticPlot.PITCH && swipe!=null){
+                    drawPath(swipePaths.first,swipeColor,style=Stroke(2.3f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,5f))))
+                    swipePaths.second.forEach {drawCircle(swipeColor,2.8f,it)}
                 }
                 if(state.plot==AcousticPlot.WAVE)visual.wave?.let {wave ->
                     val a=wave.start*1000.0/wave.rate;val b=wave.end*1000.0/wave.rate

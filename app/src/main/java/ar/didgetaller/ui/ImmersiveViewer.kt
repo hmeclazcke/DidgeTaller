@@ -77,6 +77,7 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     val result=analysis?.result
     val points=sessionPlotPoints(vm,item)
     val trace=remember(points,item.instrument){PitchTrace.build(points,item.instrument)}
+    val swipe=vm.swipeComparison.takeIf {it.sessionId==item.id && it.enabled}?.curve
     val camera=s.camera(duration,visual.rate,points)
     LaunchedEffect(item.id){vm.openTools(item)}
     LaunchedEffect(camera,s.plot,s.logarithmic,s.rangeDb,s.gestureActive,visual.frames){
@@ -94,7 +95,7 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
             s.cameras[s.plot]=camera.copy(x=domain.constrain(AxisWindow(left,left+camera.x.span)))
         }
     }
-    PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,onPreview=onExpand,
+    PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,swipe=swipe,onPreview=onExpand,
         onReset={s.reset(duration,visual.rate,points)},onTransform={x,y,zx,zy,dx,dy->s.transform(duration,visual.rate,points,x,y,zx,zy,dx,dy)},
         onPoint={x,y,inspect ->
             s.selectedY=y;s.follow=false
@@ -125,6 +126,10 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                             val power=tile.power[col*tile.rows+row].toDouble();val ref=s.spectrumReference
                             "${seconds(time)} · ${hzLabel(y)} · "+if(ref>1e-16)context.getString(R.string.ui_db_rel_stft_cell, 10*log10(max(1e-30,power)/ref)) else context.getString(R.string.ui_no_significant_energy)
                         }else context.getString(R.string.ui_no_calculated_cell, seconds(time), hzLabel(y))}
+                }
+                if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.enabled){
+                    val estimate=swipe?.nearest(time)?.hz
+                    s.inspected=s.inspected.orEmpty()+"\n"+context.getString(R.string.swipe_cursor,estimate?.let(::hzLabel) ?: context.getString(R.string.swipe_missing))
                 }
             }else{
                 val peak=result?.harmonics?.peaks?.minByOrNull {abs(it.hz-x)}
@@ -223,6 +228,10 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
             }
             if(visual.loading || recording?.running==true)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp).align(Alignment.BottomCenter))
         }
+        if(state.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled){
+            SwipeLegend()
+            if(vm.swipeComparison.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
+        }
         if(!singleBar)Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-transport"),verticalAlignment=Alignment.CenterVertically){
             transport()
             if(landscape)TextButton(onClick={tools=true},modifier=Modifier.weight(1f).testTag("open-reading")){
@@ -242,6 +251,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     if(tools)ModalBottomSheet(onDismissRequest={tools=false}){
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
             Text(stringResource(R.string.ui_explorer_tools),style=MaterialTheme.typography.titleLarge)
+            if(state.plot==AcousticPlot.PITCH)SwipeComparisonPanel(vm,item)
             Text(reading,modifier=Modifier.fillMaxWidth().testTag("complete-reading"),style=MaterialTheme.typography.bodySmall)
             if(state.plot==AcousticPlot.PITCH)Text(if(item.timeline.isEmpty())stringResource(R.string.ui_source_wav_reanalysis) else stringResource(R.string.ui_source_original_recording_readings_same_series_as_library),style=MaterialTheme.typography.bodySmall)
             Text(stringResource(R.string.ui_drag_along_both_axes_pinch_to_zoom_hold_to_inspect),style=MaterialTheme.typography.bodySmall)

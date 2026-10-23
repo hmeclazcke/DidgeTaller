@@ -47,6 +47,10 @@ tasks.register<JacocoReport>("jacocoDebugUnitTestReport") {
 android {
     namespace = "ar.didgetaller"
     compileSdk = 35
+    ndkVersion = "27.0.12077973"
+    externalNativeBuild {
+        cmake { path = file("src/main/cpp/CMakeLists.txt"); version = "3.22.1" }
+    }
 
     defaultConfig {
         applicationId = "ar.didgetaller"

@@ -1,0 +1,4 @@
+# Keep reviewed third-party bytes/notices intact, including upstream line endings
+# and historical trailing whitespace. PROVENANCE.json records source hashes.
+app/src/main/cpp/vendor/sptk/** -text -whitespace
+app/src/main/assets/third_party/SWIPE.txt -text -whitespace

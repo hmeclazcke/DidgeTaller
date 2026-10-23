@@ -17,8 +17,8 @@ jobs:
       - uses: android-actions/setup-android@v4
         with:
           packages: 'platform-tools'
-      - name: Instalar SDK 35
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Install Android and native build tools
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - name: Habilitar Gradle wrapper
         run: chmod +x ./gradlew
       - name: Tests JVM

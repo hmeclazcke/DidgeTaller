@@ -21,6 +21,17 @@ The cursor uses the player's reported position. Seeking and excerpt loops use Me
 
 A spectrogram band, a pitch estimate, and a simulated bore resonance describe different properties. None automatically identifies a played technique.
 
+## Compare pitch estimators
+
+In a didgeridoo session's **Fundamental** view, enable **Compare pitch estimators**
+to compute a dashed purple **SWIPE′ · experimental** curve from the saved WAV.
+YIN remains visible. Both curves share zoom, pan and playback coordinates; the
+full-screen **Tools** panel also contains the switch. Disable it to recover the
+original view. Processing is local, cancellable, and never rewrites saved pitches
+or audio. Agreement is not proof of the physical drone frequency. This comparison
+supports the app's 44.1-kHz didgeridoo recordings; flute sessions retain YIN only.
+See [SWIPE′ comparison](SWIPE_COMPARISON.md) for limitations and validation.
+
 ## Navigate and select
 
 In the full-screen viewer, pinch to zoom, drag to pan, long-press to inspect, and double-tap to reset. The tools panel provides range controls and button alternatives. Time-domain charts support position and excerpt selection; spectrum inspection uses frequency.
