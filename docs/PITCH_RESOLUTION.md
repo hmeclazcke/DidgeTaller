@@ -8,6 +8,83 @@ resource limits and Android validation.
 
 Evaluation date: 2026-10-23. **Decision: retain production YIN and add optional, read-only saved-WAV evidence inspection (outcome B).** None of the evaluated alternatives demonstrated a defensible improvement as the application's drone-pitch source. The physical drone frequency during the reported “I” vocalization remains unresolved.
 
+## Stable normal-drone agreement study
+
+An estimator-blind, aligned real-audio comparison at source baseline `170bcf9`
+answers a narrower question than the accuracy benchmarks below: **the methods
+agree closely in two sequence-supported initial normal-drone bodies, but disagree
+persistently inside the confirmed normal body of 19:17.** They are not consistently
+equivalent during steady normal playing.
+
+Sixteen protected local backup archives and loose fixtures contain 18 unique
+recording contents after hash deduplication. Thirteen have the Didgeridoo profile
+and were analyzed; five have the flute profile and were excluded. The October 23
+10:17 and 10:18 recordings were not found in those locations. Unannotated recordings
+were not silently labeled normal or vocalized from their pitch outputs.
+
+Selection used only musician annotations, RMS and spectral stationarity, before
+executing the estimators: 8192-sample Hann STFT, 50-ms steps, 20–1200-Hz descriptors,
+local ±7-frame neighborhoods with RMS ≥0.005, level span ≤6 dB, spectral cosine
+similarity ≥0.94 and flatness <0.12; candidate runs ≥1.2 s. Entire nominal
+16384-sample comparison windows must fit inside the selected cores. The first
+normal body in 19:04/19:26 has sequence-annotation support; only 19:17 has the
+explicit 3–8-s normal label. No new phonetic listening validation is claimed.
+
+| Recording, October 21 | Selected normal core, seconds | Eligible | Both accepted | YIN median Hz | SWIPE′ median Hz | Agreement ≤50 cents |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 19:04 | 2.96788–8.66788 | 29 | 29 | 70.87 | 70.89 | 29/29 |
+| 19:17 | 3.00000–4.46788 | 6 | 3 | 35.68 | 65.92 | 0/3 |
+| 19:17 | 5.01788–6.71788 | 7 | 7 | 36.04 | 66.01 | 0/7 |
+| 19:26 | 2.21788–5.01788 | 13 | 13 | 67.72 | 67.88 | 13/13 |
+
+The four normal cores contain **55 eligible windows**: 52 both accepted, three
+SWIPE′-only, no YIN-only and no both-rejected. Agreement among the 52 pairs is
+**41/52 (78.85%) within 25 cents**, **42/52 (80.77%) within 50 cents**. The pooled
+percentage must not hide the recording-level difference. Only two pairs fall
+within ±100 cents of an octave; three within ±150 cents. Many lower/upper-register
+disagreements are not exact octave relationships and are not proven octave errors.
+
+For the entire confirmed 19:17 normal annotation, without the stationary mask,
+agreement is **0/21 accepted pairs out of 25 eligible windows**. Eighteen consecutive
+pairs disagree at centers 4.55111–7.70902 s; the stricter middle core retains seven
+consecutive disagreements at centers 5.29415–6.40871 s. This is not solely an
+attack/release or isolated-point effect.
+
+The previously reported **5.294149660 s is a window end**. Its center is
+**5.108390023 s**, over source PCM 4.922630385–5.294149660 s. At that aligned
+position, YIN returns **36.496871 Hz / periodicity 0.715757** and SWIPE′
+**65.833369 Hz / strength 0.391067**, a difference of **1021.26 cents**. Their
+quality measures are different quantities. The previously audited 69.57/139.20/
+208.06-Hz family and strong 182.22-Hz component support competing acoustic
+interpretations; neither the higher spectral hypothesis nor the lower waveform
+recurrence establishes the physical lip-driven drone frequency.
+
+Confirmed “I”, 9–17 s, remains separate: 42 eligible windows, YIN accepted 14,
+SWIPE′ 41, both accepted 14, SWIPE′-only 27, both rejected one. All nominal windows
+exceed the digital presence gates. Agreement is 1/14 within 25 cents and 7/14
+within 50 cents; accepted medians are 61.86 and 64.95 Hz. There are no near-octave
+disagreements there, but seven same-register differences exceed 50 cents. More
+accepted frames do not establish greater physical accuracy.
+
+Across the complete inventory, 32 acoustically stationary candidates in nine
+recordings contain 513 eligible windows and 418 accepted pairs, with 398/418
+(95.22%) within 50 cents. Most lack technique labels and some include vocalization;
+this exploratory percentage is **not** the primary normal-drone result.
+
+The replay uses actual current Kotlin production classes and the current SPTK C
+kernel through the saved-WAV adapter, at unchanged ranges/thresholds. Internal
+supports differ despite common nominal centers; no instantaneous or physical
+equivalence is assumed. An offline read-only strength observer leaves 2162 native
+outputs bit-identical to the control library. All 1571 complete windows, including
+rejections, are retained locally. No production code, detector selection, fusion,
+filter, session format or original audio was changed. These disagreements alone
+do not justify automatic estimator fusion or averaging conflicting frequencies.
+
+The private report, exact interval inventory, CSV, plots, frozen protocol and
+reproduction scripts remain under `checkpoints/experiments/stable-drone-comparison/`.
+See its `REPORT.md`, `classified.csv`, `summary.json`, `validation.json` and
+`*-comparison.png`; only aggregate findings are published here.
+
 ## Production consolidation review
 
 Reviewed on 2026-10-23 from clean, published `dbed749`, the user's manual commit.

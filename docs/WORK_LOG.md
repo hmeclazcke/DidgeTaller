@@ -1,3 +1,26 @@
+## Stable normal-drone YIN/SWIPE comparison — 2026-10-23
+
+- Investigated the concrete same-time agreement question at clean source baseline
+  170bcf9, reusing actual current production classes and SPTK C. No app behavior,
+  detector selection, filtering, confidence policy, persistence or chart changed.
+- Discovered all protected archive audio, deduplicated to 18 contents; replayed
+  the 13 Didgeridoo-profile recordings. October 23 inputs absent. Locked audio-only
+  stationarity selection before estimator execution; kept unannotated technique
+  distinct from confirmed/sequence-supported normal and confirmed I.
+- Result is recording-dependent: two initial normal bodies agree closely, but the
+  confirmed normal middle of 19:17 has persistent 35–37 versus 64–69-Hz selections,
+  not merely attacks/releases or isolated outliers. Primary aggregate 42/52 paired
+  estimates within 50 cents out of 55 eligible; confirmed-only cores 0/10 out of 13.
+  Full 3–8-s confirmed normal remains 0/21 out of 25 without stationarity selection.
+- The known 5.294-s value is a window end, not its center; actual aligned estimates
+  are YIN 36.496871 and SWIPE 65.833369 Hz. Difference is 1021.26 cents, not an exact
+  octave. Greater I coverage is measured separately and does not establish accuracy.
+- Local ignored report/plots/CSV and frozen reproduction scripts retain full
+  evidence. VALIDATION records observer parity, denominator/hash checks and limits;
+  PITCH_RESOLUTION summarizes only shareable aggregates. Original archives, audio,
+  names/settings/associations and unrelated worktrees preserved. No devices,
+  uploads, new dependencies, production changes or automatic estimator fusion.
+
 ## SWIPE production consolidation review — 2026-10-23
 
 - Started at clean published dbed749, the user's manual commit; original main and

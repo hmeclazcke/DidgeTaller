@@ -1,3 +1,83 @@
+## Stable normal-drone agreement investigation — 2026-10-23
+
+- Started clean at main/170bcf9. Re-read AGENTS.md, ub-mode, required context,
+  PITCH_RESOLUTION and native/Kotlin processing conditions. No production changes,
+  Android builds, new algorithm benchmarks, packages, devices or cloud audio calls.
+- Inventoried 16 local read-only backup TARs, protected fixtures and loose diagnostic
+  WAVs. SHA-256 deduplication found 18 original contents: 13 stored Didgeridoo and
+  five stored flute. Six loose v325-private WAVs are duplicates. Synthetic experiment
+  inputs were excluded. The 10:17/10:18 October 23 files were not found. Stored
+  instrument labels are not independently verified physical-source labels.
+- Selected intervals before estimator execution using annotations and PCM-only
+  RMS/STFT descriptors. FROZEN_PROTOCOL.json records thresholds/supports. Final
+  selection SHA-256: 1d0c68664d8f9299389bc0f37e34226876569559deb39dfb0dfa932d1618943b.
+  Two first normal bodies use musician sequence plus inspected amplitude/spectrogram;
+  two cores lie inside the confirmed 19:17 normal label. Unannotated stationary
+  candidates remain separate. No pitch output or agreement enters selection.
+- Compiled current PitchStream/PitchDetector/LivePitch and SwipeAnalysis classes
+  using the existing Kotlin compiler caches, without Gradle/Android builds. The
+  actual saved-WAV adapter invokes current SPTK C through a local binary process
+  pipe. An observer-only C copy reads the actual winning strength matrix value
+  before native pitch selection; each call also executes the control library and
+  asserts bit-exact frequency equality. No JNI execution is claimed for this task;
+  native Android parity was established in the preceding implementation tests.
+- The first offline harness attempt failed its guard because an evidence map let
+  later overlap-context outputs overwrite earlier core scores. Corrected the
+  ignored harness to retain only each call's selected core; the production adapter
+  was unchanged. The successful run contains 1571 complete matched windows over
+  13 recordings, 202 bounded C calls and 2162 bit-identical native control outputs.
+  Maximum kernel input: 90112 PCM samples. All 652 previous YIN rows match exactly,
+  and maximum SWIPE difference from the established whole-signal reference is 0 Hz.
+- Comparison uses 35–140 Hz, source 44100-Hz PCM16, nominal N=16384/hop=8192,
+  first center=12288. YIN mean-removal/downsampling/leading difference support and
+  SWIPE centered spectral supports differ and are explicitly documented. Common
+  centers are not identical instantaneous observations. Acceptance thresholds and
+  separate RMS gates stay unchanged. Both metrics/raw candidates/rejections and
+  signed Hz/cents differences are retained; confidence values are not equated.
+- Primary cores: 19:04 2.96788–8.66788; 19:17 3–4.46788 and 5.01788–6.71788;
+  19:26 2.21788–5.01788. Total 55 eligible, 52 both accepted, three SWIPE-only,
+  zero YIN-only/neither. Agreement: 41/52 within 25 cents; 42/52 within 50 cents.
+  Crucially, all ten accepted pairs in the confirmed 19:17 cores disagree, while
+  all 42 pairs in the other two sequence-supported normal bodies agree <=50 cents.
+  Overlapping windows are descriptive observations, not independent trials.
+- Full confirmed 19:17 3–8-s annotation, without the stationary mask: 0/21 pairs
+  agree <=50 cents, from 25 eligible windows. Eighteen consecutive disagreements
+  occur at centers 4.55111–7.70902 s; seven survive inside the stricter middle core.
+  Near-octave counts across primary pairs are two within +/-100 cents of 1200,
+  three within +/-150; do not call every 35–37 versus 64–69 pair an octave error.
+- Corrected interpretation of the requested timestamp: 5.294149660 s is the window
+  END, center 5.108390023 s, input 4.922630385–5.294149660. Actual YIN 36.496871 Hz,
+  periodicity .715757; SWIPE 65.833369 Hz, strength .391067; difference 1021.26 cents.
+  Neighbors persist in different registers. Reused the independently documented
+  spectral family near 69.57/139.20/208.06 Hz plus strong 182.22-Hz component and
+  prior difference-function/ACF evidence; no third estimator was executed.
+- Confirmed I 9–17 s: 42 eligible, 14 both accepted, 27 SWIPE-only, one neither,
+  zero YIN-only; all windows exceed the digital energy gates. Agreement 1/14 <=25c,
+  7/14 <=50c; accepted medians 61.86/64.95 Hz. The seven larger differences stay in
+  the same register, not near-octave. Coverage is not evidence of physical accuracy.
+- Exploratory stationarity inventory: 32 intervals in nine recordings, 513 eligible,
+  418 accepted pairs, 398/418 <=50c. Unknown technique and confirmed vocalization
+  must not be silently pooled as normal drone. Four Didgeridoo-profile recordings
+  have no qualifying stationary interval but their full timelines were analyzed.
+- Validated denominator identities, timestamp mapping, score/gate acceptance,
+  known source-window alignment and all prior 652 reference rows. Rehashed all
+  18 inventoried source contents/copies and 190 audio members across the 16 archives;
+  source bytes and archive size/mtime are unchanged. Source-lock and environment
+  files record the exact local classes, C source, reference DLL and library versions.
+- Reviewed estimator-blind selection plots and aligned comparison figures. Plots
+  retain accepted dots, rejected gutters, RMS/STFT and separate quality panels;
+  no line bridges missing estimates. Frozen labels distinguish confirmed/sequence
+  normal cores, confirmed I, low-energy input and unclassified candidates. Exact
+  unannotated attacks/releases or vowels were not invented from pitch estimates.
+- Reproduce locally from repository root: inventory.py, select_audio.py (existing
+  pitch-resolution venv), build_observer.py, run.py, summarize.py (same venv),
+  validate.py, make_report.py, all in checkpoints/experiments/stable-drone-comparison.
+  Exact compiler/run commands, source hashes, REPORT.md, aligned/classified CSV,
+  summary.json, validation.json and private PNGs remain ignored there. Only concise
+  aggregate documentation is committed; no audio, private plots, fixtures, personal
+  paths or experimental dependency is published. The investigation does not justify
+  automatic fusion or identify a uniquely correct physical drone source.
+
 ## SWIPE production review and register reliability — 2026-10-23
 
 - Baseline was clean `main` at published `dbed749` (user's manual commit), equal
