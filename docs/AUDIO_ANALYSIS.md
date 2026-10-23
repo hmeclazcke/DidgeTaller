@@ -1,68 +1,91 @@
-# Análisis de audio — fase A de Didge Taller 3.0
+# Audio analysis
 
-## Interfaz 3.1
+This document defines the recorded-audio pipeline and its numerical interpretation. For interaction, use the [Session explorer guide](SESSION_EXPLORER.md); for rejected live candidates, see [Acoustic uncertainty](ACOUSTIC_UNCERTAINTY.md).
 
-El visor reutiliza fase A y AudioVisuals: no se cambiaron fórmulas, detector, FFT, armónicos ni caché de potencia. La referencia de color se conserva durante la exploración y el espectro identifica grabación completa o fragmento. La inspección usa ventanas/celdas reales y distingue coordenadas de un pico medido. Arquitectura y límites de representación/sincronización: [IMMERSIVE_VIEWER.md](IMMERSIVE_VIEWER.md). Evidencia y pruebas físicas pendientes: [VALIDATION.md](VALIDATION.md).
-
-Estado al 20/10/2026: fase A se conserva sin reescribir sus algoritmos. El explorador 3.0 reutiliza este pipeline para toda la sesión o fragmentos, ofrece espectro/onda/espectrograma y guarda derivados en caché versionada por SHA-256. WAV, índice y resumen histórico no se reemplazan. Especificación vigente de visualización, sincronía, comparación, rendimiento y límites: [SESSION_EXPLORER.md](SESSION_EXPLORER.md).
-
-## Arquitectura y dependencia entre fases
+## Pipeline and ownership
 
 ```text
-WAV privado → Pcm16WavReader (bloques mono)
-              → WavAnalysis (intervalo en frames, cancelación, progreso)
-                  → SpectralAnalysis → Radix2Fft → PSD promedio
-                  → PitchDetector existente → SessionAnalysis
-                  → HarmonicAnalysis → candidatos y métricas
-              → TallerViewModel → RecordingAnalysisPanel
+WAV → Pcm16WavReader → WavAnalysis
+                         ├─ SpectralAnalysis → Radix2Fft → averaged power spectrum
+                         ├─ PitchDetector → SessionAnalysis → pitch statistics
+                         └─ HarmonicAnalysis → measured peaks and candidates
 ```
 
-La FFT radix-2 se extrajo del detector existente; no se introdujo otra implementación ni dependencia. `PitchDetector.analyze(includeVisuals=false)` omite solo las listas de visualización y su FFT adicional. El cálculo de periodicidad conserva sus ecuaciones y umbrales. El espectro en vivo sigue siendo su representación visual anterior; no debe interpretarse como dB ni usarse como PSD.
+[`WavAnalysis`](../app/src/main/java/ar/didgetaller/core/WavAnalysis.kt) accepts a `MonoPcmSource`, a half-open frame interval `[startFrame, endFrame)`, settings, cancellation, and progress callbacks. Result times refer to window centers on the original WAV timeline. A window estimate is not an instantaneous measurement.
 
-`WavAnalysis.analyze` admite un `MonoPcmSource`, intervalo `[startFrame, endFrame)`, configuración, cancelación y progreso. Los tiempos del resultado son centros de ventanas en la escala del WAV original. La UI actual selecciona toda la grabación, un fragmento o una ventana alrededor de una posición; los tiempos mantienen la escala del WAV original. Una fundamental por ventana no describe un instante matemático ni un transitorio más corto que la ventana.
+Analysis runs outside the UI thread. Cancellation is cooperative between windows; the caller discards obsolete results. Progress is reported as integer percentages. Reanalysis and caches do not overwrite the WAV, captured series, or historical summary.
 
-## Lectura y memoria
+The live spectrum is a separate normalized visualization. It must not be interpreted as the recorded-analysis PSD or as calibrated dB.
 
-- RIFF/WAVE PCM16 little-endian, mono o estéreo, frecuencia real de 8–192 kHz. Estéreo se reduce por promedio de canales; fases opuestas pueden cancelarse. No es análisis independiente L/R.
-- Busca bloques `fmt ` y `data`, respeta bloques desconocidos y padding impar; comprueba RIFF, longitudes, alineación, bits, canales y byte rate. Rechaza compresión, float, WAV extensible, múltiples `data`, audio vacío o truncado con mensajes explícitos. No intenta reparar ni sobrescribe un original dañado.
-- Acceso `RandomAccessFile` de solo lectura. No carga todo el archivo ni toda la Biblioteca. PCM, bytes y buffers FFT son del tamaño de una ventana; se guarda una PSD promedio y una lectura pequeña por ventana, nunca una matriz de espectrograma.
-- Presupuesto configurable `maxWindows=10000`: evita crecimiento ilimitado de metadatos y trabajo. Equivale a aproximadamente una hora a 44,1 kHz con el hop inicial; incluye holgadamente 15 minutos. Superarlo produce error, no truncamiento silencioso.
-- Trabajo en executor propio. Cancelación cooperativa entre ventanas y antes de publicar resultados; el token descarta callbacks viejos. Progreso entero limitado a cambios porcentuales. Salir del detalle, detener la app o limpiar el ViewModel cancela; `use` libera el lector.
+## WAV reading and bounded work
 
-## Espectro y unidades
+[`Pcm16WavReader`](../app/src/main/java/ar/didgetaller/core/Pcm16WavReader.kt) reads RIFF/WAVE little-endian PCM16, mono or stereo, at the file's actual sample rate from 8–192 kHz. Stereo is averaged to mono; opposite-phase channels can cancel. There is no independent left/right analysis or general audio-format importer implied by this reader.
 
-Valores iniciales: FFT de **32768**, Hann periódica, hop **16384** (50% de solapamiento), eliminación de media por ventana. A 44,1 kHz son 0,743 s de ventana, 0,372 s entre inicios y **1,3458 Hz por bin**. La separación entre bins no equivale a exactitud garantizada ni a la separación mínima entre dos tonos. La ventana Hann ensancha los picos y pierde resolución temporal. La frecuencia de muestreo del WAV modifica estos valores.
+The reader locates `fmt ` and `data`, respects unknown chunks and odd-byte padding, and validates lengths, alignment, bits, channels, and byte rate. Unsupported encodings, empty/truncated data, and invalid structures are rejected. The reader is read-only; it does not repair an original WAV.
 
-Para PCM normalizado a escala completa digital:
+Block access avoids loading the whole recording. Analysis retains a mean PSD and compact per-window readings, not a full spectrogram matrix. The default spectral budget is 10000 windows; exceeding it reports an error instead of silently truncating. The flute pitch pass has a separate bound of four times that budget.
 
-`PSD[k] = lado[k] × |FFT(Hann × (x − media))|² / (fs × suma(Hann²))`
+Recovery of the app's own interrupted captures is a separate write path. Its behavior and failure limits are documented in [WAV capture reliability](WAV_CAPTURE_RELIABILITY.md).
 
-`lado=2` en bins interiores y 1 en DC/Nyquist. Unidad: **escala completa digital²/Hz**. `suma(PSD) × fs/N` estima potencia media digital de la señal sin DC. Se promedian periodogramas lineales, nunca dB. Una última ventana parcial usa Hann sobre las muestras disponibles, padding a N y peso `muestras/N`; es una variante explícita de Welch para cubrir la cola, no una llamada exacta a SciPy. Esa cola tiene menor resolución efectiva. No se añaden ventanas parciales repetidas al terminar.
+## Spectrum, resolution, and units
 
-Nivel mostrado: `10 log10(PSD[k]/máximo PSD)`; el máximo es 0 dB **relativos**. No es dB SPL, ni amplitud absoluta calibrada, ni permite comparar volumen de dos tomas sin más. Silencio/DC no producen un pico de 0 dB: se devuelven métricas ausentes. Umbral numérico de referencia: PSD máxima ≤1e−16 se considera sin energía significativa para picos/centroide.
+Defaults are a **32768-point FFT**, periodic Hann window, **16384-sample hop** (50% overlap), and mean removal per window. At 44.1 kHz this gives approximately 743 ms per window, 372 ms per hop, and **1.3458 Hz between bins**. Different WAV sample rates change those quantities. Bin spacing is not guaranteed frequency accuracy or the minimum separation of resolvable tones.
 
-Métricas calculadas una vez en el worker:
+For PCM normalized to digital full scale:
 
-- **Centroide de potencia**, ponderado por PSD en Hz; difiere del centroide ponderado por magnitud usado en otras herramientas.
-- Fracción de energía en bandas `[0,100)`, `[100,250)`, `[250,500)`, `[500,1000)`, `[1000,2000)`, `[2000,5000)` y resto hasta Nyquist; bordes que exceden Nyquist se omiten. No son formantes ni notas detectadas.
-- Picos interpolados y fracción de energía en bandas de candidatos: ver [HARMONICS.md](HARMONICS.md).
+```text
+PSD[k] = side[k] × |FFT(Hann × (x − mean))|² / (fs × sum(Hann²))
+```
 
-## Fundamental y estadística
+`side[k]` is 2 for interior bins and 1 for DC/Nyquist. Units are **digital full-scale²/Hz**. Summing PSD and multiplying by `fs/N` estimates mean digital signal power after DC removal. Linear periodograms are averaged before conversion to dB.
 
-Se conserva el detector YIN-like (función de diferencia, CMNDF, mínimo de lag e interpolación), incluido downsampling por promedio de 4 muestras, RMS mínimo 0,005 y sus limitaciones de aliasing. No se reemplazó por el pico FFT mayor. El reanálisis exige confianza de periodicidad ≥0,80 para admitir Hz; ese índice no es una probabilidad estadísticamente calibrada.
+One final partial window covers the tail. It uses a Hann window over available samples, zero-padding to N, and weight `availableSamples/N`. Its effective resolution is lower. This explicit weighted-tail variant is not a claim of exact equivalence with another library's Welch implementation.
 
-Rango inicial de F0: 35–220 Hz, configurable en `WavAnalysis.Settings`; debe quedar debajo de fs/4 por el detector actual. Se probó también 440 Hz con rango configurado hasta 1000 Hz y fs=48 kHz. Eso no clasifica toots. `SessionAnalysis.summarize` admite un rango explícito nuevo, manteniendo 35–220 Hz por defecto y compatibilidad de datos.
+Displayed spectrum levels use `10 log10(PSD[k] / maxPSD)`: the maximum is 0 dB **relative**. They are not dB SPL, absolute microphone calibration, or an automatic basis for comparing recording loudness. Peak/centroid extraction treats a maximum PSD of at most `1e-16` as having no significant energy; silence/DC therefore does not create a meaningful 0 dB peak.
 
-El resumen requiere ≥3 ventanas válidas en una misma nota de semitono y mayoría estricta sobre las válidas. Usa mediana de esa nota, rango percentil 10/90 y estabilidad como fracción de esas ventanas a ±25 cents de la mediana. Además se muestran mediana y media aritmética de **todas** las ventanas válidas, cobertura válida e índice mediano de periodicidad. Estas cantidades responden preguntas distintas. Un fragmento corto o mixto puede tener picos reales y ningún resumen confiable.
+Derived metrics include:
 
-## Origen, referencias y límites
+- **Power-weighted spectral centroid** in Hz. It differs from a magnitude-weighted centroid.
+- Power fractions in `[0,100)`, `[100,250)`, `[250,500)`, `[500,1000)`, `[1000,2000)`, `[2000,5000)`, and the remainder up to Nyquist, clipped to the available frequency domain.
+- Measured peaks, candidate harmonic orders, and candidate-band energy fraction, defined in [Harmonic candidates](HARMONICS.md).
 
-Implementación Kotlin propia; ninguna fuente de DidgeLab, CADSD o SciPy fue copiada/adaptada en esta fase. No hay nuevas bibliotecas. Se reutiliza nuestra FFT existente y métodos matemáticos estándar:
+These bands are not detected formants or notes.
 
-- [SciPy/Welch: segmentación, Hann, solapamiento y escalas](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html).
-- [de Cheveigné y Kawahara, YIN (2002)](https://pubmed.ncbi.nlm.nih.gov/12002874/): referencia del enfoque, no afirmación de implementación completa del artículo.
-- [Especificación WAVE y referencias Microsoft reunidas por McGill](https://www.mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html).
+## Instrument-specific pitch analysis
 
-La variación observada del PVC (66,1–73 Hz) no se resuelve imponiendo una frecuencia esperada. Faltan audio etiquetado, micrófono/posición controlados y referencia independiente. El procesamiento automático del teléfono puede cambiar graves y componentes espectrales. Los ensayos sintéticos no validan precisión profesional. El rendimiento completo de 15 minutos en Samsung está pendiente. Ahora hay pruebas JVM de escritura/lectura WAV completa y STFT virtual de 900 s, además de la cancelación de fase A en emulador; no equivalen a una captura física sostenida ni a un benchmark del teléfono.
+[`PitchDetector`](../app/src/main/java/ar/didgetaller/core/PitchDetector.kt) uses a YIN-based difference function, cumulative mean normalized difference, lag selection, and local interpolation. The input RMS gate is 0.005 in normalized digital amplitude. A candidate must meet the detector's periodicity/range criteria; WAV analysis additionally requires periodicity confidence of at least 0.80.
 
-Las herramientas de B–F ya reutilizan este núcleo: espectro interactivo, onda min/max, STFT de viewport con caché, selección/reproducción/comparación y captura progresiva inicial de 15 minutos. No se guarda una matriz completa de todas las ventanas ni todo el PCM en Compose. Próximo trabajo: validación manual física/externa, accesibilidad y rendimiento sostenido según [ROADMAP.md](ROADMAP.md); no rehacer estas funciones.
+| Profile | App analysis range | Pitch windows |
+| --- | --- | --- |
+| Didgeridoo | 35–220 Hz | Uses the spectral-window pass; the detector averages groups of four input samples for its low-register path |
+| Native American flute | 200–1600 Hz | Separate 8192-sample pitch pass, half-window hop, full-rate detector path |
+
+The flute pass preserves more melodic timing detail without changing the spectrum's FFT resolution. Its profile includes a small endpoint guard for interpolation. The low-register averaging path is not a dedicated anti-alias FIR filter.
+
+`WavAnalysis.Settings` defaults to didgeridoo. The app's `AnalysisCache` supplies the saved session instrument and its range. Generic settings must also satisfy `maxPitchHz < sampleRate/4`; arbitrary settings or successful synthetic tones do not establish validated support for another instrument.
+
+Live capture has its own profile window/cadence and acceptance decisions. Its saved point times are callback-delivery times; reanalysis uses WAV-window centers. These timelines are not interchangeable sample-exact observations.
+
+## Summaries and missing estimates
+
+`SessionAnalysis.summarize` requires at least three usable readings grouped in the same rounded semitone, with a strict majority of usable readings in that group. It reports the group's median, indexed 10th/90th percentile range, and percentage within ±25 cents of that median.
+
+WAV analysis also reports the median and arithmetic mean of all valid windows, valid-window fraction, and median periodicity confidence. These answer different questions from the dominant-note summary. A short or mixed excerpt may contain real spectral peaks without supporting a representative note.
+
+Fundamental uses captured readings when available, even after reanalysis; recordings without a captured series may use analyzed readings. `PitchTrace` classifies display evidence separately from the estimator. Missing estimates remain missing, uncertain originals remain inspectable, and visual links do not generate intermediate samples.
+
+## Spectrogram and derived caches
+
+`AudioVisuals` computes the viewport STFT with the same default FFT size and hop. Windows are anchored to the original WAV and contribute power according to temporal support. Display cells do not represent additional measurements, and finer pixels do not resolve content beyond the analysis window.
+
+The spectrogram holds a relative color reference during an exploration. It is not calibrated SPL or a guaranteed global maximum for the whole recording. Waveform rendering preserves min/max extrema, showing original samples at close zoom.
+
+The derived cache uses SHA-256, interval/parameters, and versions; instrument is part of recorded-analysis identity. Algorithm data and visual tiles have separate versions. The 64 MiB cache is regenerable, and a cache write failure does not invalidate a successful analysis.
+
+## Evidence and limits
+
+The implementation is Kotlin code using standard numerical methods, with no bundled DidgeLab, CADSD, or SciPy engine. Known-signal tests, an independent test DFT, and recorded-audio replays are documented in [VALIDATION.md](VALIDATION.md). Those checks establish their specific digital-processing behavior, not scientific physical accuracy or universal phone performance.
+
+Microphone filtering, room acoustics, playing technique, and simultaneous voice/drone can change observable periodicity. The “I” vocalization remains unresolved; neither an expected note nor a spectral band justifies forcing a fundamental. No vowel/toot classifier, calibrated sound level, or validated physical bore prediction is implied.
+
+For numerical reference, the historical implementation study cites the [YIN paper](https://pubmed.ncbi.nlm.nih.gov/12002874/), [Welch documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html), and [WAVE format reference](https://www.mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html). These are background references, not claims that external tools were run in this documentation update.

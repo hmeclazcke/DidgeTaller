@@ -1,56 +1,78 @@
-# Arquitectura
+# Architecture
 
-## Presentación y ciclo de vida 3.1
+Didge Taller is a native Android application with one Gradle module, `app`. Kotlin/JVM code handles signal processing and models; Android adapters handle audio, local files, and presentation. There is no backend or Internet permission.
 
-[IMMERSIVE_VIEWER.md](IMMERSIVE_VIEWER.md) describe los módulos nuevos. PlotViewport/PlotProjection/PlotScales son matemática de visualización pura; ExplorerState retiene estado pequeño en ViewModel. PlotSurface comparte ejes/cursor y cuatro adaptadores; PlotGestures consume la región inmersiva sin scroll contenedor. SessionWorkspace conserva cálculo/caché y difiere nuevos renderizados al fin del gesto. Los destinos viewer y lab/tool pertenecen al NavHost; el ID de sesión determina cuándo liberar recursos. MainActivity distingue configuración del paso al fondo. No hay cambios de esquema ni algoritmos acústicos.
+## Responsibility map
+
+Paths below are relative to [app/src/main/java/ar/didgetaller](../app/src/main/java/ar/didgetaller).
+
+| Area | Main components | Responsibility |
+| --- | --- | --- |
+| Entry and coordination | `MainActivity`, `TallerViewModel` | Permissions, lifecycle, document export, capture/session state, background work |
+| Signal processing | `core/PitchDetector`, `PitchStream`, `LivePitch`, `SessionAnalysis` | YIN-based estimates, window cadence, live acceptance/display decisions, summaries |
+| Recorded audio | `core/Pcm16WavReader`, `WavAnalysis`, `SpectralAnalysis`, `HarmonicAnalysis`, `Radix2Fft` | Block reading, interval analysis, power spectra, harmonic candidates |
+| Chart data and mathematics | `core/AudioVisuals`, `PitchTrace`, `PlotViewport`, `PitchAxis`, `SpectralPalette` | STFT, waveform envelopes, pitch classification/links, coordinates, scales and colors |
+| Design models | `core/AcousticModel`, `BoreOptimizer` | Approximate input impedance and evolutionary bore search |
+| Android audio | `audio/MicrophoneEngine`, `SessionPlayer`, `SessionWorkspace` | AudioRecord, MediaPlayer, cancellable viewport work |
+| Storage | `data/LocalStore`, `RecordingStore`, `SessionToolsStore`, `TrashStore`, `AnalysisCache` | Local JSON/preferences, WAV index, associations/markers, recoverable deletion, derived caches |
+| Presentation | `ui/TallerApp`, `TallerNavigation`, `SessionExplorer`, `ImmersiveViewer`, `AcousticCharts`, `ComparisonScreen` | Compose screens, navigation, interactive plots, comparison |
+
+The ViewModel coordinates these components; the directory boundaries describe responsibilities rather than independently packaged modules.
+
+## Capture and pitch decisions
 
 ```text
-app/src/main/java/ar/didgetaller/
-  MainActivity.kt            permisos runtime, documentos SAF, lifecycle
-  TallerViewModel.kt         estado Compose, audio, simulación asíncrona, persistencia
-  audio/MicrophoneEngine.kt  AudioRecord, hilo de lectura, captura WAV
-  core/Music.kt             afinación, etiquetas y cents (Kotlin/JVM puro)
-  core/PitchDetector.kt     detección YIN-like + FFT (Kotlin/JVM puro)
-  core/SessionAnalysis.kt   resumen robusto de las lecturas de una sesión (Kotlin/JVM puro)
-  core/Radix2Fft.kt         FFT existente compartida por vivo y reanálisis
-  core/Pcm16WavReader.kt    MonoPcmSource y acceso WAV por bloques, solo lectura
-  core/SpectralAnalysis.kt PSD Hann, escala digital, centroide de potencia y bandas
-  core/HarmonicAnalysis.kt picos, órdenes candidatos y desvíos
-  core/WavAnalysis.kt      análisis determinista de intervalos, cancelación y progreso
-  core/AcousticModel.kt     modelo aproximado de impedancia 1D (Kotlin/JVM puro)
-  core/WavCodec.kt          formato PCM WAV (Kotlin/JVM puro)
-  data/LocalStore.kt        SharedPreferences+JSON, compatibilidad Java v1
-  data/RecordingStore.kt    sesiones: WAV privados + índice JSON en SharedPreferences
-  ui/TallerApp.kt           UI Compose Material 3, Canvas, controles
-  ui/TallerNavigation.kt    rutas y navegación entre secciones con Navigation Compose
-  ui/RecordingAnalysisPanel.kt resultados reales de reanálisis (fase A)
-app/src/test/.../CoreTest.kt pruebas de núcleo con JUnit 4
-app/src/test/.../AudioAnalysisTest.kt DFT/PSD/armónicos/periodicidad/cancelación
-app/src/test/.../WavReaderTest.kt lectura por bloques y formatos dañados
-app/src/androidTest/.../LocalPersistenceTest.kt pruebas aisladas de persistencia Android
-app/src/androidTest/.../SessionNavigationTest.kt navegación/reproducción y reanálisis UI aislados
+AudioRecord → MicrophoneEngine
+                ├─ ProgressiveWavWriter → owned .part → finalized WAV
+                └─ PitchStream → PitchDetector → LivePitch
+                                                   ├─ live display
+                                                   └─ captured points → session summary/index
+
+Captured points → PitchTrace → Library preview / detail / full-screen Fundamental
 ```
 
-## Flujo principal vigente — 3.0 beta1
+Capture starts explicitly. PCM16 mono at 44.1 kHz is written progressively; the app does not retain the whole recording in RAM. Stopping, reaching the configured limit, leaving Measure, or backgrounding the app finalizes the capture. Recovery examines only the app's own interrupted partial files. It does not repair historical WAVs or reconstruct missing pitch readings.
 
-El mapa anterior conserva los módulos originales. Se añadieron `core/AudioVisuals`, `ProgressiveWavWriter`, `SpectralPalette`; `audio/SessionWorkspace`, `SessionPlayer`; `data/AnalysisCache`, `TrashStore`, `SessionToolsStore`; `ui/AcousticCharts`, `SessionExplorer`, `ComparisonScreen`, `LibraryTools`. No hay dependencias/permisos nuevos. Arquitectura, algoritmos, unidades y límites completos en [SESSION_EXPLORER.md](SESSION_EXPLORER.md).
+`InstrumentProfile` defines didgeridoo and Native American flute ranges/windows. The detector estimates periodicity; `LivePitch` applies the live decision and display smoothing while stored points retain accepted detector frequencies. `SessionAnalysis` derives summaries. `PitchTrace` classifies original points and display links without rewriting measurements or filling gaps.
 
-Medir abre AudioRecord solo por acción del usuario. El hilo de audio escribe bloques PCM a UUID.part, actualiza cabecera, calcula periodicidad existente y publica lecturas agregadas. Detener/límite inicial de 15 minutos/navegar/onStop finaliza y renombra WAV; el executor de sesión persiste resumen y serie. No guarda todo el PCM en RAM. La recuperación solo repara parciales propios, sin inventar lecturas.
+Optional diagnostic metadata travels beside the accepted frequency. A bounded in-memory history explains rejected observations on Measure; raw candidates never become notes, chart points, or saved measurements. See [Acoustic uncertainty](ACOUSTIC_UNCERTAINTY.md).
 
-El reanálisis de fase A conserva executor/token cancelable; pasa por AnalysisCache (identidad SHA-256/versión/intervalo) y produce un resultado con métricas precalculadas. SessionWorkspace usa coroutines Default/IO para leer el viewport, generar min/max o STFT por bloques y publicar una imagen/datos reducidos. No se recalcula FFT al actualizar el cursor. Comparación y simulación asociada también corren fuera del hilo principal.
+## Analysis and rendering
 
-SessionPlayer prepara MediaPlayer asíncronamente. La UI consulta currentPosition (100 ms); el bucle revisa esa misma posición (40 ms) y realiza seek, sin reloj de avance independiente ni promesa gapless. Se libera al cambiar destino/onStop. Exportar usa SAF con copia de archivo por bloques en IO.
+`Pcm16WavReader` reads recorded audio by blocks. `WavAnalysis` produces interval spectra, pitch readings, and statistics with cancellation/progress. `AnalysisCache` keys derived results by WAV fingerprint, version, interval, and instrument. Reanalysis does not overwrite the recording or historical summary.
 
-NavHost mantiene `measure`, `lab`, `library`, `session/{id}` y `compare`. La entrada de Biblioteca conserva rememberScrollState; detalle/comparador se apilan encima. Flecha y Atrás del sistema hacen pop de la misma entrada. El listener de destinos detiene audio/cancela análisis y limpia el workspace. No existe BackHandler añadido como parche.
+`SessionWorkspace` generates the visible waveform/STFT on background dispatchers. The UI retains a bounded viewport rather than a full-recording spectrogram. Completed tiles remain in their data coordinates during gestures; new rendering follows the gesture. Color references stay fixed during an exploration. Playback cursor updates do not require recomputing the FFT.
 
-Las claves históricas se preservan. Papelera añade tombstones: oculta, permite Deshacer/restaurar tras reinicio y solo purga ante confirmación explícita. Las relaciones/ajustes/anotaciones usan preferencias separadas aditivas. Un purgado interrumpido conserva el tombstone para completar limpieza. WAV sin índice siguen accesibles como recuperados; su duración se lee de cabecera real, no se asume 44100 Hz. [DATA_SAFETY.md](DATA_SAFETY.md) describe respaldo y protocolo de dispositivos.
+When captured readings exist, Fundamental uses that series even after reanalysis. Sessions without a captured series can use analyzed readings. Cards, detail, and full-screen plots share the pitch classification.
 
-## Limitaciones declaradas
+Technical definitions and limits: [Audio analysis](AUDIO_ANALYSIS.md), [Harmonic candidates](HARMONICS.md), and [Session explorer](SESSION_EXPLORER.md).
 
-- No correlacionar picos de impedancia con respuestas exactas de ejecución.
-- Los valores acústicos modelados no son certificaciones de afinación.
-- El RMS no es nivel dB calibrado.
-- El espectro **en vivo** de 8192 puntos a 44,1 kHz tiene separación ~5,38 Hz; no usar ese gráfico por sí solo para medir notas precisas. El nuevo reanálisis usa otros parámetros/escalas descritos en AUDIO_ANALYSIS.
-- El detector temporal YIN-like usa downsampling por promedio, no antialias FIR; futuras mejoras pueden añadir filtros y calibración.
-- `SharedPreferences` es suficiente para prototipo; considerar Room/DataStore en posteriores versiones tras migración testeada.
-- No conectar endpoints ni pedir permiso INTERNET.
+## Navigation, state, and lifecycle
+
+Navigation Compose owns the back stack:
+
+| Destination | Purpose |
+| --- | --- |
+| `measure`, `measure/wide` | Two presentations of the same active capture |
+| `lab`, `lab/tool/{tool}` | Laboratory home and tools |
+| `library` | Sessions and designs |
+| `session/{id}`, `viewer/{id}/{plot}` | Session detail and its full-screen viewer |
+| `compare` | A/B comparison |
+
+System Back and app navigation pop destinations; there is no substitute back stack implemented through `BackHandler`.
+
+The ViewModel retains independent detail and full-screen chart cameras for the active session. Selection, excerpt, and loop are shared by that session. Detail/viewer transitions and Activity recreation preserve session ownership and playback; actually leaving the session releases resources and transient exploration state. Backgrounding stops playback and capture. Switching normal/wide Measure alone does not restart or save a capture.
+
+Camera and selection retention covers Activity recreation, not guaranteed restoration after process death. Read the [viewer engineering notes](IMMERSIVE_VIEWER.md) before changing gestures, safe areas, orientation, or lifecycle; their dated updates supersede older sections.
+
+## Persistence and privacy
+
+Recordings use private app files and a JSON index in SharedPreferences. Historical `measurements`, `designs`, and `recordings` keys remain compatible. Session tools and Trash add separate state rather than rewriting originals. Trash retains audio and relationships until an explicit permanent-delete confirmation.
+
+Derived caches are disposable and versioned, with a 64 MiB disk limit. Audio export uses Android's Storage Access Framework and copies by blocks. Stored user text is not translated or renamed when the app language changes.
+
+See [Data safety](DATA_SAFETY.md) for the existing backup/update rules and [WAV capture reliability](WAV_CAPTURE_RELIABILITY.md) for failure handling and evidence. These documents retain historical engineering records.
+
+## Testing boundaries
+
+Pure-core tests run on the JVM; Android storage, navigation, player, and UI tests use isolated emulator fixtures. Local synthetic success is distinct from physical microphone accuracy, audible synchronization, or validated acoustic predictions. [Development](DEVELOPMENT.md) lists checks; [VALIDATION.md](VALIDATION.md) records what actually ran.

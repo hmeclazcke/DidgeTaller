@@ -1,58 +1,126 @@
-# Didge Taller Lab · Android Kotlin + Jetpack Compose 🎵
+# Didge Taller
 
-**Proyecto estrictamente PERSONAL, NO COMERCIAL.** Para la actualización de simulación y búsqueda evolutiva leé también [`README-LAB.md`](README-LAB.md) y [`docs/DIDGELAB_STUDY.md`](docs/DIDGELAB_STUDY.md).
+[English](README.md) | [Español](README.es.md)
 
-Aplicación **nativa** para medir el drone de un didgeridoo, estudiar su espectro y experimentar con diseños de conductos interiores. **Sin Internet, cuentas, publicidad ni pagos.**
+A native Android app for studying didgeridoo and Native American flute sound. Measure pitch, record practice sessions, and explore how frequency and spectral energy change over time. An experimental laboratory also lets you investigate didgeridoo bore geometry and simulated resonances.
 
-## Versión 3.1.0-beta1 — 20/10/2026
+Didge Taller works offline, without accounts, advertising, or network access. Recordings and analysis stay on your device unless you export them. Developed as a personal, noncommercial project, it is currently in beta; acoustic estimates and design predictions have the limitations described below.
 
-- **Medir:** un botón inicia captura, nota/Hz y WAV; detener o salir guarda automáticamente. Escritura progresiva, límite inicial 15 minutos, ajustes 1/5/15/30 y recuperación de capturas interrumpidas propias. Sin escucha automática ni grabación oculta.
-- **Visor inmersivo 3.1:** cuatro gráficos a pantalla completa, pan en dos ejes, pinch, inspección, reset, seguimiento opcional y horizontal conservando reproducción. Acciones adaptables, resumen compacto y navegación de herramientas. [Auditoría visual](docs/UI_AUDIT.md), [arquitectura del visor](docs/IMMERSIVE_VIEWER.md).
-- **Explorador de sesión:** fundamental temporal, espectrograma real a color, onda con zoom hasta muestras y espectro con picos/Hn candidatos. Un gráfico grande por vez; zoom, desplazamiento, rango Hz lineal/log, selección de posición/intervalo y reanálisis cancelable.
-- **Audio:** reproducción/pausa, reinicio, búsqueda y bucle de fragmentos, cursores desde MediaPlayer, exportación WAV por bloques. El bucle no garantiza continuidad entre muestras; sincronía física/audible pendiente.
-- **Biblioteca:** sesiones/diseños y lecturas históricas compatibles. Tarjetas sin fecha repetida, swipe izquierdo y Deshacer mediante papelera persistente; WAV y relaciones no se borran hasta vaciado explícito.
-- **Comparar:** dos sesiones o fragmentos, espectros A/B superpuestos, normalización opcional y métricas reales (F0/nota, estabilidad/rango, centroide, bandas, candidatos).
-- **Laboratorio:** diseñador, puntos/presets, simulación y búsqueda evolutiva conservados. Asociación de sesiones con diseños, predicciones y mediciones separadas. Marcadores manuales de vocalizaciones/posibles toots y glosario en español. Sin clasificador automático no validado.
-- **Análisis original de fase A reutilizado**, caché persistente por versión/SHA del WAV, 64 MiB regenerables. No altera el audio ni reemplaza el resumen histórico.
+## Features
 
-Detalles, algoritmos y límites: [SESSION_EXPLORER](docs/SESSION_EXPLORER.md), [AUDIO_ANALYSIS](docs/AUDIO_ANALYSIS.md), [ROADMAP](docs/ROADMAP.md). Pruebas realmente ejecutadas, APK e instalación: [VALIDATION](docs/VALIDATION.md). Hay [capturas reales del emulador](docs/screenshots/), identificadas cuando usan señales sintéticas. La precisión física, reproducción audible, sincronía fina, accesibilidad y grabación sostenida de 15 minutos requieren comprobación manual. La simulación es propia y aproximada, no un motor CADSD/DidgeLab validado.
+### Measure and record
 
-## Android Studio Rabbit 1 — Windows 11
+- Real-time frequency, musical note, and cents deviation using YIN-based pitch estimation, with signal and uncertainty feedback.
+- Instrument profiles for **Didgeridoo** (35–140 Hz initially, extendable to 220 Hz) and **Native American flute** (200–1600 Hz).
+- One action starts measurement and mono PCM16 WAV recording together. Stopping saves the session, including its captured pitch readings.
+- Recording limits of 1, 5, 15, or 30 minutes; 15 minutes is the default. Recording stops and saves when you leave Measure or put the app in the background.
+- A wide measurement view for reading the display while playing.
 
-1. Descomprimí el ZIP entero en una carpeta de tu PC (p. ej. `C:\dev\DidgeTaller`).
-2. Abrí **Android Studio → Open** y elegí la carpeta raíz (la que contiene `settings.gradle.kts`).
-3. Configurá JDK 17 (o el JDK integrado compatible) y **Android SDK Platform 35** desde SDK Manager. La primera sincronización requiere conexión para descargar dependencias.
-4. Abrí la terminal en la raíz del proyecto. Ejecutá primero `gradlew.bat :app:testDebugUnitTest` y luego `gradlew.bat :app:assembleDebug`.
-   - `gradlew.bat` descarga el **Gradle Wrapper JAR oficial** si falta y verifica su SHA-256. La distribución configurada es Gradle 8.13.
-   - `:app:testDebugUnitTest` corre los tests JUnit; `:app:assembleDebug` compila el APK debug.
-5. El resultado, si compila, está en `app\build\outputs\apk\debug\app-debug.apk`.
-6. Con depuración USB autorizada, identificar el serial y actualizar con `adb -s SERIAL install -r app/build/outputs/apk/debug/app-debug.apk`. Verificar firma/versión y respaldo; no desinstalar para resolver incompatibilidades. No usar una tarea que seleccione indiscriminadamente dispositivos conectados.
-7. En Medir, tocá **Iniciar medición** y concedé permiso. Tocá **Detener medición** para guardar automáticamente WAV y lecturas en Biblioteca → Sesiones. Exportar crea una copia elegida por vos.
+### Listen and explore
 
-No ejecutes `connectedDebugAndroidTest`, desinstalaciones, limpieza de datos ni reinstalaciones en el Samsung real sin autorización explícita: el 20/10/2026 una tarea instrumentada dejó la app desinstalada. Las pruebas instrumentadas se hacen solo en emulador y cada comando ADB debe indicar el serial del emulador. El teléfono real se reserva para comprobaciones manuales no destructivas.
+- A **Session Library** with playback, rename, WAV export, and recoverable deletion through Trash.
+- **Fundamental**, **Spectrogram**, **Waveform**, and **Harmonics** views, with full-screen exploration, zoom, pan, cursor inspection, and reset controls.
+- Playback, seeking, excerpt selection, and looping, with a cursor tied to the audio player's position.
+- WAV analysis for the whole recording or a selected interval: power spectrum, harmonic candidates, pitch summaries, and spectral energy bands.
+- A/B comparison of sessions or excerpts, with overlaid spectra and optional normalization.
 
-Si Android Studio se queja de que no encuentra el Gradle Wrapper, **primero ejecutá `gradlew.bat --version` en la terminal de Android Studio**. Esto obtiene el JAR oficial y vuelve a habilitar la sincronización. El hash esperado está en `scripts/setup-wrapper.ps1` y se puede comprobar en https://gradle.org/release-checksums/ .
+### Experiment with instrument design
 
-## Codex CLI (desde Android Studio o terminal)
+The didgeridoo **Laboratory** provides bore-profile editing, presets, approximate input-impedance simulation, and evolutionary search against three target resonances. Saved designs can be associated with didgeridoo sessions to examine predictions alongside recordings. These are exploratory tools, not validated construction specifications or flute-design tools. See the [Laboratory guide](README-LAB.md).
 
-1. Abrí la terminal **en la raíz del proyecto**.
-2. Ejecutá `codex` (instalado y autenticado previamente).
-3. Codex lee automáticamente `AGENTS.md`. Como primer prompt, usá:
+The interface is available in **English and Spanish**, selected through Android's language configuration. Stored names and annotations keep their original text.
 
-```text
-Leé AGENTS.md, docs/DIDGELAB_STUDY.md, docs/PRODUCT_CONTEXT.md, docs/ROADMAP.md y docs/VALIDATION.md.
-Primero ejecutá los tests y compilá el APK debug. Si falla, corregí los errores hasta
-obtener una compilación real y registrá evidencia en docs/VALIDATION.md.
-Después continuá con la fase 0 del roadmap sin introducir funciones de pago ni red.
-Explicame el propósito de cada comando o flag nuevo antes de usarlo.
-```
+## Screenshots
 
-## Proyecto
+Real application captures from the emulator using synthetic signals and test sessions. The live measurement example is in Spanish; the other three show the English interface. They illustrate the UI, not physical measurement accuracy.
 
-- Java → Kotlin nativo; Android Views → Compose Material 3.
-- Gradle 8.13 (JAR del wrapper de arranque 8.11.1), AGP 8.13.2, Kotlin 2.2.21, Compose BOM 2025.04.01.
-- `compileSdk 35`, `targetSdk 35`, `minSdk 26`, Java target 17.
-- Paquete `ar.didgetaller` y claves locales conservadas de v1; sin permiso INTERNET.
-- Licencia del código: MIT. Código independiente, **sin incorporar dependencias de DidgeLab**.
+| Live measurement | Session Library | Fundamental | Spectrogram |
+| --- | --- | --- | --- |
+| <img src="docs/screenshots/v326-final/measure-drone.png" alt="Live didgeridoo measurement showing a synthetic 70 Hz tone" width="210"> | <img src="docs/screenshots/localization/en-library.png" alt="Session Library with saved synthetic recordings" width="210"> | <img src="docs/screenshots/localization/en-fundamental.png" alt="Full-screen Fundamental chart with a gap between readings" width="210"> | <img src="docs/screenshots/localization/en-spectrogram.png" alt="Full-screen spectrogram showing spectral energy over time" width="210"> |
 
-Ver `AGENTS.md` (instrucciones a Codex), `docs/PRODUCT_CONTEXT.md` (historia/referencias), `docs/ROADMAP.md` (prioridades), `docs/ARCHITECTURE.md` (arquitectura) y `docs/VALIDATION.md` (pruebas reales).
+More [English and Spanish screenshots](docs/screenshots/localization/INDEX.md), including waveform and design views, are available with their capture conditions. The [live measurement evidence](docs/screenshots/v326-final/README.md) documents its synthetic input. Some captures predate the latest uncertainty feedback and placement of playback controls.
+
+## Technology stack
+
+| Area | Implementation |
+| --- | --- |
+| Language and UI | Kotlin 2.2.21, Jetpack Compose BOM 2025.04.01, Material 3, Navigation Compose |
+| Build | Gradle 8.13 wrapper, Android Gradle Plugin 8.13.2, Java target 17 |
+| Android | Minimum SDK 26 (Android 8.0), compile/target SDK 35; application ID `ar.didgetaller` |
+| Audio and DSP | Android `AudioRecord` and `MediaPlayer`; Kotlin implementations of YIN-based pitch estimation, radix-2 FFT, STFT, WAV processing, and acoustic modeling |
+| Quality | JUnit 4, AndroidX/Compose instrumentation tests, GitHub Actions, Detekt 1.23.8, JaCoCo 0.8.15 |
+
+Versions are defined in the [root](build.gradle.kts) and [app](app/build.gradle.kts) Gradle files. The [manifest](app/src/main/AndroidManifest.xml) requests microphone access and has no Internet permission.
+
+## Getting started
+
+You need Git, Android Studio with a Gradle JDK compatible with this project (JDK 17 is the documented baseline), and Android SDK Platform 35. A separate Gradle installation is unnecessary. The first sync downloads the wrapper distribution and dependencies.
+
+1. Clone the repository with an account that has access:
+
+   ```sh
+   git clone https://github.com/hmeclazcke/DidgeTaller.git
+   cd DidgeTaller
+   ```
+
+2. In Android Studio, choose **Open** and select the repository root containing `settings.gradle.kts`. Configure the Gradle JDK and install SDK Platform 35 through SDK Manager, then sync.
+3. Build the debug application and run the JVM tests from the repository root:
+
+   ```powershell
+   # Windows PowerShell
+   .\gradlew.bat :app:assembleDebug
+   .\gradlew.bat :app:testDebugUnitTest
+   ```
+
+   ```sh
+   # macOS / Linux
+   sh ./gradlew :app:assembleDebug
+   sh ./gradlew :app:testDebugUnitTest
+   ```
+
+4. Select an Android 8.0+ emulator or a dedicated test device in Android Studio and run the `app` configuration. Grant microphone permission when starting measurement. The debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`.
+
+For an existing installation with recordings, preserve its data and verify package/signing compatibility before updating. Do not uninstall or clear app data to resolve an installation conflict. Instrumented tests belong on an explicitly selected emulator.
+
+See [Development](docs/DEVELOPMENT.md) for quality checks, wrapper troubleshooting, and device-safety rules.
+
+## How to use
+
+1. Open **Measure / Medir** and choose **Instrument / Instrumento** before starting. For didgeridoo, extend the pitch range to 220 Hz if needed. The recording limit is under **settings / ajustes**.
+2. Tap **Start measurement / Iniciar medición**, allow microphone access, and play. Read the frequency, note, cents, and signal status together. An uncertain result may leave the frequency blank even when sound is present.
+3. Tap **Stop and save / Detener y guardar**. Find the result under **Library → Sessions / Biblioteca → Sesiones**. A recording with no reliable note still retains its audio.
+4. Open a session and explore **Fundamental** for pitch over time or **Spectrogram / Espectrograma** for spectral energy. Waveform and Harmonics offer sample-amplitude and spectrum views. Open a chart full-screen for zoom, pan, and inspection; use **Tools / Herramientas** for ranges and excerpt controls.
+5. Use **Play / Reproducir**, **Pause / Pausar**, and **Restart / Reiniciar** to listen. Seek to a position or select an excerpt to loop. Android Back returns from the viewer to the session; leaving the session stops playback.
+
+The [Session explorer guide](docs/SESSION_EXPLORER.md) explains chart colors, missing readings, comparison, and Trash. The [Laboratory guide](README-LAB.md) covers the separate design workflow.
+
+## Pitch detection and limitations
+
+YIN estimates periodicity by comparing a short signal window with delayed versions of itself. A repeating pattern provides a candidate period, which is converted to frequency. Didge Taller uses a YIN-based implementation with instrument-specific windows and ranges; it does not simply label the largest FFT peak as the fundamental.
+
+- Phone microphones, low-frequency filtering, noise, attacks, strong harmonics, and complex vocalizations can produce weak or competing periodicities.
+- The fundamental of the complete recorded mixture may differ from the drone component a musician wants to follow. The app does not isolate the drone from a simultaneous voice.
+- Some windows are rejected rather than assigned a misleading frequency. Fundamental preserves missing readings and access to uncertain originals; display links do not create intermediate measurements.
+- YIN confidence describes periodicity, not a calibrated probability of a correct note. Spectral levels are digital and relative, not calibrated sound-pressure levels.
+- The reported **“I” vocalization issue remains unresolved**. Diagnostic candidates are explanatory evidence, not corrected or saved pitch estimates.
+- Playback cursors and loops are not sample-accurate or guaranteed gapless. Spectrogram zoom does not increase the underlying time/frequency resolution.
+
+Synthetic tests, recorded-audio replay, and emulator checks provide engineering evidence. They do not establish scientific measurement accuracy, universal device compatibility, or validated physical design predictions. Independent tuner comparison, sustained physical recording/battery testing, audible synchronization, and a full TalkBack walkthrough remain open validation areas. See [Audio analysis](docs/AUDIO_ANALYSIS.md), [Acoustic uncertainty](docs/ACOUSTIC_UNCERTAINTY.md), and the dated [validation records](docs/VALIDATION.md).
+
+## Architecture
+
+The single `app` module separates Android-independent DSP and models (`core/`), audio capture/playback (`audio/`), local storage and derived caches (`data/`), and Compose presentation (`ui/`). `TallerViewModel` coordinates work and session state; Navigation Compose owns the back stack.
+
+Start with the [architecture overview](docs/ARCHITECTURE.md). [Localization](docs/LOCALIZATION.md) explains resource boundaries. Historical engineering reports remain in `docs/`; their dated results describe specific revisions rather than permanent project guarantees.
+
+## Testing and quality
+
+JVM tests exercise DSP, WAV handling, summaries, and chart mathematics. Android tests cover persistence, navigation, playback, and Compose behavior with isolated emulator fixtures. GitHub Actions runs JVM tests, builds the debug app and test APK, validates localization, and produces Detekt and JaCoCo reports; it does **not** run the emulator test suite.
+
+Detekt findings and JaCoCo JVM coverage are informational, with no enforced quality threshold. Coverage does not measure physical acoustic accuracy or replace Android tests. Commands and report locations are in [Development](docs/DEVELOPMENT.md); dated findings are retained in the [Detekt](docs/DETEKT_AUDIT.md) and [coverage](docs/COVERAGE_AUDIT.md) audits.
+
+## Contributing and license
+
+No formal contribution process is documented yet. Before preparing changes, read [AGENTS.md](AGENTS.md) and the [development guide](docs/DEVELOPMENT.md), keep changes focused, and exclude private audio, local diagnostics, credentials, and build output.
+
+The repository includes an [MIT license](LICENSE). DidgeLab and CADSD are research references, not bundled engines or dependencies; their licenses do not replace this repository's license. See the [Laboratory guide](README-LAB.md) for attribution context.

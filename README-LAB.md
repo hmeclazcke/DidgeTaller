@@ -1,41 +1,36 @@
-# Didge Taller Lab — Android Kotlin / Jetpack Compose
+# Didgeridoo laboratory
 
-Proyecto personal y gratuito. **No es comercial**. Integra afinador, espectro de audio, grabador WAV, diseñador de perfil interior por puntos, simulación de resonancias y búsqueda evolutiva para aproximar tres notas.
+The **Laboratory / Laboratorio** is an experimental companion to recorded-audio analysis. It provides a bore editor, acoustic simulation, and a search tool for exploring didgeridoo geometry. It does not model Native American flutes.
 
-## Para empezar en Android Studio
+For installation and recording, start with the [project README](README.md). This guide covers design tools only.
 
-1. Abrí esta carpeta como proyecto.
-2. Esperá a que Gradle sincronice. Usá JDK 17 y SDK Android 35.
-3. En Windows corré desde el directorio raíz:
+## Workflow
 
-   `gradlew.bat :app:testDebugUnitTest`
+1. Open **Laboratory → Design / Laboratorio → Diseñar**. Choose a preset or edit the instrument length and internal diameters. The point editor describes the bore with positions and diameters in millimeters.
+2. Inspect the profile and simulated resonance results. Save useful designs to **Library → Designs / Biblioteca → Diseños**.
+3. Use **Spectrum / Espectro** to examine the simulated input-impedance curve and its resonance peaks. This is a model output, distinct from the power spectrum of a recording.
+4. Use **Search / Buscar** to enter three target resonance notes and run the evolutionary search. Progress and cancellation are available; the result can be applied to the editor.
+5. Optionally associate a saved design with a didgeridoo session. The session presents simulated resonances and recorded results separately. Manual vocalization or possible-toot markers annotate observations without claiming automatic detection.
 
-   Ejecuta las pruebas unitarias del módulo `app` en configuración `debug`.
+**Guide / Guía** introduces the musical and acoustic terms used by the tools.
 
-   `gradlew.bat :app:assembleDebug`
+## What the model represents
 
-   Compila un APK de prueba sin publicar ni firmar para Play Store. El resultado suele estar en `app/build/outputs/apk/debug/app-debug.apk`.
+[`AcousticModel`](app/src/main/java/ar/didgetaller/core/AcousticModel.kt) implements a segmented, one-dimensional acoustic transmission-line approximation. It includes approximate thermoviscous losses and bell radiation and calculates input impedance and resonance peaks from the bore profile.
 
-4. Con un Android conectado y depuración USB habilitada, `gradlew.bat :app:installDebug` instala en el dispositivo de pruebas (solicitar permiso previo).
+[`BoreOptimizer`](app/src/main/java/ar/didgetaller/core/BoreOptimizer.kt) searches profiles using a population, mutation, elitism, and a loss function based on three target resonances. A reproducible search seed supports deterministic experiments. A lower search error means a closer match within this model, not a better physical instrument.
 
-**Estado 20/10/2026:** APK debug compilado; siete pruebas JVM y dos instrumentadas de persistencia aprobadas. La interacción de audio del rediseño requiere validación manual. Antes de usar pruebas instrumentadas en el teléfono personal, leé la incidencia de conservación de datos en `docs/VALIDATION.md`.
+## Interpretation limits
 
-## Tres secciones
+- Input-impedance resonances, harmonics of radiated sound, and played registers or toots are different quantities. Matching their indices is not a valid physical comparison.
+- Geometry alone does not establish actual tuning, timbre, playing resistance, or a musician's response to the instrument.
+- Simulated resonances and comparisons with recordings are exploratory. The model has not been established as a validated substitute for physical prototypes or reference measurements.
+- The tools do not identify vowels, vocalizations, or toots automatically, and a successful optimization is not a fabrication specification.
 
-- **Afinar:** nota, frecuencia, cents, control del micrófono, guardado de mediciones y grabador WAV.
-- **Laboratorio:** Diseñar, Espectro, Buscar y Guía en pestañas internas.
-- **Biblioteca:** Mediciones, Grabaciones y Diseños en pestañas internas.
+[Acoustic validation](docs/ACOUSTIC_VALIDATION.md) preserves the comparison protocol and outstanding evidence. [Session exploration](docs/SESSION_EXPLORER.md) explains how to inspect recordings independently of a design prediction.
 
-## Codex CLI
+## Research context and attribution
 
-Iniciar `codex` en este directorio. Leer `AGENTS.md` y `docs/DIDGELAB_STUDY.md` antes de cambiar código.
+The project studied DidgeLab and CADSD as conceptual references. The included engines are independent Kotlin implementations; neither reference engine is bundled as a dependency or presented as a port.
 
-Prompt inicial: «Leé AGENTS.md y docs/DIDGELAB_STUDY.md. Primero compilá el proyecto Android y corregí errores hasta pasar `:app:testDebugUnitTest` y `:app:assembleDebug`. No agregues funciones mientras esté roto. Registrá lo verificado en docs/VALIDATION.md».
-
-## Inspiración / crédito
-
-DidgeLab: https://github.com/Didgitaldoo/didge-lab — kit de Python para diseño asistido de didgeridoos y evolución de perfiles, licencia **CC BY-NC-SA 4.0**.
-
-CADSD: https://www.didgeridoo-physik.de/ — trabajos de Frank Geipel.
-
-El motor Kotlin incluido **no copia directamente** código del repositorio Python; es una implementación original de técnicas matemáticas clásicas y búsqueda evolutiva. Si más adelante se derivan partes de DidgeLab, aplicar la atribución y licencia share-alike correspondientes.
+The historical [DidgeLab study](docs/DIDGELAB_STUDY.md) records research, attribution, and licensing considerations. It is not the current feature list. Any future incorporation of third-party code requires a separate review of its license and attribution requirements. This repository's existing license is [MIT](LICENSE).
