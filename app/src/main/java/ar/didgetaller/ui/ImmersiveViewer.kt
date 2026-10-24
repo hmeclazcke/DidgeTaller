@@ -78,8 +78,9 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     val points=sessionPlotPoints(vm,item)
     val trace=remember(points,item.instrument){PitchTrace.build(points,item.instrument)}
     val swipe=vm.swipeComparison.takeIf {it.sessionId==item.id && it.enabled}?.curve
+    val component=vm.droneComponent.takeIf {it.sessionId==item.id}?.curve
     val camera=s.camera(duration,visual.rate,points)
-    LaunchedEffect(item.id){vm.openTools(item)}
+    LaunchedEffect(item.id){vm.openTools(item);vm.analyzeDroneComponent(item)}
     LaunchedEffect(camera,s.plot,s.logarithmic,s.rangeDb,s.gestureActive,visual.frames){
         if(visual.frames>1 && !s.gestureActive && s.plot in listOf(AcousticPlot.SPECTROGRAM,AcousticPlot.WAVE)){
             vm.workspace.render(item,VisualRequest(camera.x.low.toLong(),camera.x.high.toLong().coerceAtLeast(camera.x.low.toLong()+1),
@@ -95,7 +96,8 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
             s.cameras[s.plot]=camera.copy(x=domain.constrain(AxisWindow(left,left+camera.x.span)))
         }
     }
-    PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,swipe=swipe,onPreview=onExpand,
+    PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,
+        swipe=swipe,component=component,capturedTimeline=item.timeline.isNotEmpty(),onPreview=onExpand,
         onReset={s.reset(duration,visual.rate,points)},onTransform={x,y,zx,zy,dx,dy->s.transform(duration,visual.rate,points,x,y,zx,zy,dx,dy)},
         onPoint={x,y,inspect ->
             s.selectedY=y;s.follow=false
@@ -234,6 +236,12 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         if(state.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled){
             SwipeLegend()
             if(vm.swipeComparison.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
+        }
+        if(state.plot==AcousticPlot.PITCH && vm.droneComponent.sessionId==item.id){
+            val component=vm.droneComponent
+            if(component.curve?.samples?.any {it.hz!=null}==true)DroneComponentLegend()
+            if(vm.droneComponent.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
+            if(component.failed)Text(stringResource(R.string.drone_component_failed),style=MaterialTheme.typography.bodySmall)
         }
         if(!singleBar)Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-transport"),verticalAlignment=Alignment.CenterVertically){
             transport()

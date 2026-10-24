@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import ar.didgetaller.R
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.data.RecordingStore
+import ar.didgetaller.core.DroneComponentCurve
+import kotlin.math.abs
 
 internal val swipeColor = Color(0xFFC9A4FF)
 
@@ -30,8 +32,30 @@ internal fun AdvancedPitchDiagnostics(vm: TallerViewModel, item: RecordingStore.
         Text(stringResource(R.string.advanced_diagnostics_help), style = MaterialTheme.typography.bodySmall)
         if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
             SwipeComparisonPanel(vm, item, showLegend = false)
+        if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
+            DroneComponentDiagnostic(vm,item,positionMs)
         SavedPitchEvidencePanel(vm, item, positionMs)
     }
+}
+
+@Composable
+private fun DroneComponentDiagnostic(vm:TallerViewModel,item:RecordingStore.Session,positionMs:Long){
+    val curve=vm.droneComponent.takeIf {it.sessionId==item.id}?.curve ?: return
+    val sample=curve.samples.minByOrNull {abs(it.timeMs-positionMs)}
+        ?.takeIf {abs(it.timeMs-positionMs)<=curve.hopMs/2} ?: return
+    val reason=when(sample.reason){
+        DroneComponentCurve.Reason.COMPONENT->R.string.drone_reason_component
+        DroneComponentCurve.Reason.QUIET->R.string.drone_reason_quiet
+        DroneComponentCurve.Reason.NO_PEAK->R.string.drone_reason_no_peak
+        DroneComponentCurve.Reason.NO_FAMILY->R.string.drone_reason_no_family
+        DroneComponentCurve.Reason.SUBHARMONIC_AMBIGUITY->R.string.drone_reason_ambiguity
+        DroneComponentCurve.Reason.TEMPORALLY_UNSUPPORTED->R.string.drone_reason_temporal
+    }
+    Text(stringResource(R.string.drone_component_diagnostic,
+        sample.hz?.let(::hzLabel) ?: stringResource(R.string.swipe_missing),
+        sample.candidateHz?.let(::hzLabel) ?: stringResource(R.string.swipe_missing),
+        stringResource(reason),sample.rms),style=MaterialTheme.typography.bodySmall,
+        modifier=Modifier.testTag("drone-component-diagnostic"))
 }
 
 @Composable

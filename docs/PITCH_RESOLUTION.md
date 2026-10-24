@@ -1,5 +1,81 @@
 # Pitch estimation: engineering decision
 
+## Saved-session drone component: evidence, not a replacement F0
+
+The protected October 24 spectral study was reproduced from its original PCM
+with the stated periodic-Hann 320 ms STFT, 40 ms hop, 65,536-point FFT and
+exploratory 45–110 Hz peak search. Its supplied CSV and the independent replay
+differed by at most 0.0005 Hz (CSV rounding). The study's Praat tracks were
+inspected but not rerun; Praat/Parselmouth is not a runtime or build dependency.
+The low ridge stays measurable during the two “I” vocalizations because narrow
+spectral energy and a related harmonic family remain present even when YIN
+cannot assign one accepted whole-signal periodicity. This does not prove the
+physical lip oscillation frequency.
+
+The Android saved-session tracker instead searches 30–220 Hz at 44.1 kHz,
+using a mean-removed 320 ms Hann periodogram and a 186 ms hop. It accepts a
+*spectral component* only when a prominent low peak has separate peaks near
+twice and three times its frequency, survives a digital-RMS sound gate, lacks
+specified half-frequency/half-integer competing evidence, and is supported by
+an adjacent window. It abstains on unresolved frames. These conditions are
+conservative evidence rules, not calibrated probabilities or F0 classification.
+In particular, a genuine 35 Hz harmonic family is followed near 35 Hz; a
+weak or missing 35 Hz fundamental with strong upper harmonics is withheld.
+If the lower oscillator is absent from the spectrum, 35 Hz versus a 70 Hz
+generator can be physically unidentifiable.
+
+The component is calculated on a background worker from the selected original
+WAV when a saved didgeridoo session opens. It is held only for that session and
+cancelled on exit. **Fundamental** retains its existing YIN points and gaps.
+A dashed cyan line appears only where no accepted original pitch is nearby;
+it is not a note, an octave correction or a replacement for SWIPE′ diagnostics.
+It breaks at pauses and unsupported frames and is suppressed near accepted
+high-register notes, including toots. Advanced diagnostics expose the raw
+candidate, decision reason and digital RMS. Flute, live capture, persisted
+measurements, WAV bytes and session formats are unchanged.
+
+In a fresh fixed-seed synthetic validation set, 384/960 known-oscillator
+windows contained an accepted component, all 384 within 50 cents of the known
+generating frequency; 0/192 silence/noise windows produced a component.
+Abstention was 576/960, including pure sinusoids without a corroborating
+spectral family and weak/missing-fundamental ambiguity. These metrics measure
+component localization, **not** physical-F0 accuracy. The initial, less
+conservative prototype was rejected: a previous held-out set had five noise
+false positives and 48 wrong components. The revised rules were frozen before
+the fresh set. A separate abrupt-transition check localized 18/19 fully
+contained pitched windows, abstained on a brief 185 Hz event with no usable
+third harmonic, and had 0/1 accepted silent windows. It did not carry an old
+70 Hz component through the pause or toot. Accepted original YIN toots mask
+the secondary trace. Kotlin and the frozen reference agreed on 114 accepted frames
+of the protected four-bout recording; Kotlin abstained on two additional
+frames and had zero extra acceptances. Maximum difference in common frequencies
+was 0.00013 cents.
+
+For that recording, the original aligned YIN chart accepted 12/29 first-“I”
+windows, 32/44 second-drone windows and 9/47 second-“I” windows. The
+secondary component supplied 15, 8 and 14 additional *distinct* source-time
+windows, respectively, without converting them into accepted F0 readings.
+The second “I” still contains a long ambiguous interval; continuity was not
+manufactured. On the known October 21 normal-drone ambiguity, the tracker
+follows a spectral component near 69 Hz while YIN may accept about 36 Hz.
+Neither result establishes the physical generator.
+
+On an API 37 emulator, analysis of 40 s of synthetic 44.1-kHz audio took
+1.245 s for 214 windows (about 32 times faster than real time); native heap
+delta was not a useful peak-memory measure. The work uses a bounded 65,536-point
+FFT workspace, bounded session output and no capture-thread processing.
+Synthetic session screenshots were inspected in Spanish and English, including
+the immersive chart. The exact protected WAV comparison, machine-readable
+decisions, before/after plot and commands are kept locally under
+`checkpoints/experiments/drone-component/` and are excluded from Git.
+
+Limitations: only 44.1-kHz didgeridoo WAVs are analyzed; pure or atypical
+harmonic sounds may abstain; a sufficiently harmonic unrelated source can
+still resemble a drone family. Captured pitch timestamps are delivery times
+and the alignment to a centered spectral window is approximate. This
+additional trace cannot settle the physical 35/70 Hz ambiguity or validate
+musical pitch during vocalization without an independent reference.
+
 ## Three-estimator follow-up: no validated fusion
 
 An offline follow-up reused frozen known-F0 references, earlier reports covering

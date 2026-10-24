@@ -1,3 +1,30 @@
+## Saved-session drone component decision — 2026-10-24
+
+- Started clean at `332d921` with `origin/main` aligned. Reused the October
+  24 private study and prior YIN/SWIPE′/pYIN/fusion evidence; did not restart
+  estimator research or change the accepted pitch detector.
+- Reproduced the study's low spectral ridge, rejected a permissive prototype
+  after held-out false positives, then froze and validated a conservative
+  component-only hypothesis on independent synthetic cases. No spectral
+  observation is presented as verified physical F0.
+- Added read-only, bounded saved-WAV analysis for didgeridoo sessions. YIN
+  Fundamental remains canonical; a dashed secondary component appears only
+  in supported gaps. The advanced panel retains the raw candidate and reason.
+  No live processing, persistence, cache migration, flute behavior or source
+  WAV handling changed.
+- Protected four-bout replay gains 15/29 first-“I”, 8/44 second-drone and
+  14/47 second-“I” distinct secondary-evidence windows beyond accepted YIN;
+  unsupported intervals remain gaps. A true 35 Hz harmonic family is retained,
+  while weak/missing lower lines abstain rather than becoming a forced 70 Hz F0.
+- Targeted JVM and emulator cases passed; synthetic screenshots were inspected.
+  On an API 37 emulator, 40 s of synthetic audio took 1.245 s to analyze.
+  Final validation passed 175 JVM tests, 6 relevant emulator cases, root
+  Detekt, JaCoCo report generation and debug APK assembly.
+  Exact private reports and images are ignored under
+  `checkpoints/experiments/drone-component/`. No Samsung operation or private
+  audio publication occurred. Physical drone pitch, long-session peak memory
+  and battery behavior remain unresolved.
+
 ## Product UX polish and audit closure — 2026-10-23
 
 - Reviewed all implemented screen families, routes and secondary surfaces in source;

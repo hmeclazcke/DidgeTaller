@@ -1,3 +1,60 @@
+## Saved-session drone component — 2026-10-24
+
+Baseline: clean `main` at `332d921`, matching `origin/main`; no previous
+uncommitted work. The original four-bout WAV matched its supplied SHA-256
+before and after. All private analysis files remain under ignored
+`checkpoints/experiments/drone-component/`. No Samsung access occurred.
+
+- Supplied SciPy spectral study reproduced on three protected October 23 WAVs:
+  at most 0.0005 Hz difference from its rounded CSV. Praat tracks were read
+  but not rerun because Parselmouth is absent.
+- Initial component hypothesis rejected on prior held-out references:
+  48 wrong accepted oscillator components and 5/148 noise false positives.
+  Conservative revision froze its SHA-256 before an independent fixed-seed
+  set: 384/960 known-generator frames accepted and localized within 50 cents;
+  576/960 abstained; 0 wrong accepted; 0/192 silence/noise false positives.
+  This evaluates spectral-component localization, not physical F0.
+  A separate fixed transition/brief-toot sequence localized 18/19 eligible
+  pitched windows and produced 0/1 false positives in the fully silent window;
+  it abstained on the 185-Hz segment instead of carrying an old 70-Hz value.
+- Kotlin/Python 15:27 aligned comparison: 114 both accepted, zero Kotlin-only,
+  two Python-only frames, 0.00013 cents maximum difference among common
+  frequencies. Protected JVM tests also checked October 21 19:17 and October
+  23 10:17/10:18 medians. Private fixture paths are supplied only via
+  `DIDGE_COMPONENT_WAV`, `DIDGE_OCT21_1917_WAV`,
+  `DIDGE_OCT23_1017_WAV`, `DIDGE_OCT23_1018_WAV` and
+  `DIDGE_COMPONENT_REFERENCE`.
+- Existing aligned YIN chart on the four-bout WAV: 12/29 first-“I” windows,
+  32/44 second-drone windows and 9/47 second-“I” windows accepted. A
+  secondary component is visible in 15, 8 and 14 additional aligned windows,
+  respectively, without changing accepted F0. Exact masked output, plot and
+  command sequence are in the ignored private report.
+- Targeted JVM tests passed, including genuine 35/70/140 Hz harmonic families,
+  weak/missing low fundamentals, silence/noise, masking near accepted toots,
+  flute isolation and protected real WAV comparisons.
+- API 37 emulator: two bilingual UI cases passed with synthetic session WAVs;
+  chart, legend, advanced decision text, zoom, pan, playback cursor, original
+  WAV bytes and session index were checked. Four screenshots were captured
+  and inspected locally. A separate 40-s synthetic Android performance test
+  passed: 214 frames in 1.245 s. Native-heap delta was -1,028,624 bytes;
+  this is not peak managed/native memory or phone battery use.
+- The new processing is background, read-only, bounded to 12,000 frames and
+  cancelled on session exit. YIN, SWIPE′, flute, live capture and persisted
+  formats are unchanged. The real 15:27 graph is an offline reconstruction
+  from the actual Kotlin results, not a physical Samsung screenshot.
+- Final stabilized run: `.\gradlew.bat :app:testDebugUnitTest detekt
+  :app:jacocoDebugUnitTestReport :app:assembleDebug --offline` passed.
+  JUnit XML: **175 tests, zero failures, zero skips** with protected fixture
+  variables set. Detekt generated its informational report; JaCoCo generated
+  the debug JVM coverage report; the debug APK assembled successfully.
+  The first attempted command used nonexistent app-scoped `detekt` and
+  `jacocoTestReport` names and failed at task selection before executing
+  validation. The task list confirmed root `detekt` and
+  `app:jacocoDebugUnitTestReport`, used in the passing run.
+- Final relevant emulator run passed **6/6**: two bilingual component UI
+  cases, one 40-s performance case and three pre-existing SWIPE′ comparison
+  regressions. It used only `emulator-5554`; no physical device was attached.
+
 ## Multi-estimator reliability follow-up
 
 At clean `1610028`, the existing ignored Python environment executed genuine

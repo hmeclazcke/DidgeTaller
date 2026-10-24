@@ -33,6 +33,7 @@ internal val PlotSwipeCount=SemanticsPropertyKey<Int>("PlotSwipeCount")
 internal val PlotPlaybackMs=SemanticsPropertyKey<Long>("PlotPlaybackMs")
 internal val PlotXLabels=SemanticsPropertyKey<List<String>>("PlotXLabels")
 internal val PlotAudioLevelCount=SemanticsPropertyKey<Int>("PlotAudioLevelCount")
+internal val PlotDroneComponentCount=SemanticsPropertyKey<Int>("PlotDroneComponentCount")
 internal val PlotXLabelBounds=SemanticsPropertyKey<List<androidx.compose.ui.geometry.Rect>>("PlotXLabelBounds")
 internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
     PitchTrace.Tone.STABLE->Color(0xFF8FE0BD)
@@ -64,7 +65,7 @@ internal fun placeAxisLabels(ticks:List<Double>,window:AxisWindow,width:Float,ga
 @Composable
 internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotViewport,points:List<SessionAnalysis.Point>,
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
-    swipe:SwipeCurve?=null,
+    swipe:SwipeCurve?=null,component:DroneComponentCurve?=null,capturedTimeline:Boolean=true,
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -133,6 +134,39 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         }
         path to dots
     }
+    val componentVisibleSamples=remember(component,points,state.instrument,capturedTimeline,state.plot){
+        if(component!=null && state.plot==AcousticPlot.PITCH)
+            DroneComponentOverlay.visible(component,points,state.instrument,capturedTimeline)
+        else emptyList()
+    }
+    val componentPaths=remember(componentVisibleSamples,component,camera,dimensions,left,right,top,bottom,state.plot){
+        val path=Path();val dots=mutableListOf<Offset>()
+        if(component!=null && state.plot==AcousticPlot.PITCH){
+            val visible=componentVisibleSamples
+            val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
+            fun position(sample:DroneComponentCurve.Sample)=Offset(
+                (camera.x.fraction(sample.timeMs)*plotWidth).toFloat(),
+                ((1-camera.y.fraction(sample.hz!!))*h).toFloat())
+            for(i in visible.indices){
+                val sample=visible[i]
+                val hz=sample.hz ?: continue
+                if(sample.timeMs<camera.x.low-component.hopMs || sample.timeMs>camera.x.high+component.hopMs)continue
+                val previous=visible.getOrNull(i-1)
+                val next=visible.getOrNull(i+1)
+                val linkedPrevious=previous?.hz?.let {
+                    sample.timeMs-previous.timeMs<=component.hopMs*1.01 && abs(1200*log2(hz/it))<300
+                }==true
+                val linkedNext=next?.hz?.let {
+                    next.timeMs-sample.timeMs<=component.hopMs*1.01 && abs(1200*log2(it/hz))<300
+                }==true
+                if(linkedPrevious){val a=position(previous!!);val b=position(sample)
+                    path.moveTo(a.x,a.y);path.lineTo(b.x,b.y)
+                }else if(!linkedNext)dots+=position(sample)
+            }
+        }
+        path to dots
+    }
+    val componentVisible=remember(componentVisibleSamples){componentVisibleSamples.count {it.hz!=null}}
     val xTicks=PlotScales.ticks(camera.x,if(plotWidth/textSize<30)3 else 5)
     val xLabels=placeAxisLabels(xTicks,camera.x,plotWidth,labelGap*2,
         {if(state.plot.temporal)seconds(it.toLong()) else axisLabel(it,camera.x.span)+" Hz"},paint::measureText)
@@ -170,6 +204,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
             this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
             this[PlotPlaybackMs]=cursor
             this[PlotAudioLevelCount]=level?.rms?.size ?: 0
+            this[PlotDroneComponentCount]=componentVisible
             this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
         .onSizeChanged {dimensions=it}) {
         // Navigation/configuration transitions can measure a temporarily collapsed surface.
@@ -214,6 +249,12 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                 if(state.plot==AcousticPlot.PITCH && swipe!=null){
                     drawPath(swipePaths.first,swipeColor,style=Stroke(2.3f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,5f))))
                     swipePaths.second.forEach {drawCircle(swipeColor,2.8f,it)}
+                }
+                if(state.plot==AcousticPlot.PITCH && component!=null){
+                    val color=Color(0xFF65C9D1)
+                    drawPath(componentPaths.first,color,style=Stroke(2.1f,
+                        pathEffect=PathEffect.dashPathEffect(floatArrayOf(5f,5f))))
+                    componentPaths.second.forEach {drawCircle(color,2.5f,it)}
                 }
                 if(state.plot==AcousticPlot.WAVE)visual.wave?.let {wave ->
                     val a=wave.start*1000.0/wave.rate;val b=wave.end*1000.0/wave.rate

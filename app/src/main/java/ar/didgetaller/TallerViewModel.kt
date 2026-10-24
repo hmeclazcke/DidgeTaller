@@ -5,6 +5,8 @@ import ar.didgetaller.core.AcousticDiagnostics
 import ar.didgetaller.core.SavedPitchEvidence
 import ar.didgetaller.core.SwipeAnalysis
 import ar.didgetaller.core.SwipeCurve
+import ar.didgetaller.core.DroneComponentAnalysis
+import ar.didgetaller.core.DroneComponentCurve
 import ar.didgetaller.core.AxisWindow
 
 import android.app.Application
@@ -50,6 +52,8 @@ data class SavedEvidenceState(val sessionId:String?=null,val running:Boolean=fal
 
 data class SwipeComparisonState(val sessionId:String?=null,val enabled:Boolean=false,val running:Boolean=false,
     val progress:Int=0,val curve:SwipeCurve?=null,val failed:Boolean=false)
+data class DroneComponentState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
+    val curve:DroneComponentCurve?=null,val failed:Boolean=false)
 
 class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val store=LocalStore(application)
@@ -128,8 +132,36 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     var savedEvidence by mutableStateOf(SavedEvidenceState());private set
     private var evidenceJob:Job?=null
     var swipeComparison by mutableStateOf(SwipeComparisonState());private set
+    var droneComponent by mutableStateOf(DroneComponentState());private set
     private var swipeJob:Job?=null
+    private var droneComponentJob:Job?=null
     private val swipeDispatcher=Dispatchers.IO.limitedParallelism(1)
+    fun analyzeDroneComponent(item:RecordingStore.Session){
+        if(item.instrument!=InstrumentProfile.DIDGERIDOO || droneComponent.sessionId==item.id)return
+        droneComponentJob?.cancel()
+        droneComponent=DroneComponentState(item.id,running=true)
+        droneComponentJob=viewModelScope.launch {
+            try {
+                val result=withContext(swipeDispatcher){
+                    val task=currentCoroutineContext()
+                    Pcm16WavReader(sessionFile(item)).use { source ->
+                        DroneComponentAnalysis().analyze(source,cancelled={!task.isActive},progress={p->
+                            main.post {if(task.isActive && droneComponent.sessionId==item.id)
+                                droneComponent=droneComponent.copy(progress=p)}
+                        })
+                    }
+                }
+                ensureActive()
+                if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,progress=100,curve=result)
+            }catch(e:CancellationException){throw e}
+            catch(e:Exception){ensureActive();if(activeDetail==item.id)
+                droneComponent=DroneComponentState(item.id,failed=true)}
+        }
+    }
+    private fun clearDroneComponent(){
+        droneComponentJob?.cancel()
+        droneComponent=DroneComponentState()
+    }
     fun setSwipeComparison(item:RecordingStore.Session,enabled:Boolean){
         if(item.instrument!=InstrumentProfile.DIDGERIDOO)return
         swipeJob?.cancel()
@@ -273,7 +305,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         inMeasurementDestination=measurement
         microphoneStop()
         if(activeDetail!=sessionId || sessionId==null){
-            stopPlayback();cancelRecordingAnalysis(clear=true);cancelSavedEvidence();clearSwipeComparison();workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
+            stopPlayback();cancelRecordingAnalysis(clear=true);cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
             activeDetail?.let {explorers.remove(it);previews.remove(it)}
         }
         activeDetail=sessionId
@@ -352,6 +384,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         if(recordingAnalysis.sessionId==item.id)cancelRecordingAnalysis(clear=true)
         if(savedEvidence.sessionId==item.id)cancelSavedEvidence()
         if(swipeComparison.sessionId==item.id)clearSwipeComparison()
+        if(droneComponent.sessionId==item.id)clearDroneComponent()
         runCatching {trash.put("session",item.id);refreshLibrary();undoEntry=UndoEntry("session",item.id)}
             .onFailure {message="No se pudo mover a la papelera: ${it.message}"}
     }
@@ -435,7 +468,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         // The retained ViewModel owns capture across Activity recreation, not a background service.
         if(changingConfiguration)return
         microphoneStop()
-        stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();workspace.cancel();cancelComparison()}
+        stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();workspace.cancel();cancelComparison()}
     override fun onCleared(){
         cleared=true;onAppStopped();executor.shutdownNow()
         analysisVersion.incrementAndGet();analysisExecutor.shutdownNow()

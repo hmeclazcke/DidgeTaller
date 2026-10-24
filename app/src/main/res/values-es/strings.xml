@@ -548,4 +548,15 @@
     <string name="advanced_diagnostics_hide">Ocultar diagnósticos avanzados</string>
     <string name="advanced_diagnostics_help">Compará estimaciones experimentales en Fundamental o inspeccioná la ventana de audio seleccionada. Las mediciones guardadas se conservan.</string>
     <string name="playback_seek_label">Posición de reproducción</string>
+    <string name="drone_component_estimated">Componente del dron (estimada)</string>
+    <string name="drone_component_explanation">Solo evidencia espectral; no confirma una nota musical.</string>
+    <string name="drone_component_unavailable">No hay una componente del dron suficientemente respaldada en esta sesión.</string>
+    <string name="drone_component_failed">El análisis de la componente del dron no está disponible para esta grabación.</string>
+    <string name="drone_component_diagnostic">Componente del dron: %1$s · candidata espectral original: %2$s · %3$s · RMS digital %4$.3f</string>
+    <string name="drone_reason_component">familia armónica respaldada</string>
+    <string name="drone_reason_quiet">nivel de señal bajo</string>
+    <string name="drone_reason_no_peak">sin pico grave destacado</string>
+    <string name="drone_reason_no_family">familia armónica insuficiente</string>
+    <string name="drone_reason_ambiguity">ambigüedad subarmónica</string>
+    <string name="drone_reason_temporal">sin respaldo en ventanas vecinas</string>
 </resources>

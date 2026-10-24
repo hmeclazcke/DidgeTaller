@@ -20,6 +20,7 @@ Didge Taller works offline, without accounts, advertising, or network access. Re
 
 - A **Session Library** with playback, rename, WAV export, and recoverable deletion through Trash.
 - **Fundamental**, **Spectrogram**, **Waveform**, and **Harmonics** views, with full-screen exploration, zoom, pan, cursor inspection, and reset controls.
+- Saved didgeridoo sessions can show a dashed **estimated drone component** in Fundamental gaps when a low spectral line has harmonic support. It is separate from accepted YIN pitch, never a confirmed note, and is computed locally from the original WAV.
 - Playback, seeking, excerpt selection, and looping, with a cursor tied to the audio player's position.
 - WAV analysis for the whole recording or a selected interval: power spectrum, harmonic candidates, pitch summaries, and spectral energy bands.
 - Optional saved-WAV signal inspection separates accepted periodicity, alternative periods, spectral-family candidates, and low-energy input without changing Fundamental. See the [engineering decision](docs/PITCH_RESOLUTION.md).

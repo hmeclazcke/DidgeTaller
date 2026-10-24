@@ -548,4 +548,15 @@
     <string name="advanced_diagnostics_hide">Hide advanced diagnostics</string>
     <string name="advanced_diagnostics_help">Compare experimental pitch hypotheses on Fundamental, or inspect the selected audio window. Saved measurements remain unchanged.</string>
     <string name="playback_seek_label">Playback position</string>
+    <string name="drone_component_estimated">Estimated drone component</string>
+    <string name="drone_component_explanation">Spectral evidence only; this does not confirm a musical note.</string>
+    <string name="drone_component_unavailable">No supported drone component in this session.</string>
+    <string name="drone_component_failed">Drone component analysis is unavailable for this recording.</string>
+    <string name="drone_component_diagnostic">Drone component: %1$s · raw spectral candidate: %2$s · %3$s · digital RMS %4$.3f</string>
+    <string name="drone_reason_component">harmonic family supported</string>
+    <string name="drone_reason_quiet">low signal level</string>
+    <string name="drone_reason_no_peak">no prominent low-frequency peak</string>
+    <string name="drone_reason_no_family">harmonic family insufficient</string>
+    <string name="drone_reason_ambiguity">subharmonic ambiguity</string>
+    <string name="drone_reason_temporal">not supported by neighboring windows</string>
 </resources>

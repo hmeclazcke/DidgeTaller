@@ -57,6 +57,14 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         if(s.plot==AcousticPlot.PITCH)Text(stringResource(R.string.pitch_audio_level_help),
             style=MaterialTheme.typography.bodySmall,modifier=Modifier.testTag("pitch-audio-level-help"))
         if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled)SwipeLegend()
+        if(s.plot==AcousticPlot.PITCH && vm.droneComponent.sessionId==item.id){
+            val component=vm.droneComponent
+            if(component.curve?.samples?.any {it.hz!=null}==true)DroneComponentLegend()
+            if(vm.droneComponent.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
+            if(component.failed)Text(stringResource(R.string.drone_component_failed),style=MaterialTheme.typography.bodySmall)
+            else if(component.curve!=null && component.curve.samples.none {it.hz!=null})
+                Text(stringResource(R.string.drone_component_unavailable),style=MaterialTheme.typography.bodySmall)
+        }
         playbackControls()
         if(s.plot==AcousticPlot.PITCH){
             val points=sessionPlotPoints(vm,item)
@@ -87,6 +95,20 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
     }
     RecordingAnalysisPanel(vm,item)
     AcousticHelp()
+}
+
+@Composable
+internal fun DroneComponentLegend(){
+    Row(verticalAlignment=androidx.compose.ui.Alignment.CenterVertically,
+        horizontalArrangement=Arrangement.spacedBy(8.dp)){
+        Canvas(Modifier.width(28.dp).height(8.dp)){
+            drawLine(androidx.compose.ui.graphics.Color(0xFF65C9D1),Offset(0f,size.height/2),
+                Offset(size.width,size.height/2),strokeWidth=2.dp.toPx(),
+                pathEffect=androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(5f,5f)))
+        }
+        Text(stringResource(R.string.drone_component_estimated),style=MaterialTheme.typography.bodySmall)
+    }
+    Text(stringResource(R.string.drone_component_explanation),style=MaterialTheme.typography.labelSmall)
 }
 
 @Composable
