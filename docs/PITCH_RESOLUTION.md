@@ -1,5 +1,41 @@
 # Pitch estimation: engineering decision
 
+## Three-estimator follow-up: no validated fusion
+
+An offline follow-up reused frozen known-F0 references, earlier reports covering
+six protected didgeridoo recordings, and aligned Android YIN/SWIPE′ evidence.
+Genuine `librosa.pyin` 0.11.0 was run on the later four-bout WAV; prior pYIN results
+on three October 21 recordings and synthetic references were reused. pYIN derives candidates
+from YIN and applies probabilistic temporal decoding; its agreement with YIN is
+therefore not independent physical evidence. It was not added to the Android APK.
+
+The tested candidate rule required pYIN and SWIPE′ to agree within 50 cents on an
+energetic didgeridoo frame before rescuing a rejected YIN estimate; a stricter
+version also required pYIN voicing probability at least 0.5. A separate check
+allowed overriding an accepted YIN estimate only for a supported disagreement
+greater than 100 cents. None changed a synthetic decision. YIN and the proposed
+rules each got **170/190** development and **250/260** held-out known-F0 windows
+correct within 50 cents, with **0/30** and **0/35** negative false positives.
+The existing ten development octave errors remained. Standalone pYIN scored
+**238/260** and SPTK SWIPE′ **219/260** on the same held-out waveform-F0 targets.
+No measured accuracy, coverage or octave improvement justified a third Android
+estimator or runtime fusion. The flute and genuine high-register transitions
+retain their existing YIN behavior.
+
+In the private four-bout recording, pYIN was voiced on **28/28** windows of the
+first “I” and **27/46** of the second, but did not provide a unique musical pitch.
+During much of the second “I”, pYIN and YIN select a slow recurrence near 35.8 Hz
+while SWIPE′ estimates near 66 Hz and the spectrum retains a low harmonic family.
+Two accepted energetic YIN points near 35.7 Hz remain acoustically ambiguous.
+The separate late 51.4-Hz candidate was already shown to lack comparison-window
+energy and rejected in `1610028`. The screenshot's 32.7-Hz text is an axis tick.
+No frequency was doubled, averaged across registers, or fabricated through a gap.
+
+The private, reproducible aligned CSV, exact per-point evidence and inspected plot
+are under `checkpoints/experiments/multi-estimator-reliability/REPORT.md`.
+This result preserves the single normal YIN curve and optional SWIPE′ comparison;
+it does not establish the physical lip frequency during vocalization.
+
 ## Four-bout failure reproduction and correction
 
 A subsequent 39.96-s private recording was reproduced from `f428628` through the

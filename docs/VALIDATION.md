@@ -1,3 +1,20 @@
+## Multi-estimator reliability follow-up
+
+At clean `1610028`, the existing ignored Python environment executed genuine
+`librosa.pyin` on the protected four-bout WAV. It reused the 450-window frozen
+synthetic corpus and prior production YIN/SPTK reference outputs; the synthetic
+production results were previously shown unchanged by `1610028`. The conservative
+selection policy changed **zero** decisions on development or held-out references.
+Both baseline and policy scored 170/190 and 250/260 correct within 50 cents,
+respectively; false positives remained zero. On the real first/second “I”, YIN
+accepted 12/28 and 9/46 windows, while the policy accepted the same counts.
+The third method did not justify Android integration, so no app source or UI was
+changed and no new Android tests were claimed. Fresh validation on unchanged app
+source passed: 165/165 JVM tests, Detekt, JaCoCo report generation and debug APK
+assembly (`BUILD SUCCESSFUL`, 33 seconds). No instrumented test was run because
+the app UI was unchanged. The separate follow-up command and private numerical
+output are in `checkpoints/experiments/multi-estimator-reliability/REPORT.md`.
+
 ## Four-bout acoustic failure: validated source and presentation correction
 
 Baseline `f428628`, clean and four commits ahead of fetched origin/main; source

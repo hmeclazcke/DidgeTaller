@@ -500,3 +500,15 @@ Validation, including real failed regressions and their corrections, is recorded
 in VALIDATION. The authoritative private report and reproducible artifacts are
 `checkpoints/experiments/reproduction-1527/REPORT.md`. No new dependencies, native
 changes, session schema changes, private Git assets, push or physical-phone install.
+
+## Multi-estimator pitch reliability decision
+
+Reused the prior genuine pYIN, SPTK and production YIN benchmarks; executed
+pYIN on the later four-bout private WAV with aligned input. The tested agreement
+rule offered no held-out accuracy or real-vocalization coverage gain. The two
+energetic 35.7-Hz points remain competing periodicity evidence, not verified
+musical notes. The established quiet 51.4-Hz defect is already fixed by `1610028`.
+Keep the current Android detector/UI and diagnostic alternatives; avoid an extra
+runtime estimator and unsupported register correction. Exact private evidence is
+retained under `checkpoints/experiments/multi-estimator-reliability/`. Current
+documentation records the result without publishing private audio or plots.
