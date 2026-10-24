@@ -38,6 +38,7 @@ internal fun AcousticDiagnosticsPanel(sample:AcousticDiagnostics.Sample?,retaine
             sample.rejectionReason?.let {reason->
                 val label=stringResource(when(reason) {
                     "low_amplitude" -> R.string.acoustic_state_low
+                    "low_comparison_amplitude" -> R.string.acoustic_reason_quiet_comparison
                     "low_periodicity" -> R.string.acoustic_reason_low_periodicity
                     "outside_range" -> R.string.acoustic_reason_outside_range
                     "no_minimum" -> R.string.acoustic_reason_no_minimum

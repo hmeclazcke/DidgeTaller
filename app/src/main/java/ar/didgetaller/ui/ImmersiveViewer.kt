@@ -226,6 +226,9 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
                 }
                 Text("0 dB rel",style=MaterialTheme.typography.labelSmall)
             }
+            if(state.plot==AcousticPlot.PITCH && visual.level!=null)Text(
+                stringResource(R.string.pitch_audio_level_short),Modifier.align(Alignment.TopEnd).padding(end=12.dp),
+                style=MaterialTheme.typography.labelSmall)
             if(visual.loading || recording?.running==true)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp).align(Alignment.BottomCenter))
         }
         if(state.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled){

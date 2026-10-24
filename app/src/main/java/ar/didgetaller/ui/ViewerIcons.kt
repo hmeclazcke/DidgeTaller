@@ -7,6 +7,14 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 internal object ViewerIcons {
+    val Expand=ImageVector.Builder("Expand",24.dp,24.dp,24f,24f).apply {
+        path(fill=SolidColor(Color.White)){
+            moveTo(3f,3f);lineTo(9f,3f);lineTo(9f,5f);lineTo(5f,5f);lineTo(5f,9f);lineTo(3f,9f);close()
+            moveTo(15f,3f);lineTo(21f,3f);lineTo(21f,9f);lineTo(19f,9f);lineTo(19f,5f);lineTo(15f,5f);close()
+            moveTo(3f,15f);lineTo(5f,15f);lineTo(5f,19f);lineTo(9f,19f);lineTo(9f,21f);lineTo(3f,21f);close()
+            moveTo(19f,15f);lineTo(21f,15f);lineTo(21f,21f);lineTo(15f,21f);lineTo(15f,19f);lineTo(19f,19f);close()
+        }
+    }.build()
     val Pause=ImageVector.Builder("Pause",24.dp,24.dp,24f,24f).apply {
         path(fill=SolidColor(Color.White)){
             moveTo(6f,4f);lineTo(10f,4f);lineTo(10f,20f);lineTo(6f,20f);close()

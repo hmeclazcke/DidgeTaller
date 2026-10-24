@@ -9,7 +9,8 @@ import java.util.concurrent.CancellationException
 /** Regenerable, versioned and bounded. No changes to original audio or the legacy index. */
 class AnalysisCache(context:Context) {
     private val root=File(context.filesDir,"analysis-cache").apply {mkdirs()}
-    companion object {const val VERSION=2;const val VISUAL_VERSION=3;private const val LIMIT=64L*1024*1024}
+    // Lazy analysis invalidation for the comparison-support amplitude gate. Originals stay intact.
+    companion object {const val VERSION=3;const val VISUAL_VERSION=3;private const val LIMIT=64L*1024*1024}
     fun fingerprint(file:File,cancelled:()->Boolean={false}):String {
         val digest=MessageDigest.getInstance("SHA-256");val bytes=ByteArray(65536)
         file.inputStream().buffered().use {input ->while(true){if(cancelled())throw CancellationException();val n=input.read(bytes);if(n<0)break;digest.update(bytes,0,n)}}

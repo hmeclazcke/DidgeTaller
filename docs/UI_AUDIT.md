@@ -164,3 +164,29 @@ No quedan P0/P1 conocidos sin corregir en los flujos comprobados. VALIDATION reg
 ### Último retoque visual validado
 
 En Diseños se observó un borde rojo de la papelera en reposo por las diferentes esquinas redondeadas del fondo y la tarjeta. El fondo ahora es transparente en reposo y destructivo solo durante el arrastre. `finalDesignCardsAndResonancesAppearance` comprobó cero píxeles rojos en la tarjeta y generó captura real; swipe/Deshacer se repitieron en el mismo foco (2/2). La presentación de resonancias del diseñador usa los mismos valores del motor con formato decimal español, sin modificar sus cálculos. Capturas `v31-close-disenos.png` y `v31-close-simulacion.png`.
+
+## Private four-bout reproduction: focused presentation correction
+
+The supplied physical-phone screenshots and a read-only emulator replay reproduce
+the fragmented Fundamental chart. Pipeline tracing attributes the large gaps to
+YIN abstentions, not dropped Canvas samples. The normal experience now includes a
+separate blue audio-level strip on the same time projection, with a concise
+English/Spanish explanation: sound level is not pitch confidence, and curve gaps
+do not establish silence. Pitch samples, scientific uncertainty, real pauses,
+register connectors, playback and independent preview/viewer cameras are preserved.
+
+The full-screen action is now a labeled 48-dp icon, leaving room for the card
+heading. Header and seekbar cropping in the submitted images is reproducible at
+intermediate vertical scroll positions; scrolling reveals the complete controls.
+Partially visible neighboring tabs belong to the existing horizontal tab scroller.
+No permanent inset obstruction was demonstrated. Large text and short landscape
+screens still require scrolling; the immersive viewer remains the practical way
+to keep the complete chart and transport visible together.
+
+Actual screenshots were inspected at typical phone size, compact Spanish 150%
+text and landscape English 130% text. The initial verbose level legend was
+shortened after large-text review. A new asynchronous layout dependency in the
+pitch tick cache was corrected after existing exact-pixel SWIPE′ restoration tests
+failed. Private screenshots remain ignored under
+`checkpoints/experiments/reproduction-1527/ui-final/session-evidence/`; they are not
+public documentation assets. Tests and limits are recorded in [VALIDATION](VALIDATION.md).

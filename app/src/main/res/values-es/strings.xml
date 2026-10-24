@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pitch_audio_level_short">Nivel del audio · no es certeza de tono</string>
+    <string name="pitch_audio_level_help">Azul: nivel del audio. Huecos: sin frecuencia aceptada.</string>
+    <string name="acoustic_reason_quiet_comparison">La porción usada para estimar la frecuencia está por debajo del umbral de señal</string>
     <string name="saved_evidence_title">Evidencia de señal en la selección</string>
     <string name="saved_evidence_hide">Ocultar evidencia de señal</string>
     <string name="saved_evidence_help">Inspeccioná una ventana del WAV original. La periodicidad acústica y los picos espectrales pueden discrepar. El ruido también puede alinear picos por azar. Ninguna alternativa confirma la nota física del drone ni cambia Fundamental.</string>

@@ -116,6 +116,7 @@ class SwipeComparisonUiTest {
         compose.onNodeWithTag("time-chart").performScrollTo()
         val camera=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
         val before=compose.onNodeWithTag("time-chart").captureToImage().asAndroidBitmap()
+        val originalLevel=vm.workspace.state.level
         openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.waitUntil(10000){vm.swipeComparison.curve!=null || vm.swipeComparison.failed}
@@ -155,6 +156,14 @@ class SwipeComparisonUiTest {
         assertEquals(camera,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow])
         assertEquals(0,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotSwipeCount])
         val after=compose.onNodeWithTag("time-chart").captureToImage().asAndroidBitmap()
+        assertNotNull("Source level remains available after comparison",vm.workspace.state.level)
+        assertSame("Comparison must not replace source evidence",originalLevel,vm.workspace.state.level)
+        assertTrue("Source level still contains sound",vm.workspace.state.level!!.rms.any {it>.005})
+        if(!before.sameAs(after))for((name,image) in listOf("before" to before,"after" to after)){
+            File(target.getExternalFilesDir(null),"swipe-restore-$language-$name.png").outputStream().use {
+                image.compress(Bitmap.CompressFormat.PNG,100,it)
+            }
+        }
         assertTrue("Original chart pixels restored",before.sameAs(after))
         compose.runOnIdle {
             vm.selectInstrument(InstrumentProfile.NATIVE_AMERICAN_FLUTE)

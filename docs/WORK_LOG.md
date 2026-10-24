@@ -470,3 +470,33 @@ Pendiente de prueba manual, no de implementación: flauta/PVC reales y afinador,
 - `:app:testDebugUnitTest` aprobó 7/7 pruebas; `:app:test` aprobó las mismas 7 en debug y release; `:app:assembleDebug` generó el APK. Los primeros intentos tropezaron con restricciones de red/caché del sandbox; el registro exacto está en `docs/VALIDATION.md`.
 - Archivos modificados: documentación de validación, hoja de ruta y registro de trabajo. El JAR del wrapper y los artefactos de Gradle se generaron al compilar.
 - Siguiente paso P0: conectar o iniciar un Android, pedir autorización antes de instalar en un dispositivo físico y verificar permisos, audio, WAV, CSV, navegación y diseños.
+
+## Four-bout acoustic failure resolution
+
+Started from clean `f428628`, preserving the four local commits ahead of fetched
+`origin/main/170bcf9` and the other worktree. A Git source archive was created before
+edits. The externally supplied WAV hash and both screenshots were verified; no
+Samsung operation was performed. An interruption during validation was resumed
+from the existing diffs/logs without restarting the research or duplicating changes.
+
+The actual production replay, independent STFT and existing frozen regression
+corpus isolate a quiet-comparison/full-buffer energy mismatch. Reuse the existing
+amplitude threshold on the selected lag's real sample support; retain the rejected
+candidate as diagnostic evidence. Keep the original YIN decisions otherwise and
+leave full-rate flute and SWIPE′ untouched. Reject fusion/replacement: additional
+coverage does not establish the physical drone. Make energetic uncertainty readable
+with a separate bounded, source-time audio-level strip rather than invented Hz.
+
+The second normal bout has changed grave-frequency content and much stronger
+182-Hz energy. This is an observed acoustic difference, not proof of a particular
+physical mechanism. The current recording's large interior gaps remain honest
+abstentions. Historical readings are preserved; the source fix applies to new
+processing, not a silent migration. Derived analysis cache version 3 prevents reuse
+of the old acceptance policy on requested reanalysis; original sessions are unchanged.
+Exact original callback timing is unavailable
+without the phone's saved timeline, which was not supplied.
+
+Validation, including real failed regressions and their corrections, is recorded
+in VALIDATION. The authoritative private report and reproducible artifacts are
+`checkpoints/experiments/reproduction-1527/REPORT.md`. No new dependencies, native
+changes, session schema changes, private Git assets, push or physical-phone install.

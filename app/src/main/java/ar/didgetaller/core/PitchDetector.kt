@@ -19,7 +19,7 @@ object PitchDetector {
     /** Diagnostic evidence, not a second estimator or a confidence calibration. */
     data class Minimum(val hz:Double,val confidence:Double)
     data class Diagnostic(val candidateHz:Double?,val reason:String,val offsetSamples:Int=0,
-        val comparedSamples:Int=0,val minima:List<Minimum> = emptyList())
+        val comparedSamples:Int=0,val minima:List<Minimum> = emptyList(),val comparisonRms:Double?=null)
 
     fun analyze(pcm: ShortArray, sampleRate: Int = 44100, minHz: Int = 35, maxHz: Int = 140,
                 includeVisuals: Boolean = true): Reading = analyzeWithDiagnostics(pcm,sampleRate,minHz,maxHz,includeVisuals,null)
@@ -90,15 +90,25 @@ object PitchDetector {
         }
         val hz=fs/(best+delta)
         val confidence=(1.0-cmndf[best]).coerceIn(0.0,1.0)
-        observe?.invoke(Diagnostic(hz,when {
+        // The low-register difference function uses only the leading part of the buffer.
+        // Energy arriving later cannot validate a periodic candidate in that quiet support.
+        // Keep the candidate/periodicity inspectable; do not alter the flute policy.
+        val comparisonRms=if(ds==4){
+            val first=offset*ds;val end=(offset+win+best)*ds
+            val localMean=(first until end).sumOf {pcm[it].toDouble()}/(end-first)
+            sqrt((first until end).sumOf {(pcm[it]-localMean).pow(2)}/(end-first))/32768.0
+        }else rms
+        val reason=when {
+            comparisonRms<.005 -> "low_comparison_amplitude"
             hz<minHz*.95 || hz>maxHz*1.05 -> "outside_range"
             confidence<.65 -> "low_periodicity"
             else -> "accepted"
-        },offset*ds,win*ds,(minLag..maxLag).filter {i ->
+        }
+        observe?.invoke(Diagnostic(hz,reason,offset*ds,win*ds,(minLag..maxLag).filter {i ->
             (i==minLag || cmndf[i]<=cmndf[i-1]) && (i==maxLag || cmndf[i]<=cmndf[i+1])
-        }.map {Minimum(fs/it,(1-cmndf[it]).coerceIn(0.0,1.0))}))
+        }.map {Minimum(fs/it,(1-cmndf[it]).coerceIn(0.0,1.0))},comparisonRms))
         return Reading(
-            hz=if(hz>=minHz*0.95 && hz<=maxHz*1.05 && confidence>=0.65) hz else 0.0,
+            hz=if(reason=="accepted") hz else 0.0,
             confidence=confidence,rms=rms,waveform=wave,spectrum=spectrum
         )
     }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pitch_audio_level_short">Audio level · not pitch confidence</string>
+    <string name="pitch_audio_level_help">Blue: audio level. Curve gaps: no accepted pitch.</string>
+    <string name="acoustic_reason_quiet_comparison">The part used to estimate pitch is below the signal threshold</string>
     <string name="saved_evidence_title">Signal evidence at selection</string>
     <string name="saved_evidence_hide">Hide signal evidence</string>
     <string name="saved_evidence_help">Inspect one window of the original WAV. Acoustic periodicity and spectral peaks can disagree. Noise can also align peaks by chance. No alternative confirms the physical drone note or changes Fundamental.</string>

@@ -46,12 +46,16 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
     var markers by rememberSaveable(item.id){mutableStateOf(false)}
     LaunchedEffect(item.id){vm.openTools(item)}
     LabCard(context.getString(R.string.ui_explore_audio), action={
-        TextButton(onClick={onExpand(s.plot)},modifier=Modifier.testTag("expand-plot")){Text(stringResource(R.string.ui_full_screen))}
+        IconButton(onClick={onExpand(s.plot)},modifier=Modifier.testTag("expand-plot")){
+            Icon(ViewerIcons.Expand,stringResource(R.string.ui_full_screen))
+        }
     }) {
         ScrollableTabRow(selectedTabIndex=s.plot.ordinal,edgePadding=0.dp){
             AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind;s.inspected=null},text={Text(context.plotLabel(kind),maxLines=1)})}
         }
         SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        if(s.plot==AcousticPlot.PITCH)Text(stringResource(R.string.pitch_audio_level_help),
+            style=MaterialTheme.typography.bodySmall,modifier=Modifier.testTag("pitch-audio-level-help"))
         if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled)SwipeLegend()
         playbackControls()
         if(s.plot==AcousticPlot.PITCH){

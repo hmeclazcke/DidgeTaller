@@ -1,3 +1,124 @@
+## Four-bout acoustic failure: validated source and presentation correction
+
+Baseline `f428628`, clean and four commits ahead of fetched origin/main; source
+checkpoint `checkpoints/before-reproduction-1527-f428628.zip`. The protected
+39.96-s reproduction WAV and two physical screenshots were available and inspected.
+The WAV matched its supplied SHA-256 before and after all processing. No Samsung
+command, install, instrumentation, data modification or push was performed.
+
+### Reproduction and before/after evidence
+
+- Actual `PitchStream → PitchDetector → LivePitch → PitchTrace`: 214 readings,
+  84 accepted, 79 periodicity rejections, 51 low-amplitude windows. All 84 accepted
+  points survive the trace. Detailed synchronized results and second-drone findings
+  are in [PITCH_RESOLUTION](PITCH_RESOLUTION.md#four-bout-failure-reproduction-and-correction).
+- The leading YIN comparison can be quiet while the trailing unused PCM is loud.
+  A deterministic regression failed before the additional support-energy check;
+  it now passes without changing lag selection or periodicity thresholds. One late
+  51.436-Hz acceptance changes to explicit `low_comparison_amplitude`. Its raw
+  candidate remains inspectable. Energetic 35.7-Hz alternatives and the 59.3-Hz release
+  remain; no indiscriminate low-note or isolated-point filter was added.
+- Replay of the frozen 1305-window corpus preserves **all synthetic outputs**.
+  Four acceptances change on the three older real recordings; five more change on
+  the two subsequent held-out recordings. Each has measured comparison RMS < 0.005.
+  Known waveform-F0 held-out didgeridoo: 125 correct/135 eligible, 125 accepted,
+  zero accepted errors, 10 abstentions, zero false positives/31 negative windows.
+  Held-out flute: 125/125 correct, zero false positives/4 negatives. Development
+  didgeridoo retains 10 octave errors; no general octave-accuracy improvement is claimed.
+- Independent SciPy periodic-Hann PSD/raster comparison: maximum relative cell
+  discrepancy 5.94e−8 above−70dB; all 108 time columns populated. STFT 32768 / hop 16384,
+  power/dB normalization, source-time mapping and four acoustic blocks are consistent.
+  The spectrogram implementation is unchanged.
+- AnalysisCache.VERSION advances2→3 so explicitly requested WAV analysis cannot
+  reuse results from the previous pitch policy. A seeded valid version 2 cache test
+  failed before invalidation and passes afterward, preserving original WAV bytes,
+  session index, stored measurements and the old cache file. No eager reanalysis,
+  session migration or VISUAL_VERSION change occurs.
+
+### Tests and actual development failures
+
+Final full JVM run with protected fixtures enabled: **165 tests, 165 passed**, no
+failures/errors/skips. Debug/app-test assembly, Detekt and JaCoCo report generation
+succeeded. Detekt remains informational; this is not a zero-findings or physical
+accuracy claim. The final cache-only change received a fresh debug/test build and
+all 9 local-persistence emulator tests; unchanged acoustic tests were not repeated.
+
+Across executed emulator runs, **65 distinct instrumented cases passed**:
+43 successful cases from the initial broad regression, the corrected SWIPE′ cases
+and recording-handoff cases, 3 new session-evidence cases, 4 native SWIPE′ cases and
+9 persistence cases, with overlaps deduplicated in the local validation inventory.
+This is not a single 65/65 run. The initial broad command had two actual exact-pixel
+restoration failures plus an incorrectly qualified test class; neither is counted
+as a pass. The restore defect came from missing top/bottom-margin keys in the
+pitch-axis tick cache after asynchronous level loading. Correcting those keys
+restores pixel-identical YIN charts after disabling comparison in both languages.
+The correctly qualified `ar.didgetaller.audio.RecordingHandoffTest` passes.
+
+The new audio-level tests first failed against an empty implementation, then passed
+with source-time RMS, real pauses/brief sound, DC removal, partial tails, cancellation
+and input preservation. No new F0 samples are derived from that strip. An initial
+landscape UI attempt failed because the test scrolled only the inner horizontal
+tab container and clicked offscreen. Scrolling the vertical parent first reproduces
+the actual accessible interaction; both final matrix cases pass in each configuration.
+
+### Android visual and performance checks
+
+Only explicitly selected `emulator-5554`, API 37/x86_64:
+typical1080×2400/420dpi/font1.0; compact 360 dp / Spanish / font 1.5 portrait;
+landscape2400×1080/360dpi/English/font1.3. Native screenshots of the exact private
+WAV replay were inspected for pitch, source-level strip, STFT, seek, full-screen
+and axes. Actual scrolling reveals controls cropped at intermediate offsets;
+no permanent navigation-bar obstruction was reproduced. Large text still wraps
+transport and neighboring tabs remain horizontally scrollable. Fullscreen is the
+recommended view when simultaneous chart/transport space is limited. Density 420,
+font 1.0, portrait and default app locale were restored after the matrix.
+
+The original replay measurements are used for historical-session screenshots;
+they are not rewritten to make a before/after image look better. Original bytes
+and session index equality are asserted. Existing tests exercise playback, seek,
+cursor, zoom/pan, comparison cancellation/restore, instrument independence,
+orientation/Back and recording finalization. Audible/sample-accurate synchronization,
+full TalkBack traversal, physical gesture animation and battery are not certified.
+
+Measured emulator costs on the 39.96-s WAV:
+
+| Operation | Measured result |
+| --- | --- |
+| New RMS overview, three measured runs after warmup | 97.92–114.66 ms; about 0.0025–0.0029× audio duration |
+| RMS/work arrays | 10,420 bytes; reader/object overhead excluded |
+| Actual production stream including live visuals | Mean 2.772 ms, p95 4.260 ms, max 8.361 ms per analyzed callback; cadence 185.76 ms |
+| Android SWIPE′, all 213 aligned estimates | Matches existing native reference within 0.01 Hz; 1428.42 ms |
+| SWIPE′ native peak / largest minute-test PCM block | 2,209,916 bytes / 180,224 bytes; bounded cancellation test passed |
+
+The RMS scan runs on the session-opening worker, once per open, with cancellation;
+100-ms cells and 36,000-cell budget. It never runs another pitch detector or writes
+measurements. Pixel reduction is retained while playback advances. No new native
+resources or audio-capture threading changes; no Samsung-performance claim.
+
+### Reproduction commands, artifacts and limits
+
+```powershell
+$env:DIDGE_TALLER_FIXTURES = '<protected local fixture directory>'
+.\gradlew.bat :app:testDebugUnitTest :app:jacocoDebugUnitTestReport detekt :app:assembleDebug --console=plain
+.\gradlew.bat :app:assembleDebugAndroidTest --console=plain
+$adbPath = Join-Path $env:LOCALAPPDATA 'Android/Sdk/platform-tools/adb.exe'
+# After checking ro.kernel.qemu == 1, install and instrument only emulator-5554.
+& $adbPath -s emulator-5554 shell am instrument -w -r -e class ar.didgetaller.ui.SessionEvidenceUiTest ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+The session-evidence test defaults to synthetic PCM; external private input is
+explicitly opt-in and never an APK asset. Exact private replay commands, frozen
+selection, CSVs, full results, failed/successful logs and reviewed images remain in
+`checkpoints/experiments/reproduction-1527/REPORT.md`, `pipeline.csv`,
+`before-after.png`, `ui-final/session-evidence/`, `ui-matrix.ps1` and
+`delivery-validation.json`. No private screenshot is committed.
+
+Unresolved: the musical oscillator is not independently measured; vocalizations
+and the second drone retain ambiguity. No estimator fusion is justified. The
+supplied package lacks the original saved timeline, so exact callback-delivery
+offsets and equality with the phone's persisted samples cannot be certified.
+No unsupported continuity or physical ground truth is claimed.
+
 ## Product UX polish and visual closure — 2026-10-23
 
 Scope and priorities are in [UI_AUDIT](UI_AUDIT.md); reviewed synthetic-only

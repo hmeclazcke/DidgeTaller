@@ -1,5 +1,64 @@
 # Pitch estimation: engineering decision
 
+## Four-bout failure reproduction and correction
+
+A subsequent 39.96-s private recording was reproduced from `f428628` through the
+actual production stream and optional Android SWIPE′ path. It contains the
+musician-confirmed normal / I / normal / I sequence. The missing Fundamental
+segments are primarily detector abstentions: 84 of 214 stream readings are accepted,
+79 fail periodicity, and 51 fail the full-window amplitude gate. PitchTrace preserves
+all 84 accepted samples; no additional sample exclusion explains the long gaps.
+
+| Acoustic bout | Eligible complete windows | YIN accepted | SWIPE′ accepted | Median YIN / SWIPE′ Hz | Agreement ≤50 cents, both accepted |
+| --- | ---: | ---: | ---: | --- | --- |
+| Normal 1 | 28 | 27 | 28 | 71.130 / 71.211 | 26/27 |
+| I 1 | 28 | 12 | 28 | 72.283 / 68.439 | 1/12 |
+| Normal 2 | 42 | 30 | 42 | 62.876 / 63.758 | 26/30 |
+| I 2 | 46 | 9 | 46 | 71.812 / 66.311 | 2/9 |
+
+These are coverage and agreement, not physical accuracy. Estimator-blind stationary
+cores retain the same conclusion. The second normal body differs acoustically:
+the prominent grave component decreases from approximately 71.3 to 65.3 Hz, its
+second family from 142.7 to 131.2 Hz, and a component around 182.4 Hz becomes
+dominant. This supports a change in both frequency content and harmonic balance;
+it does not independently identify the lip oscillator or prove the cause of every
+YIN decision. Both vocalizations retain competing evidence. No fusion, automatic
+octave correction, held pitch or new estimator is introduced.
+
+One reproducible acceptance defect **is corrected**. The low-register YIN
+difference function compares only a leading portion of the PCM window. Previously,
+energy arriving in its unexamined tail could pass the full-window RMS gate and
+validate a candidate calculated on nearly silent input. The same existing 0.005
+gate now also checks the union of samples used by the selected integer lag.
+Raw candidate, minima and periodicity are preserved; diagnostics add comparison
+RMS and `low_comparison_amplitude`. Full-rate flute decisions remain unchanged.
+
+In this reproduction, the correction rejects one late 51.436-Hz candidate whose
+comparison RMS is 0.000502 despite full RMS 0.006598. Across the five older WAVs it
+rejects nine similarly unsupported acceptances. It does not remove two energetic
+35.7-Hz alternatives during I2 or a 59.3-Hz release candidate. All previously frozen
+synthetic outputs remain identical, including existing errors and abstentions;
+this is not a claim that octave accuracy has generally improved.
+
+Independent SciPy periodograms reproduce the Android STFT raster to Float
+precision (maximum relative discrepancy below 6e−8 above the −70-dB floor).
+The four blocks and changing spectral bands are present in the PCM. STFT,
+normalization, axes and original waveform bytes are unchanged.
+
+Saved Fundamental now shows a separate source-time digital audio-level strip,
+so continuous sound can remain visible when no pitch is accepted. It is not
+confidence, a pitch curve or an acoustic source classifier. It is read on a worker,
+cancelled with session ownership, retained only in memory and never persisted as
+a measurement. Historical estimates are not silently corrected or replaced.
+The optional SWIPE′ comparison and selected-window evidence remain available.
+
+Detailed private traces, exact boundaries, per-window minima, before/after plots
+and reproducible commands are retained locally under
+`checkpoints/experiments/reproduction-1527/REPORT.md`. The supplied package lacks
+the phone's saved timeline, so exact callback-to-PCM timing cannot be certified
+from the screenshots. See [validation](VALIDATION.md) for executed tests,
+Android performance, visual review and remaining limits.
+
 Android follow-up, 2026-10-23: the validated legacy SPTK implementation is now an
 optional, on-device comparison curve for 44.1-kHz didgeridoo sessions. It does
 not replace YIN or change the conclusions below. See [SWIPE′ comparison](SWIPE_COMPARISON.md)

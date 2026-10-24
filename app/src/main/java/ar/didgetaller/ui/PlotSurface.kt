@@ -32,6 +32,7 @@ internal val PlotWindow=SemanticsPropertyKey<PlotViewport>("PlotWindow")
 internal val PlotSwipeCount=SemanticsPropertyKey<Int>("PlotSwipeCount")
 internal val PlotPlaybackMs=SemanticsPropertyKey<Long>("PlotPlaybackMs")
 internal val PlotXLabels=SemanticsPropertyKey<List<String>>("PlotXLabels")
+internal val PlotAudioLevelCount=SemanticsPropertyKey<Int>("PlotAudioLevelCount")
 internal val PlotXLabelBounds=SemanticsPropertyKey<List<androidx.compose.ui.geometry.Rect>>("PlotXLabelBounds")
 internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
     PitchTrace.Tone.STABLE->Color(0xFF8FE0BD)
@@ -70,7 +71,9 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val density=LocalDensity.current
     val textSize=with(density){11.sp.toPx()}
     val right=with(density){12.dp.toPx()}
-    val top=max(with(density){(if(state.plot==AcousticPlot.SPECTROGRAM)16.dp else 10.dp).toPx()},textSize*(if(state.plot==AcousticPlot.SPECTROGRAM)1.6f else 1f))
+    val level=visual.level.takeIf {state.plot==AcousticPlot.PITCH}
+    val levelHeight=if(level!=null)with(density){16.dp.toPx()} else 0f
+    val top=max(with(density){(if(state.plot==AcousticPlot.SPECTROGRAM)16.dp else 10.dp).toPx()},textSize*(if(state.plot==AcousticPlot.SPECTROGRAM)1.6f else 1f))+levelHeight
     val bottom=textSize*1.8f
     var dimensions by remember {mutableStateOf(androidx.compose.ui.unit.IntSize.Zero)}
     val bitmap=remember(visual.bitmap){visual.bitmap?.asImageBitmap()}
@@ -79,7 +82,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val point by rememberUpdatedState(onPoint);val transform by rememberUpdatedState(onTransform)
     val palette=Color(0xFF101D25);val grid=Color(0xFF29414B)
     val paint=remember(textSize){android.graphics.Paint().apply {isAntiAlias=true;color=android.graphics.Color.rgb(185,208,211);this.textSize=textSize}}
-    val pitchTicks=remember(camera.y,dimensions.height,textSize,state.plot){
+    val pitchTicks=remember(camera.y,dimensions.height,textSize,top,bottom,state.plot){
         if(state.plot==AcousticPlot.PITCH)PitchAxis.ticks(camera.y,((dimensions.height-top-bottom)/(textSize*2.8f)).toInt()) else emptyList()
     }
     val labelGap=with(density){4.dp.toPx()}
@@ -98,6 +101,22 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val left=if(state.gestureActive)settledLeft else requiredLeft
     val pitchTrace=remember(points,state.instrument){PitchTrace.build(points,state.instrument)}
     val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
+    // Retain level reduction while only the playback cursor changes.
+    val levelPixels=remember(level,camera.x,plotWidth){
+        val audio=level
+        if(audio==null || plotWidth<=0)floatArrayOf() else {
+            val pixels=FloatArray(ceil(plotWidth).toInt().coerceAtLeast(1))
+            val first=floor(camera.x.low*audio.rate/1000/audio.hop).toInt().coerceIn(0,audio.rms.size)
+            val end=ceil(camera.x.high*audio.rate/1000/audio.hop).toInt().coerceIn(first,audio.rms.size)
+            fun pixel(ms:Double)=camera.x.fraction(ms)*plotWidth
+            for(i in first until end){
+                val a=pixel(i.toDouble()*audio.hop*1000/audio.rate).toInt().coerceIn(0,pixels.lastIndex)
+                val b=ceil(pixel(min(audio.frames,(i+1L)*audio.hop)*1000.0/audio.rate)).toInt().coerceIn(a,pixels.lastIndex)
+                for(column in a..b)pixels[column]=max(pixels[column],audio.rms[i])
+            }
+            pixels
+        }
+    }
     val swipePaths=remember(swipe,camera,dimensions,left,right,top,bottom,state.plot){
         val path=Path();val dots=mutableListOf<Offset>()
         if(swipe!=null && state.plot==AcousticPlot.PITCH){
@@ -150,6 +169,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
             this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
             this[PlotPlaybackMs]=cursor
+            this[PlotAudioLevelCount]=level?.rms?.size ?: 0
             this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
         .onSizeChanged {dimensions=it}) {
         // Navigation/configuration transitions can measure a temporarily collapsed surface.
@@ -159,6 +179,15 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         fun y(value:Double)=((1-camera.y.fraction(value,log))*h).toFloat()
         val xt=xTicks
         val yt=yTicks
+        // An independent source-time RMS strip explains audible gaps without supplying pitch.
+        // Aggregate maxima per pixel so rendering stays bounded and brief sound remains visible.
+        level?.let {
+            for(i in levelPixels.indices){
+                val db=20*log10(max(1e-9f,levelPixels[i]))
+                val height=((db+70)/70).coerceIn(0f,1f)*(levelHeight-2)
+                drawLine(Color(0xFF93CDE7),Offset(left+i,top-2),Offset(left+i,top-2-height),1f)
+            }
+        }
         translate(left,top){
             clipRect(0f,0f,w,h){
                 if(state.plot==AcousticPlot.SPECTROGRAM && bitmap!=null)visual.spectrogram?.let {tile ->

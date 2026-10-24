@@ -10,7 +10,8 @@ data class VisualRequest(val startMs:Long,val endMs:Long,val lowHz:Double=0.0,va
                          val logarithmic:Boolean=false,val rangeDb:Double=70.0,val reference:Double=0.0)
 data class VisualState(val sessionId:String?=null,val durationMs:Long=0,val rate:Int=44100,val frames:Long=0,
                        val signature:String="",val wave:AudioVisuals.Wave?=null,val spectrogram:AudioVisuals.Spectrogram?=null,
-                       val bitmap:Bitmap?=null,val loading:Boolean=false,val progress:Int=0,val error:String?=null)
+                       val bitmap:Bitmap?=null,val loading:Boolean=false,val progress:Int=0,val error:String?=null,
+                       val level:AudioLevel?=null)
 
 /** One active viewport and a disk LRU; no full-recording spectrogram in Compose state. */
 class SessionWorkspace(private val scope:CoroutineScope,private val recordings:RecordingStore,private val cache:AnalysisCache) {
@@ -22,7 +23,8 @@ class SessionWorkspace(private val scope:CoroutineScope,private val recordings:R
         job=scope.launch {
             try {val info=withContext(Dispatchers.IO){Pcm16WavReader(recordings.file(item.id)).use {source ->
                 val signature=cache.fingerprint(recordings.file(item.id)){!isActive}
-                VisualState(item.id,source.frameCount*1000/source.sampleRate,source.sampleRate,source.frameCount,signature)
+                val level=AudioLevel.read(source){!isActive}
+                VisualState(item.id,source.frameCount*1000/source.sampleRate,source.sampleRate,source.frameCount,signature,level=level)
             }};if(serial==version)state=info}
             catch(e:CancellationException){throw e}catch(e:Exception){if(serial==version)state=state.copy(loading=false,error=e.message)}
         }

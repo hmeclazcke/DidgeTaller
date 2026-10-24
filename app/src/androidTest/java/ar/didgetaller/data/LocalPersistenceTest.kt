@@ -193,6 +193,32 @@ class LocalPersistenceTest {
         assertTrue(index!!.contains(session.id));assertNull(store.list().single().summary)
     }
 
+    @Test fun previousPitchPolicyCacheIsNotReusedOrMigratedIntoOriginalMeasurements() {
+        val context=isolatedContext();val store=RecordingStore(context);val cache=AnalysisCache(context)
+        val pcm=ShortArray(44100){(9000*sin(2*Math.PI*70*it/44100)).toInt().toShort()}
+        val wav=WavCodec.encode(pcm,pcm.size,44100)
+        val originalPoints=listOf(SessionAnalysis.Point(500,51.0,.90))
+        val session=store.save(wav,originalPoints)
+        val index=context.getSharedPreferences("local_data",0).getString("recordings",null)
+        val key="analysis-2-${cache.fingerprint(store.file(session.id))}-0-null-DIDGERIDOO"
+        val hash=java.security.MessageDigest.getInstance("SHA-256").digest(key.toByteArray()).joinToString(""){"%02x".format(it)}
+        val oldCache=File(context.filesDir,"analysis-cache/${session.id}-$hash.bin")
+        java.io.DataOutputStream(oldCache.outputStream()).use {out->
+            out.writeInt(2);out.writeLong(0);out.writeLong(44100);out.writeInt(44100);out.writeInt(1)
+            out.writeInt(4096);repeat(2049){out.writeDouble(0.0)}
+            out.writeInt(1);out.writeLong(500);out.writeDouble(51.0);out.writeDouble(.90)
+            out.writeBoolean(false);out.writeDouble(51.0);out.writeDouble(51.0);out.writeDouble(1.0);out.writeDouble(.90)
+        }
+        val stale=oldCache.readBytes()
+        val fresh=cache.analyze(session.id,store.file(session.id))
+        assertTrue("A previous acceptance policy cannot bypass corrected processing",fresh.timeline.filter {it.hz!=null}.all {kotlin.math.abs(it.hz!!-70)<1})
+        assertTrue(fresh.timeline.any {it.hz!=null})
+        assertEquals(originalPoints,store.list().single().timeline)
+        assertEquals(index,context.getSharedPreferences("local_data",0).getString("recordings",null))
+        assertArrayEquals(wav,store.file(session.id).readBytes())
+        assertArrayEquals(stale,oldCache.readBytes())
+    }
+
     @Test fun progressiveCaptureImportsAndInterruptedCaptureRecoversWithoutInventingSummary() {
         val context=isolatedContext();val store=RecordingStore(context);val part=store.newCapture()
         ProgressiveWavWriter(part).use {it.append(ShortArray(44100){1000},44100)}
