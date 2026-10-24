@@ -34,8 +34,34 @@ internal fun AdvancedPitchDiagnostics(vm: TallerViewModel, item: RecordingStore.
             SwipeComparisonPanel(vm, item, showLegend = false)
         if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
             DroneComponentDiagnostic(vm,item,positionMs)
+        if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
+            SavedYinProvenance(vm,item,positionMs)
         SavedPitchEvidencePanel(vm, item, positionMs)
     }
+}
+
+@Composable
+private fun SavedYinProvenance(vm:TallerViewModel,item:RecordingStore.Session,positionMs:Long){
+    item.timeline.minByOrNull {abs(it.timeMs-positionMs)}?.takeIf {abs(it.timeMs-positionMs)<=250}?.let {original->
+        Text(stringResource(R.string.pitch_original_diagnostic,seconds(original.timeMs),
+            original.hz?.let(::hzLabel) ?: stringResource(R.string.swipe_missing),original.confidence),
+            style=MaterialTheme.typography.bodySmall,modifier=Modifier.testTag("pitch-original-diagnostic"))
+    }
+    val replay=vm.savedYinReplay.takeIf {it.sessionId==item.id}?.result ?: return
+    val frame=replay.frames.minByOrNull {abs(it.centerMs-positionMs)}
+        ?.takeIf {abs(it.centerMs-positionMs)<=120} ?: return
+    val reason=when(frame.reason){
+        "accepted"->R.string.pitch_replay_accepted
+        "low_amplitude"->R.string.pitch_replay_low_energy
+        "low_comparison_amplitude"->R.string.pitch_replay_low_support
+        "low_periodicity"->R.string.pitch_replay_low_periodicity
+        else->R.string.pitch_replay_other_rejection
+    }
+    Text(stringResource(R.string.pitch_replay_diagnostic,seconds(frame.centerMs.toLong()),
+        frame.acceptedHz?.let(::hzLabel) ?: stringResource(R.string.swipe_missing),
+        frame.candidateHz?.let(::hzLabel) ?: stringResource(R.string.swipe_missing),
+        stringResource(reason),frame.rms,frame.comparisonRms ?: 0.0),
+        style=MaterialTheme.typography.bodySmall,modifier=Modifier.testTag("pitch-replay-diagnostic"))
 }
 
 @Composable
@@ -45,10 +71,10 @@ private fun DroneComponentDiagnostic(vm:TallerViewModel,item:RecordingStore.Sess
         ?.takeIf {abs(it.timeMs-positionMs)<=curve.hopMs/2} ?: return
     val reason=when(sample.reason){
         DroneComponentCurve.Reason.COMPONENT->R.string.drone_reason_component
+        DroneComponentCurve.Reason.COMPETING_PERIODICITY->R.string.drone_reason_competing
         DroneComponentCurve.Reason.QUIET->R.string.drone_reason_quiet
         DroneComponentCurve.Reason.NO_PEAK->R.string.drone_reason_no_peak
         DroneComponentCurve.Reason.NO_FAMILY->R.string.drone_reason_no_family
-        DroneComponentCurve.Reason.SUBHARMONIC_AMBIGUITY->R.string.drone_reason_ambiguity
         DroneComponentCurve.Reason.TEMPORALLY_UNSUPPORTED->R.string.drone_reason_temporal
     }
     Text(stringResource(R.string.drone_component_diagnostic,

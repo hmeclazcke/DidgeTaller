@@ -15,34 +15,20 @@ data class DroneComponentCurve(val samples: List<Sample>, val hopMs: Double) {
         val rms: Double,
         val reason: Reason,
     )
-    enum class Reason { COMPONENT, QUIET, NO_PEAK, NO_FAMILY, SUBHARMONIC_AMBIGUITY, TEMPORALLY_UNSUPPORTED }
+    enum class Reason { COMPONENT, COMPETING_PERIODICITY, QUIET, NO_PEAK, NO_FAMILY, TEMPORALLY_UNSUPPORTED }
 }
 
-/** Hide the secondary line near accepted original F0, including confirmed toots. */
+/** The component is independent of accepted YIN; only instrument scope changes visibility. */
 object DroneComponentOverlay {
-    fun visible(curve: DroneComponentCurve, points: List<SessionAnalysis.Point>,
-                instrument: InstrumentProfile, capturedTimeline: Boolean): List<DroneComponentCurve.Sample> {
+    fun visible(curve: DroneComponentCurve, instrument: InstrumentProfile): List<DroneComponentCurve.Sample> {
         if (instrument != InstrumentProfile.DIDGERIDOO) return emptyList()
-        // Captured points use delivery/window-end times; WAV reanalysis stores centers.
-        val shiftMs = if (capturedTimeline) 185.0 else 0.0
-        val acceptedTimes = PitchTrace.build(points, instrument)
-            .filterNot { it.uncertain }.map { it.point.timeMs.toDouble() - shiftMs }.sorted()
-        return curve.samples.map { sample ->
-            if (sample.hz == null) sample else {
-                val position = acceptedTimes.binarySearch(sample.timeMs)
-                val insertion = if (position >= 0) position else -position - 1
-                val near = listOf(insertion - 1, insertion).any { i ->
-                    acceptedTimes.getOrNull(i)?.let { abs(it - sample.timeMs) <= 130.0 } == true
-                }
-                if (near) sample.copy(hz = null) else sample
-            }
-        }
+        return curve.samples
     }
 }
 
 /**
  * Conservative, bounded saved-WAV analysis. Two upper harmonics must corroborate
- * a low spectral line. Half-frequency and half-integer upper evidence cause abstention.
+ * a low spectral line. Competing periodicities are flagged, not interpreted as F0.
  * This cannot establish which oscillator generated a component.
  */
 class DroneComponentAnalysis {
@@ -137,11 +123,11 @@ class DroneComponentAnalysis {
         val lowerLine = half >= MIN_HZ && maximumNear(half, 2.0) - maximum >= -35 &&
             maximumNear(half, 2.0) - noise >= 12
         val reason = when {
-            upperAmbiguity || lowerLine -> DroneComponentCurve.Reason.SUBHARMONIC_AMBIGUITY
             !harmonic(2) || !harmonic(3) -> DroneComponentCurve.Reason.NO_FAMILY
+            upperAmbiguity || lowerLine -> DroneComponentCurve.Reason.COMPETING_PERIODICITY
             else -> DroneComponentCurve.Reason.COMPONENT
         }
-        return DroneComponentCurve.Sample(timeMs, hz.takeIf { reason == DroneComponentCurve.Reason.COMPONENT },
+        return DroneComponentCurve.Sample(timeMs, hz.takeIf { reason != DroneComponentCurve.Reason.NO_FAMILY },
             hz, rms, reason)
     }
 

@@ -66,22 +66,27 @@ class DroneComponentAnalysisTest {
         assertTrue(DroneComponentAnalysis().analyze(noisy).samples.all { it.hz == null })
     }
 
-    @Test fun overlayKeepsPausesAndHidesComponentsNearAcceptedNotesIncludingToots() {
+    @Test fun competingUpperPartialDoesNotEraseMeasuredLowerFamily() {
+        val curve = DroneComponentAnalysis().analyze(source(listOf(
+            65.0 to .12, 130.0 to .075, 195.0 to .04, 227.5 to .09)))
+        assertTrue("The 65 Hz line and its upper family are present",
+            curve.samples.count { it.hz != null && abs(it.hz - 65.0) < 1.5 } >= 3)
+    }
+
+    @Test fun componentRemainsIndependentOfAcceptedYinIncludingToots() {
         val curve = DroneComponentCurve(listOf(
             DroneComponentCurve.Sample(200.0, 70.0, 70.0, .1, DroneComponentCurve.Reason.COMPONENT),
             DroneComponentCurve.Sample(400.0, null, null, 0.0, DroneComponentCurve.Reason.QUIET),
             DroneComponentCurve.Sample(600.0, 67.0, 67.0, .1, DroneComponentCurve.Reason.COMPONENT),
             DroneComponentCurve.Sample(800.0, 66.0, 66.0, .1, DroneComponentCurve.Reason.COMPONENT),
         ), 200.0)
-        val notes = listOf(SessionAnalysis.Point(385, 140.0, .95),
-            SessionAnalysis.Point(985, 68.0, .95))
-        val shown = DroneComponentOverlay.visible(curve, notes, InstrumentProfile.DIDGERIDOO, true)
-        assertNull(shown[0].hz) // Accepted 140 Hz toot at the captured window end.
+        val shown = DroneComponentOverlay.visible(curve, InstrumentProfile.DIDGERIDOO)
+        assertEquals(70.0, shown[0].hz!!, 0.0) // Different evidence remains inspectable.
         assertNull(shown[1].hz) // A real pause is never filled.
         assertEquals(67.0, shown[2].hz!!, 0.0)
-        assertNull(shown[3].hz)
-        assertTrue(DroneComponentOverlay.visible(curve, emptyList(),
-            InstrumentProfile.NATIVE_AMERICAN_FLUTE, true).isEmpty())
+        assertEquals(66.0, shown[3].hz!!, 0.0)
+        assertTrue(DroneComponentOverlay.visible(curve,
+            InstrumentProfile.NATIVE_AMERICAN_FLUTE).isEmpty())
     }
 
     @Test fun privateRecordingNumericallyMatchesFrozenSpectralReferenceWhenAvailable() {
@@ -100,11 +105,17 @@ class DroneComponentAnalysisTest {
             })
         }
         assertEquals(214, curve.samples.size)
+        fun near(ms:Double)=curve.samples.minBy {abs(it.timeMs-ms)}
+        assertTrue((near(30730.0).hz ?: 0.0) in 63.0..67.0)
+        assertEquals(DroneComponentCurve.Reason.COMPETING_PERIODICITY,near(30730.0).reason)
+        assertTrue((near(33300.0).hz ?: 0.0) in 63.0..67.0)
+        assertNull(near(36000.0).hz)
+        assertNull(near(38000.0).hz)
         val segments = listOf(
             Triple(1.6 to 6.8, 71.215, 25),
             Triple(8.4 to 13.8, 66.681, 26),
             Triple(16.4 to 24.5, 65.711, 36),
-            Triple(26.4 to 35.2, 66.594, 18),
+            Triple(26.4 to 35.2, 64.830, 40),
         )
         for ((range, reference, minimum) in segments) {
             val accepted = curve.samples.filter { it.timeMs / 1000 in range.first..range.second }
@@ -155,14 +166,14 @@ class DroneComponentAnalysisTest {
         }
     }
 
-    @Test fun privateKotlinFramesMatchFrozenPythonComponentDecisionsWhenAvailable() {
+    @Test fun privateKotlinFramesMatchRevisedPythonComponentDecisionsWhenAvailable() {
         val wav=System.getenv("DIDGE_COMPONENT_WAV")?.let(::File)
-        val csv=System.getenv("DIDGE_COMPONENT_REFERENCE")?.let(::File)
+        val csv=System.getenv("DIDGE_COMPONENT_REFERENCE_V3")?.let(::File)
         assumeTrue("Private aligned comparison is opt-in",wav?.isFile==true && csv?.isFile==true)
         val curve=Pcm16WavReader(wav!!).use {DroneComponentAnalysis().analyze(it)}
         val expected=csv!!.readLines().drop(1).map {line ->
             val fields=line.split(',')
-            fields[1].toDoubleOrNull()
+            fields[2].toDoubleOrNull()
         }
         assertEquals(expected.size,curve.samples.size)
         var both=0;var extra=0;var missing=0;var maxCents=0.0
@@ -178,7 +189,7 @@ class DroneComponentAnalysisTest {
             }
         }
         println("Kotlin/Python private frame comparison: both=$both, Kotlin-only=$extra, Python-only=$missing, max cents=$maxCents")
-        assertTrue(both>=100)
+        assertTrue(both>=135)
         assertTrue(extra<=8)
         assertTrue(missing<=8)
         assertTrue(maxCents<50)

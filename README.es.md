@@ -26,7 +26,7 @@ física del drone. La flauta conserva su análisis YIN. Ver [alcances y validaci
 
 - **Biblioteca de sesiones** con reproducción, cambio de nombre, exportación WAV y eliminación recuperable mediante la Papelera.
 - Vistas de **Fundamental**, **Espectrograma**, **Forma de onda** y **Armónicos**, con exploración a pantalla completa, zoom, desplazamiento, inspección con cursor y restablecimiento de la vista.
-- Las sesiones de didgeridoo pueden mostrar una **componente del dron estimada** con línea celeste discontinua en los huecos de Fundamental cuando una componente grave tiene respaldo armónico. Se distingue del tono YIN aceptado, no confirma una nota y se calcula localmente desde el WAV original.
+- En las sesiones de didgeridoo, **Fundamental** muestra dos mediciones independientes: estimaciones YIN recalculadas desde el WAV sin modificarlo y una componente del dron con respaldo armónico, dibujada con línea celeste discontinua. Podés ver cualquiera de las dos capas o ambas. La componente es una línea espectral medida, no una nota confirmada; las lecturas originales siguen disponibles en los diagnósticos avanzados.
 - Reproducción, búsqueda de posición, selección de fragmentos y bucle, con un cursor vinculado a la posición del reproductor.
 - Análisis del WAV completo o de un intervalo: espectro de potencia, candidatos armónicos, resúmenes de frecuencia y energía por bandas espectrales.
 - Inspección opcional de señal desde el WAV: separa periodicidad aceptada, períodos alternativos, familias espectrales candidatas y baja energía, sin cambiar Fundamental. Consultá la [decisión de ingeniería](docs/PITCH_RESOLUTION.md), en inglés.

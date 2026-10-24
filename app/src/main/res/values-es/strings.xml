@@ -554,9 +554,22 @@
     <string name="drone_component_failed">El análisis de la componente del dron no está disponible para esta grabación.</string>
     <string name="drone_component_diagnostic">Componente del dron: %1$s · candidata espectral original: %2$s · %3$s · RMS digital %4$.3f</string>
     <string name="drone_reason_component">familia armónica respaldada</string>
+    <string name="drone_reason_competing">componente medida con periodicidad competidora</string>
     <string name="drone_reason_quiet">nivel de señal bajo</string>
     <string name="drone_reason_no_peak">sin pico grave destacado</string>
     <string name="drone_reason_no_family">familia armónica insuficiente</string>
-    <string name="drone_reason_ambiguity">ambigüedad subarmónica</string>
     <string name="drone_reason_temporal">sin respaldo en ventanas vecinas</string>
+    <string name="pitch_layer_fundamental">Fundamental</string>
+    <string name="pitch_layer_component">Componente</string>
+    <string name="pitch_layer_both">Ambas</string>
+    <string name="pitch_yin_layer">YIN: fundamental estimada · línea continua</string>
+    <string name="pitch_source_current_replay">YIN recalculado desde este WAV con el detector actual. Las lecturas originales siguen disponibles en Diagnósticos avanzados.</string>
+    <string name="pitch_source_original">Se muestran las lecturas originales mientras el análisis actual del WAV está pendiente o no disponible.</string>
+    <string name="pitch_original_diagnostic">Lectura original guardada cerca de %1$s: %2$s · periodicidad %3$.3f (el tiempo de captura es aproximado)</string>
+    <string name="pitch_replay_diagnostic">Ventana actual del WAV centrada en %1$s: aceptada %2$s · candidata %3$s · %4$s · RMS %5$.3f · RMS comparado %6$.3f</string>
+    <string name="pitch_replay_accepted">aceptada</string>
+    <string name="pitch_replay_low_energy">nivel de sonido bajo</string>
+    <string name="pitch_replay_low_support">energía baja en el tramo comparado por YIN</string>
+    <string name="pitch_replay_low_periodicity">periodicidad inferior al umbral de aceptación</string>
+    <string name="pitch_replay_other_rejection">rechazada por el detector actual</string>
 </resources>

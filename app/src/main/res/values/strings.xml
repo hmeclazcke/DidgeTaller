@@ -554,9 +554,22 @@
     <string name="drone_component_failed">Drone component analysis is unavailable for this recording.</string>
     <string name="drone_component_diagnostic">Drone component: %1$s · raw spectral candidate: %2$s · %3$s · digital RMS %4$.3f</string>
     <string name="drone_reason_component">harmonic family supported</string>
+    <string name="drone_reason_competing">measured component with competing periodicity</string>
     <string name="drone_reason_quiet">low signal level</string>
     <string name="drone_reason_no_peak">no prominent low-frequency peak</string>
     <string name="drone_reason_no_family">harmonic family insufficient</string>
-    <string name="drone_reason_ambiguity">subharmonic ambiguity</string>
     <string name="drone_reason_temporal">not supported by neighboring windows</string>
+    <string name="pitch_layer_fundamental">Fundamental</string>
+    <string name="pitch_layer_component">Component</string>
+    <string name="pitch_layer_both">Both</string>
+    <string name="pitch_yin_layer">YIN: estimated fundamental · solid line</string>
+    <string name="pitch_source_current_replay">YIN recomputed from this WAV with the current detector. Original saved readings remain available in Advanced diagnostics.</string>
+    <string name="pitch_source_original">Showing original saved readings while current WAV analysis is pending or unavailable.</string>
+    <string name="pitch_original_diagnostic">Original saved reading near %1$s: %2$s · periodicity %3$.3f (capture timestamp is approximate)</string>
+    <string name="pitch_replay_diagnostic">Current WAV window centered at %1$s: accepted %2$s · candidate %3$s · %4$s · RMS %5$.3f · comparison RMS %6$.3f</string>
+    <string name="pitch_replay_accepted">accepted</string>
+    <string name="pitch_replay_low_energy">low sound level</string>
+    <string name="pitch_replay_low_support">low energy in YIN comparison support</string>
+    <string name="pitch_replay_low_periodicity">periodicity below acceptance threshold</string>
+    <string name="pitch_replay_other_rejection">rejected by current detector</string>
 </resources>

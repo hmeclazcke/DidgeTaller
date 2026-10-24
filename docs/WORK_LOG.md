@@ -1,3 +1,31 @@
+## Independent saved-session pitch evidence — 2026-10-24
+
+- Began from clean `00ade24`. The private four-bout WAV and Samsung screenshot
+  were available; original audio hash was checked before and after. Reused the
+  existing protected tracker experiments rather than reopening F0 research.
+- Isolated the 30.73 s false negative to an F0-style 3.5× ambiguity veto, not
+  a missing ~65 Hz spectral line, chart timestamp defect or cache omission.
+  Retained the directly supported partial as `COMPETING_PERIODICITY`, with the
+  alternative spectral evidence inspectable. A stateful sinusoidal tracker did
+  not add evidence for the affected windows and was not introduced.
+- Made the YIN fundamental and spectral component independent visual layers,
+  with Fundamental / Component / Both controls and explicit source labels.
+  Replayed current YIN from the saved WAV in memory to avoid showing stale
+  historical acceptance; the old readings remain in diagnostics and storage.
+  A captured pitch beyond the normal 140 Hz tolerance selects the historical
+  expanded 220 Hz replay range, protecting supported toots without guessing
+  an unrecorded session setting.
+  The low-energy ~51 Hz tail point is rejected by the unchanged current
+  support gate. The acoustically ambiguous ~35 Hz candidate remains visible.
+- Fixed the immersive audio-level label collision after inspecting the real
+  15:27 fixture in an API 37 emulator. Portrait, forced landscape, Spanish
+  and English captures are private under the ignored experiment directory.
+  No Samsung operation or original data modification occurred.
+- Section-level counts, synthetic controls, older-WAV checks, runtime and
+  limitations are in [PITCH_RESOLUTION.md](PITCH_RESOLUTION.md) and
+  [VALIDATION.md](VALIDATION.md). Private CSV, plots and exact commands are
+  in ignored `checkpoints/experiments/drone-component/REPORT_V3.md`.
+
 ## Saved-session drone component decision — 2026-10-24
 
 - Started clean at `332d921` with `origin/main` aligned. Reused the October

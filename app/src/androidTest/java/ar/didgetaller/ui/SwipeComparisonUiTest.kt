@@ -111,7 +111,8 @@ class SwipeComparisonUiTest {
                 }
             }
         }
-        compose.waitUntil(10000){vm.workspace.state.frames>0 && !vm.workspace.state.loading}
+        compose.waitUntil(15000){vm.workspace.state.frames>0 && !vm.workspace.state.loading &&
+            vm.droneComponent.curve!=null && vm.savedYinReplay.result!=null}
         compose.onNodeWithTag("swipe-legend").assertDoesNotExist()
         compose.onNodeWithTag("time-chart").performScrollTo()
         val camera=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
@@ -164,7 +165,8 @@ class SwipeComparisonUiTest {
                 image.compress(Bitmap.CompressFormat.PNG,100,it)
             }
         }
-        assertTrue("Original chart pixels restored",before.sameAs(after))
+        // The emulator can round a blended grid-line channel by one byte between draws.
+        assertTrue("Original chart pixels restored within one channel level",sameChartPixels(before,after))
         compose.runOnIdle {
             vm.selectInstrument(InstrumentProfile.NATIVE_AMERICAN_FLUTE)
             vm.setSwipeComparison(item,true) // Session profile, not the current live instrument.
@@ -180,6 +182,17 @@ class SwipeComparisonUiTest {
         assertArrayEquals(original,store.file(item.id).readBytes())
         assertEquals(index,app.getSharedPreferences("local_data",0).getString("recordings",null))
         assertEquals(points,store.list().first {it.id==item.id}.timeline)
+    }
+
+    private fun sameChartPixels(before:Bitmap,after:Bitmap):Boolean {
+        if(before.width!=after.width || before.height!=after.height)return false
+        for(y in 0 until before.height)for(x in 0 until before.width){
+            val a=before.getPixel(x,y);val b=after.getPixel(x,y)
+            if(kotlin.math.abs(android.graphics.Color.red(a)-android.graphics.Color.red(b))>1 ||
+                kotlin.math.abs(android.graphics.Color.green(a)-android.graphics.Color.green(b))>1 ||
+                kotlin.math.abs(android.graphics.Color.blue(a)-android.graphics.Color.blue(b))>1)return false
+        }
+        return true
     }
 
     private class IsolatedApplication(private val base:Context):Application(){

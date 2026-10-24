@@ -1,3 +1,85 @@
+## Saved-session component correction — 2026-10-24
+
+Baseline: clean `main` at `00ade24`, aligned with `origin/main`. The protected
+39.96 s WAV matched its private SHA-256 manifest before and after analysis.
+No Samsung command, audio write or session migration
+was performed. Exact private commands, CSV, spectra and plots are in ignored
+`checkpoints/experiments/drone-component/REPORT_V3.md`.
+
+- Replayed the original WAV through current Kotlin YIN and component analysis.
+  The old component gate rejected a measured ~65.026 Hz partial at 30.810 s
+  because a separate ~224.75 Hz peak was near 3.5 times its frequency. The
+  revised decision records `COMPETING_PERIODICITY` while retaining the direct
+  partial and its 2nd/3rd harmonic support. This is a supported spectral
+  component, **not** a verified physical F0. A separate sinusoidal association
+  engine was unnecessary for this observed failure.
+- The old UI masked component evidence near accepted YIN readings. Both
+  independent layers are now visible in Both mode; Fundamental and Component
+  modes are also available. No values are averaged, doubled or connected
+  across measurement types. The WAV-derived YIN series is recomputed on demand
+  using the current detector, source-window timing and bounded PCM reads.
+  Original saved timeline bytes remain inspectable in Advanced diagnostics.
+  The 140/220 Hz capture setting was not persisted. Replay uses 220 Hz only
+  when an original accepted reading above the normal 140 Hz tolerance proves
+  the expanded range; a deterministic 180 Hz toot replay test passed. Without
+  such a reading, historical range choice remains unknowable and replay uses
+  the default 140 Hz setting.
+- Aligned 15:27 coverage, old versus revised YIN-or-component: normal 1
+  27/28 → 28/28, I 1 27/29 → 28/29, normal 2 40/44 → 44/44, I 2 23/47 →
+  46/47. Revised independent component counts are 27/28, 28/29, 39/44 and
+  46/47. The longest unsupported energetic run in I 2 fell from ~2.60 s to
+  one ~186 ms step. These are audible-window evidence counts, not pitch
+  accuracy or proof of physical lip frequency.
+- At ~38.174 s, an old ~51.44 Hz reading had full-window RMS ~0.00660 but
+  YIN's actual comparison support RMS ~0.000502. The unchanged current
+  0.005 support gate rejects it; original history remains untouched. A ~35 Hz
+  periodicity near the second I and a ~59 Hz release estimate remain visible
+  because their physical interpretation is unresolved. The ~32.7 Hz number
+  in the supplied screenshot is an axis label.
+- Previous fixed-seed references: 384/960 accepted known-generator spectral
+  components localized within 50 cents; 0/192 silence/noise false positives.
+  New reserved references: 104/104 accepted components localized, 0/39
+  negative false positives, including genuine 35 Hz with strong 70 Hz second
+  harmonic, 140 Hz toot-like families and competing upper peaks. Thirteen
+  missing-35 windows abstained. Component localization and generating F0 are
+  scored separately. Five older protected WAVs gained 7, 4, 34, 0 and 5
+  supported windows; none of the new accepts had RMS below 0.005.
+- Kotlin/Python 15:27 cross-check: 140 jointly accepted components, zero
+  Kotlin-only, two Python-only; maximum common difference 0.0001273 cents.
+  The original WAV hash remained unchanged. The real-WAV plot and actual
+  emulator captures are private, excluded from Git and the APK.
+- The API 37 emulator exercised the real 15:27 fixture in portrait and forced
+  2400×1080 landscape, plus synthetic Spanish/English screens. Screenshots
+  were inspected: both curves remain separate; pauses remain gaps; the audio
+  level label no longer overlaps the dark plot. Zoom, pan, playback cursor,
+  layer choice, component-only frequency-axis range, diagnostic provenance
+  and session/WAV preservation were checked. The fixture was copied only
+  into emulator-private storage. The final focused emulator run passed
+  **10/10** cases: five component UI, two performance and three existing
+  SWIPE′ comparison cases.
+- A pre-existing SWIPE′ pixel comparison initially failed: the baseline
+  capture occurred before new on-demand analyses finished. After waiting for
+  them, a one-channel-level GPU rounding difference remained in a grid line;
+  an exact bitmap comparison was replaced with a per-channel tolerance of 1.
+  Camera, source level and chart restoration assertions remain. All three
+  SWIPE′ UI cases then passed.
+- Emulator performance: 40 s source component analysis 963 ms for 214
+  frames; current YIN replay 534 ms for 214 frames. Sampled managed heap
+  high-water was +4,067,328 bytes and sampled native high-water +0 bytes for
+  the component test; 180 s took 4,397 ms for 968 frames. These are emulator
+  measurements, not a low-end-phone or battery benchmark. Analysis is
+  read-only, background and cancellable. YIN replay is bounded to 30 minutes;
+  component analysis is bounded to 12,000 frames.
+- Final debug JVM/Detekt/JaCoCo/debug app and test APK command passed:
+  `.\gradlew.bat :app:testDebugUnitTest detekt
+  :app:jacocoDebugUnitTestReport :app:assembleDebug
+  :app:assembleDebugAndroidTest --offline --rerun-tasks --quiet`, with all
+  protected fixture environment variables set. JUnit XML had **179 passed,
+  zero failures, zero skips**. The 10 focused emulator cases passed after
+  the viewport correction; the final extra core edit only selects a proven
+  captured 220 Hz range and passed its JVM regression. No final full emulator
+  rerun was needed for that core-only condition.
+
 ## Saved-session drone component — 2026-10-24
 
 Baseline: clean `main` at `332d921`, matching `origin/main`; no previous

@@ -1,6 +1,99 @@
 # Pitch estimation: engineering decision
 
+## Current saved-session display: independent evidence and current YIN replay
+
+The previous component rule rejected a directly measurable low spectral line
+whenever a strong peak lay near a half-integer multiple. In the protected
+four-bout recording, the 320 ms window centered at 30.810 s contains a
+65.026 Hz candidate with prominent families near 130 and 195 Hz. A peak near
+224.75 Hz lies within 21.71 cents of 3.5 times the low candidate. That
+competing periodicity makes physical F0 uncertain; it does not erase the
+measured 65 Hz component. The same rule suppressed much of the second
+vocalization. YIN independently rejects the aligned ~35.85 Hz candidate at
+30.743 s (periodicity ~0.607); SWIPE′ reports ~66.13 Hz. Agreement with
+SWIPE′ is descriptive, not proof of the lip frequency.
+
+The saved-WAV tracker now distinguishes **supported component with a
+competing periodicity** from **unsupported spectral family**. It still requires
+a direct low peak, H2/H3 support, sufficient signal energy and adjacent-frame
+corroboration. A competing upper line remains inspectable in diagnostics but
+no longer vetoes a real partial. No candidate is averaged, doubled, held
+through silence or called a verified musical note. The independent component
+curve remains visible even when YIN accepts a different frequency. A simple
+Fundamental / Component / Both choice controls presentation; each series keeps
+its own color, timestamps and gaps.
+
+Sinusoidal partial association was considered using
+[McAulay and Quatieri's model](https://www.ll.mit.edu/r-d/publications/speech-analysissynthesis-based-sinusoidal-representation).
+The missing ~65 Hz line was already measured in each affected window. The
+source defect was an F0-oriented ambiguity veto and the UI's masking of one
+measurement by another. Linking peaks across frames would add state and CPU
+without independent evidence in those windows, so no separate partial tracker
+was added. Vocal-tract filtering and simultaneous excitations can change the
+observed spectrum; see the [experimental didgeridoo study](https://pubmed.ncbi.nlm.nih.gov/16521780/)
+and [UNSW acoustics overview](https://www.phys.unsw.edu.au/jw/didjeridu.html).
+
+The main saved-session YIN curve is now recomputed on demand from the original
+WAV through the current `PitchStream` / `PitchDetector` policy, using the
+recording's exact source-window end times. This matters for sessions captured
+before the comparison-support gate was added: one old ~51.44 Hz tail estimate
+used a noisy full window while the samples actually compared had RMS ~0.000502,
+below the unchanged 0.005 gate. Current YIN rejects it. The original session
+timeline is not rewritten or deleted; Advanced diagnostics shows its nearby
+reading beside the fresh decision and reason. The reanalysis has an explicit
+version, is held in memory for the open session only, and is recomputed on
+reopen. No persisted cache or historic measurement is silently migrated.
+If the WAV cannot be analyzed, the chart explicitly identifies the original
+readings as the fallback.
+The original range switch was not persisted in session metadata. A stored
+reading above the normal 140 Hz detector tolerance proves that the 220 Hz
+capture range was used, so those sessions replay with that range and preserve
+supported higher-register toots. Otherwise replay uses the normal range;
+an expanded setting with no saved high reading cannot be reconstructed.
+
+On the protected recording, comparison at aligned ~186 ms centers gives:
+
+| Playing section | Eligible | YIN accepted | Old YIN-or-component | Current component | Current either |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Normal 1 | 28 | 27 | 27 | 27 | 28 |
+| Vocalization I 1 | 29 | 12 | 27 | 28 | 28 |
+| Normal 2 | 44 | 32 | 40 | 39 | 44 |
+| Vocalization I 2 | 47 | 9 | 23 | 46 | 46 |
+
+The longest unsupported run among energetic windows in vocalization I 2
+falls from about 2.60 s to one 186 ms step. These counts describe **visible
+source-time evidence**, not accepted physical F0. YIN and the component agree
+within 50 cents on 25/26 jointly accepted Normal-1 windows, 10/27 Normal-2
+windows, 0/12 I-1 windows and 0/9 I-2 windows. The original YIN periodicity
+near 35 Hz during I 2 remains visible as a separate, lower-register estimate;
+its physical relation to the ~65 Hz spectral component is unresolved. A
+~59 Hz release reading also remains, because source evidence does not prove
+it false. The quiet ~36 and ~38 s checkpoints contain neither a supported
+component nor a current accepted YIN pitch.
+
+The relaxed component rule matched all 384 accepted components in the earlier
+960-window controlled set and retained 0/192 silence/noise detections. A new
+fixed-seed reserved set localized 104/104 accepted spectral components,
+including genuine 35 Hz with a strong 70 Hz harmonic, a 140 Hz toot-like
+family, competing upper peaks and 70 Hz plus 182 Hz interference; it made
+0/39 silence/noise detections. Thirteen missing-35-generator windows abstained.
+These are component-localization checks, not physical-F0 validation. On five
+older protected recordings, the revision added 7, 4, 34, 0 and 5 supported
+windows respectively, with no new accepted frame below the 0.005 RMS gate
+and no newly accepted component under 50 Hz. The original 35/70 ambiguity
+in one normal-drone recording remains.
+
+Exact checkpoint spectra, every acceptance reason, aligned CSV, an offline
+before/after plot and actual emulator screenshots from the protected WAV are
+kept locally under ignored `checkpoints/experiments/drone-component/`. They
+are not repository or APK assets. Real-WAV evidence does not independently
+identify the physical lip oscillator. Saved-session analysis does not change
+live capture, SWIPE′, flute behavior, original WAVs or stored session formats.
+
 ## Saved-session drone component: evidence, not a replacement F0
+
+This section records the **previous `00ade24` behavior** for comparison. Its
+YIN masking and upper-ambiguity veto are superseded by the current design.
 
 The protected October 24 spectral study was reproduced from its original PCM
 with the stated periodic-Hann 320 ms STFT, 40 ms hop, 65,536-point FFT and
