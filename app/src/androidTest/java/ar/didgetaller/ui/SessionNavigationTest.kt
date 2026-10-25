@@ -81,10 +81,14 @@ class SessionNavigationTest {
     }
 
     private fun choosePlot(title:String){
+        val expected=AcousticPlot.entries.single {compose.activity.plotLabel(it)==title}
+        val sessionId=checkNotNull(vm.workspace.state.sessionId)
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
         compose.onNodeWithText(title,useUnmergedTree=true).performClick()
-        compose.waitUntil(5000){compose.onAllNodes(isPopup()).fetchSemanticsNodes().isEmpty()}
-        compose.waitUntil(5000){compose.activity.hasWindowFocus()}
+        compose.waitUntil(10000){
+            vm.explorer(sessionId).plot==expected && compose.onAllNodes(isPopup()).fetchSemanticsNodes().isEmpty()
+        }
+        compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
     }
     private fun playAction(title:String){
         if(compose.onAllNodesWithTag("viewer-play").fetchSemanticsNodes().isNotEmpty())compose.onNodeWithTag("viewer-play").performClick()
@@ -430,6 +434,8 @@ class SessionNavigationTest {
         assertTrue(kotlin.math.abs(position-vm.playbackPositionMs())<=80)
         choosePlot(uiText(R.string.ui_harmonics))
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        compose.waitUntil(10000){compose.activity.hasWindowFocus()}
         android.util.Log.i("PrecisionBack","before route=${navController.currentDestination?.route} popups=${compose.onAllNodes(isPopup()).fetchSemanticsNodes().size} focus=${compose.activity.hasWindowFocus()} lifecycle=${compose.activity.lifecycle.currentState}")
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
         android.util.Log.i("PrecisionBack","after route=${navController.currentDestination?.route}")

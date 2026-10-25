@@ -71,8 +71,13 @@ class UIAuditTest {
     }
     private fun top(tag:String){compose.onNodeWithTag(tag).performSemanticsAction(SemanticsActions.ScrollBy){it(0f,-100000f)};compose.waitForIdle()}
     private fun viewerPlot(title:String){
+        val expected=AcousticPlot.entries.single {compose.activity.plotLabel(it)==title}
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
         compose.onNodeWithText(title,useUnmergedTree=true).performClick()
+        compose.waitUntil(10000){
+            vm.explorer(session.id).plot==expected && compose.onAllNodes(isPopup()).fetchSemanticsNodes().isEmpty()
+        }
+        compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
     }
     @Test fun immersiveChartSwitchesHaveSelfContainedAccessibleNames(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()

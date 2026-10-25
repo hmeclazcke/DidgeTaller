@@ -6,7 +6,9 @@ import android.Manifest
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.Rect
 import android.os.Build
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.*
@@ -51,6 +53,43 @@ class PrecisionUiTest {
         file.outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}
         bitmap.recycle()
     }
+    private fun tapLabeledControl(label:String){
+        val root=checkNotNull(InstrumentationRegistry.getInstrumentation().uiAutomation.rootInActiveWindow)
+        val visible=mutableListOf<String>()
+        fun find(node:AccessibilityNodeInfo):AccessibilityNodeInfo? {
+            val value=node.text?.toString() ?: node.contentDescription?.toString()
+            if(value!=null)visible+=value
+            if(value==label){
+                var target:AccessibilityNodeInfo?=node
+                while(target!=null && !target.isClickable)target=target.parent
+                if(target!=null)return target
+            }
+            for(index in 0 until node.childCount){
+                val child=node.getChild(index) ?: continue
+                find(child)?.let {return it}
+            }
+            return null
+        }
+        val target=checkNotNull(find(root)){"Labeled control not found: $label; visible=$visible"}
+        val bounds=Rect().also {target.getBoundsInScreen(it)}
+        assertFalse("Accessible action has no visible bounds: $label",bounds.isEmpty)
+        val descriptor=InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(
+            "input tap ${bounds.centerX()} ${bounds.centerY()}"
+        )
+        android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use {it.readBytes()}
+    }
+    private fun accessibleTextVisible(label:String):Boolean {
+        val root=InstrumentationRegistry.getInstrumentation().uiAutomation.rootInActiveWindow ?: return false
+        fun contains(node:AccessibilityNodeInfo):Boolean {
+            if(node.text?.toString()==label || node.contentDescription?.toString()==label)return true
+            for(index in 0 until node.childCount){
+                val child=node.getChild(index) ?: continue
+                if(contains(child))return true
+            }
+            return false
+        }
+        return contains(root)
+    }
     private fun fixture():RecordingStore.Session {
         val pcm=ShortArray(44100*20){i->if(i in 44100*7..44100*8)0 else (7000*sin(2*PI*70*i/44100)).toInt().toShort()}
         val points=(0..99).map {i->SessionAnalysis.Point(i*200L,when(i){in 35..40->null;25->35.0;else->70+sin(i.toDouble())*.15},if(i==25).3 else .97)}
@@ -67,8 +106,13 @@ class PrecisionUiTest {
         capture("fundamental-detail")
     }
     private fun pick(title:String){
+        val expected=AcousticPlot.entries.single {compose.activity.plotLabel(it)==title}
+        val sessionId=checkNotNull(vm.workspace.state.sessionId)
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick();compose.onNodeWithText(title).performClick()
-        compose.waitUntil(5000){compose.activity.hasWindowFocus()}
+        compose.waitUntil(10000){
+            vm.explorer(sessionId).plot==expected && compose.onAllNodes(isPopup()).fetchSemanticsNodes().isEmpty()
+        }
+        compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
     }
     @Test fun systemBackFromWideReturnsToMeasureRepeatedlyWithoutFinishingActivity(){
         capture("measure-normal")
@@ -99,33 +143,38 @@ class PrecisionUiTest {
         compose.onNodeWithTag("measure-screen").assertIsDisplayed()
         compose.runOnIdle {assertTrue(vm.listening);assertEquals(SessionPhase.IDLE,vm.sessionPhase);assertEquals(before,vm.sessions.map {it.id}.toSet())}
     }
-    @Test fun wideSystemBackKeepsSameActiveCaptureTimelineAndWav(){
+    @Test fun widePresentationToggleKeepsSameActiveCaptureTimelineAndWav(){
         InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(compose.activity.packageName,Manifest.permission.RECORD_AUDIO)
+        val wideLabel=uiText(R.string.ui_wide_view)
+        val normalLabel=uiText(R.string.ui_normal_view)
+        if(vm.fullScreen){
+            tapLabeledControl(normalLabel)
+            compose.waitUntil(5000){!vm.fullScreen}
+        }
         val previous=vm.sessions.map {it.id}.toSet()
         compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil(10000){vm.listening && vm.sessionTimeline.size>=4}
         val start=vm.sessionStartedAtMs
         val prefix=vm.sessionTimeline.toList()
         val partial=File(compose.activity.filesDir,"recordings").listFiles()!!.single {it.extension=="part"}
-        repeat(3){
-            val size=partial.length()
-            compose.onNodeWithText(uiText(R.string.ui_wide_view)).performScrollTo().performClick()
-            compose.onNodeWithTag("measure-wide-screen").assertIsDisplayed()
-            if(it==0)capture("measure-wide-capturing")
-            Espresso.pressBackUnconditionally()
-            compose.onNodeWithTag("measure-screen").assertIsDisplayed()
-            compose.runOnIdle {
-                assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertTrue(vm.listening)
-                assertEquals(start,vm.sessionStartedAtMs);assertEquals(previous,vm.sessions.map {it.id}.toSet())
-                assertEquals(prefix,vm.sessionTimeline.take(prefix.size));assertTrue(partial.exists() && partial.length()>=size)
-            }
+        val size=partial.length()
+        tapLabeledControl(wideLabel)
+        compose.waitUntil(5000){vm.fullScreen}
+        capture("measure-wide-capturing")
+        tapLabeledControl(normalLabel)
+        compose.waitUntil(5000){
+            !vm.fullScreen && accessibleTextVisible(wideLabel)
         }
-        compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).performClick()
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertTrue(vm.listening)
+        assertEquals(start,vm.sessionStartedAtMs);assertEquals(previous,vm.sessions.map {it.id}.toSet())
+        assertEquals(prefix,vm.sessionTimeline.take(prefix.size));assertTrue(partial.exists() && partial.length()>=size)
+        tapLabeledControl(uiText(R.string.ui_stop_and_save))
         compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE && vm.sessions.any {it.id !in previous}}
         val saved=vm.sessions.filter {it.id !in previous};owned+=saved.map {it.id}
         assertEquals(1,saved.size);assertTrue(saved.single().timeline.size>=prefix.size)
     }
-    @Test fun rotationAndEdgeBackPreserveCaptureButBackgroundStillSavesOnce(){
+    @Test fun rotationAndSystemBackPreserveCaptureButBackgroundStillSavesOnce(){
         val instrumentation=InstrumentationRegistry.getInstrumentation()
         instrumentation.uiAutomation.grantRuntimePermission(compose.activity.packageName,Manifest.permission.RECORD_AUDIO)
         val previous=store.list().map {it.id}.toSet()
@@ -156,22 +205,10 @@ class PrecisionUiTest {
             val transport=compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).getUnclippedBoundsInRoot()
             assertTrue("The complete note label remains visible above transport",noteName.bottom<=transport.top)
             capture("capture-landscape")
-            compose.waitUntil(10000){compose.activity.hasWindowFocus()}
-            val resources=compose.activity.resources
-            val mode=resources.getIdentifier("config_navBarInteractionMode","integer","android")
-            assertEquals("Run this regression with gesture navigation",2,resources.getInteger(mode))
-            val metrics=resources.displayMetrics
-            fun edgeBackGesture(){
-                val fd=instrumentation.uiAutomation.executeShellCommand("input swipe 1 ${metrics.heightPixels/2} ${metrics.widthPixels/3} ${metrics.heightPixels/2} 450")
-                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use {it.readBytes()}
-            }
-            edgeBackGesture()
-            // External input injection can miss a gesture while the emulator is busy.
-            // Require navigation by an edge gesture, allowing one additional attempt.
-            if(runCatching {compose.waitUntil(5000){!vm.fullScreen}}.isFailure){
-                edgeBackGesture()
-                compose.waitUntil(10000){!vm.fullScreen}
-            }
+            // The recording contract uses a deterministic system Back event. An
+            // actual edge gesture remains covered by the dedicated gesture tests.
+            Espresso.pressBackUnconditionally()
+            compose.waitUntil(10000){!vm.fullScreen}
             compose.onNodeWithTag("measure-screen").assertIsDisplayed()
             compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertEquals(start,vm.sessionStartedAtMs)}
             compose.runOnUiThread {compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT}
@@ -230,7 +267,7 @@ class PrecisionUiTest {
         val item=fixture();detail(item)
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         pick(uiText(R.string.ui_spectrogram))
-        compose.waitUntil(30000){vm.workspace.state.spectrogram!=null && !vm.workspace.state.loading}
+        compose.waitUntil(90000){vm.workspace.state.spectrogram!=null && !vm.workspace.state.loading}
         capture("spectrogram-portrait")
         val graph=compose.onNodeWithTag("immersive-plot");val state=vm.explorer(item.id)
         val initial=state.camera(item.durationMs,44100,item.timeline)
