@@ -1668,3 +1668,62 @@ The full visual/accessibility matrix belongs to the earlier audit above; it
 was not repeated for this fixture-only correction. No physical Samsung command
 was issued. Audible playback precision and real-instrument pitch accuracy remain
 outside what these synthetic emulator tests demonstrate.
+
+## Final UI test synchronization and adaptive icon — 2026-10-25
+
+This continuation retained the earlier audit and fixture repairs. The Android
+test helpers now wait for the selected chart and the closed selector menu
+instead of treating transient Activity focus as chart readiness. The immersive
+Back test uses Espresso for deterministic system Back; a separate test still
+covers the injected edge gesture. The recording-wide toggle uses its labelled
+accessibility bounds, and the session test waits for window focus before
+injecting Back. Cancellation remains asserted while analysis is active; if the
+analysis has completed, the test requires the completed result instead of
+trying to press a button that has correctly disappeared. No production audio
+algorithm or persisted measurement changed.
+
+The old launcher drawable was an opaque square bitmap inside the launcher
+mask. The manifest now references an adaptive icon with a teal background,
+separate didgeridoo foreground and monochrome layer. `ic_splash_didge.xml` and
+the Android 12 splash theme remain unchanged. The old bitmap was copied into
+ignored local evidence before removal. Emulator screenshots in
+`checkpoints/experiments/ui-audit-2026-10-24/` show the icon before and after
+in the launcher and the preserved splash: `icon-before-launcher.png`,
+`icon-after-launcher.png`, and `splash-after-350.png`. These are Pixel Launcher
+screenshots, not Samsung One UI verification.
+
+`./gradlew.bat :app:testDebugUnitTest :app:jacocoDebugUnitTestReport detekt
+:app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest --console=plain`
+completed successfully after correcting four integer format specifiers
+(`%s` to `%d` in both locales) and two misplaced indentation lines. The JVM
+XML reports contain 179 tests: 171 passed, 8 skipped, 0 failed. Lint reports
+0 errors, 42 warnings and 10 hints. Detekt is informational because its Gradle
+configuration ignores findings; JaCoCo XML and HTML were generated. Build log:
+`checkpoints/experiments/ui-audit-2026-10-24/final-gradle-gates-after-lint-fix.log`.
+
+One complete API 37 host-GPU emulator run passed 103/103 after the icon and
+test-helper edits (`full-host-final.log`), before the string-format and final
+selector/focus corrections. Subsequent full runs exposed chart-selector and
+window-focus timing in tests, which were corrected and confirmed in focused
+runs. A later complete run progressed through SessionNavigation and UIAudit,
+then Android `system_server` Watchdog killed the WindowManager after a 67-second
+lock; `ActivityScenario.close` could no longer reach DESTROYED. The crash log is
+`final-system-watchdog.txt`. An earlier emulator native crash occurred in
+`libEGL_emulation.so` on RenderThread. These logs do not establish an app
+rendering defect. A cold-booted full final-state run with host GPU completed
+**103/103, 0 failures**, 374.056 seconds; see `full-host-after-cold-boot.log`.
+The emulator was explicitly selected as `emulator-5554` for every
+instrumentation command. The physical Samsung was not accessed during this
+local validation.
+
+The CI-equivalent `./gradlew.bat --no-daemon detektComplexity --console=plain`
+completed successfully, analyzing 55 Kotlin files; log:
+`checkpoints/experiments/ui-audit-2026-10-24/detekt-complexity-final.log`.
+`aapt2 dump badging` confirmed the debug APK declares package
+`ar.didgetaller`, version `3.2.6-beta1` / code 12, and the adaptive
+`res/mipmap-anydpi-v26/ic_launcher.xml` icon. Final emulator screenshots were
+pulled into ignored `final-evidence/` and visually inspected: measurement,
+active wide capture in landscape, session chart, spectrogram, and legend.
+The synthetic chart shows independent fundamental/component labels and a real
+gap; no source values were altered by this UI continuation. Manual TalkBack
+speech/focus order and Samsung One UI launcher masking remain unverified.

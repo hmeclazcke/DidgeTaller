@@ -609,3 +609,24 @@ documentation records the result without publishing private audio or plots.
   Activity focus in the chart picker. See [VALIDATION](VALIDATION.md) for logs.
   At this checkpoint, `278944d` remains local; publication waits for a final
   passing suite.
+
+## Final UX continuation — 2026-10-25
+
+- Preserved the earlier audit and committed its deterministic fixture/test
+  repairs as `a9b28b8`. Stabilized chart selection, Back focus, recording-wide
+  navigation, and analysis completion assertions without changing acoustic
+  algorithms or stored session behavior.
+- Replaced the opaque square launcher bitmap with a layered Android adaptive
+  icon. The existing splash drawable and theme remain unchanged. Before/after
+  Pixel Launcher and splash screenshots were inspected in ignored local
+  `checkpoints/experiments/ui-audit-2026-10-24/`.
+- Corrected four localized integer format specifiers and indentation exposed by
+  the final lint run. JVM (171 passed, 8 skipped), JaCoCo, Detekt, lint and
+  debug APK tasks completed. Subsequent full runs exposed and fixed test timing
+  and one API 37 emulator WindowManager Watchdog crash. A cold-booted final
+  host-GPU run completed **103/103** with no test failure.
+- `detektComplexity` analyzed 55 Kotlin files successfully. Local validation
+  is complete; publication and physical installation depend on safe Git review,
+  remote CI success, and device integrity checks. No production pitch estimator,
+  private recording, Samsung data, or physical device was touched during this
+  local phase.

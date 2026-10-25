@@ -243,3 +243,17 @@ pitch tick cache was corrected after existing exact-pixel SWIPE′ restoration t
 failed. Private screenshots remain ignored under
 `checkpoints/experiments/reproduction-1527/ui-final/session-evidence/`; they are not
 public documentation assets. Tests and limits are recorded in [VALIDATION](VALIDATION.md).
+
+## Adaptive launcher icon continuation
+
+The previous launcher asset was a fully opaque square PNG. Pixel Launcher
+placed that square inside its circular icon mask, leaving a visible dark
+rectangle. The launcher now uses a standard adaptive icon: teal background,
+separate didgeridoo-and-resonance vector foreground, and a monochrome layer for
+themed icons. The foreground remains inside the adaptive safe zone so the
+launcher may apply its own mask. The splash still uses its original independent
+drawable and theme; it was visually inspected after the resource change.
+
+Ignored local evidence is indexed in [VALIDATION](VALIDATION.md). Pixel Launcher
+was inspected; Samsung One UI icon rendering and manual TalkBack navigation
+remain outside emulator validation.
