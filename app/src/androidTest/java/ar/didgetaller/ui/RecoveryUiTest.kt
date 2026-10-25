@@ -60,7 +60,13 @@ class RecoveryUiTest {
             val hz=when(i){in 0..19->70.0;in 20..39->if(i%2==0)70.0 else 71.4;in 40..59->if(i%2==0)70.0 else 74.0;in 60..67->null;else->70.0}
             SessionAnalysis.Point(i*185L,hz,if(hz==null)0.0 else if(i>=68).73 else .97)
         }
-        val item=RecordingStore(app).save(WavCodec.encode(ShortArray(44100*18),44100*18,44100),raw)
+        val item=RecordingStore(app).save(DeterministicPitchWav.encode(18000,
+            DeterministicPitchWav.Section(0,3500,70.0),
+            DeterministicPitchWav.Section(3500,7000,71.4),
+            DeterministicPitchWav.Section(7000,8500,70.0),
+            DeterministicPitchWav.Section(8500,10800,73.2),
+            DeterministicPitchWav.Section(10800,12500,null),
+            DeterministicPitchWav.Section(12500,18000,70.0)),raw)
         show();compose.runOnIdle {vm.renameSession(item,"Variación y periodicidad · serie sintética")}
         library();capture("colours-library");open(item)
         val heading=compose.onNodeWithText(uiText(R.string.ui_explore_audio)).performScrollTo().fetchSemanticsNode()

@@ -585,3 +585,27 @@ Keep the current Android detector/UI and diagnostic alternatives; avoid an extra
 runtime estimator and unsupported register correction. Exact private evidence is
 retained under `checkpoints/experiments/multi-estimator-reliability/`. Current
 documentation records the result without publishing private audio or plots.
+
+## Instrumented-suite remediation — 2026-10-25
+
+- Continued from `278944d` without repeating the completed application-wide
+  audit. Triaged all nine failures in the previous 100-test emulator run. The
+  affected tests mixed the original captured pitch series with the current
+  source-aligned WAV replay or asserted tone changes absent from the WAV.
+- Added deterministic PCM fixtures and updated camera/source assertions to
+  follow the chart's actual replay and component timing. Kept original timeline,
+  source-WAV integrity, color, reset, seek, flute, toot and navigation checks.
+  No production estimator, chart rule or persisted data changed.
+- The full API 37 emulator suite passed **103/103** after the fixes. JVM,
+  JaCoCo, Detekt and debug APK tasks completed successfully. Exact commands,
+  per-case causes and limits are in [VALIDATION](VALIDATION.md); logs remain in
+  ignored local checkpoints. The Samsung was not accessed.
+- The synthetic tests establish UI behavior, not physical didgeridoo pitch.
+  Existing pending product limitations and historical reports remain unchanged.
+- Publication remains blocked: after the 103/103 complete pass, two later
+  complete runs exposed transient cancellation/edge-gesture assumptions and
+  the tests were refined. The post-reboot final-APK run crashed in Android's
+  `HardwareRenderer` finalizer; a reordered run then timed out waiting for
+  Activity focus in the chart picker. See [VALIDATION](VALIDATION.md) for logs.
+  At this checkpoint, `278944d` remains local; publication waits for a final
+  passing suite.

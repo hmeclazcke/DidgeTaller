@@ -1587,3 +1587,84 @@ No informar “listo, compila” hasta que ambas tareas Gradle hayan terminado c
 - `java -jar /tmp/check.jar` -> OK (simulación PVC 1500 x 40 mm: base ~56.8 Hz coherente con cuarto de onda; cono 1500 mm ~81.4 Hz; perfiles por puntos; cancelación; búsqueda 8 generaciones x 10 individuos redujo score de 265.7 a 40.9 cents).
 - Pruebas Android/Gradle/Compose y micrófono físico: NO ejecutadas aquí por falta de SDK.
 - Motor 1D: solo aproximación, sin validación cruzada todavía con DidgeLab ni instrumentos reales.
+
+## Instrumented-suite remediation — 2026-10-25
+
+Starting point: clean local `278944d`, one commit ahead of `origin/main`. The
+previous application-wide audit and its visual matrix were retained; this pass
+addressed the nine failures from its 100-test emulator run. No production code,
+pitch estimator, private WAV, saved session, or Samsung data was changed.
+
+The failures were test-contract and fixture defects introduced by the current
+saved-session policy: the chart may display fresh YIN decisions from the WAV,
+while the original captured readings remain preserved for diagnostics. Several
+older tests calculated expected viewports from the historical series after the
+fresh replay had loaded. Their WAVs also omitted events asserted by the tests.
+The review of each failing case was:
+
+| Test | Original failure | Verified correction |
+| --- | --- | --- |
+| `FundamentalPrecisionUiTest.shortTootAndFluteRemainVisible` | The stored series included a ~206 Hz toot and flute melody, but the WAVs contained constant tones. | Deterministic PCM now contains the toot and flute transitions; both remain visible. |
+| `FundamentalPrecisionUiTest.reportedScenarioCardDetailAndFullscreen` | Equated a library card based on stored readings with a detail chart using current WAV replay. | Assert the original low reading remains in the card and storage, and current accepted replay points reflect the audible drone. |
+| `FundamentalPrecisionUiTest.originalInspectionFittedPinchAndReset` | Computed expected camera from stored readings while the plotted replay and component layer were loading. | Wait for both analyses and compare reset/fitted behavior against the active scale sources; assert the historical 60 Hz reading is still stored. |
+| `GraphIntelligenceUiTest.uncertainRawPeriodRemainsInspectableAndZeroAxisHasNoMusicalName` | Expected a stored 42.9 Hz candidate to appear in a chart replaying a 129 Hz WAV. | Assert it is absent from the current chart but preserved in storage and visible in Advanced diagnostics; retain zero-axis note-label checks. |
+| `GraphIntelligenceUiTest.generalFittedExtremeZoomResetAndGraphKindsStayCoherent` | Used the historical series for an exact viewport equality after replay/component completion. | Compare against the active replay-plus-component scale; retain fitted, zoom, reset and spectrogram checks. |
+| `PrecisionUiTest.canonicalPitchAndBothScalesAndCompleteInspectionRemainAvailable` | Required object identity between the historical timeline and current replay. | Assert the chart uses current replay, the original timeline is unchanged, the audible drone is accepted and silent PCM yields rejected frames. |
+| `RecoveryUiTest.allSurfacesRenderVariationAndPeriodicityWithOriginalDataIntact` | Required stable/moderate/review chart colors from a silent WAV with only fabricated stored pitch changes. | A deterministic WAV now contains measured steady, varying, review and silent sections; the pixel-color and original-data assertions remain. |
+| `SessionNavigationTest.immersiveViewportPinchInspectionResetAndBackPreserveSession` | Calculated the initial viewport from the historical timeline before the current replay settled. | Wait for replay and calculate from the active plotted points; retain pinch, inspection, reset, follow and Back checks. |
+| `SessionNavigationTest.accessibleSeekUsesTheSamePlayerAndChartClockAcrossTabs` | Compared the returned chart camera to a viewport calculated from stored readings. | Wait for replay and compare against the active source; retain the player, seek, clock, chart-switching and WAV-integrity checks. |
+
+The test-only WAV generator emits phase-continuous, known-frequency PCM. These
+fixtures test UI source selection, chart scaling and presentation; they do not
+establish physical pitch accuracy for real instruments. The original
+`checkpoints/experiments/ui-audit-2026-10-24/final-emulator-suite.log` remains
+available locally as the failing baseline. No private fixture was staged.
+
+Validation on API 37 `emulator-5554`:
+
+- The focused nine-test rerun had four residual assertions tied to scale-source
+  timing and the edge of a silent analysis window. After waiting for both
+  on-demand analyses and using the actual PCM window timing, a focused five-test
+  rerun passed.
+- The **complete** instrumentation command was
+  `adb -s emulator-5554 shell am instrument -w
+  ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner`:
+  **103 tests, 0 failures**, 425.083 seconds in the first repaired-suite run. Log:
+  `checkpoints/experiments/ui-audit-2026-10-24/full-emulator-suite-recheck.log`
+  (ignored local evidence).
+- After adding explicit Advanced-diagnostics provenance coverage, a full rerun
+  reached 102/103: `SessionNavigationTest` assumed the transient Cancel button
+  must be present after opening the tools sheet. The UI only shows this button
+  while rendering, so the assertion was sensitive to completion timing. The
+  test now checks cancellation if loading continues and otherwise requires the
+  completed spectrogram with no error. The focused test passed. The failed
+  rerun remains in ignored
+  `checkpoints/experiments/ui-audit-2026-10-24/full-emulator-suite-final.log`.
+- The next full run reached 102/103: the externally injected Android edge
+  gesture in `PrecisionUiTest.rotationAndEdgeBackPreserveCaptureButBackgroundStillSavesOnce`
+  was not observed within five seconds. The same case passed in the earlier
+  full run and in a focused rerun. The test now waits for Activity focus after
+  rotation and permits one further edge gesture while still requiring the
+  original recording state and correct Back destination. The complete rerun
+  after an emulator-only reboot is recorded in the ignored
+  `checkpoints/experiments/ui-audit-2026-10-24/full-emulator-suite-after-reboot.log`.
+- That post-reboot run aborted during `PrecisionUiTest` with Android's
+  `FinalizerWatchdogDaemon`: `HardwareRenderer$DestroyContextRunnable` timed
+  out. A focused rerun of the edge-Back test passed. A subsequent complete run
+  with `PrecisionUiTest` first timed out waiting for Activity focus after a
+  chart-picker action (`PrecisionUiTest.pick`, line 71); it was stopped after
+  this failure. Its ignored log is `full-emulator-suite-rotation-first.log` in
+  the same directory. These are unresolved emulator/UI-integration failures;
+  the exact cause of the focus timeout has not been established. **There is no
+  passing complete run of the final test APK at this checkpoint.** No push was made.
+- `./gradlew.bat :app:testDebugUnitTest :app:jacocoDebugUnitTestReport detekt
+  :app:assembleDebug --console=plain` succeeded. The Gradle tasks were mostly
+  up to date after the earlier audit; JaCoCo and Detekt reports remain generated.
+  Detekt is configured as informational (`ignoreFailures`), so this result is
+  task completion rather than a claim of zero findings. Log:
+  `checkpoints/experiments/ui-audit-2026-10-24/gradle-gates-recheck.log`.
+
+The full visual/accessibility matrix belongs to the earlier audit above; it
+was not repeated for this fixture-only correction. No physical Samsung command
+was issued. Audible playback precision and real-instrument pitch accuracy remain
+outside what these synthetic emulator tests demonstrate.

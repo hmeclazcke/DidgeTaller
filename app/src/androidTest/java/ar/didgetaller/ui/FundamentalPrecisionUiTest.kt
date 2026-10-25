@@ -37,11 +37,16 @@ class FundamentalPrecisionUiTest {
         assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
         val store=RecordingStore(app)
-        fun fixture(points:List<SessionAnalysis.Point>,profile:InstrumentProfile)=store.save(
-            WavCodec.encode(ShortArray(44100*12){i->(7000*sin(2*PI*70*i/44100)).toInt().toShort()},44100*12,44100),points,instrument=profile)
-        drone=fixture((0..59).map {SessionAnalysis.Point(it*180L,spikes[it] ?: (71.2+sin(it*.3)*.6),if(it in spikes).82 else .97)},InstrumentProfile.DIDGERIDOO)
-        toot=fixture((0..59).map {SessionAnalysis.Point(it*180L,when(it){29->205.0;30->207.0;else->70.0},.97)},InstrumentProfile.DIDGERIDOO)
-        flute=fixture((0..59).map {SessionAnalysis.Point(it*180L,listOf(392.0,440.0,523.0,440.0)[it/15],.94)},InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+        fun fixture(points:List<SessionAnalysis.Point>,profile:InstrumentProfile,wav:ByteArray)=store.save(wav,points,instrument=profile)
+        drone=fixture((0..59).map {SessionAnalysis.Point(it*180L,spikes[it] ?: (71.2+sin(it*.3)*.6),if(it in spikes).82 else .97)},InstrumentProfile.DIDGERIDOO,
+            DeterministicPitchWav.encode(12000,DeterministicPitchWav.Section(0,12000,71.2)))
+        toot=fixture((0..59).map {SessionAnalysis.Point(it*180L,when(it){29->205.0;30->207.0;else->70.0},.97)},InstrumentProfile.DIDGERIDOO,
+            DeterministicPitchWav.encode(12000,DeterministicPitchWav.Section(0,4800,70.0),
+                DeterministicPitchWav.Section(4800,5700,206.0),DeterministicPitchWav.Section(5700,12000,70.0)))
+        flute=fixture((0..59).map {SessionAnalysis.Point(it*180L,listOf(392.0,440.0,523.0,440.0)[it/15],.94)},InstrumentProfile.NATIVE_AMERICAN_FLUTE,
+            DeterministicPitchWav.encode(12000,DeterministicPitchWav.Section(0,2700,392.0),
+                DeterministicPitchWav.Section(2700,5400,440.0),DeterministicPitchWav.Section(5400,8100,523.0),
+                DeterministicPitchWav.Section(8100,12000,440.0)))
         compose.runOnUiThread {
             vm=TallerViewModel(app);owner.put("fundamental",vm)
             vm.renameSession(drone,"Drone con retornos · fixture");vm.renameSession(toot,"Toot breve · fixture");vm.renameSession(flute,"Flauta melódica · fixture")
@@ -72,8 +77,12 @@ class FundamentalPrecisionUiTest {
         compose.onNodeWithTag("session-${drone.id}").performScrollTo();capture("card")
         val summary=compose.onNodeWithTag("summary-${drone.id}",useUnmergedTree=true).fetchSemanticsNode().config[PlotWindow]
         open(drone);measure("detail","time-chart");capture("detail")
-        val preview=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
-        assertEquals(summary,preview)
+        compose.waitUntil(15000){vm.savedYinReplay.sessionId==drone.id && vm.savedYinReplay.result!=null}
+        compose.waitUntil(15000){vm.droneComponent.sessionId==drone.id && vm.droneComponent.curve!=null}
+        val replayPreview=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
+        assertTrue(summary.y.low<60.0) // The original 60 Hz reading remains in the library card.
+        val accepted=sessionPlotPoints(vm,drone).mapNotNull {it.hz}
+        assertTrue(accepted.isNotEmpty() && accepted.all {it in 69.0..73.0})
         if(InstrumentationRegistry.getArguments().getString("baseline")!="true"){
             compose.onNodeWithText(uiText(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),substring=true).performScrollTo();capture("detail-legend")
         }
@@ -81,22 +90,27 @@ class FundamentalPrecisionUiTest {
         if(InstrumentationRegistry.getArguments().getString("baseline")=="true")return
         val trace=PitchTrace.build(drone.timeline,drone.instrument)
         assertEquals(4,trace.count {it.uncertain});spikes.keys.forEach {assertEquals(it-1,trace[it+1].previous)}
-        assertTrue(preview.y.low>59);assertTrue(preview.y.high<86)
+        assertTrue(replayPreview.y.high<86)
         // Original readings remain byte-for-byte equivalent after opening every presentation.
         assertEquals(drone.timeline,RecordingStore(app).list().first {it.id==drone.id}.timeline)
     }
     @Test fun originalInspectionFittedPinchAndReset(){
-        open(drone);expand();val general=vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline)
-        tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).y.span<4);capture("fitted")
+        open(drone);compose.waitUntil(15000){vm.savedYinReplay.sessionId==drone.id && vm.savedYinReplay.result!=null}
+        compose.waitUntil(15000){vm.droneComponent.sessionId==drone.id && vm.droneComponent.curve!=null}
+        expand();val points=sessionScalePoints(sessionPlotPoints(vm,drone),vm.droneComponent.curve,vm.pitchLayerMode)
+        val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
+        tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,points).y.span<4);capture("fitted")
         val graph=compose.onNodeWithTag("immersive-plot");val area=graph.fetchSemanticsNode().config[PlotDataArea];val delta=Offset(area.width*.12f,area.height*.12f)
         graph.performTouchInput {pinch(area.center-delta,area.center+delta,area.center-delta*1.7f,area.center+delta*1.7f,450)}
-        assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).x.span<general.x.span)
+        assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,points).x.span<general.x.span)
         compose.onNodeWithTag("reset-viewport").performClick();assertEquals(general,graph.fetchSemanticsNode().config[PlotWindow])
         tools(uiText(R.string.ui_show_all_values));capture("original")
         val expanded=graph.fetchSemanticsNode().config[PlotDataArea]
-        val x=vm.explorer(drone.id).camera(drone.durationMs,44100,drone.timeline).x.fraction(2160.0).toFloat()
+        val x=vm.explorer(drone.id).camera(drone.durationMs,44100,points).x.fraction(2160.0).toFloat()
         graph.performTouchInput {longClick(Offset(expanded.left+expanded.width*x,expanded.center.y),800)}
-        assertTrue(vm.explorer(drone.id).inspected!!.contains(uiUncertainEstimatePrefix()));assertTrue(vm.explorer(drone.id).inspected!!.contains(hzLabel(60.0)))
+        assertTrue(vm.explorer(drone.id).inspected!!.contains("Hz"))
+        assertFalse(vm.explorer(drone.id).inspected!!.contains(hzLabel(60.0)))
+        assertEquals(60.0,RecordingStore(app).list().first {it.id==drone.id}.timeline[12].hz!!,0.0)
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("complete-reading").assertTextEquals(vm.explorer(drone.id).inspected!!);capture("inspection")
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("show-uncertain").performScrollTo().performClick()

@@ -156,13 +156,22 @@ class PrecisionUiTest {
             val transport=compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).getUnclippedBoundsInRoot()
             assertTrue("The complete note label remains visible above transport",noteName.bottom<=transport.top)
             capture("capture-landscape")
+            compose.waitUntil(10000){compose.activity.hasWindowFocus()}
             val resources=compose.activity.resources
             val mode=resources.getIdentifier("config_navBarInteractionMode","integer","android")
             assertEquals("Run this regression with gesture navigation",2,resources.getInteger(mode))
             val metrics=resources.displayMetrics
-            val fd=instrumentation.uiAutomation.executeShellCommand("input swipe 1 ${metrics.heightPixels/2} ${metrics.widthPixels/3} ${metrics.heightPixels/2} 450")
-            android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use {it.readBytes()}
-            compose.waitUntil(5000){!vm.fullScreen}
+            fun edgeBackGesture(){
+                val fd=instrumentation.uiAutomation.executeShellCommand("input swipe 1 ${metrics.heightPixels/2} ${metrics.widthPixels/3} ${metrics.heightPixels/2} 450")
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use {it.readBytes()}
+            }
+            edgeBackGesture()
+            // External input injection can miss a gesture while the emulator is busy.
+            // Require navigation by an edge gesture, allowing one additional attempt.
+            if(runCatching {compose.waitUntil(5000){!vm.fullScreen}}.isFailure){
+                edgeBackGesture()
+                compose.waitUntil(10000){!vm.fullScreen}
+            }
             compose.onNodeWithTag("measure-screen").assertIsDisplayed()
             compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertEquals(start,vm.sessionStartedAtMs)}
             compose.runOnUiThread {compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT}
@@ -185,12 +194,21 @@ class PrecisionUiTest {
         val state=vm.explorer(item.id)
         compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span>20);vm.analyzeRecording(item)}
         compose.waitUntil(30000){vm.recordingAnalysis.result!=null}
-        compose.runOnIdle {assertSame(item.timeline,sessionPlotPoints(vm,item))}
+        compose.waitUntil(30000){vm.savedYinReplay.sessionId==item.id && vm.savedYinReplay.result!=null}
+        compose.waitUntil(30000){vm.droneComponent.sessionId==item.id && vm.droneComponent.curve!=null}
+        val points=sessionPlotPoints(vm,item)
+        val scalePoints=sessionScalePoints(points,vm.droneComponent.curve,vm.pitchLayerMode)
+        compose.runOnIdle {
+            assertSame(vm.savedYinReplay.result!!.points,points)
+            assertEquals(item.timeline,store.list().first {it.id==item.id}.timeline)
+            assertTrue(points.any {it.hz!=null && it.hz in 67.0..73.0})
+            assertTrue(points.count {it.timeMs in 7400..8000 && it.hz==null}>=2)
+        }
         capture("fundamental-general")
         compose.onNodeWithTag("viewer-tools").performClick()
         compose.onNodeWithText(uiText(R.string.ui_fitted_view)).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
-        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span<2)}
+        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,scalePoints).y.span<2)}
         capture("fundamental-fitted")
         val graph=compose.onNodeWithTag("immersive-plot")
         val area=graph.fetchSemanticsNode().config[PlotDataArea]
@@ -206,7 +224,7 @@ class PrecisionUiTest {
         compose.onNodeWithText(uiText(R.string.ui_overview)).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         compose.onNodeWithTag("reset-viewport").performClick()
-        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,item.timeline).y.span>20);assertEquals(reading,state.inspected)}
+        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,scalePoints).y.span>20);assertEquals(reading,state.inspected)}
     }
     @Test fun continuousRadialPinchPanRotationAndResetUseDataCoordinates(){
         val item=fixture();detail(item)

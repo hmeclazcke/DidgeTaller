@@ -39,12 +39,15 @@ class GraphIntelligenceUiTest {
         assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
         val store=RecordingStore(app)
-        fun fixture(hz:Double,points:List<SessionAnalysis.Point>,profile:InstrumentProfile)=store.save(
-            WavCodec.encode(ShortArray(44100*12){i->(7000*sin(2*PI*hz*i/44100)).toInt().toShort()},44100*12,44100),points,instrument=profile)
+        fun fixture(wav:ByteArray,points:List<SessionAnalysis.Point>,profile:InstrumentProfile)=store.save(wav,points,instrument=profile)
         val stable=(0..59).map {SessionAnalysis.Point(it*180L,70+sin(it.toDouble())*.15,.97)}
-        a=fixture(70.0,stable,InstrumentProfile.DIDGERIDOO)
-        b=fixture(440.0,(0..59).map {SessionAnalysis.Point(it*180L,listOf(392.0,440.0,523.0,440.0)[it/15],.94)},InstrumentProfile.NATIVE_AMERICAN_FLUTE)
-        c=fixture(129.0,(0..59).map {SessionAnalysis.Point(it*180L,if(it==25)42.9 else 129+sin(it.toDouble())*.15,if(it==25).876 else .92)},InstrumentProfile.DIDGERIDOO)
+        a=fixture(DeterministicPitchWav.encode(12000,DeterministicPitchWav.Section(0,12000,70.0)),stable,InstrumentProfile.DIDGERIDOO)
+        b=fixture(DeterministicPitchWav.encode(12000,DeterministicPitchWav.Section(0,2700,392.0),
+            DeterministicPitchWav.Section(2700,5400,440.0),DeterministicPitchWav.Section(5400,8100,523.0),
+            DeterministicPitchWav.Section(8100,12000,440.0)),
+            (0..59).map {SessionAnalysis.Point(it*180L,listOf(392.0,440.0,523.0,440.0)[it/15],.94)},InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+        c=fixture(DeterministicPitchWav.encode(12000,DeterministicPitchWav.Section(0,12000,129.0)),
+            (0..59).map {SessionAnalysis.Point(it*180L,if(it==25)42.9 else 129+sin(it.toDouble())*.15,if(it==25).876 else .92)},InstrumentProfile.DIDGERIDOO)
         compose.runOnUiThread {
             vm=TallerViewModel(app);owner.put("intelligence",vm)
             vm.renameSession(a,"Drone estable · fixture");vm.renameSession(b,"Melodía · fixture");vm.renameSession(c,"Periodicidad ambigua · fixture")
@@ -99,13 +102,16 @@ class GraphIntelligenceUiTest {
     }
     @Test fun generalFittedExtremeZoomResetAndGraphKindsStayCoherent(){
         open(a);expand();capture("drone-general")
-        val general=vm.explorer(a.id).camera(a.durationMs,44100,a.timeline)
-        tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(a.id).camera(a.durationMs,44100,a.timeline).y.span<2);capture("drone-fitted")
+        compose.waitUntil(15000){vm.savedYinReplay.sessionId==a.id && vm.savedYinReplay.result!=null}
+        compose.waitUntil(15000){vm.droneComponent.sessionId==a.id && vm.droneComponent.curve!=null}
+        val points=sessionScalePoints(sessionPlotPoints(vm,a),vm.droneComponent.curve,vm.pitchLayerMode)
+        val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
+        tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(a.id).camera(a.durationMs,44100,points).y.span<2);capture("drone-fitted")
         repeat(3){zoom()}
         compose.onNodeWithTag("viewer-tools").performClick()
         repeat(10){compose.onNodeWithText(uiText(R.string.ui_zoom_out),useUnmergedTree=true).performScrollTo().performClick()}
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
-        assertEquals(general.y,vm.explorer(a.id).camera(a.durationMs,44100,a.timeline).y)
+        assertEquals(general.y,vm.explorer(a.id).camera(a.durationMs,44100,points).y)
         compose.onNodeWithTag("reset-viewport").performClick()
         assertEquals(general,compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]);capture("after-extreme-reset")
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick();compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performClick()
@@ -116,11 +122,13 @@ class GraphIntelligenceUiTest {
     @Test fun uncertainRawPeriodRemainsInspectableAndZeroAxisHasNoMusicalName(){
         open(c);expand()
         val trace=PitchTrace.build(c.timeline,c.instrument);assertEquals(1,trace.count {it.uncertain})
-        val s=vm.explorer(c.id);assertTrue(s.camera(c.durationMs,44100,c.timeline).y.low>100)
+        compose.waitUntil(15000){vm.savedYinReplay.sessionId==c.id && vm.savedYinReplay.result!=null}
+        val s=vm.explorer(c.id);assertTrue(s.camera(c.durationMs,44100,sessionPlotPoints(vm,c)).y.low>100)
         tools(uiText(R.string.ui_show_all_values));assertTrue(s.showUncertain);capture("uncertain-original")
         val graph=compose.onNodeWithTag("immersive-plot");val area=graph.fetchSemanticsNode().config[PlotDataArea]
         graph.performTouchInput {longClick(Offset(area.left+area.width*(4500f/c.durationMs),area.center.y),800)}
-        assertTrue(s.inspected!!.contains(uiUncertainEstimatePrefix()));assertTrue(s.inspected!!.contains(hzLabel(42.9)));assertFalse(s.inspected!!.contains("cents"))
+        assertFalse(s.inspected!!.contains(hzLabel(42.9)))
+        assertTrue(s.inspected!!.contains("Hz"))
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("complete-reading").assertTextEquals(s.inspected!!);capture("uncertain-reading")
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         // The exact-range tool is the intentional escape hatch outside data-driven zoom limits.
@@ -132,8 +140,13 @@ class GraphIntelligenceUiTest {
         graph.assertContentDescriptionContains("0 Hz",substring=true)
         val desc=graph.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
         assertFalse(desc.contains("C#-14"));assertFalse(desc.contains("aproximadamente"));capture("zero-hz-no-note")
-        compose.onNodeWithTag("reset-viewport").performClick();assertTrue(s.camera(c.durationMs,44100,c.timeline).y.low>100)
+        compose.onNodeWithTag("reset-viewport").performClick();assertTrue(s.camera(c.durationMs,44100,sessionPlotPoints(vm,c)).y.low>100)
         assertEquals(42.9,RecordingStore(app).list().first {it.id==c.id}.timeline[25].hz!!,0.0)
+        back()
+        compose.runOnIdle {vm.preview(c.id).selectedMs=4500}
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("pitch-original-diagnostic").performScrollTo()
+            .assertTextContains(hzLabel(42.9),substring=true)
     }
     private class TestApplication(context:Context):Application(){
         init {attachBaseContext(context)}

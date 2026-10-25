@@ -152,6 +152,7 @@ class SessionNavigationTest {
     @Test fun accessibleSeekUsesTheSamePlayerAndChartClockAcrossTabs() {
         val original = RecordingStore(application).file(session.id).readBytes()
         compose.onNodeWithTag("session-${session.id}").performClick()
+        compose.waitUntil(15000){vm.savedYinReplay.sessionId==session.id && vm.savedYinReplay.result!=null}
         compose.onNodeWithTag("session-playback-seek").performScrollTo()
             .performSemanticsAction(SemanticsActions.SetProgress) { it(5000f) }
         compose.waitUntil(10000) { kotlin.math.abs(vm.playbackPositionMs()-5000)<80 }
@@ -166,7 +167,7 @@ class SessionNavigationTest {
         compose.runOnIdle { assertEquals(session.id,vm.playingId); assertFalse(vm.playbackPaused) }
         compose.onNodeWithText(uiText(R.string.ui_pause)).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
-        compose.runOnIdle { assertEquals(camera,vm.preview(session.id).camera(session.durationMs,44100,session.timeline)) }
+        compose.runOnIdle { assertEquals(camera,vm.preview(session.id).camera(session.durationMs,44100,sessionPlotPoints(vm,session))) }
         assertArrayEquals(original, RecordingStore(application).file(session.id).readBytes())
     }
 
@@ -444,10 +445,11 @@ class SessionNavigationTest {
 
     @Test fun immersiveViewportPinchInspectionResetAndBackPreserveSession() {
         compose.onNodeWithTag("session-${session.id}").performClick()
+        compose.waitUntil(15000){vm.savedYinReplay.sessionId==session.id && vm.savedYinReplay.result!=null}
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         val graph=compose.onNodeWithTag("immersive-plot")
         val state=vm.explorer(session.id)
-        val initial=state.camera(session.durationMs,44100,session.timeline)
+        val initial=state.camera(session.durationMs,44100,sessionPlotPoints(vm,session))
         graph.performTouchInput {pinch(start0=center-androidx.compose.ui.geometry.Offset(70f,70f),end0=center-androidx.compose.ui.geometry.Offset(140f,140f),start1=center+androidx.compose.ui.geometry.Offset(70f,70f),end1=center+androidx.compose.ui.geometry.Offset(140f,140f),durationMillis=500)}
         compose.runOnIdle {val next=state.cameras[AcousticPlot.PITCH]!!;assertTrue("Horizontal: $initial → $next",next.x.span<initial.x.span);assertTrue("Vertical: $initial → $next",next.y.span<initial.y.span)}
         graph.performTouchInput {longClick(center,800)}
@@ -482,8 +484,21 @@ class SessionNavigationTest {
         compose.waitUntil(20000){vm.workspace.state.frames==39_690_000L}
         choosePlot(uiText(R.string.ui_spectrogram))
         compose.onNodeWithContentDescription(uiText(R.string.ui_tools)).performClick()
-        compose.onNodeWithText(uiText(R.string.ui_cancel_visualization)).performScrollTo().performClick()
-        compose.runOnIdle {assertFalse(vm.workspace.state.loading);assertEquals("Visualización cancelada.",vm.workspace.state.error)}
+        // A cached or fast render can finish while Compose opens the tools sheet.
+        // Cancel when still available; otherwise verify the completed result.
+        val cancelLabel=uiText(R.string.ui_cancel_visualization)
+        compose.waitUntil(30000){
+            val visual=vm.workspace.state
+            !visual.loading || compose.onAllNodesWithText(cancelLabel).fetchSemanticsNodes().isNotEmpty()
+        }
+        val cancellationClicked=compose.onAllNodesWithText(cancelLabel).fetchSemanticsNodes().isNotEmpty() &&
+            runCatching {compose.onNodeWithText(cancelLabel).performScrollTo().performClick()}.isSuccess
+        if(cancellationClicked && vm.workspace.state.error=="Visualización cancelada."){
+            compose.runOnIdle {assertFalse(vm.workspace.state.loading)}
+        }else{
+            compose.waitUntil(30000){!vm.workspace.state.loading}
+            compose.runOnIdle {assertNull(vm.workspace.state.error);assertNotNull(vm.workspace.state.spectrogram)}
+        }
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         choosePlot(uiText(R.string.ui_waveform))
         compose.waitUntil(30000){vm.workspace.state.wave!=null}
