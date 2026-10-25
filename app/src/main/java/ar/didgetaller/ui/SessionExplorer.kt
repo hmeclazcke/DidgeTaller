@@ -56,15 +56,14 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         }
         if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
             PitchLayerChoice(vm)
-        SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
-        if(s.plot==AcousticPlot.PITCH)Text(stringResource(R.string.pitch_audio_level_help),
-            style=MaterialTheme.typography.bodySmall,modifier=Modifier.testTag("pitch-audio-level-help"))
+        if(s.plot==AcousticPlot.PITCH)Text(stringResource(R.string.pitch_audio_level_short),
+            style=MaterialTheme.typography.labelSmall)
         if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled)SwipeLegend()
         if(s.plot==AcousticPlot.PITCH && vm.pitchLayerMode!=PitchLayerMode.COMPONENT)
             Text(stringResource(R.string.pitch_yin_layer),style=MaterialTheme.typography.labelSmall)
         if(s.plot==AcousticPlot.PITCH && vm.pitchLayerMode!=PitchLayerMode.FUNDAMENTAL && vm.droneComponent.sessionId==item.id){
             val component=vm.droneComponent
-            if(component.curve?.samples?.any {it.hz!=null}==true)DroneComponentLegend()
+            if(component.curve?.samples?.any {it.hz!=null}==true)DroneComponentLegend(showExplanation=false)
             if(vm.droneComponent.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
             if(component.failed)Text(stringResource(R.string.drone_component_failed),style=MaterialTheme.typography.bodySmall)
             else if(component.curve!=null && component.curve.samples.none {it.hz!=null})
@@ -72,11 +71,21 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         }
         if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO){
             if(vm.savedYinReplay.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
+        }
+        SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        playbackControls()
+        if(s.plot==AcousticPlot.PITCH){
+            Text(stringResource(R.string.pitch_audio_level_help),style=MaterialTheme.typography.bodySmall,
+                modifier=Modifier.testTag("pitch-audio-level-help"))
+            if(vm.pitchLayerMode!=PitchLayerMode.FUNDAMENTAL && vm.droneComponent.sessionId==item.id &&
+                vm.droneComponent.curve?.samples?.any {it.hz!=null}==true)
+                Text(stringResource(R.string.drone_component_explanation),style=MaterialTheme.typography.labelSmall)
+        }
+        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO){
             Text(stringResource(if(vm.savedYinReplay.sessionId==item.id && vm.savedYinReplay.result!=null)
                 R.string.pitch_source_current_replay else R.string.pitch_source_original),
                 style=MaterialTheme.typography.labelSmall)
         }
-        playbackControls()
         if(s.plot==AcousticPlot.PITCH){
             val points=sessionPlotPoints(vm,item)
             Text(stringResource(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),style=MaterialTheme.typography.bodySmall)
@@ -125,7 +134,7 @@ internal fun PitchLayerChoice(vm:TallerViewModel){
 }
 
 @Composable
-internal fun DroneComponentLegend(modifier:Modifier=Modifier){
+internal fun DroneComponentLegend(modifier:Modifier=Modifier,showExplanation:Boolean=true){
     Column(modifier){
         Row(verticalAlignment=androidx.compose.ui.Alignment.CenterVertically,
             horizontalArrangement=Arrangement.spacedBy(8.dp)){
@@ -136,7 +145,7 @@ internal fun DroneComponentLegend(modifier:Modifier=Modifier){
             }
             Text(stringResource(R.string.drone_component_estimated),style=MaterialTheme.typography.bodySmall)
         }
-        Text(stringResource(R.string.drone_component_explanation),style=MaterialTheme.typography.labelSmall)
+        if(showExplanation)Text(stringResource(R.string.drone_component_explanation),style=MaterialTheme.typography.labelSmall)
     }
 }
 

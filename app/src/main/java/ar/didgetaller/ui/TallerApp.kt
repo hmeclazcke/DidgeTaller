@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -84,6 +85,10 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
               exportRecording:(RecordingStore.Session)->Unit={}) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val sections=listOf(stringResource(R.string.ui_measure),stringResource(R.string.ui_laboratory),stringResource(R.string.ui_library))
+    val configuration=androidx.compose.ui.platform.LocalConfiguration.current
+    val fontScale=configuration.fontScale
+    val shortLandscapeWithLargeText=configuration.screenHeightDp<500 && fontScale>=1.5f
+    val navigationTextFactor=(1.2f/fontScale).coerceAtMost(1f)
     MaterialTheme(colorScheme=appColors) {
         val snackbars=remember {SnackbarHostState()}
         val hostActivity=androidx.compose.ui.platform.LocalContext.current.activity()
@@ -115,12 +120,12 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         Scaffold(
             containerColor=background,
             topBar={
-                if(!inViewer && (inDetail || !vm.fullScreen)) TopAppBar(
+                if(!inViewer && (inDetail || !vm.fullScreen) && !(route==TallerRoutes.Measure && shortLandscapeWithLargeText)) TopAppBar(
                     title={
                         if(inDetail)Text(if(inTool)listOf(stringResource(R.string.ui_design),stringResource(R.string.ui_spectrum),stringResource(R.string.ui_search),stringResource(R.string.ui_guide))[vm.labTab] else if(route==TallerRoutes.Compare)stringResource(R.string.ui_compare_sessions) else stringResource(R.string.ui_session_3cb186))
                         else Column {
                             Text(sections[section],fontSize=24.sp,fontWeight=FontWeight.Bold)
-                            Text(stringResource(R.string.ui_didge_taller),fontSize=11.sp,color=muted,letterSpacing=1.sp)
+                            if(fontScale<1.5f) Text(stringResource(R.string.ui_didge_taller),fontSize=11.sp,color=muted,letterSpacing=1.sp)
                         }
                     },
                     navigationIcon={if(inDetail)IconButton(onClick={navController.popBackStack()}) {
@@ -150,8 +155,9 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                             NavigationBarItem(
                                 selected=section==idx,
                                 onClick={navController.navigateToSection(idx)},
-                                icon={Text(symbols[idx],fontSize=21.sp)},
-                                label={Text(title,maxLines=1)},
+                                icon={Text(symbols[idx],Modifier.clearAndSetSemantics {},fontSize=(21f*navigationTextFactor).sp)},
+                                label={Text(title,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                                    fontSize=(14f*navigationTextFactor).sp)},
                                 alwaysShowLabel=true
                             )
                         }
@@ -233,17 +239,22 @@ private fun Panel(title:String?=null,subtitle:String?=null,content:@Composable C
 @Composable
 private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
-    val compactWide=vm.fullScreen && androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp<500
+    val configuration=androidx.compose.ui.platform.LocalConfiguration.current
+    val compactWide=configuration.screenHeightDp<500
+    val prioritizeReading=!vm.fullScreen && (compactWide || configuration.screenHeightDp/configuration.fontScale<560f)
     var instruments by remember {mutableStateOf(false)}
-    if(!compactWide)Box {
-        TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
-            Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)))
+    @Composable fun setupControls() {
+        if(!vm.fullScreen || !compactWide)Box {
+            TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
+                Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)))
+            }
+            DropdownMenu(expanded=instruments,onDismissRequest={instruments=false}){
+                InstrumentProfile.entries.forEach {profile->DropdownMenuItem(text={Text(context.instrumentLabel(profile))},onClick={vm.selectInstrument(profile);instruments=false})}
+            }
         }
-        DropdownMenu(expanded=instruments,onDismissRequest={instruments=false}){
-            InstrumentProfile.entries.forEach {profile->DropdownMenuItem(text={Text(context.instrumentLabel(profile))},onClick={vm.selectInstrument(profile);instruments=false})}
-        }
+        RecordingSettings(vm)
     }
-    RecordingSettings(vm)
+    if(!prioritizeReading)setupControls()
     if(vm.permissionDenied){
         val context=androidx.compose.ui.platform.LocalContext.current
         OutlinedButton(onClick={context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,android.net.Uri.parse("package:${context.packageName}")))}){Text(stringResource(R.string.ui_configure_microphone_permission))}
@@ -270,14 +281,17 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
             kotlinx.coroutines.delay(250)
         }
     }
-    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-        Column(Modifier.weight(1f)) {
-            if(compactWide)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
-            Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
-                color=if(capturing)orange else muted,fontSize=12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
+    @Composable fun measurementHeader() {
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                if(compactWide)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
+                Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
+                    color=if(capturing)orange else muted,fontSize=12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
+            }
+            TextButton(onClick=onPresentationToggle) {Text(if(vm.fullScreen)stringResource(R.string.ui_normal_view) else stringResource(R.string.ui_wide_view))}
         }
-        TextButton(onClick=onPresentationToggle) {Text(if(vm.fullScreen)stringResource(R.string.ui_normal_view) else stringResource(R.string.ui_wide_view))}
     }
+    if(!prioritizeReading)measurementHeader()
     Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(28.dp),color=cardColor) {
         Column(Modifier.background(Brush.verticalGradient(listOf(Color(0xFF1D3839),cardColor)))
             .padding(horizontal=20.dp,vertical=if(compactWide)8.dp else if(vm.fullScreen)28.dp else 20.dp),
@@ -319,6 +333,8 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
             }
         }
     }
+    if(prioritizeReading)measurementHeader()
+    if(prioritizeReading)setupControls()
     if(capturing) {
         Panel(context.getString(R.string.ui_live_reading),if(vm.stableReading)context.getString(R.string.ui_the_frequency_holds_between_readings) else context.getString(R.string.ui_the_note_may_still_change)) {
             if(hz>0) {
@@ -442,8 +458,7 @@ private fun SpectrumScreen(vm:TallerViewModel,toggleMic:()->Unit) {
     Text(stringResource(R.string.ui_this_live_analysis_does_not_record_to_save_audio_and_readings_together_start_a),
         color=muted,fontSize=12.sp)
     Panel(context.getString(R.string.ui_fundamental_harmonics_and_toots)) {
-        Text(stringResource(R.string.ui_chart_peaks_are_sound_components_toots_are_playing_modes) +
-            context.getString(R.string.ui_that_you_need_to_play_separately_to_measure_them_the_highest_peak_is_not_neces),
+        Text(stringResource(R.string.ui_spectrum_playing_modes_help),
             color=muted,fontSize=13.sp)
     }
 }
@@ -631,8 +646,7 @@ private fun EvolutionScreen(vm:TallerViewModel) {
         }
     }
     Panel(context.getString(R.string.ui_scope_and_reproducibility)) {
-        Text(stringResource(R.string.ui_evolutionary_search_implemented_in_kotlin_for_this_project_it_does_not_include) +
-            context.getString(R.string.ui_it_uses_classical_1d_propagation_equations_approximate_losses_and_a_pitch_base),
+        Text(stringResource(R.string.ui_evolutionary_method_help),
             color=muted,fontSize=13.sp)
         Text(stringResource(R.string.ui_the_search_is_reproducible_with_a_fixed_seed_its_accuracy_must_be_validated_wi),
             color=orange,fontSize=12.sp)
@@ -846,18 +860,14 @@ private fun GuideScreen() {
         Text(stringResource(R.string.ui_the_resistance_you_feel_while_playing_a_spectrum_alone_cannot_predict_that_sen),color=muted,fontSize=13.sp)
     }
     Panel(context.getString(R.string.ui_design_an_instrument)) {
-        Text(stringResource(R.string.ui_try_the_pvc_preset_first_then_conical_and_bell) +
-            context.getString(R.string.ui_change_one_dimension_at_a_time_and_compare_impedance_peaks) +
-            context.getString(R.string.ui_results_are_estimates_measure_prototypes_to_calibrate_the_model),color=muted,fontSize=13.sp)
+        Text(stringResource(R.string.ui_design_workflow_help),color=muted,fontSize=13.sp)
         Text(stringResource(R.string.ui_to_carve_a_wooden_instrument_start_with_dry_wood_test_the_bore_before_gluing_a),
             color=muted,fontSize=13.sp)
     }
     Panel(context.getString(R.string.ui_privacy_and_scope)) {
-        Text(stringResource(R.string.ui_no_internet_access_advertising_accounts_or_audio_uploads) +
-            context.getString(R.string.ui_measure_requests_microphone_permission_when_starting_and_saves_each_session_as),
+        Text(stringResource(R.string.ui_privacy_offline_help),
             color=muted,fontSize=13.sp)
-        Text(stringResource(R.string.ui_the_acoustic_transmission_simulation_and_evolutionary_search_are_original_kotl) +
-            context.getString(R.string.ui_inspired_by_the_public_ideas_of_didgelab_and_cadsd_not_their_original_engines),
+        Text(stringResource(R.string.ui_design_method_help),
             color=orange,fontSize=13.sp)
     }
 }

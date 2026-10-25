@@ -74,6 +74,58 @@ class UIAuditTest {
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
         compose.onNodeWithText(title,useUnmergedTree=true).performClick()
     }
+    @Test fun immersiveChartSwitchesHaveSelfContainedAccessibleNames(){
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        compose.onNodeWithTag("viewer-tools").performClick()
+        compose.onNodeWithTag("show-uncertain").assertContentDescriptionEquals(uiText(R.string.ui_show_original_uncertain_readings))
+        compose.runOnIdle {vm.explorer(session.id).apply {regionStart=1000;regionEnd=2000}}
+        compose.onNodeWithTag("loop-fragment").assertContentDescriptionEquals(uiText(R.string.ui_loop_excerpt))
+        compose.onNodeWithTag("audio-seek").assertContentDescriptionEquals(uiText(R.string.playback_seek_label))
+        compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
+        viewerPlot(uiText(R.string.ui_spectrogram))
+        compose.onNodeWithTag("viewer-tools").performClick()
+        compose.onNodeWithTag("log-frequency").assertContentDescriptionEquals(uiText(R.string.ui_logarithmic_frequency))
+    }
+
+    @Test fun pitchLegendIsVisibleBeforeThePlotItExplains(){
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.pitch_yin_layer)).performScrollTo()
+        val legend=compose.onNodeWithText(uiText(R.string.pitch_yin_layer)).fetchSemanticsNode().boundsInRoot
+        val plot=compose.onNodeWithTag("time-chart").fetchSemanticsNode().boundsInRoot
+        assertTrue("The pitch legend must precede the plot",legend.bottom<=plot.top)
+        shot("legend-before-plot")
+    }
+
+    @Test fun compactLandscapeKeepsTheMeasurementReadingOnScreen(){
+        val configuration=compose.activity.resources.configuration
+        assumeTrue("Requires short landscape with large text, height=${configuration.screenHeightDp}, font=${configuration.fontScale}",
+            configuration.screenHeightDp<500 && configuration.fontScale>=1.5f)
+        shot("compact-landscape-reading")
+        compose.onNodeWithTag("measurement-frequency").assertIsDisplayed()
+        compose.onNodeWithTag("acoustic-signal-status").assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).assertIsDisplayed()
+        val statusNode=compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode()
+        val status=statusNode.boundsInRoot
+        val action=compose.onNodeWithText(uiText(R.string.ui_start_measurement)).fetchSemanticsNode().boundsInRoot
+        assertTrue("The measurement status must be above the recording action",status.bottom<=action.top)
+        assertEquals("The landscape status must not be clipped",statusNode.size.height.toFloat(),status.height,1f)
+    }
+    @Test fun compactPortraitKeepsTheMeasurementStatusAboveTheRecordAction(){
+        val configuration=compose.activity.resources.configuration
+        assumeTrue("Requires a height-constrained portrait with large text",
+            configuration.screenHeightDp>500 && configuration.fontScale>=1.5f && configuration.screenHeightDp/configuration.fontScale<560f)
+        val statusNode=compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode()
+        val status=statusNode.boundsInRoot
+        val action=compose.onNodeWithText(uiText(R.string.ui_start_measurement)).fetchSemanticsNode().boundsInRoot
+        assertTrue("The current measurement must precede the fixed recording action",status.bottom<=action.top)
+        val content=compose.onNodeWithTag("measure-screen").fetchSemanticsNode().boundsInRoot
+        assertTrue("The entire status must fit in the measurement viewport",status.bottom<=content.bottom)
+        assertEquals("The status must not be clipped by the fixed action",statusNode.size.height.toFloat(),status.height,1f)
+        shot("compact-portrait-reading")
+    }
     @Test fun productPolishEvidenceAndTouchTargets(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()

@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.core.Music
@@ -61,7 +63,7 @@ internal fun ComparisonScreen(vm:TallerViewModel) {
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                 listOf(context.getString(R.string.ui_a_only),context.getString(R.string.ui_b_only),context.getString(R.string.ui_both)).forEachIndexed {i,label ->FilterChip(selected=show==i,onClick={show=i},label={Text(label)})}
             }
-            Row {Text(stringResource(R.string.ui_normalize_each_spectrum),Modifier.weight(1f));Switch(checked=normalize,onCheckedChange={normalize=it})}
+            Row {Text(stringResource(R.string.ui_normalize_each_spectrum),Modifier.weight(1f));Switch(checked=normalize,onCheckedChange={normalize=it},modifier=Modifier.semantics {contentDescription=context.getString(R.string.ui_normalize_each_spectrum)})}
             SpectrumChart(state.a,state.b,showA=show!=1,showB=show!=0,normalize=normalize)
             Row(Modifier.fillMaxWidth()) {Text(stringResource(R.string.ui_a_solid_line),Modifier.weight(1f),color=traceA);Text(stringResource(R.string.ui_b_dashed_line),Modifier.weight(1f),color=traceB)}
             ComparisonMetrics(state.a,state.b)

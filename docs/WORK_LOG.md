@@ -1,3 +1,21 @@
+## Application-wide UX/UI audit — 2026-10-24
+
+- Started from clean `main`/`origin/main` at `514f3c4`; retained all existing
+  acoustic behavior and historical data. Followed the screen inventory and
+  existing UI test infrastructure. Used only `emulator-5554`, never the Samsung.
+- Corrected large-text Measure priority, bottom navigation labels, redundant
+  top-bar subtitle, saved pitch legend order and accessible control names.
+  Replaced concatenated translated prose with complete EN/ES resources and
+  normalized Spanish “dron” terminology. Regression tests were red before
+  relevant corrections and green afterward.
+- The broad instrumented suite still has nine failures in legacy Fundamental
+  tests that assume pre-replay pitch series/scales. Their expectations need a
+  separate, explicit decision on current replay versus preserved capture data;
+  no acoustic or historical measurements were changed to mask them. The
+  detailed matrix and exact validation results are in [UI_AUDIT](UI_AUDIT.md)
+  and [VALIDATION](VALIDATION.md). No push should be claimed as validated while
+  this gate remains red.
+
 ## Independent saved-session pitch evidence — 2026-10-24
 
 - Began from clean `00ade24`. The private four-bout WAV and Samsung screenshot

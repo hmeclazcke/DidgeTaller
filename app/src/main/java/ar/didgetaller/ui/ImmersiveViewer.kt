@@ -364,7 +364,7 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session,s:Explorer
         Text(stringResource(R.string.ui_green_variation_25_cents_and_periodicity_0_90_yellow_up_to_60_cents_periodicit),style=MaterialTheme.typography.bodySmall)
         val uncertain=trace.count {it.uncertain}
         Text(stringResource(R.string.ui_outside_fitted_original_readings_excluded_from_the_trend_isolated_excursions_a, range.clipped, uncertain),style=MaterialTheme.typography.bodySmall)
-        Row(verticalAlignment=Alignment.CenterVertically){Text(stringResource(R.string.ui_show_original_uncertain_readings),Modifier.weight(1f));Switch(checked=s.showUncertain,onCheckedChange={s.showUncertain=it},modifier=Modifier.testTag("show-uncertain"))}
+        Row(verticalAlignment=Alignment.CenterVertically){Text(stringResource(R.string.ui_show_original_uncertain_readings),Modifier.weight(1f));Switch(checked=s.showUncertain,onCheckedChange={s.showUncertain=it},modifier=Modifier.testTag("show-uncertain").semantics {contentDescription=context.getString(R.string.ui_show_original_uncertain_readings)})}
         if(s.showUncertain)Text(stringResource(R.string.ui_orange_circles_original_estimates_with_no_confirmed_note_hold_at_their_time_to),style=MaterialTheme.typography.bodySmall)
         TextButton(onClick={s.extendedPitchRange=true;s.showUncertain=true;s.cameras[s.plot]=camera.copy(y=s.pitch(scalePoints,true).window);s.follow=false}){Text(stringResource(R.string.ui_show_all_values))}
     }
@@ -375,7 +375,7 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session,s:Explorer
             val low=max(camera.y.low,domain.low)
             val high=if(camera.y.high>low)camera.y.high else low+visual.rate/32768.0
             s.cameras[s.plot]=camera.copy(y=domain.constrain(AxisWindow(low,high)))
-        },modifier=Modifier.testTag("log-frequency"))}
+        },modifier=Modifier.testTag("log-frequency").semantics {contentDescription=context.getString(R.string.ui_logarithmic_frequency)})}
         Text(stringResource(R.string.ui_dynamic_range_db, s.rangeDb.toInt()))
         Slider(value=s.rangeDb.toFloat(),onValueChange={s.rangeDb=it.toDouble()},valueRange=30f..100f)
         Canvas(Modifier.fillMaxWidth().height(16.dp)){for(x in 0 until size.width.toInt())drawLine(Color(SpectralPalette.color(-s.rangeDb+s.rangeDb*x/size.width,s.rangeDb)),Offset(x.toFloat(),0f),Offset(x.toFloat(),size.height),1f)}
@@ -400,11 +400,11 @@ internal fun FragmentTools(vm:TallerViewModel,item:RecordingStore.Session,s:Expl
     },valueRange=0f..duration.toFloat())
     s.region?.let {region->
         Button(onClick={vm.analyzeRecording(item,region.first,region.last)}){Text(stringResource(R.string.ui_analyze_excerpt))}
-        Row(verticalAlignment=Alignment.CenterVertically){Text(stringResource(R.string.ui_loop_excerpt),Modifier.weight(1f));Switch(checked=s.looping,onCheckedChange={s.looping=it;vm.setPlaybackLoop(item,if(it)region else null)},modifier=Modifier.testTag("loop-fragment"))}
+        Row(verticalAlignment=Alignment.CenterVertically){Text(stringResource(R.string.ui_loop_excerpt),Modifier.weight(1f));Switch(checked=s.looping,onCheckedChange={s.looping=it;vm.setPlaybackLoop(item,if(it)region else null)},modifier=Modifier.testTag("loop-fragment").semantics {contentDescription=context.getString(R.string.ui_loop_excerpt)})}
         Text(stringResource(R.string.ui_loop_controlled_by_actual_playback_position_sample_continuity_is_not_guarantee),style=MaterialTheme.typography.bodySmall)
     }
     Text(stringResource(R.string.ui_position_analysis_of_nearby_windows, seconds(s.selectedMs)),style=MaterialTheme.typography.bodySmall)
-    Slider(value=s.selectedMs.toFloat().coerceIn(0f,duration.toFloat()),onValueChange={s.selectedMs=it.toLong()},onValueChangeFinished={vm.seekPlayback(item,s.selectedMs)},valueRange=0f..duration.toFloat(),modifier=Modifier.testTag("audio-seek"))
+    Slider(value=s.selectedMs.toFloat().coerceIn(0f,duration.toFloat()),onValueChange={s.selectedMs=it.toLong()},onValueChangeFinished={vm.seekPlayback(item,s.selectedMs)},valueRange=0f..duration.toFloat(),modifier=Modifier.testTag("audio-seek").semantics {contentDescription=context.getString(R.string.playback_seek_label)})
     TextButton(onClick={vm.analyzeRecording(item,max(0,s.selectedMs-750),min(duration,s.selectedMs+750))}){Text(stringResource(R.string.ui_analyze_around_position))}
 }
 

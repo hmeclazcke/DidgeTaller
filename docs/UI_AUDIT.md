@@ -1,5 +1,58 @@
 # Auditoría de interfaz — Didge Taller 3.1
 
+## Application-wide polish — 2026-10-24
+
+Baseline: clean `main` and `origin/main` at `514f3c4`. This pass kept the
+pitch estimators, component tracker, stored readings, audio files and player
+implementation unchanged. The private screen matrix and synthetic screenshots
+are under ignored `checkpoints/experiments/ui-audit-2026-10-24/`.
+
+### Inventory and findings
+
+Reviewed Measure and wide Measure; Laboratory home, Design, Spectrum, Search
+and Guide; Library Sessions and Designs; session metadata, transport, all four
+chart tabs, Fundamental/Component/Both, advanced comparison, selection, analysis,
+markers and associations; session comparison; all four immersive charts and
+their tools; dialogs, permissions, empty states and export entry points.
+Core routes and player/recording transitions were exercised on an API 37 emulator
+with synthetic sessions. Android's external document picker, a complete
+TalkBack traversal, audible synchronization and a cancelled predictive-Back
+gesture were not independently certified.
+
+| Priority | Reproduced issue | Correction |
+| --- | --- | --- |
+| P1 | On short landscape phones at 2× text, the Measure frequency card and status were below the visible area | Present the compact reading first and omit the redundant top bar; retain the fixed record button and selected Measure navigation item |
+| P1 | On a compact portrait phone at 1.5×, the measurement status was cut by the fixed record action | Present the reading first when available height relative to font size is constrained |
+| P2 | Top-bar subtitle clipped at 2× and the Laboratory navigation label ellipsized on a compact phone at 1.5× | Omit the redundant subtitle at large text; cap bottom-label size while retaining full semantics |
+| P2 | Saved-session pitch legend followed the plot, making the two traces difficult to identify when entering the chart | Place concise source labels immediately before the plot and detailed cautions after transport |
+| P2 | Spectral prose was assembled from translated sentence fragments and Spanish used both “drone” and “dron” | Use complete localized messages and consistent “dron” terminology |
+| P1 accessibility | Immersive switches and seek slider, plus comparison normalization, lacked self-contained accessible names | Add localized control descriptions and focused UI assertions |
+
+No P0 data-loss or crash defect was reproduced in the exercised flows. The
+visual changes do not merge estimators: YIN remains the fundamental estimate;
+the cyan dotted trace remains a supported spectral component, not a verified
+physical F0. The advanced SWIPE′ comparison remains optional.
+
+### Visual and functional evidence
+
+The emulator was inspected in English and Spanish, portrait and landscape, at
+1.0, 1.3, 1.5 and 2.0 font scales. A 343 dp compact phone, a 411 dp phone and a
+wide 1280 dp simulated display were used. Representative screenshots include
+`portrait-status.png` / `portrait-status-after.png`,
+`compact-landscape-after.png`, `en150-compact-detalle.png`,
+`es130-wide-detalle.png` and `es200-land-visor-fundamental.png` in the private
+matrix directory. The synthetic 70 Hz session and its deliberate 5–6 s pause
+are presentation fixtures, not evidence of detector accuracy.
+
+The full instrumented run reported 100 tests with nine failures in older
+Fundamental/viewport assertions that still expect captured timeline identity or
+pre-replay scales. Current saved-session replay can derive a different series
+from the WAV while preserving historical readings. None of the new localization,
+accessibility or layout tests failed in that run; see [VALIDATION](VALIDATION.md)
+for exact limits. Release readiness still requires reconciliation of those
+regression tests, a complete TalkBack pass, real device visual review and
+audible playback timing. No physical Samsung was accessed.
+
 ## Product polish audit — 2026-10-23
 
 Baseline: clean `main/67b541d`, two documentation commits ahead of fetched

@@ -126,6 +126,51 @@ class LocalizationUiTest {
         compose.onNodeWithText("No sessions yet").assertIsDisplayed()
     }
 
+    @Test fun largeEnglishNavigationFitsAtDoubleFontScale() {
+        assertLargeFontNavigation("en", listOf("Measure", "Laboratory", "Library"))
+    }
+
+    @Test fun largeSpanishNavigationFitsAtDoubleFontScale() {
+        assertLargeFontNavigation("es-AR", listOf("Medir", "Laboratorio", "Biblioteca"))
+    }
+
+    @Test fun compactEnglishNavigationKeepsEveryLabelAtLargeFontScale() {
+        assertCompactNavigation("en", listOf("Measure", "Laboratory", "Library"))
+    }
+
+    @Test fun compactSpanishNavigationKeepsEveryLabelAtLargeFontScale() {
+        assertCompactNavigation("es-AR", listOf("Medir", "Laboratorio", "Biblioteca"))
+    }
+
+    private fun assertCompactNavigation(language:String, labels:List<String>) {
+        show(language, widthDp = 343, fontScale = 1.5f)
+        labels.forEach { label ->
+            val results = mutableListOf<TextLayoutResult>()
+            val nodes=compose.onAllNodesWithText(label, useUnmergedTree = true)
+            nodes[nodes.fetchSemanticsNodes().lastIndex]
+                .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(results) }
+            assertCompleteTextFits(results.single())
+        }
+    }
+
+    @Test fun spanishDroneTerminologyMatchesTheComponentLayer() {
+        show("es-AR")
+        Assert.assertTrue(app.getString(R.string.ui_drone, "Do2", "66 Hz").startsWith("Dron:"))
+        Assert.assertTrue(app.getString(R.string.swipe_caution).contains("del dron"))
+        Assert.assertFalse(app.getString(R.string.saved_evidence_help).contains("drone"))
+    }
+
+    private fun assertLargeFontNavigation(language: String, labels: List<String>) {
+        show(language, fontScale = 2f)
+        compose.onNodeWithText("DIDGE TALLER").assertDoesNotExist()
+        val bounds = labels.map { compose.onAllNodesWithText(it, useUnmergedTree = true).fetchSemanticsNodes().last().boundsInRoot }
+        Assert.assertTrue("Navigation labels must not overlap at 2x font scale", bounds.zipWithNext().all { (a, b) -> a.right <= b.left })
+        labels.forEach { label ->
+            val nodes = compose.onAllNodesWithText(label, useUnmergedTree = true)
+            nodes[nodes.fetchSemanticsNodes().lastIndex].assertIsDisplayed()
+        }
+    }
+
     @Test fun englishBackendFailureIsLocalizedAtPresentation() {
         show("en")
         compose.runOnUiThread { viewModel.notify("No se pudo cerrar el WAV: Captura parcial no compatible.. La captura queda pendiente de recuperación.") }

@@ -1,3 +1,46 @@
+## Application-wide UX/UI audit — 2026-10-24
+
+Baseline: clean `514f3c4`, with `origin/main` aligned. No physical Samsung,
+private recording, session index or user preference was accessed. All Android
+instrumentation used `adb -s emulator-5554` on API 37 and test-owned synthetic
+WAVs. The exact logs and visual matrix are in ignored
+`checkpoints/experiments/ui-audit-2026-10-24/`.
+
+- `:app:testDebugUnitTest :app:jacocoDebugUnitTestReport detekt :app:assembleDebug
+  :app:assembleDebugAndroidTest` completed successfully after the responsive
+  layout and navigation-label adjustments:
+  179 JVM cases reported, 0 failures and 8 skips. JaCoCo XML/HTML and Detekt
+  reports were generated. Detekt is configured as informational (`ignoreFailures`).
+- The full emulator instrumentation run reported **100 tests, 9 failures**.
+  Failures: three in `FundamentalPrecisionUiTest`, two in
+  `GraphIntelligenceUiTest`, one each in `PrecisionUiTest` and `RecoveryUiTest`,
+  and two in `SessionNavigationTest`. They assert legacy captured-series identity,
+  old pitch viewport values or colors from synthetic timelines whose silent WAV
+  now yields a different current replay. The acoustic replay code was untouched
+  in this UI iteration. This run is not a passing gate and is not counted as one.
+- Focused red/green emulator tests reproduced and verified the subtitle,
+  chart legend, accessible chart controls, short-landscape reading, compact-phone
+  navigation ellipsis and portrait status clipping. The short-landscape test was
+  strengthened after a screenshot revealed a partly clipped status; its full
+  text now fits above the record action. Spanish and English compiled
+  resources retain matching keys and Android format tests passed.
+- After an AVD restart, a further grouped emulator run completed nine
+  `UIAuditTest` cases and fourteen `LocalizationUiTest` cases, then made no
+  progress in the rotation class and was stopped. Those first 23 results are
+  recorded, but the grouped run is **incomplete** and has no passing-suite
+  result. The short-landscape 2× test was rerun independently and passed with
+  its stronger full-height assertion and inspected screenshot.
+- Screen inventory traversals passed in EN portrait 1.0, ES portrait 1.3,
+  ES short landscape 2.0, EN compact portrait 1.5 and ES wide landscape 1.3.
+  Actual screenshots were opened and reviewed. The ordinary Measure screen is
+  readable in compact portrait 1.5, normal portrait 2.0 and short landscape 2.0.
+  The wide simulated display still uses a phone-first single-column layout.
+
+Only presentation, strings and UI regression tests changed. YIN, SWIPE′,
+component tracking, PitchTrace, persistence and playback timing were not edited.
+The emulator tests do not prove audible sample-accurate cursor alignment or a
+complete TalkBack reading order. No APK was installed on the Samsung.
+
 ## Saved-session component correction — 2026-10-24
 
 Baseline: clean `main` at `00ade24`, aligned with `origin/main`. The protected
