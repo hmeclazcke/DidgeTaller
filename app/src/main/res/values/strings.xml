@@ -47,7 +47,7 @@
     <string name="ui_pinch_to_zoom_drag_horizontally_tap_a_peak">"Pinch to zoom · drag horizontally · tap a peak"</string>
     <string name="ui_zoom_into_spectrum">"Zoom into spectrum"</string>
     <string name="ui_show_all">"Show all"</string>
-    <string name="ui_h_candidate">"H%1$s candidate"</string>
+    <string name="ui_h_candidate">"H%1$d candidate"</string>
     <string name="ui_unassigned_peak">"unassigned peak"</string>
     <string name="ui_line_measured_energy_faint_guides_theoretical_multiples_h_candidates_not_confi">"Line: measured energy · faint guides: theoretical multiples · H?: candidates, not confirmations."</string>
     <string name="ui_each_spectrum_uses_its_own_maximum_as_reference">"Each spectrum uses its own maximum as reference."</string>
@@ -398,7 +398,7 @@
     <string name="ui_saved_bore_profiles">"Saved bore profiles"</string>
     <string name="ui_no_saved_designs_yet">"No saved designs yet."</string>
     <string name="ui_mm_long_points">"%1$s mm long · %2$s points · "</string>
-    <string name="ui_mouthpiece_mm_bell_mm">"mouthpiece %1$s mm · bell %2$s mm"</string>
+    <string name="ui_mouthpiece_mm_bell_mm">"mouthpiece %1$d mm · bell %2$d mm"</string>
     <string name="ui_open">"Open"</string>
     <string name="ui_duplicate">"Duplicate"</string>
     <string name="ui_delete_18e9c0">"Delete %1$s"</string>

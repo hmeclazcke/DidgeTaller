@@ -197,14 +197,14 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         "${axisLabel(camera.y.low,camera.y.span)}–${axisLabel(camera.y.high,camera.y.span)} ${if(state.plot==AcousticPlot.WAVE)"PCM" else if(state.plot==AcousticPlot.SPECTRUM)"dB rel" else "Hz"}"
     val playing=vm.playingId==item.id && !vm.playbackPaused
     @Composable fun transport(){
-    val context = androidx.compose.ui.platform.LocalContext.current
+        val context = androidx.compose.ui.platform.LocalContext.current
         IconButton(onClick={vm.togglePlayback(item)},modifier=Modifier.testTag("viewer-play")){
             Icon(if(playing)ViewerIcons.Pause else Icons.Default.PlayArrow,if(playing)context.getString(R.string.ui_pause) else context.getString(R.string.ui_play))
         }
         Text("${seconds(cursor)} / ${seconds(duration)}",Modifier.widthIn(max=if(landscape)180.dp else if(config.fontScale>=1.3f)200.dp else 120.dp).testTag("viewer-time"),style=MaterialTheme.typography.labelMedium,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
     }
     @Composable fun follow(){
-    val context = androidx.compose.ui.platform.LocalContext.current
+        val context = androidx.compose.ui.platform.LocalContext.current
         if(state.plot.temporal)IconToggleButton(checked=state.follow,onCheckedChange={state.follow=it}){
             Icon(Icons.Default.ArrowForward,if(state.follow)context.getString(R.string.ui_following_on) else context.getString(R.string.ui_follow))
         }
