@@ -1782,3 +1782,44 @@ Markdown links, skill front matter, required safety/Git rules, and
 changed. No JVM, emulator, or APK build was run for this instruction-only edit.
 Instruction size was measured in lines; token savings and future tool-call
 reductions have not been measured in real Codex sessions.
+
+## Saved-session UX polish — 2026-10-26
+
+The session now opens with playback and the musician-facing drone chart. Four
+visible chart choices wrap on narrow screens; choosing Harmonics brings its
+plot into view. Scales/ranges, selection/excerpts, markers, and advanced
+diagnostics live in a scrollable Tools sheet. The diagnostic chart has its own
+YIN/SWIPE' presentation and state; enabling comparison no longer changes the
+ordinary preview curve or camera. Advanced comparison still opens in the
+existing full-screen viewer, with playback position retained on return. The
+drone axis names the supported spectral component in Hz without implying a
+confirmed fundamental. Harmonics shows
+frequency (Hz) and relative level (dB); the YIN heading also states Hz.
+
+Validation on the final UI source: `:app:testDebugUnitTest` (183 tests, 8
+skipped, 0 failures), `:app:assembleDebug`, and
+`:app:assembleDebugAndroidTest` passed. `python tools/check_localization.py`
+passed with 552 strings in English and Spanish. `detekt` and
+`detektComplexity` passed on 56 Kotlin files. Logs are under ignored
+`checkpoints/session-ux-*.log`. Focused emulator instrumentation passed:
+6 navigation/rotation tests and 9 chart/diagnostic/evidence tests on the
+changed workflows, plus the screenshot scenario in default portrait, compact
+360 dp with 1.5x font, landscape, Spanish, and Spanish compact with 1.5x
+font. The historical trace/recovery scenario passed after adapting its heading
+lookup to the shorter Audio label. An earlier evidence capture failed because
+a modal sheet creates a second Compose root; native-window captures now pass.
+An earlier compact chart selection failed because the horizontally scrolling
+tab hid Harmonics; wrapped chart choices resolved it.
+The focused full-screen comparison and playback-return test passed after the
+final viewer adjustment (`checkpoints/session-ux-diagnostic-viewer.log`).
+
+Rendered emulator screenshots were opened and inspected for the session,
+Harmonics, Tools, and Advanced Diagnostics in portrait, landscape, compact,
+English, and Spanish. Private synthetic screenshots are in ignored
+`checkpoints/session-ux-*.png`; none are included in Git. The spectrum axes,
+playback controls, and diagnostic labels remained legible in the inspected
+images. The ordinary chart and separate YIN chart retained different meanings.
+No full instrumentation suite or physical acoustic validation was run for this
+focused UI change. CI compiles Android instrumentation tests but does not run
+them. Samsung installation and post-install integrity are separate pending
+steps after the push and CI result.

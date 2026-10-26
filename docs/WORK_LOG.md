@@ -665,3 +665,18 @@ The local engineering skill also made red-first TDD and optional analysis feel
 unconditional. Both now use progressive disclosure and risk-based validation.
 Privacy, Samsung safety, explicit Git staging/identity, honest test reporting,
 and small root-cause fixes remain mandatory. No application behavior changed.
+
+## Saved-session UX — 2026-10-26
+
+The preview chart and transport now lead the session detail. Four wrapped
+chart choices replace a horizontally hidden Harmonics tab; a Tools sheet
+contains the musician utilities and a distinct advanced YIN/SWIPE' chart.
+The ordinary spectral-drone preview keeps its own viewport and meaning even
+when experimental comparison is enabled. The diagnostic chart can still open
+the existing full-screen viewer with experimental layers. The bottom section
+bar is omitted inside session detail to preserve room on compact screens; Back returns to
+the saved-session library. Landscape puts transport beside the chart.
+
+Focused JVM, static/resource, APK, and emulator checks passed as recorded in
+`docs/VALIDATION.md`. Evidence is synthetic and remains in ignored local
+directories. README screenshot replacement remains a separate follow-up.
