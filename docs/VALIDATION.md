@@ -1765,3 +1765,20 @@ active wide capture in landscape, session chart, spectrogram, and legend.
 The synthetic chart shows independent fundamental/component labels and a real
 gap; no source values were altered by this UI continuation. Manual TalkBack
 speech/focus order and Samsung One UI launcher masking remain unverified.
+
+## Codex workflow instructions — 2026-10-26
+
+This instruction-only change replaced the 227-line root `AGENTS.md` with a
+39-line active policy and reduced the repository-local `ub-mode` skill from
+185 to 27 lines. Historical release notes remain in Git history and the
+existing validation/work logs. The current instructions select checks by task
+risk, reuse valid evidence, and reserve full emulator suites for relevant broad
+or release-critical changes. `.github/workflows/android.yml` compiles the
+instrumentation APK but does not run instrumentation tests.
+
+Validation: reviewed the two instruction diffs and staged paths; checked
+Markdown links, skill front matter, required safety/Git rules, and
+`git diff --check`. No application code, Android resources, or CI workflow
+changed. No JVM, emulator, or APK build was run for this instruction-only edit.
+Instruction size was measured in lines; token savings and future tool-call
+reductions have not been measured in real Codex sessions.

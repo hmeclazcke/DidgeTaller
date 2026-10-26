@@ -656,3 +656,12 @@ documentation records the result without publishing private audio or plots.
   documentation commit, safe fast-forward push, CI and separately verified
   Samsung update remain pending. The phone has not yet been accessed in this
   iteration.
+
+## Codex workflow policy — 2026-10-26
+
+The root agent file previously combined current rules with obsolete release
+instructions and required broad context reads/builds even for small changes.
+The local engineering skill also made red-first TDD and optional analysis feel
+unconditional. Both now use progressive disclosure and risk-based validation.
+Privacy, Samsung safety, explicit Git staging/identity, honest test reporting,
+and small root-cause fixes remain mandatory. No application behavior changed.
