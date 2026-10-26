@@ -1,6 +1,44 @@
 # Pitch estimation: engineering decision
 
-## Current saved-session display: independent evidence and current YIN replay
+## Musician-facing saved sessions (Musical Experience 4.0)
+
+The ordinary saved-session chart now presents one measured quantity per
+instrument. For didgeridoo, **Drone** is the existing supported low-frequency
+spectral component from the source WAV. It is a measured partial, not a verified
+lip-oscillation frequency or a confirmed musical note. A window without direct
+spectral and neighboring-window support remains a gap. The chart never fills it
+with YIN, SWIPE', an average, a previous value, or interpolation. The original
+YIN and SWIPE' estimates remain accessible in Advanced diagnostics.
+
+Native American flute retains its accepted pitch readings and note-oriented
+presentation. The didgeridoo component policy is not applied to flute audio.
+The Library miniature, session detail, and fullscreen view consume the same
+`MusicalTrace` series and use the same whole-session time and frequency bounds
+until the user explicitly zooms or pans. Component results are computed off the
+UI thread and stored only as a versioned, SHA-keyed regenerable cache. Original
+WAV bytes, recorded readings, session metadata, and preferences are unchanged.
+
+A separately marked orange high-register **candidate** can appear when two
+coherent, high-confidence historical YIN readings support a short event above
+the current component register. This marker is not joined to the Drone line,
+does not claim a toot, and does not set the Drone axis scale. Isolated or weak
+high readings do not create it. The original values remain inspectable in
+Advanced diagnostics. A true toot may still be absent from the spectral trace
+if the conservative component tracker cannot support it; no automatic toot
+detector is claimed.
+
+On the protected four-section recording, the supported component at about
+30.81 s remains visible near 65.03 Hz during the second vocalization. The
+older ~35 Hz YIN periodicity and weak-signal tail reading are not mixed into
+the musician-facing component line. Their evidence is retained for inspection.
+The earlier [component validation results](#earlier-display-independent-evidence-and-current-yin-replay)
+describe observed acoustic support, not physical F0 accuracy.
+
+## Earlier display: independent evidence and current YIN replay
+
+The following section records the prior two-layer UI and its measurements. Its
+Fundamental / Component / Both selector has been replaced in the ordinary
+session view by the single-trace presentation above.
 
 The previous component rule rejected a directly measurable low spectral line
 whenever a strong peak lay near a half-integer multiple. In the protected

@@ -630,3 +630,29 @@ documentation records the result without publishing private audio or plots.
   remote CI success, and device integrity checks. No production pitch estimator,
   private recording, Samsung data, or physical device was touched during this
   local phase.
+
+## Musical Experience 4.0 — in progress, 2026-10-25
+
+- Started from clean `main`/`origin/main` at `005b296`. Preserved all historical
+  recordings, detector implementations, saved readings, and the new launcher.
+- Established one musician-facing saved-session quantity per instrument:
+  supported spectral drone component for didgeridoo, accepted YIN pitch for
+  Native American flute. The Library card, detail and fullscreen use the same
+  `MusicalTrace`; the three-way ordinary-session selector is removed. Existing
+  YIN/SWIPE' comparisons remain in Advanced diagnostics.
+- The private 15:27 four-section WAV was checked in an emulator. Card and
+  detail use identical `PlotWindow` bounds; 30.73 s has supported component
+  evidence. The historical low YIN candidates are not mixed into the main
+  component curve. Screenshots and full logs are private under ignored
+  `checkpoints/experiments/musical-experience-4/`.
+- JVM suite: 183 tests, 0 failures, 8 skipped. Gradle coverage, Detekt,
+  lint, debug APK and app-test APK completed. One complete emulator run finished
+  104/105 with an asynchronous test cursor race; the corrected case passed
+  independently. A further run stopped at the rotation case after 103 passes;
+  that case also passed independently. The user waived another complete run
+  for this delivery. Do not report 105/105.
+- The focused implementation and test commit is `9b789ba`. Staged privacy
+  review found no private audio, screenshots, secrets or user paths. The
+  documentation commit, safe fast-forward push, CI and separately verified
+  Samsung update remain pending. The phone has not yet been accessed in this
+  iteration.

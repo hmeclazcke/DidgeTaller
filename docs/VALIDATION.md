@@ -1,3 +1,41 @@
+## Musical Experience 4.0 — 2026-10-26
+
+Baseline: clean `main`/`origin/main` at `005b296`. The old Library miniature
+used historical saved YIN points, while session detail could display current
+WAV replay plus a separate spectral component. Their incompatible data sources
+and scales produced different shapes for the same recording. The musician-facing
+chart now uses one `MusicalTrace` per instrument: supported spectral partials
+for didgeridoo, accepted pitch for Native American flute. Library, detail and
+fullscreen consume the same source series and whole-session bounds. A gap is
+retained when the chosen measurement has no support. Historical YIN and SWIPE'
+remain in Advanced diagnostics; coherent higher-register historical readings
+are separate candidate markers and never joined into the main line.
+
+- `:app:testDebugUnitTest :app:jacocoDebugUnitTestReport detekt
+  detektComplexity :app:lintDebug :app:assembleDebug
+  :app:assembleDebugAndroidTest` passed: 183 JVM tests, 0 failures, 8 skipped.
+  JaCoCo HTML/XML, Detekt and lint reports were generated. Detekt is
+  informational and lint reported 51 warnings plus 10 hints; this is not a
+  claim of zero static-analysis findings.
+- `python tools/check_localization.py` passed: 548 strings, 5 plurals and 2
+  arrays with matching English/Spanish resources and positional formats.
+- On an API 37 emulator, a focused private-fixture test confirmed identical
+  `PlotWindow` bounds in Library, detail and fullscreen, a supported measured
+  component near 30.73 s, and a playback cursor aligned within 500 ms of the
+  requested position. Original WAV bytes and stored historical readings were
+  unchanged. First card availability for a 39.96 s recording was 3,148 ms
+  including cold analysis and UI delivery (214 component windows); this is one
+  emulator observation, not a general performance benchmark.
+- Inspected before/after and current screenshots are in ignored
+  `checkpoints/experiments/musical-experience-4/`. A complete 105-case
+  instrumentation run finished 104/105; the one failure was a test that read
+  the chart cursor before asynchronous `MediaPlayer` preparation. The test now
+  waits for the player and rendered cursor, and passed independently. A later
+  full run stopped in the rotation case after 103 passing cases; that case
+  passed independently. The user explicitly waived completion of another full
+  instrumentation run for this delivery. **No final 105/105 result is claimed.**
+  The physical Samsung has not been touched in this iteration.
+
 ## Application-wide UX/UI audit — 2026-10-24
 
 Baseline: clean `514f3c4`, with `origin/main` aligned. No physical Samsung,
