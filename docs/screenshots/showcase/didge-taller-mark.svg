@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 288" role="img" aria-labelledby="title">
+  <title id="title">Didge Taller icon</title>
+  <circle cx="144" cy="144" r="144" fill="#175A52"/>
+  <g transform="translate(144 144) scale(1.12) translate(-144 -144)">
+    <path fill="#E8BD87" d="M91,83 Q97,77 105,79 L145,158 Q154,174 169,185 Q169,195 156,202 Q137,197 130,179 L91,91 Q89,87 91,83 Z"/>
+    <path fill="#B17B50" d="M99,83 L141,173 Q148,190 160,198 L156,202 Q137,197 130,179 L91,91 Q89,87 91,83 Q95,81 99,83 Z"/>
+    <path fill="#0C1519" d="M145,193 Q153,185 164,185 Q168,190 158,198 Q150,197 145,193 Z"/>
+    <path fill="none" stroke="#F8DFC0" stroke-width="3" stroke-linecap="round" d="M96,85 L133,164"/>
+    <path fill="none" stroke="#A5EED0" stroke-width="6" stroke-linecap="round" d="M177,164 Q187,176 182,190 M190,149 Q210,171 200,197 M202,134 Q229,164 218,200"/>
+  </g>
+</svg>

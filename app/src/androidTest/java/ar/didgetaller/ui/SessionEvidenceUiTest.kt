@@ -66,6 +66,25 @@ class SessionEvidenceUiTest {
         File(dir,"${args.getString("evidenceLabel") ?: "synthetic"}-$name.png").outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}
         bitmap.recycle()
     }
+    @Test fun readmeShowcaseFromSyntheticWav(){
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithTag("library-list").assertIsDisplayed()
+        screenshot("library")
+        compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
+        compose.waitUntil(20000){vm.musicalTrace(item)!=null}
+        compose.onNodeWithTag("time-chart").assertIsDisplayed()
+        screenshot("session")
+        compose.onNodeWithTag("plot-tab-spectrogram").performScrollTo().performClick()
+        compose.waitUntil(20000){vm.workspace.state.bitmap!=null && !vm.workspace.state.loading}
+        compose.onNodeWithTag("time-chart").assertIsDisplayed()
+        screenshot("spectrogram")
+        compose.onNodeWithText(uiText(R.string.ui_analyze_recording)).performScrollTo().performClick()
+        compose.waitUntil(30000){vm.recordingAnalysis.result!=null || vm.recordingAnalysis.error!=null}
+        assertNull(vm.recordingAnalysis.error)
+        compose.onNodeWithTag("plot-tab-spectrum").performScrollTo().performClick()
+        compose.onNodeWithTag("spectrum-chart").assertIsDisplayed()
+        screenshot("harmonics")
+    }
     @Test fun captureAndPreserveOriginals(){
         val store=RecordingStore(app);val original=store.file(item.id).readBytes()
         val index=app.getSharedPreferences("local_data",0).all.toMap()

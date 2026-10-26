@@ -1834,3 +1834,20 @@ playback tests passed, including a 360 dp Spanish layout with 1.5x font.
 Rendered English portrait, Spanish compact, and verified landscape screenshots
 were inspected under ignored `checkpoints/compact-tabs-evidence/`. No Samsung
 test or installation was performed for this change.
+
+## English README showcase — 2026-10-26
+
+The README now uses four full-resolution, linked emulator screenshots instead
+of the former four-column thumbnail table. A fifth Library capture is linked
+separately. Android reported the app locale as `en`; all five rendered PNGs
+were opened and checked for English UI, meaningful chart content, and readable
+labels. The emulator ran at 1080 x 2400, density 420, font scale 1.0 with the
+`81e33cb` debug APK. A locally generated 18-second synthetic WAV went through
+the existing session test pipeline; the live meter capture used deterministic
+PCM through its existing reading callback. Only focused capture tests ran:
+`SessionEvidenceUiTest.readmeShowcaseFromSyntheticWav` and
+`RecoveryUiTest.controlledPcmReachesLiveMeterAndProfilesResetWithoutGraphFiltering`.
+The Android test APK compiled; no app build, acoustic benchmark, or Samsung
+operation was needed. Sources and capture conditions are recorded in
+`docs/screenshots/showcase/README.md`; the WAV remains ignored and local.
+README links, image presence, PNG metadata, and staged privacy were checked.

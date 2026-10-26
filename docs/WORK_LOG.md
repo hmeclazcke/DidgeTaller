@@ -680,3 +680,13 @@ the saved-session library. Landscape puts transport beside the chart.
 Focused JVM, static/resource, APK, and emulator checks passed as recorded in
 `docs/VALIDATION.md`. Evidence is synthetic and remains in ignored local
 directories. README screenshot replacement remains a separate follow-up.
+
+## README showcase — 2026-10-26
+
+Replaced the small mixed-language screenshot table with a two-column visual
+showcase of the accepted session UX and related measurement views. Four fresh
+English app captures are featured; a Library preview is linked. The existing
+launcher identity was transcribed from its vector paths into a standalone SVG.
+The README now distinguishes the ordinary supported spectral drone component
+from live YIN readings and advanced YIN/SWIPE' diagnostics. Production app
+code and historical screenshot evidence remain unchanged.
