@@ -1823,3 +1823,14 @@ No full instrumentation suite or physical acoustic validation was run for this
 focused UI change. CI compiles Android instrumentation tests but does not run
 them. Samsung installation and post-install integrity are separate pending
 steps after the push and CI result.
+
+## Compact saved-session chart tabs — 2026-10-26
+
+Restored the Material 3 scrollable tab row in place of wrapping filter chips.
+The tab row stays on one line and scrolls to the selected chart.
+`:app:testDebugUnitTest`, `:app:assembleDebug`, and
+`:app:assembleDebugAndroidTest` passed. Emulator-only focused navigation and
+playback tests passed, including a 360 dp Spanish layout with 1.5x font.
+Rendered English portrait, Spanish compact, and verified landscape screenshots
+were inspected under ignored `checkpoints/compact-tabs-evidence/`. No Samsung
+test or installation was performed for this change.

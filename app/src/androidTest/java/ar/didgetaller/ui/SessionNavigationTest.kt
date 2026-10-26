@@ -221,6 +221,21 @@ class SessionNavigationTest {
         compose.onNodeWithText(uiText(R.string.ui_pause)).performClick()
     }
 
+    @Test fun chartTabsStayOnOneRowAndScrollToSelection() {
+        compose.onNodeWithTag("session-${session.id}").performClick()
+        val tabs = listOf("pitch", "spectrogram", "wave", "spectrum")
+        val rowHeight=compose.onNodeWithTag("session-chart-tabs").fetchSemanticsNode().boundsInRoot.height
+        val density=compose.activity.resources.displayMetrics.density
+        assertTrue("Chart navigation must occupy one compact row",rowHeight/density<=72f)
+        compose.onNodeWithTag("plot-tab-pitch").assertIsSelected()
+        tabs.drop(1).forEach { tab ->
+            compose.onNodeWithTag("plot-tab-$tab").performScrollTo().performClick().assertIsSelected().assertIsDisplayed()
+        }
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick().assertIsSelected()
+        compose.runOnIdle { vm.preview(session.id).plot=AcousticPlot.SPECTRUM }
+        compose.onNodeWithTag("plot-tab-spectrum").assertIsSelected().assertIsDisplayed()
+    }
+
     @Test fun systemBackPopsDetailPreservesScrollAndStopsPlayback() {
         val offset = scrollOffset()
         assertTrue(offset > 0)

@@ -75,11 +75,12 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
             Icon(ViewerIcons.Expand,stringResource(R.string.ui_full_screen))
         }
     }) {
-        FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(0.dp)) {
-            AcousticPlot.entries.forEach {kind->FilterChip(selected=s.plot==kind,
+        ScrollableTabRow(selectedTabIndex=s.plot.ordinal,edgePadding=0.dp,
+            modifier=Modifier.testTag("session-chart-tabs")) {
+            AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,
                 onClick={s.plot=kind;s.inspected=null;scope.launch {chartRequester.bringIntoView()}},
                 modifier=Modifier.testTag("plot-tab-${kind.name.lowercase()}"),
-                label={Text(if(kind==AcousticPlot.WAVE)stringResource(R.string.session_wave_label)
+                text={Text(if(kind==AcousticPlot.WAVE)stringResource(R.string.session_wave_label)
                     else context.plotLabel(kind,item.instrument),maxLines=1)})}
         }
         if(landscape) Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {

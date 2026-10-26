@@ -37,6 +37,10 @@ class UIAuditTest {
     private val prefix get()=args.getString("auditPrefix") ?: "v31-audit"
     @Before fun setup(){
         assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        if(args.getString("auditOrientation")=="landscape") {
+            compose.runOnUiThread { compose.activity.requestedOrientation=android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
+            compose.waitUntil(5000) { compose.activity.resources.configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE }
+        }
         application=AuditApplication(InstrumentationRegistry.getInstrumentation().targetContext)
         application.clean()
         val store=RecordingStore(application)
@@ -188,6 +192,12 @@ class UIAuditTest {
         compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("diagnostic-time-chart").performScrollTo().assertIsDisplayed()
         shot("advanced",nativeWindow=true)
+    }
+    @Test fun compactChartTabsScreenshot(){
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
+        compose.onNodeWithTag("time-chart").assertIsDisplayed()
+        shot("chart-tabs")
     }
     private fun graphInventory(){
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick();shot("visor-fundamental")
