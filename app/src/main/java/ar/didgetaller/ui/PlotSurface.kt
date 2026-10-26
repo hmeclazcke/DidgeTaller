@@ -67,7 +67,7 @@ internal fun placeAxisLabels(ticks:List<Double>,window:AxisWindow,width:Float,ga
 @Composable
 internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotViewport,points:List<SessionAnalysis.Point>,
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
-    swipe:SwipeCurve?=null,
+    swipe:SwipeCurve?=null,diagnostic:Boolean=false,
     musicianTrace:MusicalTrace?=null,
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
@@ -171,8 +171,8 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
             }
         }
     }
-    Canvas(modifier.background(palette).then(gesture).testTag(if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
-        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
+    Canvas(modifier.background(palette).then(gesture).testTag(if(diagnostic)"diagnostic-time-chart" else if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
+        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(diagnostic)context.getString(R.string.diagnostic_chart_accessibility) else if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
             this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
             this[PlotPlaybackMs]=cursor

@@ -235,7 +235,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         if(item.instrument!=InstrumentProfile.DIDGERIDOO)return
         swipeJob?.cancel()
         val range=if(enabled)AxisWindow(item.instrument.minHz*.95,item.instrument.initialMaxHz*1.05) else null
-        explorer(item.id).configureComparisonRange(range);preview(item.id).configureComparisonRange(range)
+        explorer(item.id).configureComparisonRange(range)
         val cached=swipeComparison.takeIf {it.sessionId==item.id}?.curve
         swipeComparison=SwipeComparisonState(item.id,enabled,enabled && cached==null,curve=cached)
         if(!enabled || cached!=null)return
@@ -258,7 +258,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     }
     private fun clearSwipeComparison(){
         swipeJob?.cancel()
-        swipeComparison.sessionId?.let {id->explorers[id]?.configureComparisonRange(null);previews[id]?.configureComparisonRange(null)}
+        swipeComparison.sessionId?.let {id->explorers[id]?.configureComparisonRange(null)}
         swipeComparison=SwipeComparisonState()
     }
 

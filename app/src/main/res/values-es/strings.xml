@@ -208,7 +208,8 @@
     <string name="ui_energy_in_candidate_bands_2_bins">"Energía en bandas de candidatos (±2 bins): %1$s%%"</string>
     <string name="ui_db_relative_to_the_highest_spectral_peak_without_sound_pressure_calibration_pe">"dB relativos al pico mayor del espectro, sin calibración de presión sonora. La periodicidad es un índice del detector, no una probabilidad. El micrófono del teléfono puede alterar las intensidades."</string>
     <string name="ui_derived_results_are_kept_in_a_regenerable_cache_the_wav_and_original_summary_r">"Los resultados derivados se conservan en una caché regenerable; el WAV y el resumen original no cambian. Los picos no identifican resonancias del conducto ni toots."</string>
-    <string name="ui_explore_audio">"Explorar el audio"</string>
+    <string name="ui_explore_audio">"Audio"</string>
+    <string name="session_wave_label">Onda</string>
     <string name="ui_full_screen">"Pantalla completa"</string>
     <string name="ui_frequency_in_hz_green_stable_yellow_variation_orange_review">"Frecuencia en Hz · Verde: estable · Amarillo: variación · Naranja: revisar"</string>
     <string name="ui_tap_analyze_recording_to_obtain_the_actual_spectrum">"Tocá «Analizar grabación» para obtener el espectro real."</string>
@@ -540,7 +541,7 @@
     <string name="swipe_missing">sin estimación</string>
     <string name="advanced_diagnostics">Diagnósticos avanzados</string>
     <string name="advanced_diagnostics_hide">Ocultar diagnósticos avanzados</string>
-    <string name="advanced_diagnostics_help">Compará estimaciones experimentales en Fundamental o inspeccioná la ventana de audio seleccionada. Las mediciones guardadas se conservan.</string>
+    <string name="advanced_diagnostics_help">Este gráfico separado muestra la altura estimada por YIN; SWIPE′ puede sumar evidencia experimental. El dron y las lecturas guardadas no cambian.</string>
     <string name="playback_seek_label">Posición de reproducción</string>
     <string name="drone_component_estimated">Componente del dron (estimada)</string>
     <string name="drone_component_explanation">Solo evidencia espectral; no confirma una nota musical.</string>
@@ -553,7 +554,7 @@
     <string name="drone_reason_no_peak">sin pico grave destacado</string>
     <string name="drone_reason_no_family">familia armónica insuficiente</string>
     <string name="drone_reason_temporal">sin respaldo en ventanas vecinas</string>
-    <string name="pitch_yin_layer">YIN: fundamental estimada · línea continua</string>
+    <string name="pitch_yin_layer">YIN: fundamental estimada (Hz) · línea continua</string>
     <string name="pitch_source_current_replay">YIN recalculado desde este WAV con el detector actual. Las lecturas originales siguen disponibles en Diagnósticos avanzados.</string>
     <string name="pitch_source_original">Se muestran las lecturas originales mientras el análisis actual del WAV está pendiente o no disponible.</string>
     <string name="pitch_original_diagnostic">Lectura original guardada cerca de %1$s: %2$s · periodicidad %3$.3f (el tiempo de captura es aproximado)</string>
@@ -565,6 +566,9 @@
     <string name="pitch_replay_other_rejection">rechazada por el detector actual</string>
     <string name="musical_drone_title">Dron</string>
     <string name="musical_drone_description">Componente medido del sonido · Hz; no confirma la fundamental.</string>
+    <string name="musical_drone_axis_title">Componente del dron (Hz)</string>
+    <string name="spectrum_axis_title">Frecuencia (Hz) · Nivel relativo (dB)</string>
+    <string name="diagnostic_chart_accessibility">La evidencia técnica sigue el cursor de reproducción. Seleccioná un tiempo en el gráfico común para inspeccionar sus lecturas guardadas.</string>
     <string name="musical_trace_loading">Analizando grabación…</string>
     <string name="musical_trace_unavailable">Sin lectura respaldada en esta grabación</string>
     <string name="musical_component_frequency">Componente medido: %1$s</string>

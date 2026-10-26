@@ -134,22 +134,30 @@ class SessionNavigationTest {
         }
     }
 
-    @Test fun advancedComparisonIsExplicitAndRemainsInspectableWhenCollapsed() {
+    @Test fun toolsKeepTheOrdinaryDroneSeparateFromAdvancedComparison() {
         val original = RecordingStore(application).file(session.id).readBytes()
         compose.onNodeWithTag("session-${session.id}").performClick()
         compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
+        compose.waitUntil(15000){vm.musicalTrace(session)!=null}
+        val ordinary=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotDroneComponentCount]
+        assertEquals(0,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotSwipeCount])
+        compose.onNodeWithTag("session-tools").performClick()
+        compose.onNodeWithText(uiText(R.string.ui_scales_and_ranges)).assertExists()
+        compose.onNodeWithText(uiText(R.string.ui_selection_and_excerpts)).assertExists()
+        compose.onNodeWithText(uiText(R.string.ui_markers)).assertExists()
         compose.runOnIdle { assertFalse(vm.swipeComparison.enabled); assertFalse(vm.swipeComparison.running) }
         compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("diagnostic-time-chart").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo()
             .assertContentDescriptionEquals(uiText(R.string.swipe_compare)).performClick()
         compose.waitUntil(15000) { vm.swipeComparison.curve != null }
+        assertEquals(ordinary,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotDroneComponentCount])
+        assertTrue(compose.onNodeWithTag("diagnostic-time-chart").fetchSemanticsNode().config[PlotSwipeCount]>0)
         compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
-        compose.onNodeWithTag("swipe-legend").assertExists()
-        compose.runOnIdle { assertTrue(vm.swipeComparison.enabled) }
-        compose.onNodeWithTag("advanced-diagnostics-toggle").performClick()
-        compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
+        compose.runOnIdle { assertFalse(vm.swipeComparison.enabled) }
         compose.onNodeWithTag("swipe-legend").assertDoesNotExist()
+        assertEquals(ordinary,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotDroneComponentCount])
         assertArrayEquals(original, RecordingStore(application).file(session.id).readBytes())
     }
 
@@ -234,9 +242,10 @@ class SessionNavigationTest {
         assertReturnedToSameList(offset)
     }
 
-    @Test fun changingSectionReleasesPlaybackAndDoesNotRestoreAnAbandonedDetail() {
+    @Test fun returningToLibraryThenChangingSectionDoesNotRestoreDetail() {
         val offset = scrollOffset()
         openAndPlay()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_measure), useUnmergedTree = true).performClick()
         compose.onNodeWithTag("measure-screen").assertIsDisplayed()
         compose.runOnIdle { assertNull(vm.playingId) }
@@ -382,6 +391,7 @@ class SessionNavigationTest {
         compose.waitUntil(10000){vm.associatedSimulation!=null}
         compose.onNodeWithText(uiText(R.string.ui_simulation_model_resonances),substring=true).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText(uiText(R.string.ui_audio_fundamental, uiText(R.string.ui_session)),substring=true).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("session-tools").performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_markers)).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_mark_possible_toot)).performScrollTo().performClick()
         compose.runOnIdle {assertEquals(1,vm.markers.size);assertEquals("Posible toot",vm.markers.single().type)}

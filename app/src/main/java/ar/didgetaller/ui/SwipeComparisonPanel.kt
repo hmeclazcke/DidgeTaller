@@ -22,15 +22,17 @@ import kotlin.math.abs
 internal val swipeColor = Color(0xFFC9A4FF)
 
 @Composable
-internal fun AdvancedPitchDiagnostics(vm: TallerViewModel, item: RecordingStore.Session, positionMs: Long) {
+internal fun AdvancedPitchDiagnostics(vm: TallerViewModel, item: RecordingStore.Session, positionMs: Long,
+                                      diagnosticPlot: @Composable () -> Unit = {}) {
     var expanded by rememberSaveable(item.id) { mutableStateOf(false) }
-    TextButton(onClick = { expanded = !expanded; if(!expanded) vm.cancelSavedEvidence() },
+    TextButton(onClick = { expanded = !expanded; if(!expanded) {vm.cancelSavedEvidence();vm.setSwipeComparison(item,false)} },
         modifier = Modifier.testTag("advanced-diagnostics-toggle")) {
         Text(stringResource(if(expanded) R.string.advanced_diagnostics_hide else R.string.advanced_diagnostics))
     }
     if(expanded) Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         LaunchedEffect(item.id) { vm.analyzeSavedYin(item); vm.analyzeDroneComponent(item) }
         Text(stringResource(R.string.advanced_diagnostics_help), style = MaterialTheme.typography.bodySmall)
+        diagnosticPlot()
         if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
             SwipeComparisonPanel(vm, item, showLegend = false)
         if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)

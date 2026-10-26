@@ -70,9 +70,10 @@ internal fun playbackCursor(vm:TallerViewModel,item:RecordingStore.Session):Long
 /** Stable session owner supplies both preview and immersive adapters. No WAV in camera state. */
 @Composable
 internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,modifier:Modifier,
-                         immersive:Boolean=false,onExpand:()->Unit={}) {
+                         immersive:Boolean=false,onExpand:()->Unit={},
+                         stateOverride:ExplorerState?=null,diagnosticMode:Boolean=false) {
     val context = androidx.compose.ui.platform.LocalContext.current
-    val s=if(immersive)vm.explorer(item.id) else vm.preview(item.id);val visual=vm.workspace.state
+    val s=stateOverride ?: if(immersive)vm.explorer(item.id) else vm.preview(item.id);val visual=vm.workspace.state
     val language=LocalConfiguration.current.locales.toLanguageTags()
     LaunchedEffect(s,language){
         if(s.inspectionLanguage!=null && s.inspectionLanguage!=language)s.inspected=null
@@ -87,7 +88,7 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     // Layer choice changes only the viewport evidence, never the stored YIN series.
     val available=vm.musicalTrace(item)
     val musician=available ?: remember(item.id){MusicalTrace.unavailable(item.instrument,item.durationMs)}
-    val diagnostic=vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled
+    val diagnostic=diagnosticMode || (immersive && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled)
     val scalePoints=remember(points,musician,diagnostic){if(diagnostic)points else musicianPlotPoints(musician)}
     SideEffect {if(s.musicianTrace!==musician.takeUnless {diagnostic})s.musicianTrace=musician.takeUnless {diagnostic}}
     val camera=s.camera(duration,visual.rate,scalePoints)
@@ -108,7 +109,7 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
         }
     }
     PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,
-        swipe=swipe,
+        swipe=if(diagnostic)swipe else null,diagnostic=diagnosticMode,
         musicianTrace=if(diagnostic)null else musician,onPreview=onExpand,
         onReset={s.reset(duration,visual.rate,scalePoints)},onTransform={x,y,zx,zy,dx,dy->s.transform(duration,visual.rate,scalePoints,x,y,zx,zy,dx,dy)},
         onPoint={x,y,inspect ->
@@ -146,7 +147,7 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                             "${seconds(time)} · ${hzLabel(y)} · "+if(ref>1e-16)context.getString(R.string.ui_db_rel_stft_cell, 10*log10(max(1e-30,power)/ref)) else context.getString(R.string.ui_no_significant_energy)
                         }else context.getString(R.string.ui_no_calculated_cell, seconds(time), hzLabel(y))}
                 }
-                if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.enabled){
+                if(s.plot==AcousticPlot.PITCH && diagnostic && vm.swipeComparison.enabled){
                     val estimate=swipe?.nearest(time)?.hz
                     s.inspected=s.inspected.orEmpty()+"\n"+context.getString(R.string.swipe_cursor,estimate?.let(::hzLabel) ?: context.getString(R.string.swipe_missing))
                 }

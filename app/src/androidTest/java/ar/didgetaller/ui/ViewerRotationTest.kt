@@ -91,4 +91,24 @@ class ViewerRotationTest {
         compose.runOnIdle {assertFalse(vm.permissionDenied);assertFalse(vm.listening);assertEquals(ar.didgetaller.SessionPhase.IDLE,vm.sessionPhase)}
         compose.onNodeWithText(uiText(R.string.ui_start_measurement)).assertIsDisplayed()
     }
+    @Test fun sessionChartSelectionAndPlaybackPositionSurviveRotation(){
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
+        compose.onNodeWithTag("plot-tab-spectrum").performClick()
+        compose.runOnIdle {assertEquals(AcousticPlot.SPECTRUM,vm.preview(item.id).plot)}
+        compose.onNodeWithText(uiText(R.string.ui_play)).performClick()
+        compose.waitUntil(5000){vm.playingId==item.id && vm.playbackPositionMs()>200}
+        compose.onNodeWithText(uiText(R.string.ui_pause)).performClick()
+        compose.runOnIdle {vm.seekPlayback(item,4000)}
+        val position=vm.playbackPositionMs()
+        compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_LANDSCAPE}
+        compose.onNodeWithTag("spectrum-chart").assertIsDisplayed()
+        compose.runOnIdle {
+            assertEquals(AcousticPlot.SPECTRUM,vm.preview(item.id).plot)
+            assertEquals(item.id,vm.playingId)
+            assertTrue(vm.playbackPaused)
+            assertEquals(position.toDouble(),vm.playbackPositionMs().toDouble(),80.0)
+        }
+    }
 }

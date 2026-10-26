@@ -69,7 +69,8 @@ class RecoveryUiTest {
             DeterministicPitchWav.Section(12500,18000,70.0)),raw)
         show();compose.runOnIdle {vm.renameSession(item,"Variación y periodicidad · serie sintética")}
         library();capture("colours-library");open(item)
-        val heading=compose.onNodeWithText(uiText(R.string.ui_explore_audio)).performScrollTo().fetchSemanticsNode()
+        val heading=compose.onAllNodesWithText(uiText(R.string.ui_explore_audio)).onFirst()
+            .performScrollTo().fetchSemanticsNode()
         assertEquals(heading.size.height.toFloat(),heading.boundsInRoot.height,1f)
         capture("session-heading")
         compose.onNodeWithTag("time-chart").performScrollTo();capture("colours-detail")

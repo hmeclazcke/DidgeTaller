@@ -154,7 +154,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                             },textAlign=TextAlign.Center,fontWeight=FontWeight.Bold,fontSize=17.sp)
                         }
                     }
-                    if(!vm.fullScreen)NavigationBar(modifier=Modifier.navigationBarsPadding(),containerColor=cardColor,tonalElevation=0.dp) {
+                    if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding(),containerColor=cardColor,tonalElevation=0.dp) {
                         sections.forEachIndexed { idx,title ->
                             NavigationBarItem(
                                 selected=section==idx,
@@ -821,6 +821,7 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
     val cursor=playbackCursor(vm,item)
     val musician=vm.musicalTrace(item)
     var more by rememberSaveable(item.id){mutableStateOf(false)}
+    SessionExplorer(vm,item,cursor,onExpand) { SessionTransport(vm,item,cursor) }
     Panel {
         Text(context.sessionName(item),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         Text(if(item.instrument==InstrumentProfile.DIDGERIDOO)stringResource(R.string.musical_drone_title) else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_note_not_determined),style=if(item.instrument==InstrumentProfile.DIDGERIDOO)MaterialTheme.typography.titleMedium else MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)
@@ -840,7 +841,6 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
             } ?: Text(if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_there_are_different_notes_with_no_predominant_note_explore_the_time_series) else stringResource(R.string.ui_not_enough_associated_readings_you_can_analyze_the_wav_without_modifying_it),style=MaterialTheme.typography.bodySmall)
         }
     }
-    SessionExplorer(vm,item,cursor,onExpand) { SessionTransport(vm,item,cursor) }
     Panel(context.getString(R.string.ui_audio)) {
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             TextButton(onClick={export(item)}) {Text(stringResource(R.string.ui_export_wav))}

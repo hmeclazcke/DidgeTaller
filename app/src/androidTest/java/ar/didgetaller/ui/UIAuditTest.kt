@@ -61,6 +61,7 @@ class UIAuditTest {
         val directory=File(application.getExternalFilesDir(null),"ui-audit").apply {mkdirs()}
         if(nativeWindow){
             // A modal sheet owns a second Compose root; capture the actual window instead.
+            Thread.sleep(350) // Wait for the sheet's window animation before visual inspection.
             val bitmap=InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
             File(directory,"$prefix-$name.png").outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}
             bitmap.recycle()
@@ -144,6 +145,7 @@ class UIAuditTest {
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null && !vm.workspace.state.loading}
         compose.onNodeWithTag("time-chart").performScrollTo();shot("spectrogram-transport")
         compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
+        compose.onNodeWithTag("session-tools").performScrollTo().performClick()
         compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo()
             .assertContentDescriptionEquals(uiText(R.string.swipe_compare))
@@ -153,21 +155,39 @@ class UIAuditTest {
             bounds.width+1>=48*density && bounds.height+1>=48*density)
         compose.onNodeWithTag("swipe-compare-toggle").performClick()
         compose.waitUntil(20000){vm.swipeComparison.curve!=null}
-        shot("advanced-comparison")
+        shot("advanced-comparison",nativeWindow=true)
         compose.onNodeWithTag("saved-evidence-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("saved-evidence-inspect").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
-        compose.onNodeWithTag("time-chart").performScrollTo();shot("comparison-legend")
-        compose.onNodeWithTag("expand-plot").performScrollTo().performClick();shot("comparison-viewer")
-        compose.onNodeWithTag("viewer-tools").performClick()
-        compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().assertIsDisplayed()
-        shot("advanced-viewer",nativeWindow=true)
+        compose.onNodeWithTag("diagnostic-time-chart").performScrollTo().assertIsDisplayed()
+        shot("advanced-chart",nativeWindow=true)
     }
 
     @Test fun chartsInventory(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         graphInventory()
+    }
+    @Test fun sessionUxScreenshots(){
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
+        compose.onNodeWithTag("time-chart").assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_play)).assertIsDisplayed()
+        shot("session-portrait")
+        compose.onNodeWithText(uiText(R.string.ui_analyze_recording)).performScrollTo().performClick()
+        compose.waitUntil(20000){vm.recordingAnalysis.result!=null || vm.recordingAnalysis.error!=null}
+        assertNull(vm.recordingAnalysis.error)
+        compose.onNodeWithTag("plot-tab-spectrum").performScrollTo().performClick()
+        compose.runOnIdle {assertEquals(AcousticPlot.SPECTRUM,vm.preview(session.id).plot)}
+        compose.onNodeWithTag("spectrum-chart").assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.spectrum_axis_title)).assertExists()
+        shot("harmonics")
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
+        compose.onNodeWithTag("session-tools").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_scales_and_ranges)).assertIsDisplayed()
+        shot("tools",nativeWindow=true)
+        compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
+        compose.onNodeWithTag("diagnostic-time-chart").performScrollTo().assertIsDisplayed()
+        shot("advanced",nativeWindow=true)
     }
     private fun graphInventory(){
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick();shot("visor-fundamental")
@@ -186,10 +206,12 @@ class UIAuditTest {
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         viewerPlot(uiText(R.string.ui_harmonics));shot("visor-armonicos")
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_session)).performClick()
+        compose.onNodeWithTag("session-tools").performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_selection_and_excerpts)).performScrollTo().performClick()
-        compose.onNodeWithTag("selection-mode-2").performScrollTo();shot("marcar-fin")
+        compose.onNodeWithTag("selection-mode-2").performScrollTo();shot("marcar-fin",nativeWindow=true)
         val chip=compose.onNodeWithTag("selection-mode-2").fetchSemanticsNode().boundsInRoot
         assertTrue("Marcar fin debe tener ancho horizontal útil",chip.width>chip.height*1.3)
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_compare_two_sessions)).performScrollTo().performClick();shot("comparar")
     }

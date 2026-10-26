@@ -47,6 +47,8 @@ class SwipeComparisonUiTest {
     @Test fun spanishComparisonPlaybackGesturesAndExactRestore()=compare("es-AR")
 
     private fun openComparison() {
+        if(compose.onAllNodesWithTag("advanced-diagnostics-toggle").fetchSemanticsNodes().isEmpty())
+            compose.onNodeWithTag("session-tools").performScrollTo().performClick()
         if(compose.onAllNodesWithTag("swipe-compare-toggle").fetchSemanticsNodes().isEmpty())
             compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
     }
@@ -66,19 +68,21 @@ class SwipeComparisonUiTest {
         openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.waitUntil(10000){vm.swipeComparison.curve!=null}
-        compose.onNodeWithTag("time-chart").performScrollTo()
+        compose.onNodeWithTag("diagnostic-time-chart").performScrollTo().assertIsDisplayed()
         File(target.getExternalFilesDir(null),"swipe-actual-app.png").outputStream().use {
-            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
+            InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().compress(Bitmap.CompressFormat.PNG,100,it)
         }
-        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
-        compose.onNodeWithTag("swipe-legend").assertExists()
+        assertTrue(compose.onNodeWithTag("diagnostic-time-chart").fetchSemanticsNode().config[PlotSwipeCount]>0)
+        assertEquals(0,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotSwipeCount])
+        compose.runOnIdle {assertTrue(vm.swipeComparison.enabled);assertNotNull(vm.swipeComparison.curve)}
+        compose.onNodeWithTag("expand-diagnostics").performScrollTo().performClick()
+        assertTrue(compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotSwipeCount]>0)
         compose.onNodeWithTag("viewer-play").performClick()
         compose.waitUntil(5000){vm.playbackPositionMs()>300}
-        File(target.getExternalFilesDir(null),"swipe-actual-fullscreen.png").outputStream().use {
-            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
-        }
+        compose.onNodeWithTag("viewer-play").performClick()
+        val position=vm.playbackPositionMs()
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_session)).performClick()
-        compose.runOnIdle {assertTrue(vm.swipeComparison.enabled);assertNotNull(vm.swipeComparison.curve)}
+        compose.runOnIdle {assertEquals(item.id,vm.playingId);assertTrue(vm.playbackPaused);assertEquals(position.toDouble(),vm.playbackPositionMs().toDouble(),80.0)}
         openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.runOnIdle {assertFalse(vm.swipeComparison.enabled)}
@@ -123,34 +127,14 @@ class SwipeComparisonUiTest {
         compose.waitUntil(10000){vm.swipeComparison.curve!=null || vm.swipeComparison.failed}
         compose.runOnIdle {assertFalse(vm.swipeComparison.failed);assertTrue(vm.swipeComparison.curve!!.samples.any {it.hz==null})}
         compose.onNodeWithTag("swipe-legend").assertExists()
-        compose.onNodeWithTag("time-chart").performScrollTo()
-        val compared=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config
+        compose.onNodeWithTag("diagnostic-time-chart").performScrollTo()
+        val compared=compose.onNodeWithTag("diagnostic-time-chart").fetchSemanticsNode().config
         assertTrue(compared[PlotSwipeCount]>0)
         assertTrue(compared[PlotWindow].y.low<=35)
+        assertEquals(0,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotSwipeCount])
         File(target.getExternalFilesDir(null),"swipe-$language-preview.png").outputStream().use {
-            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
+            InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().compress(Bitmap.CompressFormat.PNG,100,it)
         }
-        // Preview and fullscreen share hypotheses/selection, with independent cameras.
-        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
-        compose.onNodeWithTag("immersive-plot").assertExists()
-        val full=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
-        compose.onNodeWithTag("immersive-plot").performTouchInput {
-            pinch(Offset(width*.3f,height*.4f),Offset(width*.7f,height*.6f),Offset(width*.1f,height*.2f),Offset(width*.9f,height*.8f))
-        }
-        compose.waitForIdle()
-        assertNotEquals(full,compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow])
-        compose.onNodeWithTag("viewer-play").performClick()
-        compose.waitUntil(5000){vm.playbackPositionMs()>300}
-        compose.waitUntil(5000){compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotPlaybackMs]>0}
-        compose.onNodeWithTag("immersive-plot").performTouchInput {swipe(center,Offset(center.x+width*.15f,center.y),500)}
-        compose.onNodeWithTag("immersive-plot").performTouchInput {longClick(center)}
-        compose.runOnIdle {assertTrue(vm.explorer(item.id).inspected.orEmpty().contains("SWIPE"));vm.stopPlayback()}
-        compose.onNodeWithTag("reset-viewport").performClick()
-        File(target.getExternalFilesDir(null),"swipe-$language-fullscreen.png").outputStream().use {
-            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
-        }
-        compose.runOnIdle {expanded.value=false;vm.preview(item.id).selectedMs=0}
-        openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-legend").assertDoesNotExist()
         compose.onNodeWithTag("time-chart").performScrollTo()

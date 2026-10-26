@@ -146,6 +146,7 @@ class GraphIntelligenceUiTest {
         assertEquals(42.9,RecordingStore(app).list().first {it.id==c.id}.timeline[25].hz!!,0.0)
         back()
         compose.runOnIdle {vm.preview(c.id).selectedMs=4500}
+        compose.onNodeWithTag("session-tools").performScrollTo().performClick()
         compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("pitch-original-diagnostic").performScrollTo()
             .assertTextContains(hzLabel(42.9),substring=true)

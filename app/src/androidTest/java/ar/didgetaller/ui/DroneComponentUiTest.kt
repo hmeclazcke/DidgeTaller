@@ -261,6 +261,7 @@ class DroneComponentUiTest {
                 compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
             }
             compose.runOnUiThread {expanded.value=false;vm.preview(item.id).selectedMs=2500}
+            compose.onNodeWithTag("session-tools").performScrollTo().performClick()
             compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
             compose.onNodeWithTag("drone-component-diagnostic").assertExists()
             compose.onNodeWithTag("pitch-original-diagnostic").assertExists()

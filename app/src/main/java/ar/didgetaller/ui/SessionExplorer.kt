@@ -4,6 +4,8 @@ import ar.didgetaller.R
 import androidx.compose.ui.res.stringResource
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -13,9 +15,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.audio.VisualRequest
 import ar.didgetaller.core.Music
+import ar.didgetaller.core.AxisWindow
 import ar.didgetaller.core.SpectralPalette
 import ar.didgetaller.data.RecordingStore
 import kotlinx.coroutines.delay
@@ -34,6 +38,7 @@ internal fun LabCard(title:String,action:(@Composable ()->Unit)?=null,content:@C
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,onExpand:(AcousticPlot)->Unit,
                             playbackControls:@Composable ()->Unit) {
@@ -42,37 +47,63 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
     var tools by rememberSaveable(item.id){mutableStateOf(false)}
     var fragments by rememberSaveable(item.id){mutableStateOf(false)}
     var markers by rememberSaveable(item.id){mutableStateOf(false)}
+    var showTools by rememberSaveable(item.id){mutableStateOf(false)}
+    val chartRequester=remember {BringIntoViewRequester()}
+    val scope=rememberCoroutineScope()
     LaunchedEffect(item.id){vm.openTools(item)}
     val musician=vm.musicalTrace(item)
-    LabCard(context.getString(R.string.ui_explore_audio), action={
-        IconButton(onClick={onExpand(s.plot)},modifier=Modifier.testTag("expand-plot")){
-            Icon(ViewerIcons.Expand,stringResource(R.string.ui_full_screen))
-        }
-    }) {
-        ScrollableTabRow(selectedTabIndex=s.plot.ordinal,edgePadding=0.dp){
-            AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind;s.inspected=null},
-                modifier=Modifier.testTag("plot-tab-${kind.name.lowercase()}"),
-                text={Text(context.plotLabel(kind,item.instrument),maxLines=1)})}
-        }
-        if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.enabled){
-            Text(stringResource(R.string.pitch_yin_layer),style=MaterialTheme.typography.labelSmall)
-            SwipeLegend()
-        }
-        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO && !vm.swipeComparison.enabled)
-            Text(stringResource(R.string.musical_drone_description),style=MaterialTheme.typography.labelSmall)
+    val landscape=androidx.compose.ui.platform.LocalConfiguration.current.let {
+        it.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE && it.screenHeightDp<500
+    }
+    @Composable fun chartContent(height:androidx.compose.ui.unit.Dp) {
+        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
+            Text(stringResource(R.string.musical_drone_axis_title),style=MaterialTheme.typography.labelSmall)
+        if(s.plot==AcousticPlot.SPECTRUM)
+            Text(stringResource(R.string.spectrum_axis_title),style=MaterialTheme.typography.labelSmall)
         if(s.plot==AcousticPlot.PITCH && musician==null && !vm.musicalTraceFailed(item.id) &&
             item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
             LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
         if(s.plot==AcousticPlot.PITCH && vm.musicalTraceFailed(item.id))
             Text(stringResource(R.string.musical_trace_unavailable),style=MaterialTheme.typography.bodySmall)
-        playbackControls()
-        SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        Box(Modifier.fillMaxWidth().bringIntoViewRequester(chartRequester)) {
+            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(height),onExpand={onExpand(s.plot)})
+        }
+    }
+    LabCard(context.getString(R.string.ui_explore_audio), action={
+        TextButton(onClick={showTools=true},modifier=Modifier.testTag("session-tools")) {Text(stringResource(R.string.ui_tools))}
+        IconButton(onClick={onExpand(s.plot)},modifier=Modifier.testTag("expand-plot")){
+            Icon(ViewerIcons.Expand,stringResource(R.string.ui_full_screen))
+        }
+    }) {
+        FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(0.dp)) {
+            AcousticPlot.entries.forEach {kind->FilterChip(selected=s.plot==kind,
+                onClick={s.plot=kind;s.inspected=null;scope.launch {chartRequester.bringIntoView()}},
+                modifier=Modifier.testTag("plot-tab-${kind.name.lowercase()}"),
+                label={Text(if(kind==AcousticPlot.WAVE)stringResource(R.string.session_wave_label)
+                    else context.plotLabel(kind,item.instrument),maxLines=1)})}
+        }
+        if(landscape) Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+            Column(Modifier.weight(.42f),verticalArrangement=Arrangement.spacedBy(6.dp)) {playbackControls()}
+            Column(Modifier.weight(.58f),verticalArrangement=Arrangement.spacedBy(6.dp)) {chartContent(160.dp)}
+        } else {
+            playbackControls()
+            chartContent(250.dp)
+        }
+        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
+            Text(stringResource(R.string.musical_drone_description),style=MaterialTheme.typography.labelSmall)
         if(s.plot==AcousticPlot.PITCH && musician?.samples?.none {it.hz!=null}==true)
             Text(stringResource(R.string.musical_trace_unavailable),style=MaterialTheme.typography.bodySmall)
         if(s.plot==AcousticPlot.PITCH && musician?.highRegisterCandidates?.isNotEmpty()==true)
             Text(stringResource(R.string.musical_high_candidate),style=MaterialTheme.typography.labelSmall)
         if(s.plot==AcousticPlot.SPECTRUM && vm.recordingAnalysis.result==null)Text(stringResource(R.string.ui_tap_analyze_recording_to_obtain_the_actual_spectrum),style=MaterialTheme.typography.bodySmall)
         if(s.plot!=AcousticPlot.PITCH)Text((if(s.plot==AcousticPlot.SPECTROGRAM)stringResource(R.string.ui_frequency_in_hz) else "")+stringResource(R.string.ui_tap_the_chart_to_explore_with_zoom_and_pan_along_both_axes),style=MaterialTheme.typography.bodySmall)
+    }
+    if(showTools) ModalBottomSheet(onDismissRequest={showTools=false;vm.setSwipeComparison(item,false)},
+        sheetState=rememberModalBottomSheetState(skipPartiallyExpanded=true),
+        modifier=Modifier.testTag("session-tools-sheet")) {
+        Column(Modifier.fillMaxWidth().heightIn(max=(androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp-48).coerceAtLeast(200).dp)
+            .verticalScroll(rememberScrollState()).padding(horizontal=20.dp,vertical=8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Text(stringResource(R.string.ui_tools),style=MaterialTheme.typography.titleLarge)
         FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
             TextButton(onClick={tools=!tools}){Text(if(tools)stringResource(R.string.ui_hide_scales) else stringResource(R.string.ui_scales_and_ranges))}
             TextButton(onClick={fragments=!fragments}){Text(if(fragments)stringResource(R.string.ui_hide_excerpts) else stringResource(R.string.ui_selection_and_excerpts))}
@@ -80,7 +111,20 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         }
         if(tools)PlotTools(vm,item,s)
         if(fragments)FragmentTools(vm,item,s)
-        AdvancedPitchDiagnostics(vm,item,s.selectedMs)
+        AdvancedPitchDiagnostics(vm,item,s.selectedMs) {
+            val diagnosticState=remember(item.id){ExplorerState(item.instrument)}
+            LaunchedEffect(vm.swipeComparison.enabled) {
+                diagnosticState.configureComparisonRange(if(vm.swipeComparison.enabled)
+                    AxisWindow(item.instrument.minHz*.95,item.instrument.initialMaxHz*1.05) else null)
+            }
+            Text(stringResource(R.string.pitch_yin_layer),style=MaterialTheme.typography.labelSmall)
+            if(vm.swipeComparison.enabled) SwipeLegend()
+            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(220.dp),
+                stateOverride=diagnosticState,diagnosticMode=true)
+            TextButton(onClick={onExpand(AcousticPlot.PITCH)},modifier=Modifier.testTag("expand-diagnostics")) {
+                Text(stringResource(R.string.ui_full_screen))
+            }
+        }
         if(markers){
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
                 TextButton(onClick={vm.addMarker(item,s.selectedMs,"Posible toot")}){Text(stringResource(R.string.ui_mark_possible_toot))}
@@ -91,6 +135,8 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
                 TextButton(onClick={vm.removeMarker(item,m.id)}){Text(stringResource(R.string.ui_remove))}
             }}
             Text(stringResource(R.string.ui_manual_markers_a_strong_harmonic_does_not_establish_a_toot_or_identify_a_vowel),style=MaterialTheme.typography.bodySmall)
+        }
+        Spacer(Modifier.height(24.dp))
         }
     }
     RecordingAnalysisPanel(vm,item)
