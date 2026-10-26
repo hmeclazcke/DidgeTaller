@@ -690,3 +690,10 @@ launcher identity was transcribed from its vector paths into a standalone SVG.
 The README now distinguishes the ordinary supported spectral drone component
 from live YIN readings and advanced YIN/SWIPE' diagnostics. Production app
 code and historical screenshot evidence remain unchanged.
+
+## Spanish README showcase — 2026-10-26
+
+The Spanish README now follows the same hierarchy, two-column gallery, build
+path, and scientific limits as the English README. The Spanish screenshots
+use the same isolated synthetic signal and emulator capture paths. Existing
+English assets and production app code remain unchanged.

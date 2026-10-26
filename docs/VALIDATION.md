@@ -1851,3 +1851,16 @@ The Android test APK compiled; no app build, acoustic benchmark, or Samsung
 operation was needed. Sources and capture conditions are recorded in
 `docs/screenshots/showcase/README.md`; the WAV remains ignored and local.
 README links, image presence, PNG metadata, and staged privacy were checked.
+
+## Spanish README showcase — 2026-10-26
+
+The Spanish README mirrors the English showcase structure and acoustic caveats.
+Five unaltered Spanish screenshots were captured on `emulator-5554` with the
+same `81e33cb` APK and synthetic WAV used for the English gallery. Android
+reported `es-AR`; all five rendered images were visually checked for Spanish
+UI, meaningful graphs, legible axes, and 1080 x 2400 framing. The emulator's
+previous `en` app locale was restored afterward. The focused session showcase
+and controlled-PCM live measurement tests each passed once; no build, full
+suite, physical microphone, or Samsung operation was performed. Capture
+provenance is in `docs/screenshots/showcase-es/README.md`. README links,
+language navigation, original PNG hashes, and staged privacy were checked.
