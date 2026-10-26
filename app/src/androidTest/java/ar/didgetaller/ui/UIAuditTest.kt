@@ -97,8 +97,8 @@ class UIAuditTest {
     @Test fun pitchLegendIsVisibleBeforeThePlotItExplains(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
-        compose.onNodeWithText(uiText(R.string.pitch_yin_layer)).performScrollTo()
-        val legend=compose.onNodeWithText(uiText(R.string.pitch_yin_layer)).fetchSemanticsNode().boundsInRoot
+        compose.onNodeWithText(uiText(R.string.musical_drone_description)).performScrollTo()
+        val legend=compose.onNodeWithText(uiText(R.string.musical_drone_description)).fetchSemanticsNode().boundsInRoot
         val plot=compose.onNodeWithTag("time-chart").fetchSemanticsNode().boundsInRoot
         assertTrue("The pitch legend must precede the plot",legend.bottom<=plot.top)
         shot("legend-before-plot")
@@ -143,7 +143,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performScrollTo().performClick()
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null && !vm.workspace.state.loading}
         compose.onNodeWithTag("time-chart").performScrollTo();shot("spectrogram-transport")
-        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
         compose.onNodeWithTag("advanced-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo()
             .assertContentDescriptionEquals(uiText(R.string.swipe_compare))

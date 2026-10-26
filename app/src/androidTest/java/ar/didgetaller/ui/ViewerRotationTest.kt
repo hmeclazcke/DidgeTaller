@@ -41,18 +41,22 @@ class ViewerRotationTest {
     @Test fun actualRecreationAndLandscapeKeepPlayerCameraSelectionAndBackStack(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
+        android.util.Log.i("ViewerRotationFlow","detail opened")
         compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
         compose.waitUntil {vm.playingId==item.id && !vm.playbackPaused}
         compose.runOnIdle {vm.seekPlayback(item,4000)}
         compose.waitUntil {vm.playbackPositionMs() in 3900..6000}
         compose.onNodeWithText(uiText(R.string.ui_pause)).performClick()
+        android.util.Log.i("ViewerRotationFlow","playback paused")
         val position=vm.playbackPositionMs()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        android.util.Log.i("ViewerRotationFlow","viewer opened")
         compose.onNodeWithContentDescription(uiText(R.string.ui_zoom_in)).performClick()
         val state=vm.explorer(item.id)
         compose.runOnIdle {state.regionStart=3000;state.regionEnd=7000}
         val camera=state.cameras[state.plot]
         compose.activityRule.scenario.recreate()
+        android.util.Log.i("ViewerRotationFlow","activity recreated")
         compose.onNodeWithTag("acoustic-viewer").assertIsDisplayed()
         compose.runOnIdle {
             assertSame(vm,ViewModelProvider(compose.activity)[TallerViewModel::class.java])
@@ -76,7 +80,8 @@ class ViewerRotationTest {
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
         compose.runOnIdle {assertEquals(item.id,vm.playingId)}
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
-        compose.onNodeWithTag("library-list").assertIsDisplayed()
+        compose.onNodeWithTag("session-detail").assertDoesNotExist()
+        compose.onNodeWithTag("library-list").assertExists()
         compose.runOnIdle {assertNull(vm.playingId);assertEquals(0,vm.playbackPositionMs())}
     }
     @Test fun returningWithPermissionGrantedUpdatesFeedbackWithoutStartingCapture(){

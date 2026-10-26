@@ -35,6 +35,7 @@ internal val PlotXLabels=SemanticsPropertyKey<List<String>>("PlotXLabels")
 internal val PlotAudioLevelCount=SemanticsPropertyKey<Int>("PlotAudioLevelCount")
 internal val PlotDroneComponentCount=SemanticsPropertyKey<Int>("PlotDroneComponentCount")
 internal val PlotYinCount=SemanticsPropertyKey<Int>("PlotYinCount")
+internal val PlotHighRegisterCount=SemanticsPropertyKey<Int>("PlotHighRegisterCount")
 internal val PlotXLabelBounds=SemanticsPropertyKey<List<androidx.compose.ui.geometry.Rect>>("PlotXLabelBounds")
 internal fun pitchColor(tone:PitchTrace.Tone)=when(tone){
     PitchTrace.Tone.STABLE->Color(0xFF8FE0BD)
@@ -66,7 +67,8 @@ internal fun placeAxisLabels(ticks:List<Double>,window:AxisWindow,width:Float,ga
 @Composable
 internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotViewport,points:List<SessionAnalysis.Point>,
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
-    swipe:SwipeCurve?=null,component:DroneComponentCurve?=null,pitchLayerMode:ar.didgetaller.PitchLayerMode=ar.didgetaller.PitchLayerMode.BOTH,
+    swipe:SwipeCurve?=null,
+    musicianTrace:MusicalTrace?=null,
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -81,14 +83,17 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val bitmap=remember(visual.bitmap){visual.bitmap?.asImageBitmap()}
     val log=state.plot==AcousticPlot.SPECTROGRAM && state.logarithmic
     val camera=viewport
+    // A deliberate advanced comparison may show raw estimators; ordinary views show one quantity.
+    val displayedTrace=musicianTrace
+    val spectralTrace=displayedTrace?.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT
     val point by rememberUpdatedState(onPoint);val transform by rememberUpdatedState(onTransform)
     val palette=Color(0xFF101D25);val grid=Color(0xFF29414B)
     val paint=remember(textSize){android.graphics.Paint().apply {isAntiAlias=true;color=android.graphics.Color.rgb(185,208,211);this.textSize=textSize}}
-    val pitchTicks=remember(camera.y,dimensions.height,textSize,top,bottom,state.plot){
-        if(state.plot==AcousticPlot.PITCH)PitchAxis.ticks(camera.y,((dimensions.height-top-bottom)/(textSize*2.8f)).toInt()) else emptyList()
+    val pitchTicks=remember(camera.y,dimensions.height,textSize,top,bottom,state.plot,spectralTrace){
+        if(state.plot==AcousticPlot.PITCH && !spectralTrace)PitchAxis.ticks(camera.y,((dimensions.height-top-bottom)/(textSize*2.8f)).toInt()) else emptyList()
     }
     val labelGap=with(density){4.dp.toPx()}
-    val yTicks=if(state.plot==AcousticPlot.PITCH)pitchTicks.map {it.hz} else
+    val yTicks=if(state.plot==AcousticPlot.PITCH && !spectralTrace)pitchTicks.map {it.hz} else
         PlotScales.ticks(camera.y,if((dimensions.height-top-bottom)/textSize<12)3 else 5,log)
     // Measure the exact strings with the same native Paint that renders them, including notes.
     val labelLocale=androidx.compose.ui.platform.LocalConfiguration.current.locales.toLanguageTags()
@@ -135,39 +140,6 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         }
         path to dots
     }
-    val componentVisibleSamples=remember(component,state.instrument,state.plot){
-        if(component!=null && state.plot==AcousticPlot.PITCH)
-            DroneComponentOverlay.visible(component,state.instrument)
-        else emptyList()
-    }
-    val componentPaths=remember(componentVisibleSamples,component,camera,dimensions,left,right,top,bottom,state.plot){
-        val path=Path();val dots=mutableListOf<Offset>()
-        if(component!=null && state.plot==AcousticPlot.PITCH){
-            val visible=componentVisibleSamples
-            val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
-            fun position(sample:DroneComponentCurve.Sample)=Offset(
-                (camera.x.fraction(sample.timeMs)*plotWidth).toFloat(),
-                ((1-camera.y.fraction(sample.hz!!))*h).toFloat())
-            for(i in visible.indices){
-                val sample=visible[i]
-                val hz=sample.hz ?: continue
-                if(sample.timeMs<camera.x.low-component.hopMs || sample.timeMs>camera.x.high+component.hopMs)continue
-                val previous=visible.getOrNull(i-1)
-                val next=visible.getOrNull(i+1)
-                val linkedPrevious=previous?.hz?.let {
-                    sample.timeMs-previous.timeMs<=component.hopMs*1.01 && abs(1200*log2(hz/it))<300
-                }==true
-                val linkedNext=next?.hz?.let {
-                    next.timeMs-sample.timeMs<=component.hopMs*1.01 && abs(1200*log2(it/hz))<300
-                }==true
-                if(linkedPrevious){val a=position(previous!!);val b=position(sample)
-                    path.moveTo(a.x,a.y);path.lineTo(b.x,b.y)
-                }else if(!linkedNext)dots+=position(sample)
-            }
-        }
-        path to dots
-    }
-    val componentVisible=remember(componentVisibleSamples){componentVisibleSamples.count {it.hz!=null}}
     val xTicks=PlotScales.ticks(camera.x,if(plotWidth/textSize<30)3 else 5)
     val xLabels=placeAxisLabels(xTicks,camera.x,plotWidth,labelGap*2,
         {if(state.plot.temporal)seconds(it.toLong()) else axisLabel(it,camera.x.span)+" Hz"},paint::measureText)
@@ -200,14 +172,15 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         }
     }
     Canvas(modifier.background(palette).then(gesture).testTag(if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
-        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
+        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
             this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
             this[PlotPlaybackMs]=cursor
             this[PlotAudioLevelCount]=level?.rms?.size ?: 0
-            this[PlotDroneComponentCount]=if(pitchLayerMode!=ar.didgetaller.PitchLayerMode.FUNDAMENTAL)componentVisible else 0
-            this[PlotYinCount]=if(pitchLayerMode!=ar.didgetaller.PitchLayerMode.COMPONENT)
+            this[PlotDroneComponentCount]=if(spectralTrace)displayedTrace?.samples?.count {it.hz!=null} ?: 0 else 0
+            this[PlotYinCount]=if(displayedTrace?.meaning==MusicalTrace.Meaning.ESTIMATED_PITCH)displayedTrace.samples.count {it.hz!=null} else if(displayedTrace==null)
                 pitchTrace.count {!it.uncertain} else 0
+            this[PlotHighRegisterCount]=displayedTrace?.highRegisterCandidates?.size ?: 0
             this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
         .onSizeChanged {dimensions=it}) {
         // Navigation/configuration transitions can measure a temporarily collapsed surface.
@@ -238,7 +211,24 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                 }
                 xt.forEach {drawLine(grid,Offset(x(it),0f),Offset(x(it),h),.7f)}
                 yt.forEach {drawLine(grid,Offset(0f,y(it)),Offset(w,y(it)),.7f)}
-                if(state.plot==AcousticPlot.PITCH && pitchLayerMode!=ar.didgetaller.PitchLayerMode.COMPONENT){
+                if(state.plot==AcousticPlot.PITCH && displayedTrace!=null){
+                    val color=if(spectralTrace)Color(0xFF65C9D1) else Color(0xFF8FE0BD)
+                    displayedTrace.samples.forEachIndexed {index,sample ->
+                        val hz=sample.hz ?: return@forEachIndexed
+                        val prior=displayedTrace.samples.getOrNull(index-1)
+                        if(sample.linkedToPrevious && prior?.hz!=null)
+                            drawLine(color,Offset(x(prior.timeMs),y(prior.hz)),Offset(x(sample.timeMs),y(hz)),2.5f,
+                                pathEffect=if(sample.bridged)PathEffect.dashPathEffect(floatArrayOf(5f,5f)) else null)
+                        else if(displayedTrace.samples.getOrNull(index+1)?.linkedToPrevious!=true)
+                            drawCircle(color,3f,Offset(x(sample.timeMs),y(hz)))
+                    }
+                    displayedTrace.highRegisterCandidates.forEach {candidate ->
+                        val px=x(candidate.timeMs.toDouble())
+                        val marker=Path().apply {moveTo(px,4f);lineTo(px-5f,14f);lineTo(px+5f,14f);close()}
+                        drawPath(marker,Color(0xFFE9BD87))
+                    }
+                }
+                if(state.plot==AcousticPlot.PITCH && displayedTrace==null){
                     analysis?.summary?.typicalHz?.let {hz->if(hz in camera.y.low..camera.y.high)drawLine(Color(0xFF93CDE7).copy(alpha=.5f),Offset(0f,y(hz)),Offset(w,y(hz)),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,6f)))}
                     for(sample in pitchTrace){val p=sample.point;val hz=p.hz!!
                         if(sample.uncertain){if(state.showUncertain)drawCircle(Color(0xFFEBA16E),3f,Offset(x(p.timeMs.toDouble()),y(hz)),style=Stroke(1.5f));continue}
@@ -252,12 +242,6 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                 if(state.plot==AcousticPlot.PITCH && swipe!=null){
                     drawPath(swipePaths.first,swipeColor,style=Stroke(2.3f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,5f))))
                     swipePaths.second.forEach {drawCircle(swipeColor,2.8f,it)}
-                }
-                if(state.plot==AcousticPlot.PITCH && component!=null && pitchLayerMode!=ar.didgetaller.PitchLayerMode.FUNDAMENTAL){
-                    val color=Color(0xFF65C9D1)
-                    drawPath(componentPaths.first,color,style=Stroke(2.1f,
-                        pathEffect=PathEffect.dashPathEffect(floatArrayOf(5f,5f))))
-                    componentPaths.second.forEach {drawCircle(color,2.5f,it)}
                 }
                 if(state.plot==AcousticPlot.WAVE)visual.wave?.let {wave ->
                     val a=wave.start*1000.0/wave.rate;val b=wave.end*1000.0/wave.rate

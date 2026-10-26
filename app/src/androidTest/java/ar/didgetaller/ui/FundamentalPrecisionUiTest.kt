@@ -75,16 +75,17 @@ class FundamentalPrecisionUiTest {
     }
     @Test fun reportedScenarioCardDetailAndFullscreen(){
         compose.onNodeWithTag("session-${drone.id}").performScrollTo();capture("card")
+        compose.waitUntil(20000){vm.musicalTrace(drone)!=null}
         val summary=compose.onNodeWithTag("summary-${drone.id}",useUnmergedTree=true).fetchSemanticsNode().config[PlotWindow]
         open(drone);measure("detail","time-chart");capture("detail")
         compose.waitUntil(15000){vm.savedYinReplay.sessionId==drone.id && vm.savedYinReplay.result!=null}
         compose.waitUntil(15000){vm.droneComponent.sessionId==drone.id && vm.droneComponent.curve!=null}
         val replayPreview=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
-        assertTrue(summary.y.low<60.0) // The original 60 Hz reading remains in the library card.
+        assertEquals(summary,replayPreview) // One source and one full-session domain.
         val accepted=sessionPlotPoints(vm,drone).mapNotNull {it.hz}
         assertTrue(accepted.isNotEmpty() && accepted.all {it in 69.0..73.0})
         if(InstrumentationRegistry.getArguments().getString("baseline")!="true"){
-            compose.onNodeWithText(uiText(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),substring=true).performScrollTo();capture("detail-legend")
+            compose.onNodeWithText(uiText(R.string.musical_drone_description),substring=true).performScrollTo();capture("detail-legend")
         }
         expand();measure("fullscreen","immersive-plot");capture("fullscreen")
         if(InstrumentationRegistry.getArguments().getString("baseline")=="true")return
@@ -97,7 +98,7 @@ class FundamentalPrecisionUiTest {
     @Test fun originalInspectionFittedPinchAndReset(){
         open(drone);compose.waitUntil(15000){vm.savedYinReplay.sessionId==drone.id && vm.savedYinReplay.result!=null}
         compose.waitUntil(15000){vm.droneComponent.sessionId==drone.id && vm.droneComponent.curve!=null}
-        expand();val points=sessionScalePoints(sessionPlotPoints(vm,drone),vm.droneComponent.curve,vm.pitchLayerMode)
+        expand();val points=musicianPlotPoints(vm.musicalTrace(drone)!!)
         val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
         tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(drone.id).camera(drone.durationMs,44100,points).y.span<4);capture("fitted")
         val graph=compose.onNodeWithTag("immersive-plot");val area=graph.fetchSemanticsNode().config[PlotDataArea];val delta=Offset(area.width*.12f,area.height*.12f)
@@ -119,8 +120,10 @@ class FundamentalPrecisionUiTest {
         compose.onNodeWithTag("reset-viewport").performClick();assertEquals(general,graph.fetchSemanticsNode().config[PlotWindow]);capture("reset")
     }
     @Test fun shortTootAndFluteRemainVisible(){
-        open(toot);expand();val camera=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
-        assertTrue(camera.y.high>207);assertTrue(camera.y.low<70);capture("toot")
+        open(toot);compose.waitUntil(20000){vm.musicalTrace(toot)!=null};expand()
+        val chart=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config
+        assertEquals(2,chart[PlotHighRegisterCount]);capture("toot")
+        assertTrue(vm.musicalTrace(toot)!!.samples.none {it.hz==205.0 || it.hz==207.0})
         assertFalse(PitchTrace.build(toot.timeline,toot.instrument).any {it.uncertain})
         // Switch session through the real navigation stack.
         androidx.test.espresso.Espresso.pressBackUnconditionally();compose.waitForIdle()

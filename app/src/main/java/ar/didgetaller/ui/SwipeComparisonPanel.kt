@@ -29,6 +29,7 @@ internal fun AdvancedPitchDiagnostics(vm: TallerViewModel, item: RecordingStore.
         Text(stringResource(if(expanded) R.string.advanced_diagnostics_hide else R.string.advanced_diagnostics))
     }
     if(expanded) Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        LaunchedEffect(item.id) { vm.analyzeSavedYin(item); vm.analyzeDroneComponent(item) }
         Text(stringResource(R.string.advanced_diagnostics_help), style = MaterialTheme.typography.bodySmall)
         if(item.instrument == ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
             SwipeComparisonPanel(vm, item, showLegend = false)

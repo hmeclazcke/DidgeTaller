@@ -170,7 +170,7 @@ class SessionNavigationTest {
         compose.onNodeWithText(uiText(R.string.ui_spectrogram)).performScrollTo().performClick()
         compose.runOnIdle { assertEquals(session.id,vm.playingId); assertFalse(vm.playbackPaused) }
         compose.onNodeWithText(uiText(R.string.ui_pause)).performScrollTo().performClick()
-        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
         compose.runOnIdle { assertEquals(camera,vm.preview(session.id).camera(session.durationMs,44100,sessionPlotPoints(vm,session))) }
         assertArrayEquals(original, RecordingStore(application).file(session.id).readBytes())
     }
@@ -198,7 +198,7 @@ class SessionNavigationTest {
         }
         capture("spectrogram")
         val pausedPosition=vm.playbackPositionMs()
-        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
         compose.onNodeWithText("00:02 / 00:20").performScrollTo().assertIsDisplayed()
         compose.runOnIdle {
             assertTrue(vm.playbackPaused)
@@ -206,7 +206,7 @@ class SessionNavigationTest {
         }
         val play=compose.onNodeWithText(uiText(R.string.ui_play)).fetchSemanticsNode().boundsInRoot
         val graph=compose.onNodeWithTag("time-chart").fetchSemanticsNode().boundsInRoot
-        assertTrue("Playback controls belong below the chart",play.top>=graph.bottom)
+        assertTrue("Playback controls must remain accessible before the chart",play.bottom<=graph.top)
         capture("fundamental")
         compose.onNodeWithText(uiText(R.string.ui_restart)).performScrollTo().performClick()
         compose.waitUntil(5000) { !vm.playbackPaused && vm.playbackPositionMs()<1500 }
@@ -453,13 +453,16 @@ class SessionNavigationTest {
         compose.onNodeWithTag("session-${session.id}").performClick()
         compose.waitUntil(15000){vm.savedYinReplay.sessionId==session.id && vm.savedYinReplay.result!=null}
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        compose.waitUntil(15000){vm.musicalTrace(session)!=null}
         val graph=compose.onNodeWithTag("immersive-plot")
         val state=vm.explorer(session.id)
-        val initial=state.camera(session.durationMs,44100,sessionPlotPoints(vm,session))
+        compose.waitUntil(5000){state.musicianTrace===vm.musicalTrace(session)}
+        val initial=state.camera(session.durationMs,44100,musicianPlotPoints(vm.musicalTrace(session)!!))
         graph.performTouchInput {pinch(start0=center-androidx.compose.ui.geometry.Offset(70f,70f),end0=center-androidx.compose.ui.geometry.Offset(140f,140f),start1=center+androidx.compose.ui.geometry.Offset(70f,70f),end1=center+androidx.compose.ui.geometry.Offset(140f,140f),durationMillis=500)}
         compose.runOnIdle {val next=state.cameras[AcousticPlot.PITCH]!!;assertTrue("Horizontal: $initial → $next",next.x.span<initial.x.span);assertTrue("Vertical: $initial → $next",next.y.span<initial.y.span)}
         graph.performTouchInput {longClick(center,800)}
-        compose.runOnIdle {assertNotNull(state.inspected);assertTrue(state.inspected!!.contains("cents"))}
+        compose.runOnIdle {assertNotNull(state.inspected)
+            assertTrue(state.inspected!!.contains(uiText(R.string.ui_no_nearby_reliable_reading)))}
         graph.performTouchInput {doubleClick(center)}
         compose.runOnIdle {assertEquals(initial,state.cameras[AcousticPlot.PITCH])}
         compose.onNodeWithContentDescription(uiText(R.string.ui_zoom_in)).performClick()

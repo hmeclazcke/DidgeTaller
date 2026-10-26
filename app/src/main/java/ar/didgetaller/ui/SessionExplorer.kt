@@ -14,12 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import ar.didgetaller.TallerViewModel
-import ar.didgetaller.PitchLayerMode
 import ar.didgetaller.audio.VisualRequest
 import ar.didgetaller.core.Music
 import ar.didgetaller.core.SpectralPalette
-import androidx.compose.foundation.Canvas
-import androidx.compose.ui.geometry.Offset
 import ar.didgetaller.data.RecordingStore
 import kotlinx.coroutines.delay
 import kotlin.math.*
@@ -46,51 +43,34 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
     var fragments by rememberSaveable(item.id){mutableStateOf(false)}
     var markers by rememberSaveable(item.id){mutableStateOf(false)}
     LaunchedEffect(item.id){vm.openTools(item)}
+    val musician=vm.musicalTrace(item)
     LabCard(context.getString(R.string.ui_explore_audio), action={
         IconButton(onClick={onExpand(s.plot)},modifier=Modifier.testTag("expand-plot")){
             Icon(ViewerIcons.Expand,stringResource(R.string.ui_full_screen))
         }
     }) {
         ScrollableTabRow(selectedTabIndex=s.plot.ordinal,edgePadding=0.dp){
-            AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind;s.inspected=null},text={Text(context.plotLabel(kind),maxLines=1)})}
+            AcousticPlot.entries.forEach {kind->Tab(selected=s.plot==kind,onClick={s.plot=kind;s.inspected=null},
+                modifier=Modifier.testTag("plot-tab-${kind.name.lowercase()}"),
+                text={Text(context.plotLabel(kind,item.instrument),maxLines=1)})}
         }
-        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
-            PitchLayerChoice(vm)
-        if(s.plot==AcousticPlot.PITCH)Text(stringResource(R.string.pitch_audio_level_short),
-            style=MaterialTheme.typography.labelSmall)
-        if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled)SwipeLegend()
-        if(s.plot==AcousticPlot.PITCH && vm.pitchLayerMode!=PitchLayerMode.COMPONENT)
+        if(s.plot==AcousticPlot.PITCH && vm.swipeComparison.enabled){
             Text(stringResource(R.string.pitch_yin_layer),style=MaterialTheme.typography.labelSmall)
-        if(s.plot==AcousticPlot.PITCH && vm.pitchLayerMode!=PitchLayerMode.FUNDAMENTAL && vm.droneComponent.sessionId==item.id){
-            val component=vm.droneComponent
-            if(component.curve?.samples?.any {it.hz!=null}==true)DroneComponentLegend(showExplanation=false)
-            if(vm.droneComponent.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
-            if(component.failed)Text(stringResource(R.string.drone_component_failed),style=MaterialTheme.typography.bodySmall)
-            else if(component.curve!=null && component.curve.samples.none {it.hz!=null})
-                Text(stringResource(R.string.drone_component_unavailable),style=MaterialTheme.typography.bodySmall)
+            SwipeLegend()
         }
-        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO){
-            if(vm.savedYinReplay.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
-        }
-        SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO && !vm.swipeComparison.enabled)
+            Text(stringResource(R.string.musical_drone_description),style=MaterialTheme.typography.labelSmall)
+        if(s.plot==AcousticPlot.PITCH && musician==null && !vm.musicalTraceFailed(item.id) &&
+            item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO)
+            LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
+        if(s.plot==AcousticPlot.PITCH && vm.musicalTraceFailed(item.id))
+            Text(stringResource(R.string.musical_trace_unavailable),style=MaterialTheme.typography.bodySmall)
         playbackControls()
-        if(s.plot==AcousticPlot.PITCH){
-            Text(stringResource(R.string.pitch_audio_level_help),style=MaterialTheme.typography.bodySmall,
-                modifier=Modifier.testTag("pitch-audio-level-help"))
-            if(vm.pitchLayerMode!=PitchLayerMode.FUNDAMENTAL && vm.droneComponent.sessionId==item.id &&
-                vm.droneComponent.curve?.samples?.any {it.hz!=null}==true)
-                Text(stringResource(R.string.drone_component_explanation),style=MaterialTheme.typography.labelSmall)
-        }
-        if(s.plot==AcousticPlot.PITCH && item.instrument==ar.didgetaller.core.InstrumentProfile.DIDGERIDOO){
-            Text(stringResource(if(vm.savedYinReplay.sessionId==item.id && vm.savedYinReplay.result!=null)
-                R.string.pitch_source_current_replay else R.string.pitch_source_original),
-                style=MaterialTheme.typography.labelSmall)
-        }
-        if(s.plot==AcousticPlot.PITCH){
-            val points=sessionPlotPoints(vm,item)
-            Text(stringResource(R.string.ui_frequency_in_hz_green_stable_yellow_variation_orange_review),style=MaterialTheme.typography.bodySmall)
-            if(s.pitch(points).valid==0)Text(stringResource(R.string.ui_no_reliable_readings_audio_is_preserved),style=MaterialTheme.typography.bodySmall)
-        }
+        SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(250.dp),onExpand={onExpand(s.plot)})
+        if(s.plot==AcousticPlot.PITCH && musician?.samples?.none {it.hz!=null}==true)
+            Text(stringResource(R.string.musical_trace_unavailable),style=MaterialTheme.typography.bodySmall)
+        if(s.plot==AcousticPlot.PITCH && musician?.highRegisterCandidates?.isNotEmpty()==true)
+            Text(stringResource(R.string.musical_high_candidate),style=MaterialTheme.typography.labelSmall)
         if(s.plot==AcousticPlot.SPECTRUM && vm.recordingAnalysis.result==null)Text(stringResource(R.string.ui_tap_analyze_recording_to_obtain_the_actual_spectrum),style=MaterialTheme.typography.bodySmall)
         if(s.plot!=AcousticPlot.PITCH)Text((if(s.plot==AcousticPlot.SPECTROGRAM)stringResource(R.string.ui_frequency_in_hz) else "")+stringResource(R.string.ui_tap_the_chart_to_explore_with_zoom_and_pan_along_both_axes),style=MaterialTheme.typography.bodySmall)
         FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){
@@ -115,38 +95,6 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
     }
     RecordingAnalysisPanel(vm,item)
     AcousticHelp()
-}
-
-@Composable
-internal fun PitchLayerChoice(vm:TallerViewModel){
-    FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(2.dp),
-        modifier=Modifier.testTag("pitch-layer-choice")){
-        listOf(
-            PitchLayerMode.FUNDAMENTAL to R.string.pitch_layer_fundamental,
-            PitchLayerMode.COMPONENT to R.string.pitch_layer_component,
-            PitchLayerMode.BOTH to R.string.pitch_layer_both,
-        ).forEach {(mode,label)->
-            FilterChip(selected=vm.pitchLayerMode==mode,onClick={vm.choosePitchLayer(mode)},
-                label={Text(stringResource(label))},modifier=Modifier.heightIn(min=48.dp)
-                    .testTag("pitch-layer-${mode.name.lowercase()}"))
-        }
-    }
-}
-
-@Composable
-internal fun DroneComponentLegend(modifier:Modifier=Modifier,showExplanation:Boolean=true){
-    Column(modifier){
-        Row(verticalAlignment=androidx.compose.ui.Alignment.CenterVertically,
-            horizontalArrangement=Arrangement.spacedBy(8.dp)){
-            Canvas(Modifier.width(28.dp).height(8.dp)){
-                drawLine(androidx.compose.ui.graphics.Color(0xFF65C9D1),Offset(0f,size.height/2),
-                    Offset(size.width,size.height/2),strokeWidth=2.dp.toPx(),
-                    pathEffect=androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(5f,5f)))
-            }
-            Text(stringResource(R.string.drone_component_estimated),style=MaterialTheme.typography.bodySmall)
-        }
-        if(showExplanation)Text(stringResource(R.string.drone_component_explanation),style=MaterialTheme.typography.labelSmall)
-    }
 }
 
 @Composable

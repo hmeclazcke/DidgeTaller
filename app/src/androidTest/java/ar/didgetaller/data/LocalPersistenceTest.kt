@@ -193,6 +193,29 @@ class LocalPersistenceTest {
         assertTrue(index!!.contains(session.id));assertNull(store.list().single().summary)
     }
 
+    @Test fun componentCacheReusesEvidenceAndInvalidatesWhenTestAudioChanges() {
+        val context=isolatedContext();val store=RecordingStore(context)
+        fun wav(hz:Double):ByteArray {
+            val pcm=ShortArray(44100*2){i->
+                (6000*sin(2*Math.PI*hz*i/44100)+2500*sin(4*Math.PI*hz*i/44100)+
+                    1400*sin(6*Math.PI*hz*i/44100)).toInt().toShort()
+            }
+            return WavCodec.encode(pcm,pcm.size,44100)
+        }
+        val original=wav(70.0);val session=store.save(original)
+        val file=store.file(session.id);val index=context.getSharedPreferences("local_data",0).getString("recordings",null)
+        val first=AnalysisCache(context).droneComponent(session.id,file)
+        val cached=AnalysisCache(context).droneComponent(session.id,file)
+        assertEquals(first,cached)
+        assertTrue(first.samples.count {it.hz?.let {hz->hz in 68.0..72.0}==true}>3)
+        assertArrayEquals(original,file.readBytes())
+        // This is a test-owned WAV. The SHA in the cache key must reject its old derived result.
+        file.writeBytes(wav(35.0))
+        val changed=AnalysisCache(context).droneComponent(session.id,file)
+        assertTrue(changed.samples.count {it.hz?.let {hz->hz in 34.0..36.0}==true}>3)
+        assertEquals(index,context.getSharedPreferences("local_data",0).getString("recordings",null))
+    }
+
     @Test fun previousPitchPolicyCacheIsNotReusedOrMigratedIntoOriginalMeasurements() {
         val context=isolatedContext();val store=RecordingStore(context);val cache=AnalysisCache(context)
         val pcm=ShortArray(44100){(9000*sin(2*Math.PI*70*it/44100)).toInt().toShort()}

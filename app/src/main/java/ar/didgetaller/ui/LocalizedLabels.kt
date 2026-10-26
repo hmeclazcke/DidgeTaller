@@ -20,6 +20,10 @@ internal fun Context.plotLabel(plot: AcousticPlot): String = getString(when (plo
     AcousticPlot.SPECTRUM -> R.string.ui_harmonics
 })
 
+internal fun Context.plotLabel(plot: AcousticPlot, instrument: InstrumentProfile): String =
+    if (plot == AcousticPlot.PITCH && instrument == InstrumentProfile.DIDGERIDOO)
+        getString(R.string.musical_drone_title) else plotLabel(plot)
+
 internal fun Context.reasonLabel(reason: PitchTrace.Reason?): String = if (reason == null) "" else getString(when (reason) {
     PitchTrace.Reason.LOW_CONFIDENCE -> R.string.reason_low_confidence
     PitchTrace.Reason.OUTSIDE_PROFILE -> R.string.reason_outside_profile

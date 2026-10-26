@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ar.didgetaller.TallerViewModel
-import ar.didgetaller.PitchLayerMode
 import ar.didgetaller.audio.VisualRequest
 import ar.didgetaller.core.*
 import ar.didgetaller.data.RecordingStore
@@ -55,18 +54,8 @@ internal fun sessionPlotPoints(vm:TallerViewModel,item:RecordingStore.Session):L
     return item.timeline.ifEmpty {analysis?.result?.timeline.orEmpty()}
 }
 
-internal fun sessionScalePoints(points:List<SessionAnalysis.Point>,component:DroneComponentCurve?,
-                                mode:PitchLayerMode):List<SessionAnalysis.Point>{
-    if(mode==PitchLayerMode.FUNDAMENTAL || component==null)return points
-    val spectral=component.samples.mapNotNull { sample ->
-        sample.hz?.let {SessionAnalysis.Point(sample.timeMs.toLong(),it,1.0)}
-    }
-    return when(mode){
-        PitchLayerMode.FUNDAMENTAL->points
-        PitchLayerMode.COMPONENT->spectral.ifEmpty {points}
-        PitchLayerMode.BOTH->if(spectral.isEmpty())points else points+spectral
-    }
-}
+internal fun musicianPlotPoints(trace:MusicalTrace):List<SessionAnalysis.Point> =
+    trace.samples.map { SessionAnalysis.Point(it.timeMs.toLong(),it.hz,1.0) }
 
 @Composable
 internal fun playbackCursor(vm:TallerViewModel,item:RecordingStore.Session):Long {
@@ -95,11 +84,14 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     val points=sessionPlotPoints(vm,item)
     val trace=remember(points,item.instrument){PitchTrace.build(points,item.instrument)}
     val swipe=vm.swipeComparison.takeIf {it.sessionId==item.id && it.enabled}?.curve
-    val component=vm.droneComponent.takeIf {it.sessionId==item.id}?.curve
     // Layer choice changes only the viewport evidence, never the stored YIN series.
-    val scalePoints=remember(points,component,vm.pitchLayerMode){sessionScalePoints(points,component,vm.pitchLayerMode)}
+    val available=vm.musicalTrace(item)
+    val musician=available ?: remember(item.id){MusicalTrace.unavailable(item.instrument,item.durationMs)}
+    val diagnostic=vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled
+    val scalePoints=remember(points,musician,diagnostic){if(diagnostic)points else musicianPlotPoints(musician)}
+    SideEffect {if(s.musicianTrace!==musician.takeUnless {diagnostic})s.musicianTrace=musician.takeUnless {diagnostic}}
     val camera=s.camera(duration,visual.rate,scalePoints)
-    LaunchedEffect(item.id){vm.openTools(item);vm.analyzeSavedYin(item);vm.analyzeDroneComponent(item)}
+    LaunchedEffect(item.id){vm.openTools(item);vm.requestMusicalTrace(item);vm.analyzeSavedYin(item)}
     LaunchedEffect(camera,s.plot,s.logarithmic,s.rangeDb,s.gestureActive,visual.frames){
         if(visual.frames>1 && !s.gestureActive && s.plot in listOf(AcousticPlot.SPECTROGRAM,AcousticPlot.WAVE)){
             vm.workspace.render(item,VisualRequest(camera.x.low.toLong(),camera.x.high.toLong().coerceAtLeast(camera.x.low.toLong()+1),
@@ -116,7 +108,8 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
         }
     }
     PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,
-        swipe=swipe,component=component,pitchLayerMode=vm.pitchLayerMode,onPreview=onExpand,
+        swipe=swipe,
+        musicianTrace=if(diagnostic)null else musician,onPreview=onExpand,
         onReset={s.reset(duration,visual.rate,scalePoints)},onTransform={x,y,zx,zy,dx,dy->s.transform(duration,visual.rate,scalePoints,x,y,zx,zy,dx,dy)},
         onPoint={x,y,inspect ->
             s.selectedY=y;s.follow=false
@@ -130,7 +123,12 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                 if(s.mode!=0 && !inspect){s.looping=false;vm.setPlaybackLoopOff()}
                 val point=points.minByOrNull {abs(it.timeMs-time)}?.takeIf {abs(it.timeMs-time)<=750}
                 s.inspected=when(s.plot){
-                    AcousticPlot.PITCH->"${seconds(time)} · "+(point?.let {p->trace.firstOrNull {it.point===p}}?.let {sample->
+                    AcousticPlot.PITCH->if(!diagnostic && musician.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT){
+                        val nearest=musician.samples.minByOrNull {abs(it.timeMs-time)}
+                            ?.takeIf {abs(it.timeMs-time)<=250 && it.hz!=null}
+                        "${seconds(time)} · "+(nearest?.hz?.let {context.getString(R.string.musical_component_frequency,hzLabel(it))}
+                            ?: context.getString(R.string.ui_no_nearby_reliable_reading))
+                    }else "${seconds(time)} · "+(point?.let {p->trace.firstOrNull {it.point===p}}?.let {sample->
                         val hz=sample.point.hz!!
                         if(sample.uncertain) return@let context.getString(R.string.ui_uncertain_estimate_confidence_yin_no_confirmed_note, hzLabel(hz), context.reasonLabel(sample.reason), sample.point.confidence)
                         val musical=Music.pitch(hz)!!
@@ -166,8 +164,11 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     val context = androidx.compose.ui.platform.LocalContext.current
     val state=vm.explorer(item.id);val visual=vm.workspace.state
     val points=sessionPlotPoints(vm,item)
-    val component=vm.droneComponent.takeIf {it.sessionId==item.id}?.curve
-    val scalePoints=remember(points,component,vm.pitchLayerMode){sessionScalePoints(points,component,vm.pitchLayerMode)}
+    val available=vm.musicalTrace(item)
+    val musician=available ?: remember(item.id){MusicalTrace.unavailable(item.instrument,item.durationMs)}
+    val diagnostic=vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled
+    val scalePoints=remember(points,musician,diagnostic){if(diagnostic)points else musicianPlotPoints(musician)}
+    SideEffect {if(state.musicianTrace!==musician.takeUnless {diagnostic})state.musicianTrace=musician.takeUnless {diagnostic}}
     val recording=vm.recordingAnalysis.takeIf {it.sessionId==item.id}
     val cursor=playbackCursor(vm,item)
     var tools by rememberSaveable(item.id){mutableStateOf(false)}
@@ -192,7 +193,6 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     }
     val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs
     val camera=state.camera(duration,visual.rate,scalePoints)
-    val range=state.pitch(points)
     val reading=state.inspected ?:
         "${axisLabel(camera.y.low,camera.y.span)}–${axisLabel(camera.y.high,camera.y.span)} ${if(state.plot==AcousticPlot.WAVE)"PCM" else if(state.plot==AcousticPlot.SPECTRUM)"dB rel" else "Hz"}"
     val playing=vm.playingId==item.id && !vm.playbackPaused
@@ -215,11 +215,11 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
             IconButton(onClick=onBack){Icon(Icons.AutoMirrored.Filled.ArrowBack,context.getString(R.string.ui_back_to_session))}
             Box(Modifier.weight(1f)){
                 TextButton(onClick={plots=true},modifier=Modifier.fillMaxWidth().semantics {contentDescription=context.getString(R.string.ui_change_chart)}){
-                    Text(context.plotLabel(state.plot)+" ▾",
+                    Text(context.plotLabel(state.plot,item.instrument)+" ▾",
                         maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                 }
                 DropdownMenu(expanded=plots,onDismissRequest={plots=false}){AcousticPlot.entries.forEach {kind->
-                    DropdownMenuItem(text={Text(context.plotLabel(kind))},onClick={state.plot=kind;state.inspected=null;plots=false})
+                    DropdownMenuItem(text={Text(context.plotLabel(kind,item.instrument))},onClick={state.plot=kind;state.inspected=null;plots=false})
                 }}
             }
             if(singleBar){transport();follow()}
@@ -234,10 +234,9 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         }
         Box(Modifier.weight(1f).fillMaxWidth()){
             SessionPlot(vm,item,cursor,Modifier.fillMaxSize(),immersive=true)
-            if(state.plot==AcousticPlot.PITCH && range.valid==0 &&
-                (vm.pitchLayerMode==PitchLayerMode.FUNDAMENTAL || component?.samples?.none {it.hz!=null}!=false))Text(
-                context.getString(R.string.ui_no_reliable_readings_audio_is_preserved),Modifier.align(Alignment.Center).padding(16.dp),
-                style=MaterialTheme.typography.bodySmall)
+            if(state.plot==AcousticPlot.PITCH && musician.samples.none {it.hz!=null})Text(
+                context.getString(R.string.musical_trace_unavailable),Modifier.align(Alignment.Center).padding(16.dp),
+                style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurface)
             if(state.plot==AcousticPlot.SPECTRUM && recording?.result==null && recording?.running!=true)
                 TextButton(onClick={vm.analyzeRecording(item)},modifier=Modifier.align(Alignment.Center).testTag("viewer-analyze")){Text(stringResource(R.string.ui_analyze_recording))}
             if(visual.error!=null)TextButton(onClick={vm.workspace.open(item)},modifier=Modifier.align(Alignment.Center)){
@@ -255,20 +254,13 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         if(state.plot==AcousticPlot.PITCH && visual.level!=null)
             Text(stringResource(R.string.pitch_audio_level_short),Modifier.padding(horizontal=12.dp),
                 style=MaterialTheme.typography.labelSmall)
-        if(state.plot==AcousticPlot.PITCH && vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled){
+        if(state.plot==AcousticPlot.PITCH && vm.swipeComparison.enabled){
+            Text(stringResource(R.string.pitch_yin_layer),Modifier.padding(horizontal=12.dp),style=MaterialTheme.typography.labelSmall)
             SwipeLegend()
-            if(vm.swipeComparison.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
         }
-        if(state.plot==AcousticPlot.PITCH && vm.pitchLayerMode!=PitchLayerMode.COMPONENT)
-            Text(stringResource(R.string.pitch_yin_layer),Modifier.padding(horizontal=12.dp),
-                style=MaterialTheme.typography.labelSmall)
-        if(state.plot==AcousticPlot.PITCH && vm.pitchLayerMode!=PitchLayerMode.FUNDAMENTAL && vm.droneComponent.sessionId==item.id){
-            val component=vm.droneComponent
-            if(component.curve?.samples?.any {it.hz!=null}==true)
-                DroneComponentLegend(Modifier.padding(horizontal=12.dp))
-            if(vm.droneComponent.running)LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(2.dp))
-            if(component.failed)Text(stringResource(R.string.drone_component_failed),style=MaterialTheme.typography.bodySmall)
-        }
+        if(state.plot==AcousticPlot.PITCH && item.instrument==InstrumentProfile.DIDGERIDOO && !vm.swipeComparison.enabled)
+            Text(stringResource(R.string.musical_drone_description),Modifier.padding(horizontal=12.dp),
+                style=MaterialTheme.typography.labelSmall,maxLines=2)
         if(!singleBar)Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-transport"),verticalAlignment=Alignment.CenterVertically){
             transport()
             if(landscape)TextButton(onClick={tools=true},modifier=Modifier.weight(1f).testTag("open-reading")){
@@ -289,9 +281,6 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
             Text(stringResource(R.string.ui_explorer_tools),style=MaterialTheme.typography.titleLarge)
             Text(reading,modifier=Modifier.fillMaxWidth().testTag("complete-reading"),style=MaterialTheme.typography.bodySmall)
-            if(state.plot==AcousticPlot.PITCH)Text(stringResource(if(vm.savedYinReplay.sessionId==item.id && vm.savedYinReplay.result!=null)
-                R.string.pitch_source_current_replay else R.string.pitch_source_original),style=MaterialTheme.typography.bodySmall)
-            if(state.plot==AcousticPlot.PITCH && item.instrument==InstrumentProfile.DIDGERIDOO)PitchLayerChoice(vm)
             Text(stringResource(R.string.ui_drag_along_both_axes_pinch_to_zoom_hold_to_inspect),style=MaterialTheme.typography.bodySmall)
             Row {
                 TextButton(onClick={state.transform(duration,visual.rate,scalePoints,.5,.5,2.0,2.0,0.0,0.0)}){Text(stringResource(R.string.ui_zoom_in))}
@@ -318,8 +307,9 @@ internal fun PlotTools(vm:TallerViewModel,item:RecordingStore.Session,s:Explorer
     val context = androidx.compose.ui.platform.LocalContext.current
     val visual=vm.workspace.state
     val points=sessionPlotPoints(vm,item)
-    val component=vm.droneComponent.takeIf {it.sessionId==item.id}?.curve
-    val scalePoints=remember(points,component,vm.pitchLayerMode){sessionScalePoints(points,component,vm.pitchLayerMode)}
+    val musician=vm.musicalTrace(item) ?: MusicalTrace.unavailable(item.instrument,item.durationMs)
+    val diagnostic=vm.swipeComparison.sessionId==item.id && vm.swipeComparison.enabled
+    val scalePoints=remember(points,musician,diagnostic){if(diagnostic)points else musicianPlotPoints(musician)}
     val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs;val camera=s.camera(duration,visual.rate,scalePoints)
     var exact by remember(s.plot){mutableStateOf(false)}
     var from by remember(s.plot){mutableStateOf("")};var to by remember(s.plot){mutableStateOf("")}

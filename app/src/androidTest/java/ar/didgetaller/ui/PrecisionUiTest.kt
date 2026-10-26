@@ -234,7 +234,7 @@ class PrecisionUiTest {
         compose.waitUntil(30000){vm.savedYinReplay.sessionId==item.id && vm.savedYinReplay.result!=null}
         compose.waitUntil(30000){vm.droneComponent.sessionId==item.id && vm.droneComponent.curve!=null}
         val points=sessionPlotPoints(vm,item)
-        val scalePoints=sessionScalePoints(points,vm.droneComponent.curve,vm.pitchLayerMode)
+        val scalePoints=musicianPlotPoints(vm.musicalTrace(item)!!)
         compose.runOnIdle {
             assertSame(vm.savedYinReplay.result!!.points,points)
             assertEquals(item.timeline,store.list().first {it.id==item.id}.timeline)
@@ -242,10 +242,11 @@ class PrecisionUiTest {
             assertTrue(points.count {it.timeMs in 7400..8000 && it.hz==null}>=2)
         }
         capture("fundamental-general")
+        val originalSpan=state.camera(item.durationMs,44100,scalePoints).y.span
         compose.onNodeWithTag("viewer-tools").performClick()
         compose.onNodeWithText(uiText(R.string.ui_fitted_view)).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
-        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,scalePoints).y.span<2)}
+        compose.runOnIdle {assertTrue(state.camera(item.durationMs,44100,scalePoints).y.span<originalSpan)}
         capture("fundamental-fitted")
         val graph=compose.onNodeWithTag("immersive-plot")
         val area=graph.fetchSemanticsNode().config[PlotDataArea]

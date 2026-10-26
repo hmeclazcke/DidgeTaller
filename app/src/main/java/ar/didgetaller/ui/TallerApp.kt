@@ -21,6 +21,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -54,6 +57,7 @@ import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.SessionAnalysis
 import ar.didgetaller.core.PlotScales
 import ar.didgetaller.core.PitchTrace
+import ar.didgetaller.core.MusicalTrace
 import kotlin.math.*
 import java.util.Locale
 
@@ -413,6 +417,31 @@ private fun SessionGraph(points:List<SessionAnalysis.Point>,durationMs:Long,modi
     }
 }
 
+/** Miniature of the exact series and range shown by the default session plot. */
+@Composable
+private fun MusicalPreview(trace:MusicalTrace,modifier:Modifier=Modifier,tag:String){
+    val range=remember(trace){trace.frequencyRange()}
+    val color=if(trace.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT)Color(0xFF65C9D1) else accent
+    Canvas(modifier.testTag(tag).semantics {this[PlotWindow]=ar.didgetaller.core.PlotViewport(
+        ar.didgetaller.core.AxisWindow(0.0,trace.durationMs.coerceAtLeast(2).toDouble()),range)}
+        .background(Color(0xFF10262C),RoundedCornerShape(12.dp)).padding(8.dp)){
+        val positions=trace.samples.map {trace.normalized(it,range)}
+        positions.forEachIndexed {index,position ->
+            if(position==null)return@forEachIndexed
+            val at=Offset((position.first*size.width).toFloat(),(position.second*size.height).toFloat())
+            val previous=positions.getOrNull(index-1)
+            if(trace.samples[index].linkedToPrevious && previous!=null)
+                drawLine(color,Offset((previous.first*size.width).toFloat(),(previous.second*size.height).toFloat()),at,2.5f)
+            else if(trace.samples.getOrNull(index+1)?.linkedToPrevious!=true)drawCircle(color,2.5f,at)
+        }
+        trace.highRegisterCandidates.forEach {candidate ->
+            val x=(candidate.timeMs.toDouble()/trace.durationMs.coerceAtLeast(2)*size.width).toFloat()
+            val marker=Path().apply {moveTo(x,2f);lineTo(x-4f,10f);lineTo(x+4f,10f);close()}
+            drawPath(marker,orange)
+        }
+    }
+}
+
 private enum class GraphKind {Wave,Spectrum,Impedance}
 
 @Composable
@@ -733,15 +762,26 @@ private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->
         Text(stringResource(R.string.ui_open_measure_and_tap_start_measurement_when_you_stop_the_session_will_appear_h),color=muted)
     }
     vm.sessions.forEach {item ->key(item.id) {
+        val view=LocalView.current
+        var visible by remember(item.id){mutableStateOf(false)}
+        DisposableEffect(item.id,visible){
+            if(visible)vm.requestMusicalTrace(item)
+            onDispose {if(visible)vm.releaseMusicalTraceRequest(item.id)}
+        }
+        val musician=vm.musicalTrace(item)
         DismissCard(onDelete={vm.deleteSession(item)},tag="swipe-${item.id}") {
-            Surface(color=cardColor,shape=RoundedCornerShape(18.dp),modifier=Modifier.fillMaxWidth().testTag("session-${item.id}").clickable {onOpen(item)}) {
+            Surface(color=cardColor,shape=RoundedCornerShape(18.dp),modifier=Modifier.fillMaxWidth().testTag("session-${item.id}")
+                .onGloballyPositioned {coordinates ->
+                    val bounds=coordinates.boundsInWindow()
+                    visible=bounds.bottom>0 && bounds.top<view.rootView.height
+                }.clickable {onOpen(item)}) {
                 Column(Modifier.padding(14.dp),verticalArrangement=Arrangement.spacedBy(6.dp)) {
                     var menu by remember {mutableStateOf(false)}
                     // Compare the original stored default name; names are data, not translated UI labels.
                     val generated="Sesión ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm",Locale.getDefault()).format(java.util.Date(item.createdAt))}"
                     val customName=item.name!=generated
                     Row(verticalAlignment=Alignment.CenterVertically){
-                        Text(if(customName)context.sessionName(item) else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_session_without_a_note),Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                        Text(if(customName)context.sessionName(item) else if(item.instrument==InstrumentProfile.DIDGERIDOO)stringResource(R.string.musical_drone_title) else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_session_without_a_note),Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                         Box {
                             IconButton(onClick={menu=true}){Icon(Icons.Default.MoreVert,context.getString(R.string.ui_options_for_session, context.sessionName(item)))}
                             DropdownMenu(expanded=menu,onDismissRequest={menu=false}){
@@ -749,13 +789,21 @@ private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->
                             }
                         }
                     }
-                    FlowRow(horizontalArrangement=Arrangement.spacedBy(12.dp)){
+                    if(item.instrument==InstrumentProfile.DIDGERIDOO){
+                        Text(musician?.medianHz()?.let {stringResource(R.string.musical_component_frequency,hzLabel(it))}
+                            ?: stringResource(if(vm.musicalTraceFailed(item.id))R.string.musical_trace_unavailable else R.string.musical_trace_loading),
+                            style=MaterialTheme.typography.bodyMedium,color=muted)
+                    }else FlowRow(horizontalArrangement=Arrangement.spacedBy(12.dp)){
                         if(customName && item.summary!=null)Text(context.noteLabel(item.summary.typicalHz),style=MaterialTheme.typography.bodyLarge)
                         Text(item.summary?.let {hzLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_note_not_determined),color=if(item.summary!=null)accent else muted,style=if(item.summary!=null)MaterialTheme.typography.titleLarge else MaterialTheme.typography.bodyMedium)
                     }
-                    if(item.timeline.isNotEmpty())SessionGraph(item.timeline,item.durationMs,Modifier.fillMaxWidth().height(48.dp),compact=true,instrument=item.instrument,tag="summary-${item.id}")
+                    MusicalPreview(musician ?: MusicalTrace.unavailable(item.instrument,item.durationMs),
+                        Modifier.fillMaxWidth().height(72.dp),tag="summary-${item.id}")
+                    if(musician?.highRegisterCandidates?.isNotEmpty()==true)
+                        Text(stringResource(R.string.musical_high_candidate),color=orange,style=MaterialTheme.typography.labelSmall)
                     Text("${context.instrumentLabel(item.instrument)} · ${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
-                    Text(item.summary?.let {stringResource(R.string.ui_stability_ff3f29, stabilityLabel(it.stabilityPercent))} ?: stringResource(R.string.ui_wav_available_for_analysis),color=orange,style=MaterialTheme.typography.bodySmall)
+                    if(item.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+                        Text(item.summary?.let {stringResource(R.string.ui_stability_ff3f29, stabilityLabel(it.stabilityPercent))} ?: stringResource(R.string.ui_wav_available_for_analysis),color=orange,style=MaterialTheme.typography.bodySmall)
                     if(item.legacy && context.sessionName(item)!=(if(item.recovered)context.getString(R.string.ui_recovered_audio) else context.getString(R.string.ui_legacy_recording)))Text(if(item.recovered)stringResource(R.string.ui_recovered_audio) else stringResource(R.string.ui_legacy_recording),color=muted,style=MaterialTheme.typography.bodySmall)
                 }
             }
@@ -771,13 +819,18 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
     var name by remember(item.id) {mutableStateOf(context.sessionName(item))}
     var delete by remember(item.id) {mutableStateOf(false)}
     val cursor=playbackCursor(vm,item)
+    val musician=vm.musicalTrace(item)
     var more by rememberSaveable(item.id){mutableStateOf(false)}
     Panel {
         Text(context.sessionName(item),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
-        Text(item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_note_not_determined),style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)
-        Text(item.summary?.let {hzLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_view_changes_in_fundamental) else stringResource(R.string.ui_no_reliable_frequency),color=accent,style=MaterialTheme.typography.headlineSmall)
+        Text(if(item.instrument==InstrumentProfile.DIDGERIDOO)stringResource(R.string.musical_drone_title) else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_note_not_determined),style=if(item.instrument==InstrumentProfile.DIDGERIDOO)MaterialTheme.typography.titleMedium else MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)
+        Text(if(item.instrument==InstrumentProfile.DIDGERIDOO)
+            musician?.medianHz()?.let {stringResource(R.string.musical_component_frequency,hzLabel(it))}
+                ?:stringResource(if(vm.musicalTraceFailed(item.id))R.string.musical_trace_unavailable else R.string.musical_trace_loading)
+            else item.summary?.let {hzLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_view_changes_in_fundamental) else stringResource(R.string.ui_no_reliable_frequency),color=accent,style=MaterialTheme.typography.headlineSmall)
         Text("${context.instrumentLabel(item.instrument)} · ${sessionDate(item.createdAt)} · ${formatDuration(item.durationMs)}",color=muted,style=MaterialTheme.typography.bodySmall)
-        Text(item.summary?.let {stringResource(R.string.ui_stability_ff3f29, stabilityLabel(it.stabilityPercent))} ?: stringResource(R.string.ui_audio_available_for_analysis),color=orange,style=MaterialTheme.typography.bodySmall)
+        if(item.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+            Text(item.summary?.let {stringResource(R.string.ui_stability_ff3f29, stabilityLabel(it.stabilityPercent))} ?: stringResource(R.string.ui_audio_available_for_analysis),color=orange,style=MaterialTheme.typography.bodySmall)
         TextButton(onClick={more=!more}){Text(if(more)stringResource(R.string.ui_less_information) else stringResource(R.string.ui_session_details))}
         if(more){
             Text(context.sessionName(item),style=MaterialTheme.typography.bodyMedium)

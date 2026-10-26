@@ -32,6 +32,7 @@ class ExplorerState(val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDO
     internal var inspectionLanguage: String? = null
     var gestureActive by mutableStateOf(false)
     var showUncertain by mutableStateOf(false)
+    var musicianTrace by mutableStateOf<MusicalTrace?>(null)
     // Broad physical/custom ranges require an explicit action, never a pinch zoom-out.
     var extendedPitchRange by mutableStateOf(false)
     private var pitchSource:List<SessionAnalysis.Point>?=null
@@ -60,6 +61,7 @@ class ExplorerState(val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDO
     }
     fun overview(points:List<SessionAnalysis.Point>):PitchViewRange {
         pitch(points)
+        musicianTrace?.let { trace -> return PitchViewRange(trace.frequencyRange(),trace.samples.count {it.hz!=null},0) }
         val range=comparisonRange ?: return generalPitch
         return generalPitch.copy(window=AxisWindow(minOf(generalPitch.window.low,range.low),maxOf(generalPitch.window.high,range.high)))
     }

@@ -7,6 +7,7 @@ import ar.didgetaller.core.SwipeAnalysis
 import ar.didgetaller.core.SwipeCurve
 import ar.didgetaller.core.DroneComponentAnalysis
 import ar.didgetaller.core.DroneComponentCurve
+import ar.didgetaller.core.MusicalTrace
 import ar.didgetaller.core.SavedYinReplay
 import ar.didgetaller.core.AxisWindow
 
@@ -24,6 +25,7 @@ import java.io.File
 import android.os.SystemClock
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import ar.didgetaller.audio.MicrophoneEngine
@@ -43,7 +45,6 @@ import kotlin.math.abs
 import kotlin.math.ln
 
 enum class SessionPhase { IDLE, CAPTURING, SAVING }
-enum class PitchLayerMode { FUNDAMENTAL, COMPONENT, BOTH }
 private const val MIC_PERMISSION_NOTICE="Para medir hace falta permiso de micrófono. Podés concederlo desde Ajustes."
 data class RecordingAnalysisState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
                                   val result:WavAnalysis.Result?=null,val error:String?=null, val startMs:Long=0,val endMs:Long?=null)
@@ -137,9 +138,46 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private var evidenceJob:Job?=null
     var swipeComparison by mutableStateOf(SwipeComparisonState());private set
     var droneComponent by mutableStateOf(DroneComponentState());private set
+    private val musicalTraces=mutableStateMapOf<String,MusicalTrace>()
+    private val fluteTraces=mutableMapOf<String,MusicalTrace>()
+    private val musicalTraceJobs=mutableMapOf<String,Job>()
+    private val musicalTraceFailures=mutableStateMapOf<String,Boolean>()
+    fun musicalTrace(item:RecordingStore.Session):MusicalTrace? =
+        if(item.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+            fluteTraces.getOrPut(item.id){MusicalTrace.flute(item.timeline,item.durationMs)} else musicalTraces[item.id]
+    fun musicalTraceFailed(id:String)=musicalTraceFailures[id]==true
+    fun requestMusicalTrace(item:RecordingStore.Session){
+        if(item.instrument!=InstrumentProfile.DIDGERIDOO)return
+        if(musicalTraces.containsKey(item.id)){
+            if(activeDetail==item.id && droneComponent.sessionId!=item.id)analyzeDroneComponent(item)
+            return
+        }
+        if(musicalTraceJobs[item.id]?.isActive==true || musicalTraceFailures[item.id]==true)return
+        musicalTraceJobs[item.id]=viewModelScope.launch {
+            try {
+                val curve=withContext(swipeDispatcher){
+                    val task=currentCoroutineContext()
+                    cache.droneComponent(item.id,sessionFile(item),cancelled={!task.isActive})
+                }
+                ensureActive()
+                musicalTraces[item.id]=MusicalTrace.didgeridoo(curve,item.durationMs,item.timeline)
+                if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,progress=100,curve=curve)
+                // The disk cache is authoritative; retain only a few decoded series in memory.
+                while(musicalTraces.size>6){
+                    val oldest=musicalTraces.keys.firstOrNull {it!=activeDetail && it!=item.id} ?: break
+                    musicalTraces.remove(oldest)
+                }
+            }catch(e:CancellationException){throw e}
+            catch(e:Exception){ensureActive();musicalTraceFailures[item.id]=true
+                if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,failed=true)
+            }finally{if(musicalTraceJobs[item.id]===currentCoroutineContext()[Job])
+                musicalTraceJobs.remove(item.id)}
+        }
+    }
+    fun releaseMusicalTraceRequest(id:String){
+        if(activeDetail!=id)musicalTraceJobs.remove(id)?.cancel()
+    }
     var savedYinReplay by mutableStateOf(SavedYinReplayState());private set
-    var pitchLayerMode by mutableStateOf(PitchLayerMode.BOTH);private set
-    fun choosePitchLayer(mode:PitchLayerMode){pitchLayerMode=mode}
     private var swipeJob:Job?=null
     private var droneComponentJob:Job?=null
     private var savedYinReplayJob:Job?=null
@@ -177,12 +215,10 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
             try {
                 val result=withContext(swipeDispatcher){
                     val task=currentCoroutineContext()
-                    Pcm16WavReader(sessionFile(item)).use { source ->
-                        DroneComponentAnalysis().analyze(source,cancelled={!task.isActive},progress={p->
+                    cache.droneComponent(item.id,sessionFile(item),cancelled={!task.isActive},progress={p->
                             main.post {if(task.isActive && droneComponent.sessionId==item.id)
                                 droneComponent=droneComponent.copy(progress=p)}
                         })
-                    }
                 }
                 ensureActive()
                 if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,progress=100,curve=result)
@@ -338,7 +374,6 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         inMeasurementDestination=measurement
         microphoneStop()
         if(activeDetail!=sessionId || sessionId==null){
-            pitchLayerMode=PitchLayerMode.BOTH
             stopPlayback();cancelRecordingAnalysis(clear=true);cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
             activeDetail?.let {explorers.remove(it);previews.remove(it)}
         }
@@ -414,6 +449,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
             .onFailure {message="No se pudo renombrar: ${it.message}"}
     }
     fun deleteSession(item:RecordingStore.Session){
+        musicalTraceJobs.remove(item.id)?.cancel();musicalTraces.remove(item.id);fluteTraces.remove(item.id)
         if(playingId==item.id)stopPlayback()
         if(recordingAnalysis.sessionId==item.id)cancelRecordingAnalysis(clear=true)
         if(savedEvidence.sessionId==item.id)cancelSavedEvidence()

@@ -74,15 +74,13 @@ class RecoveryUiTest {
         capture("session-heading")
         compose.onNodeWithTag("time-chart").performScrollTo();capture("colours-detail")
         val pixels=compose.onNodeWithTag("time-chart").captureToImage().toPixelMap()
-        val found=IntArray(3)
+        var supportedPixels=0
         for(x in 0 until pixels.width)for(y in 0 until pixels.height){
             val c=pixels[x,y]
-            listOf(PitchTrace.Tone.STABLE,PitchTrace.Tone.MODERATE,PitchTrace.Tone.REVIEW).forEachIndexed {i,t->
-                val target=pitchColor(t)
-                if(abs(c.red-target.red)<.01 && abs(c.green-target.green)<.01 && abs(c.blue-target.blue)<.01)found[i]++
-            }
+            val target=androidx.compose.ui.graphics.Color(0xFF65C9D1)
+            if(abs(c.red-target.red)<.01 && abs(c.green-target.green)<.01 && abs(c.blue-target.blue)<.01)supportedPixels++
         }
-        assertTrue("All three colours must reach actual Canvas pixels: ${found.toList()}",found.all {it>5})
+        assertTrue("The canonical component must reach actual Canvas pixels: $supportedPixels",supportedPixels>5)
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick();capture("colours-fullscreen")
         val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
         compose.onNodeWithTag("viewer-tools").performClick()

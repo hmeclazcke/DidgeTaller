@@ -23,6 +23,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStore
+import androidx.navigation.compose.rememberNavController
 import androidx.test.platform.app.InstrumentationRegistry
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.core.*
@@ -49,22 +50,81 @@ class DroneComponentUiTest {
     @Test fun spanishEstimatedComponentPreservesTheSource()=check("es-AR")
     @Test fun englishEstimatedComponentPreservesTheSource()=check("en")
 
-    @Test fun componentOnlyViewportUsesMeasuredComponentRatherThanYinRegister(){
+    @Test fun musicianViewportUsesMeasuredComponentRatherThanYinRegister(){
         val yin=listOf(SessionAnalysis.Point(100,140.0,.95),SessionAnalysis.Point(300,140.0,.95))
         val component=DroneComponentCurve(listOf(
             DroneComponentCurve.Sample(100.0,35.0,35.0,.1,DroneComponentCurve.Reason.COMPONENT),
             DroneComponentCurve.Sample(300.0,35.0,35.0,.1,DroneComponentCurve.Reason.COMPONENT)),200.0)
-        val selected=sessionScalePoints(yin,component,ar.didgetaller.PitchLayerMode.COMPONENT)
-        val viewport=ExplorerState().camera(1000,44100,selected)
+        val musician=MusicalTrace.didgeridoo(component,1000)
+        val state=ExplorerState().apply {musicianTrace=musician}
+        val viewport=state.camera(1000,44100,musicianPlotPoints(musician))
         assertTrue(35.0 in viewport.y.low..viewport.y.high)
         assertFalse(140.0 in viewport.y.low..viewport.y.high)
-        assertEquals(yin,sessionScalePoints(yin,component,ar.didgetaller.PitchLayerMode.FUNDAMENTAL))
-        assertEquals(4,sessionScalePoints(yin,component,ar.didgetaller.PitchLayerMode.BOTH).size)
+        assertEquals(listOf(35.0,35.0),musician.samples.map {it.hz})
+        assertEquals(140.0,yin.first().hz!!,0.0) // Original YIN evidence remains separate.
     }
 
     @Test fun privateFourBoutWavShowsIndependentEvidenceWhenPresent()=checkPrivateWav(false)
 
     @Test fun privateFourBoutWavFitsLandscape()=checkPrivateWav(true)
+
+    @Test fun privateFourBoutLibraryPreviewMatchesDetail(){
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
+        val target=InstrumentationRegistry.getInstrumentation().targetContext
+        val fixture=File(target.getExternalFilesDir(null),"drone-component-private.wav")
+        assumeTrue("Private WAV must be placed only on the emulator",fixture.isFile)
+        app=IsolatedApplication(target)
+        val store=RecordingStore(app)
+        val original=fixture.readBytes()
+        val historical=listOf(SessionAnalysis.Point(30730,35.0,.7),SessionAnalysis.Point(38174,51.44,.8))
+        val item=store.save(original,historical)
+        lateinit var vm:TallerViewModel
+        compose.runOnUiThread {vm=TallerViewModel(app);owner.put("private-library",vm)}
+        compose.setContent {TallerApp(vm,{}, {},{_,_,_->},rememberNavController())}
+        val analysisStarted=android.os.SystemClock.elapsedRealtime()
+        compose.onNodeWithText(target.getString(ar.didgetaller.R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${item.id}").performScrollTo()
+        compose.waitUntil(30000){vm.musicalTrace(item)!=null}
+        val musician=vm.musicalTrace(item)!!
+        android.util.Log.i("MusicalTracePerf","emulator card ready in ${android.os.SystemClock.elapsedRealtime()-analysisStarted} ms; ${musician.samples.size} source windows")
+        assertTrue(musician.samples.any {it.timeMs in 30500.0..31000.0 && it.hz?.let {hz->hz in 63.0..67.0}==true})
+        assertTrue(musician.samples.none {it.hz==35.0 || it.hz==51.44})
+        val card=compose.onNodeWithTag("summary-${item.id}",useUnmergedTree=true).fetchSemanticsNode().config[PlotWindow]
+        val imageRoot=File(target.getExternalFilesDir(null),"musical-experience").apply {mkdirs()}
+        File(imageRoot,"15-27-card.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
+        }
+        compose.onNodeWithTag("session-${item.id}").performClick()
+        compose.onNodeWithTag("time-chart").performScrollTo()
+        val detail=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
+        assertEquals(card,detail)
+        val chart=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config
+        assertEquals(0,chart[PlotYinCount])
+        assertTrue(chart[PlotDroneComponentCount]>0)
+        compose.onNodeWithTag("pitch-layer-choice").assertDoesNotExist()
+        File(imageRoot,"15-27-detail.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
+        }
+        compose.runOnUiThread {vm.seekPlayback(item,30730)}
+        compose.waitUntil(10000){
+            vm.playingId==item.id && abs(vm.playbackPositionMs()-30730)<500 &&
+                abs(compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotPlaybackMs]-30730)<500
+        }
+        val cursor=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotPlaybackMs]
+        assertTrue("Playback cursor: $cursor",abs(cursor-30730)<500)
+        File(imageRoot,"15-27-cursor-30-73.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
+        }
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        val immersive=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config
+        assertEquals(card,immersive[PlotWindow])
+        assertTrue(abs(immersive[PlotPlaybackMs]-30730)<500)
+        File(imageRoot,"15-27-fullscreen.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)
+        }
+        assertArrayEquals(original,fixture.readBytes())
+        assertEquals(historical,store.list().first {it.id==item.id}.timeline)
+    }
 
     private fun checkPrivateWav(landscape:Boolean){
         assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
@@ -109,7 +169,7 @@ class DroneComponentUiTest {
         assertNull(stale.acceptedHz)
         compose.onNodeWithTag("time-chart").performScrollTo()
         val chart=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config
-        assertTrue(chart[PlotYinCount]>0)
+        assertEquals(0,chart[PlotYinCount])
         assertTrue(chart[PlotDroneComponentCount]>0)
         val suffix=if(landscape) "real-landscape" else "real"
         File(target.getExternalFilesDir(null),"drone-component-$suffix-preview.png").outputStream().use {
@@ -164,16 +224,13 @@ class DroneComponentUiTest {
             compose.runOnIdle {assertFalse(vm.savedYinReplay.failed)}
             assertTrue(item.timeline.any {it.hz==51.0})
             assertTrue(sessionPlotPoints(vm,item).none {it.hz==51.0})
-            compose.onNodeWithTag("pitch-layer-fundamental").performScrollTo().performClick()
-            assertEquals(0,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotDroneComponentCount])
-            compose.onNodeWithTag("pitch-layer-component").performScrollTo().performClick()
+            compose.onNodeWithTag("pitch-layer-choice").assertDoesNotExist()
             assertEquals(0,compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotYinCount])
-            compose.onNodeWithTag("pitch-layer-both").performScrollTo().performClick()
             compose.onNodeWithTag("time-chart").performScrollTo()
             val config=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config
             assertTrue(config[PlotDroneComponentCount]>0)
-            assertTrue(config[PlotYinCount]>0)
-            compose.onNodeWithText(localized.getString(ar.didgetaller.R.string.drone_component_estimated))
+            assertEquals(0,config[PlotYinCount])
+            compose.onNodeWithText(localized.getString(ar.didgetaller.R.string.musical_drone_description))
                 .assertExists()
             File(target.getExternalFilesDir(null),"drone-component-$language-preview.png").outputStream().use {
                 compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)

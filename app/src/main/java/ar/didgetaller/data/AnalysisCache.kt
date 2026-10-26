@@ -10,7 +10,7 @@ import java.util.concurrent.CancellationException
 class AnalysisCache(context:Context) {
     private val root=File(context.filesDir,"analysis-cache").apply {mkdirs()}
     // Lazy analysis invalidation for the comparison-support amplitude gate. Originals stay intact.
-    companion object {const val VERSION=3;const val VISUAL_VERSION=3;private const val LIMIT=64L*1024*1024}
+    companion object {const val VERSION=3;const val VISUAL_VERSION=3;private const val COMPONENT_VERSION=1;private const val LIMIT=64L*1024*1024}
     fun fingerprint(file:File,cancelled:()->Boolean={false}):String {
         val digest=MessageDigest.getInstance("SHA-256");val bytes=ByteArray(65536)
         file.inputStream().buffered().use {input ->while(true){if(cancelled())throw CancellationException();val n=input.read(bytes);if(n<0)break;digest.update(bytes,0,n)}}
@@ -55,6 +55,46 @@ class AnalysisCache(context:Context) {
         val median=input.readDouble().takeIf {it.isFinite()};val mean=input.readDouble().takeIf {it.isFinite()};val fraction=input.readDouble();val confidence=input.readDouble().takeIf {it.isFinite()}
         val spectrum=PowerSpectrum(rate,n,density)
         WavAnalysis.Result(start,end,rate,windows,spectrum,HarmonicAnalysis.analyze(spectrum,summary?.typicalHz),points,summary,median,mean,fraction,confidence)
+    }
+    /** Regenerable source-aligned evidence shared by Library and session views. */
+    fun droneComponent(id:String,file:File,cancelled:()->Boolean={false},progress:(Int)->Unit={}):DroneComponentCurve {
+        val signature=fingerprint(file,cancelled)
+        val cached=cacheFile(id,"component-$COMPONENT_VERSION-$signature")
+        runCatching {readComponent(cached)}.getOrNull()?.let {
+            if(cancelled())throw CancellationException()
+            cached.setLastModified(System.currentTimeMillis());progress(100);return it
+        }
+        val curve=Pcm16WavReader(file).use {source ->
+            DroneComponentAnalysis().analyze(source,cancelled,progress)
+        }
+        if(cancelled())throw CancellationException()
+        runCatching {write(cached){out ->
+            out.writeInt(COMPONENT_VERSION);out.writeDouble(curve.hopMs);out.writeInt(curve.samples.size)
+            curve.samples.forEach {sample ->
+                out.writeDouble(sample.timeMs);out.writeDouble(sample.hz ?: Double.NaN)
+                out.writeDouble(sample.candidateHz ?: Double.NaN);out.writeDouble(sample.rms)
+                out.writeInt(sample.reason.ordinal)
+            }
+        }}
+        return curve
+    }
+    private fun readComponent(file:File):DroneComponentCurve=DataInputStream(BufferedInputStream(FileInputStream(file))).use {input ->
+        require(input.readInt()==COMPONENT_VERSION)
+        val hop=input.readDouble();require(hop.isFinite() && hop>0)
+        // At 44.1 kHz the 8,192-frame hop stays below 10,000 frames for 30 minutes.
+        val count=input.readInt();require(count in 0..12000)
+        val reasons=DroneComponentCurve.Reason.entries
+        var previous=-1.0
+        val samples=List(count){
+            val time=input.readDouble();val hz=input.readDouble().takeIf {it.isFinite()}
+            val candidate=input.readDouble().takeIf {it.isFinite()};val rms=input.readDouble()
+            val reason=reasons[input.readInt()]
+            require(time.isFinite() && time>previous && hz?.let {it>0}!=false &&
+                candidate?.let {it>0}!=false && rms.isFinite() && rms in 0.0..1.0)
+            previous=time
+            DroneComponentCurve.Sample(time,hz,candidate,rms,reason)
+        }
+        DroneComponentCurve(samples,hop)
     }
     fun visual(id:String,signature:String,key:String,compute:()->AudioVisuals.Spectrogram):AudioVisuals.Spectrogram {
         val file=cacheFile(id,"visual-$VISUAL_VERSION-$signature-$key")

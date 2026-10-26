@@ -31,7 +31,8 @@ class StudioViewerTest {
     @Before fun setup(){
         assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
         store=RecordingStore(compose.activity.application)
-        val pcm=ShortArray(44100*8){i->(6000*sin(2*PI*69.6*i/44100)+3500*sin(2*PI*139.2*i/44100)).toInt().toShort()}
+        val pcm=ShortArray(44100*8){i->(6000*sin(2*PI*69.6*i/44100)+3500*sin(2*PI*139.2*i/44100)+
+            1800*sin(2*PI*208.8*i/44100)).toInt().toShort()}
         item=store.save(WavCodec.encode(pcm,pcm.size,44100),(0..39).map {SessionAnalysis.Point(it*200L,69.6+.15*sin(it.toDouble()),.97)})
         compose.runOnUiThread {vm=ViewModelProvider(compose.activity)[TallerViewModel::class.java];originalInstrument=vm.instrument;vm.renameSession(item,"Sintética · Acoustic Studio")}
     }
@@ -63,15 +64,15 @@ class StudioViewerTest {
         assertTrue("Data, excluding axes",area.height/root.height>=if(compose.activity.resources.configuration.fontScale>1.2f).60f else .65f)
         capture("spectrogram-landscape")
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
-        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performClick()
+        compose.onNodeWithText(uiText(R.string.musical_drone_title)).performClick()
         capture("fundamental-landscape")
-        compose.onNodeWithTag("immersive-plot").assertContentDescriptionContains(uiText(R.string.ui_hz_axis_and_base_note),substring=true)
+        compose.onNodeWithTag("immersive-plot").assertContentDescriptionContains("Hz",substring=true)
         val graph=compose.onNodeWithTag("immersive-plot")
         val pitchArea=graph.fetchSemanticsNode().config[PlotDataArea]
         graph.performTouchInput {longClick(androidx.compose.ui.geometry.Offset(pitchArea.left+pitchArea.width*.25f,pitchArea.center.y),800)}
         compose.runOnIdle {
             assertEquals(2000.0,vm.explorer(item.id).selectedMs.toDouble(),20.0)
-            assertTrue(vm.explorer(item.id).inspected!!.contains("cents"))
+            assertTrue(vm.explorer(item.id).inspected!!.contains("Hz"))
         }
         capture("fundamental-cursor-landscape")
         compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()

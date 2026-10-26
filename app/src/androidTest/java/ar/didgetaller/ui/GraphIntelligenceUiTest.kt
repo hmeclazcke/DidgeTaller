@@ -104,7 +104,7 @@ class GraphIntelligenceUiTest {
         open(a);expand();capture("drone-general")
         compose.waitUntil(15000){vm.savedYinReplay.sessionId==a.id && vm.savedYinReplay.result!=null}
         compose.waitUntil(15000){vm.droneComponent.sessionId==a.id && vm.droneComponent.curve!=null}
-        val points=sessionScalePoints(sessionPlotPoints(vm,a),vm.droneComponent.curve,vm.pitchLayerMode)
+        val points=musicianPlotPoints(vm.musicalTrace(a)!!)
         val general=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
         tools(uiText(R.string.ui_fitted_view));assertTrue(vm.explorer(a.id).camera(a.durationMs,44100,points).y.span<2);capture("drone-fitted")
         repeat(3){zoom()}
@@ -123,12 +123,13 @@ class GraphIntelligenceUiTest {
         open(c);expand()
         val trace=PitchTrace.build(c.timeline,c.instrument);assertEquals(1,trace.count {it.uncertain})
         compose.waitUntil(15000){vm.savedYinReplay.sessionId==c.id && vm.savedYinReplay.result!=null}
-        val s=vm.explorer(c.id);assertTrue(s.camera(c.durationMs,44100,sessionPlotPoints(vm,c)).y.low>100)
+        compose.waitUntil(15000){vm.musicalTrace(c)!=null}
+        val s=vm.explorer(c.id);assertTrue(vm.musicalTrace(c)!!.samples.none {it.hz==42.9})
         tools(uiText(R.string.ui_show_all_values));assertTrue(s.showUncertain);capture("uncertain-original")
         val graph=compose.onNodeWithTag("immersive-plot");val area=graph.fetchSemanticsNode().config[PlotDataArea]
         graph.performTouchInput {longClick(Offset(area.left+area.width*(4500f/c.durationMs),area.center.y),800)}
         assertFalse(s.inspected!!.contains(hzLabel(42.9)))
-        assertTrue(s.inspected!!.contains("Hz"))
+        assertTrue(s.inspected!!.contains(uiText(R.string.ui_no_nearby_reliable_reading)))
         compose.onNodeWithTag("viewer-tools").performClick();compose.onNodeWithTag("complete-reading").assertTextEquals(s.inspected!!);capture("uncertain-reading")
         compose.onNodeWithText(uiText(R.string.ui_back_to_chart)).performScrollTo().performClick()
         // The exact-range tool is the intentional escape hatch outside data-driven zoom limits.
@@ -140,7 +141,8 @@ class GraphIntelligenceUiTest {
         graph.assertContentDescriptionContains("0 Hz",substring=true)
         val desc=graph.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
         assertFalse(desc.contains("C#-14"));assertFalse(desc.contains("aproximadamente"));capture("zero-hz-no-note")
-        compose.onNodeWithTag("reset-viewport").performClick();assertTrue(s.camera(c.durationMs,44100,sessionPlotPoints(vm,c)).y.low>100)
+        compose.onNodeWithTag("reset-viewport").performClick()
+        assertEquals(vm.musicalTrace(c)!!.frequencyRange(),s.camera(c.durationMs,44100,musicianPlotPoints(vm.musicalTrace(c)!!)).y)
         assertEquals(42.9,RecordingStore(app).list().first {it.id==c.id}.timeline[25].hz!!,0.0)
         back()
         compose.runOnIdle {vm.preview(c.id).selectedMs=4500}

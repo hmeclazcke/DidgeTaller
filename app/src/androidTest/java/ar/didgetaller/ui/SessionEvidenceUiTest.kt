@@ -82,7 +82,7 @@ class SessionEvidenceUiTest {
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null || vm.workspace.state.error!=null}
         compose.runOnIdle {assertNull("Spectrogram calculation",vm.workspace.state.error)}
         compose.onNodeWithTag("time-chart").performScrollTo();screenshot("spectrogram")
-        compose.onNodeWithText(uiText(R.string.ui_fundamental)).performScrollTo().performClick()
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick();screenshot("wide-pitch")
         assertArrayEquals(original,store.file(item.id).readBytes())
         assertEquals(index,app.getSharedPreferences("local_data",0).all)
@@ -92,7 +92,7 @@ class SessionEvidenceUiTest {
         compose.onNodeWithTag("time-chart").performScrollTo()
         val node=compose.onNodeWithTag("time-chart").fetchSemanticsNode()
         assertTrue(node.config[PlotAudioLevelCount]>0)
-        compose.onNodeWithTag("pitch-audio-level-help").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.musical_drone_description)).performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("immersive-plot").performTouchInput {doubleClick()}
         assertTrue(compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotAudioLevelCount]>0)
