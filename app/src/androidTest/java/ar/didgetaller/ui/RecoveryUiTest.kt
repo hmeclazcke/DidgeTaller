@@ -115,14 +115,29 @@ class RecoveryUiTest {
             compose.runOnIdle {assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument);assertEquals(readings.size,vm.sessionTimeline.size)}
             compose.onNodeWithText(uiText(R.string.ui_stable_note)).assertIsDisplayed()
             compose.onNodeWithText(hzLabel(vm.filteredHz)).assertIsDisplayed()
+            val stableParts=listOf("measurement-note-slot","measurement-note-name","measurement-frequency","acoustic-signal-status").map {compose.onNodeWithTag(it).fetchSemanticsNode().boundsInRoot}
+            val stableCard=compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot
+            val stableSave=compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot
+            val stableDiscard=compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot
+            assertTrue("Controls must follow the measurement card",stableSave.top>=stableCard.bottom)
+            val navigation=compose.onNodeWithTag("main-navigation").fetchSemanticsNode().boundsInRoot
+            assertTrue("Save must fit above navigation",stableSave.bottom<=navigation.top)
+            assertTrue("Discard must fit above navigation",stableDiscard.bottom<=navigation.top)
             capture(name)
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
             compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
             compose.onNodeWithTag("measurement-frequency").assertTextEquals("— Hz")
+            assertEquals(stableCard,compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot)
+            assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)
+            assertEquals(stableDiscard,compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot)
             capture("$name-silence")
             compose.runOnIdle {callback(PitchDetector.Reading(confidence=.52,rms=.10));assertEquals(0.0,vm.filteredHz,0.0)}
             compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).assertIsDisplayed()
+            val nowParts=listOf("measurement-note-slot","measurement-note-name","measurement-frequency","acoustic-signal-status").map {compose.onNodeWithTag(it).fetchSemanticsNode().boundsInRoot}
+            assertEquals("parts stable=$stableParts now=$nowParts",stableCard,compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot)
+            assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)
+            assertEquals(stableDiscard,compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot)
             capture("$name-uncertain")
             compose.runOnIdle {phase.value=SessionPhase.IDLE;vm.microphoneStop()}
         }

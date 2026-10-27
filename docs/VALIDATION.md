@@ -1898,3 +1898,21 @@ not performed. No physical Samsung access or installation was performed, and
 no full instrumentation suite was run. CI compiles instrumentation but does
 not execute it. The debug APK SHA-256 is
 `26161faa4b2cb187678c8c8696732c027d6bf0b179aaa533a4e21c6927ae4b81`.
+
+## Stable live measurement layout — 2026-10-27
+
+The active measurement reserves note, identifier, frequency and detection-state
+space, and places save/discard before the secondary live reading. Focused
+emulator tests compared card and control bounds across stable, silent and
+uncertain readings for both instruments. They also checked that controls fit
+above navigation at normal English size and Spanish compact portrait/landscape
+with font scale 1.5. Three focused English instrumentation tests passed,
+including save, discard and continue against isolated synthetic data; the
+layout test also passed in each Spanish configuration. Actual screenshots were
+inspected in `checkpoints/live-stable-evidence/`. The compact cases initially
+exposed clipping and height differences; the final targeted reruns passed.
+
+`:app:testDebugUnitTest`, `:app:assembleDebug`, `:app:assembleDebugAndroidTest`
+and `detekt` succeeded; localization parity passed. No full instrumentation
+suite or spoken TalkBack walkthrough was performed. The validated debug APK
+SHA-256 is `6886a817415d380f86a74fe599ff0d621790a388bdfa71e0d5bc8d7bfad59c5a`.

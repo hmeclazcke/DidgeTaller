@@ -707,3 +707,11 @@ of recovery before cleanup. A failed cleanup is surfaced and never reported
 as success. The existing save-on-navigation/background policy and fullscreen
 back stack are retained. Validation and the remaining recovery and TalkBack
 limits are recorded in `docs/VALIDATION.md`.
+
+## Stable live measurement layout — 2026-10-27
+
+Reserved measurement slots remove state-dependent height changes. Recording
+controls now follow the card before secondary details; compact landscape and
+large-text spacing keep controls above navigation. Emulator-only evidence and
+validation limits are recorded in VALIDATION.md. Audio and recording lifecycle
+were not changed.
