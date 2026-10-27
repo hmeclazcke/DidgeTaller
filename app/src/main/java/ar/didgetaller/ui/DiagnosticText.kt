@@ -64,6 +64,7 @@ private val diagnosticRules = listOf(
     DiagnosticRule("No se pudo comenzar: {1}", R.string.diagnostic_could_not_start),
     DiagnosticRule("No se pudo grabar: {1}", R.string.diagnostic_could_not_record),
     DiagnosticRule("No se pudo cerrar el WAV: {1}. La captura queda pendiente de recuperación.", R.string.diagnostic_could_not_close_the_wav_the_capture_is_pending_recovery),
+    DiagnosticRule("No se pudo liberar el micrófono.", R.string.recording_release_failed),
     DiagnosticRule("Error al leer el micrófono ({1}).", R.string.diagnostic_microphone_read_error),
     DiagnosticRule("Falló la captura: {1}", R.string.diagnostic_capture_failed),
     DiagnosticRule("No se pudo reproducir: {1}", R.string.diagnostic_could_not_play_audio),

@@ -44,7 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
 import kotlin.math.ln
 
-enum class SessionPhase { IDLE, CAPTURING, SAVING }
+enum class SessionPhase { IDLE, CAPTURING, SAVING, DISCARDING }
 private const val MIC_PERMISSION_NOTICE="Para medir hace falta permiso de micrófono. Podés concederlo desde Ajustes."
 data class RecordingAnalysisState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
                                   val result:WavAnalysis.Result?=null,val error:String?=null, val startMs:Long=0,val endMs:Long?=null)
@@ -354,6 +354,11 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
         }
+    },onRecordingDiscarded={success ->
+        sessionTimeline=emptyList();pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE;listening=false
+        microphoneError=if(success)null else getApplication<Application>().getString(R.string.recording_discard_failed)
+        message=getApplication<Application>().getString(if(success) R.string.recording_discarded else R.string.recording_discard_failed)
+        if(cleared)sessionExecutor.shutdown()
     },onRecordingFailed={error ->
         if(sessionPhase==SessionPhase.CAPTURING)finishSession()
         pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE;listening=false
@@ -425,6 +430,17 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         sessionPhase=SessionPhase.SAVING
         pendingTimeline=sessionTimeline
         mic.stop();listening=false
+    }
+    fun discardSession() {
+        if(sessionPhase!=SessionPhase.CAPTURING)return
+        if(mic.discardRecording()) {
+            sessionPhase=SessionPhase.DISCARDING;listening=false
+            reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0
+            clearAcousticDiagnostics()
+        } else {
+            finishSession()
+            message=getApplication<Application>().getString(R.string.recording_discard_too_late)
+        }
     }
     fun microphoneStop(){
         if(sessionPhase==SessionPhase.CAPTURING){finishSession();return}

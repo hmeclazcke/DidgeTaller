@@ -1864,3 +1864,37 @@ and controlled-PCM live measurement tests each passed once; no build, full
 suite, physical microphone, or Samsung operation was performed. Capture
 provenance is in `docs/screenshots/showcase-es/README.md`. README links,
 language navigation, original PNG hashes, and staged privacy were checked.
+
+## Live measurement and discard — 2026-10-27
+
+Discard is confirmed before the current capture is claimed under the recorder
+lock. Its UUID `.part` is renamed to `.discard` before the microphone stops,
+so an interrupted cleanup is not imported by pending-capture recovery. The
+worker releases the microphone, closes the writer, and removes that owned
+file. Failure to rename, close, release, or delete is reported; a remaining
+`.part` may be recovered on a later launch. If timeout or save already owns
+the capture, the UI reports that it is being saved instead of claiming a
+successful discard. Leaving Measure or backgrounding still saves as before.
+
+On the final source, `:app:testDebugUnitTest` passed (183 tests, 8 skipped),
+debug and Android-test APKs built, and `detekt`/`detektComplexity` completed
+as informational checks. Localization parity passed for 563 strings. Sixteen
+distinct focused instrumentation tests passed across runs on `emulator-5554`:
+recorder handoff,
+failure injection, 20 save/discard races, a real one-second timeout, saved
+fixture integrity, continue/discard/immediate retry/save, fullscreen and
+Back, rotation, and synthetic live readings. The actual emulator edge gesture
+was executed during active capture. An initial combined run exposed a window
+focus race in the gesture test; after waiting for focus and the navigation
+transition, its targeted rerun passed. Separate Spanish compact-font and
+landscape/font 1.5 runs also passed against the final app. Logs and screenshots remain in
+ignored `checkpoints/measure-*` paths.
+
+Rendered screenshots were inspected for idle, stable synthetic signal, no
+stable signal, confirmation, compact portrait, and landscape in English and
+Spanish. The primary reading and controls fit the inspected screens. Semantics
+and 48 dp touch targets were checked; a full spoken TalkBack walkthrough was
+not performed. No physical Samsung access or installation was performed, and
+no full instrumentation suite was run. CI compiles instrumentation but does
+not execute it. The debug APK SHA-256 is
+`26161faa4b2cb187678c8c8696732c027d6bf0b179aaa533a4e21c6927ae4b81`.

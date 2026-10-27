@@ -50,7 +50,8 @@ class RecordingHandoffTest {
         field(engine, "recording").setBoolean(engine, true)
     }
     private fun finish(engine: MicrophoneEngine) {
-        engine.javaClass.getDeclaredMethod("finishRecording").apply { isAccessible = true }.invoke(engine)
+        engine.javaClass.getDeclaredMethod("finishRecording", Boolean::class.javaPrimitiveType)
+            .apply { isAccessible = true }.invoke(engine, true)
     }
     private fun breakOwnedHandle(writer: ProgressiveWavWriter) {
         // Real IOException on finalization, without mocking close or changing file bytes.
@@ -108,6 +109,184 @@ class RecordingHandoffTest {
         assertEquals(1, ready.get())
         assertEquals(1, stopped.get())
         assertEquals(0, errors.get())
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test fun discardRemovesOnlyTheCurrentPartialAndPreservesSavedData() {
+        val store = RecordingStore(app)
+        val audio = WavCodec.encode(ShortArray(44100) { 1234 }, 44100, 44100)
+        val existing = store.save(audio, createdAt = 123L)
+        val index = app.getSharedPreferences("local_data", 0).getString("recordings", null)
+        val owner = ViewModelStore()
+        lateinit var vm: TallerViewModel
+        instrumentation.runOnMainSync { vm = TallerViewModel(app); owner.put("capture", vm) }
+        try {
+            val partial = store.newCapture()
+            val writer = ProgressiveWavWriter(partial)
+            writer.append(shortArrayOf(1, 2, 3), 3)
+            val engine = field(vm, "mic").get(vm) as MicrophoneEngine
+            attach(engine, writer)
+            instrumentation.runOnMainSync {
+                (field(vm, "sessionPhase\$delegate").get(vm) as MutableState<SessionPhase>).value = SessionPhase.CAPTURING
+                vm.discardSession()
+                vm.discardSession()
+            }
+            repeat(2) { finish(engine) }
+            instrumentation.waitForIdleSync()
+            assertEquals(SessionPhase.IDLE, vm.sessionPhase)
+            assertFalse(partial.exists())
+            assertEquals(index, app.getSharedPreferences("local_data", 0).getString("recordings", null))
+            assertEquals(listOf(existing.id), store.list().map { it.id })
+            assertArrayEquals(audio, store.file(existing.id).readBytes())
+        } finally {
+            instrumentation.runOnMainSync { owner.clear() }
+        }
+    }
+
+    @Test fun saveAndDiscardRaceHasExactlyOneOutcome() {
+        repeat(20) {
+            val partial = RecordingStore(app).newCapture()
+            val writer = ProgressiveWavWriter(partial)
+            writer.append(shortArrayOf(10, 20, 30), 3)
+            val ready = AtomicInteger()
+            val discarded = AtomicInteger()
+            val errors = AtomicInteger()
+            val engine = MicrophoneEngine({}, {}, { ready.incrementAndGet() }, { errors.incrementAndGet() },
+                onRecordingDiscarded = { success -> if (success) discarded.incrementAndGet() else errors.incrementAndGet() })
+            attach(engine, writer)
+            val start = java.util.concurrent.CountDownLatch(1)
+            val saving = Thread { start.await(); finish(engine) }
+            val cancelling = Thread { start.await(); if (engine.discardRecording()) finish(engine) }
+            saving.start(); cancelling.start(); start.countDown(); saving.join(); cancelling.join()
+            instrumentation.waitForIdleSync()
+            assertEquals(1, ready.get() + discarded.get())
+            assertEquals(0, errors.get())
+            assertEquals(ready.get() == 1, partial.exists())
+            if (partial.exists()) assertTrue(partial.delete())
+        }
+    }
+
+    @Test fun claimedDiscardIsNotRecoveredBeforeCleanupCompletes() {
+        val store = RecordingStore(app)
+        val partial = store.newCapture()
+        val writer = ProgressiveWavWriter(partial)
+        writer.append(shortArrayOf(1, 2, 3), 3)
+        val engine = MicrophoneEngine({}, {}, {}, {})
+        attach(engine, writer)
+        assertTrue(engine.discardRecording())
+        val discarded = File(partial.parentFile, "${partial.nameWithoutExtension}.discard")
+        assertFalse(partial.exists())
+        assertTrue(discarded.exists())
+        assertEquals(0, store.recoverPending())
+        assertTrue(store.list().isEmpty())
+        finish(engine)
+        instrumentation.waitForIdleSync()
+        assertFalse(discarded.exists())
+    }
+
+    @Test fun failedDiscardReportsFailureAndDoesNotTouchAnotherFile() {
+        val store = RecordingStore(app)
+        val partial = store.newCapture()
+        val writer = ProgressiveWavWriter(partial)
+        writer.append(shortArrayOf(1, 2, 3), 3)
+        val blocker = File(partial.parentFile, "${partial.nameWithoutExtension}.discard").apply { writeText("owned sentinel") }
+        val ready = AtomicInteger()
+        val discarded = AtomicInteger()
+        val failures = AtomicInteger()
+        val engine = MicrophoneEngine({}, {}, { ready.incrementAndGet() }, {},
+            onRecordingDiscarded = { if (it) discarded.incrementAndGet() else failures.incrementAndGet() })
+        attach(engine, writer)
+        assertTrue(engine.discardRecording())
+        assertFalse(engine.discardRecording())
+        finish(engine)
+        instrumentation.waitForIdleSync()
+        assertEquals(0, ready.get())
+        assertEquals(0, discarded.get())
+        assertEquals(1, failures.get())
+        assertTrue(partial.exists())
+        assertEquals("owned sentinel", blocker.readText())
+    }
+
+    @Test fun discardDoesNotReportSuccessIfMicrophoneReleaseFails() {
+        val partial = RecordingStore(app).newCapture()
+        val writer = ProgressiveWavWriter(partial)
+        writer.append(shortArrayOf(1, 2, 3), 3)
+        val failures = AtomicInteger()
+        val successes = AtomicInteger()
+        val engine = MicrophoneEngine({}, {}, {}, {},
+            onRecordingDiscarded = { if (it) successes.incrementAndGet() else failures.incrementAndGet() })
+        attach(engine, writer)
+        assertTrue(engine.discardRecording())
+        engine.javaClass.getDeclaredMethod("finishRecording", Boolean::class.javaPrimitiveType)
+            .apply { isAccessible = true }.invoke(engine, false)
+        instrumentation.waitForIdleSync()
+        assertEquals(0, successes.get())
+        assertEquals(1, failures.get())
+        assertFalse(partial.exists())
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test fun failedDiscardIsVisibleToTheUserAndDoesNotImport() {
+        val store = RecordingStore(app)
+        val audio = WavCodec.encode(ShortArray(44100) { 1234 }, 44100, 44100)
+        val existing = store.save(audio, createdAt = 123L)
+        val index = app.getSharedPreferences("local_data", 0).getString("recordings", null)
+        val owner = ViewModelStore()
+        lateinit var vm: TallerViewModel
+        instrumentation.runOnMainSync { vm = TallerViewModel(app); owner.put("capture", vm) }
+        try {
+            val partial = store.newCapture()
+            val writer = ProgressiveWavWriter(partial)
+            writer.append(shortArrayOf(1, 2, 3), 3)
+            val blocker = File(partial.parentFile, "${partial.nameWithoutExtension}.discard").apply { writeText("owned sentinel") }
+            val engine = field(vm, "mic").get(vm) as MicrophoneEngine
+            attach(engine, writer)
+            instrumentation.runOnMainSync {
+                (field(vm, "sessionPhase\$delegate").get(vm) as MutableState<SessionPhase>).value = SessionPhase.CAPTURING
+                vm.discardSession()
+            }
+            finish(engine)
+            instrumentation.waitForIdleSync()
+            assertEquals(SessionPhase.IDLE, vm.sessionPhase)
+            assertNotNull(vm.microphoneError)
+            assertEquals(vm.microphoneError, vm.message)
+            assertTrue(partial.exists())
+            assertEquals("owned sentinel", blocker.readText())
+            assertEquals(index, app.getSharedPreferences("local_data", 0).getString("recordings", null))
+            assertArrayEquals(audio, store.file(existing.id).readBytes())
+            assertEquals(listOf(existing.id), store.list().map { it.id })
+        } finally {
+            instrumentation.runOnMainSync { owner.clear() }
+        }
+    }
+
+    @Test fun actualTimeoutAndDiscardHaveOneTerminalOutcome() {
+        instrumentation.uiAutomation.grantRuntimePermission(instrumentation.targetContext.packageName, android.Manifest.permission.RECORD_AUDIO)
+        for (delay in listOf(650L, 1400L)) {
+            val partial = RecordingStore(app).newCapture()
+            val done = java.util.concurrent.CountDownLatch(1)
+            val ready = AtomicInteger()
+            val discarded = AtomicInteger()
+            val errors = AtomicInteger()
+            val engine = MicrophoneEngine({}, {}, { ready.incrementAndGet(); done.countDown() },
+                { errors.incrementAndGet(); done.countDown() },
+                onRecordingDiscarded = { success ->
+                    if (success) discarded.incrementAndGet() else errors.incrementAndGet()
+                    done.countDown()
+                })
+            assertTrue(engine.start())
+            assertTrue(engine.startRecording(partial, 1))
+            Thread.sleep(delay)
+            val accepted = engine.discardRecording()
+            assertTrue("The recorder must finish", done.await(15, TimeUnit.SECONDS))
+            instrumentation.waitForIdleSync()
+            assertEquals(0, errors.get())
+            assertEquals(1, ready.get() + discarded.get())
+            assertEquals(accepted, discarded.get() == 1)
+            assertFalse(engine.isRunning())
+            assertEquals(ready.get() == 1, partial.exists())
+            if (partial.exists()) assertTrue(partial.delete())
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

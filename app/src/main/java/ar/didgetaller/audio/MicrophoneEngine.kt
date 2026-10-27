@@ -22,7 +22,8 @@ class MicrophoneEngine(
     private val onRecordingStopped: ()->Unit,
     private val onRecordingReady: (File)->Unit,
     private val onError: (String)->Unit,
-    private val onRecordingFailed: (String)->Unit = onError
+    private val onRecordingFailed: (String)->Unit = onError,
+    private val onRecordingDiscarded: (Boolean)->Unit = {}
 ) {
     companion object { const val RATE=44100; const val MAX_RECORD_SECONDS=900; private const val FRAME=16384; private const val CHUNK=4096 }
     private val active=AtomicBoolean(false)
@@ -31,6 +32,8 @@ class MicrophoneEngine(
     @Volatile private var thread:Thread?=null
     private val recordLock=Any()
     @Volatile private var recording=false
+    private var discardRequested=false
+    private var discardedFile:File?=null
     private var writer:ProgressiveWavWriter?=null
     private var limitSamples=RATE*MAX_RECORD_SECONDS.toLong()
     @Volatile var instrument=InstrumentProfile.DIDGERIDOO
@@ -65,19 +68,42 @@ class MicrophoneEngine(
     fun startRecording(file:File,limitSeconds:Int=MAX_RECORD_SECONDS):Boolean {
         synchronized(recordLock) {
             if(!active.get() || recording)return false
-            try {writer=ProgressiveWavWriter(file,RATE);limitSamples=RATE*limitSeconds.toLong();recording=true}
+            try {writer=ProgressiveWavWriter(file,RATE);limitSamples=RATE*limitSeconds.toLong();discardRequested=false;discardedFile=null;recording=true}
             catch(e:Exception){onError("No se pudo grabar: ${e.message}");return false}
         }
         return true
     }
-    private fun finishRecording() {
-        val finished=synchronized(recordLock) {
+    fun discardRecording():Boolean {
+        synchronized(recordLock) {
+            if(!recording || discardRequested)return false
+            val partial=writer?.file
+            discardedFile=runCatching {
+                requireNotNull(partial)
+                require(partial.extension=="part" && java.util.UUID.fromString(partial.nameWithoutExtension).toString()==partial.nameWithoutExtension)
+                val target=File(partial.parentFile,"${partial.nameWithoutExtension}.discard")
+                check(!target.exists() && partial.renameTo(target))
+                target
+            }.getOrNull()
+            discardRequested=true
+        }
+        stop()
+        return true
+    }
+    private fun finishRecording(released:Boolean) {
+        val (finished,discard,discardFile)=synchronized(recordLock) {
             if(!recording)return
             recording=false
-            writer.also {writer=null}
+            val result=Triple(writer,discardRequested,discardedFile)
+            writer=null;discardRequested=false;discardedFile=null
+            result
         }
         if(finished!=null) {
             val finalization=runCatching {finished.close()}
+            if(discard) {
+                val cleanup=runCatching {check(discardFile!=null && discardFile.delete())}
+                mainHandler.post {onRecordingDiscarded(released && finalization.isSuccess && cleanup.isSuccess)}
+                return
+            }
             mainHandler.post(onRecordingStopped)
             finalization.onSuccess {onRecordingReady(finished.file)}
                 .onFailure {error ->mainHandler.post {onRecordingFailed("No se pudo cerrar el WAV: ${error.message}. La captura queda pendiente de recuperación.")}}
@@ -102,17 +128,19 @@ class MicrophoneEngine(
                         reachedLimit=current.samplesWritten>=limitSamples
                     }
                 }
-                if(reachedLimit)finishRecording()
                 stream.append(chunk,n)?.let {result->
                     // A queued result from an older capture must not reach a new profile/session.
                     mainHandler.post {if(active.get() && audio===record)onReading(result)}
                 }
+                if(reachedLimit)break
             }
         }catch(ex:Exception){if(active.get() && audio === record)mainHandler.post {onError("Falló la captura: ${ex.message}")}}
         finally{
-            finishRecording()
             if (audio === record) {active.set(false);audio=null}
-            runCatching {record.stop()};record.release()
+            runCatching {record.stop()}
+            val released=runCatching {record.release()}.isSuccess
+            if(!released)mainHandler.post {onError("No se pudo liberar el micrófono.")}
+            finishRecording(released)
         }
     }
 }

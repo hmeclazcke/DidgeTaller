@@ -93,7 +93,18 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
     val fontScale=configuration.fontScale
     val shortLandscapeWithLargeText=configuration.screenHeightDp<500 && fontScale>=1.5f
     val navigationTextFactor=(1.2f/fontScale).coerceAtMost(1f)
+    var confirmDiscard by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(vm.sessionPhase) { if(vm.sessionPhase!=SessionPhase.CAPTURING)confirmDiscard=false }
     MaterialTheme(colorScheme=appColors) {
+        if(confirmDiscard && vm.sessionPhase==SessionPhase.CAPTURING) AlertDialog(
+            onDismissRequest={confirmDiscard=false},
+            modifier=Modifier.widthIn(max=560.dp).fillMaxWidth().padding(horizontal=16.dp),
+            properties=androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth=false),
+            title={Text(stringResource(R.string.recording_discard_title))},
+            text={Text(stringResource(R.string.recording_discard_message))},
+            confirmButton={TextButton(onClick={confirmDiscard=false;vm.discardSession()},modifier=Modifier.testTag("confirm-discard")) {Text(stringResource(R.string.recording_discard))}},
+            dismissButton={TextButton(onClick={confirmDiscard=false},modifier=Modifier.testTag("continue-recording")) {Text(stringResource(R.string.recording_continue))}}
+        )
         val snackbars=remember {SnackbarHostState()}
         val hostActivity=androidx.compose.ui.platform.LocalContext.current.activity()
         val entry by navController.currentBackStackEntryAsState()
@@ -124,7 +135,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         Scaffold(
             containerColor=background,
             topBar={
-                if(!inViewer && (inDetail || !vm.fullScreen) && !(route==TallerRoutes.Measure && shortLandscapeWithLargeText)) TopAppBar(
+                if(!inViewer && (inDetail || !vm.fullScreen) && !(route==TallerRoutes.Measure && (shortLandscapeWithLargeText || vm.sessionPhase==SessionPhase.CAPTURING))) TopAppBar(
                     title={
                         if(inDetail)Text(if(inTool)listOf(stringResource(R.string.ui_design),stringResource(R.string.ui_spectrum),stringResource(R.string.ui_search),stringResource(R.string.ui_guide))[vm.labTab] else if(route==TallerRoutes.Compare)stringResource(R.string.ui_compare_sessions) else stringResource(R.string.ui_session_3cb186))
                         else Column {
@@ -142,16 +153,21 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 if(!inViewer)Column {
                     if(section==0) Row(Modifier.fillMaxWidth().background(background)
                         .then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)
-                        .padding(horizontal=16.dp,vertical=8.dp)) {
+                        .padding(horizontal=16.dp,vertical=6.dp),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
                         Button(onClick={if(vm.sessionPhase==SessionPhase.CAPTURING)vm.finishSession() else startMeasurement()},
-                            modifier=Modifier.fillMaxWidth().heightIn(min=60.dp),
-                            enabled=!vm.requestingPermission && vm.sessionPhase!=SessionPhase.SAVING,
+                            modifier=Modifier.weight(1f).heightIn(min=48.dp).testTag("recording-primary"),
+                            enabled=!vm.requestingPermission && vm.sessionPhase in listOf(SessionPhase.IDLE,SessionPhase.CAPTURING),
                             colors=ButtonDefaults.buttonColors(containerColor=if(vm.sessionPhase==SessionPhase.CAPTURING)orange else accent)) {
                             Text(when(vm.sessionPhase){
                                 SessionPhase.IDLE -> context.getString(R.string.ui_start_measurement)
                                 SessionPhase.CAPTURING -> context.getString(R.string.ui_stop_and_save)
                                 SessionPhase.SAVING -> context.getString(R.string.ui_saving_session)
+                                SessionPhase.DISCARDING -> context.getString(R.string.recording_discarding)
                             },textAlign=TextAlign.Center,fontWeight=FontWeight.Bold,fontSize=17.sp)
+                        }
+                        if(vm.sessionPhase==SessionPhase.CAPTURING) OutlinedButton(onClick={confirmDiscard=true},
+                            modifier=Modifier.heightIn(min=48.dp).testTag("discard-recording")) {
+                            Text(stringResource(R.string.recording_discard_action),textAlign=TextAlign.Center)
                         }
                     }
                     if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding(),containerColor=cardColor,tonalElevation=0.dp) {
@@ -172,10 +188,10 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         ) { padding ->
             NavHost(navController,startDestination=TallerRoutes.Measure,modifier=Modifier.padding(padding).fillMaxSize()) {
                 composable(TallerRoutes.Measure) {
-                    DestinationContent("measure-screen") {MeasureScreen(vm){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
+                    DestinationContent("measure-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
                 }
                 composable(TallerRoutes.MeasureWide) {
-                    DestinationContent("measure-wide-screen") {MeasureScreen(vm){navController.popBackStack()}}
+                    DestinationContent("measure-wide-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm){navController.popBackStack()}}
                 }
                 composable(TallerRoutes.Lab) {
                     DestinationContent("lab-home") {LabHome {index->vm.labTab=index;navController.navigate(TallerRoutes.tool(index))}}
@@ -224,9 +240,9 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
 
 /** Each NavBackStackEntry saves its own scroll offset through rememberScrollState. */
 @Composable
-private fun DestinationContent(tag:String,content:@Composable ColumnScope.()->Unit) {
+private fun DestinationContent(tag:String,compact:Boolean=false,content:@Composable ColumnScope.()->Unit) {
     Column(Modifier.fillMaxSize().testTag(tag).verticalScroll(rememberScrollState())
-        .padding(horizontal=16.dp,vertical=10.dp),verticalArrangement=Arrangement.spacedBy(16.dp),content=content)
+        .padding(horizontal=16.dp,vertical=if(compact)4.dp else 10.dp),verticalArrangement=Arrangement.spacedBy(if(compact)8.dp else 16.dp),content=content)
 }
 
 @Composable
@@ -245,7 +261,8 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val compactWide=configuration.screenHeightDp<500
-    val prioritizeReading=!vm.fullScreen && (compactWide || configuration.screenHeightDp/configuration.fontScale<560f)
+    val capturing=vm.sessionPhase==SessionPhase.CAPTURING
+    val prioritizeReading=!capturing && !vm.fullScreen && (compactWide || configuration.screenHeightDp/configuration.fontScale<560f)
     var instruments by remember {mutableStateOf(false)}
     @Composable fun setupControls() {
         if(!vm.fullScreen || !compactWide)Box {
@@ -258,13 +275,12 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         }
         RecordingSettings(vm)
     }
-    if(!prioritizeReading)setupControls()
+    if(!capturing && !prioritizeReading)setupControls()
     if(vm.permissionDenied){
         val context=androidx.compose.ui.platform.LocalContext.current
         OutlinedButton(onClick={context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,android.net.Uri.parse("package:${context.packageName}")))}){Text(stringResource(R.string.ui_configure_microphone_permission))}
     }
-    val capturing=vm.sessionPhase==SessionPhase.CAPTURING
-    val hz=if(capturing)vm.filteredHz else 0.0
+    val hz=if(capturing && vm.stableReading)vm.filteredHz else 0.0
     val signal=vm.acousticSample?.signal
     val note=listOf(context.noteBase(hz), Music.pitch(hz)?.note.orEmpty())
     val status=when {
@@ -272,9 +288,10 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         vm.permissionDenied -> context.getString(R.string.ui_permission_denied_enable_it_in_settings)
         vm.microphoneError!=null -> context.getString(R.string.ui_capture_error, context.localizedDiagnostic(vm.microphoneError.orEmpty()))
         vm.sessionPhase==SessionPhase.SAVING -> context.getString(R.string.ui_analyzing_and_saving_session)
+        vm.sessionPhase==SessionPhase.DISCARDING -> context.getString(R.string.recording_discarding)
         !capturing -> context.getString(R.string.ui_ready_to_measure)
         signal==ar.didgetaller.core.AcousticDiagnostics.Signal.NO_RELEVANT_SIGNAL || (signal==null && vm.reading.rms<0.005) -> context.getString(R.string.ui_listening_no_signal)
-        signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || hz<=0 -> context.getString(R.string.ui_signal_present_uncertain_frequency)
+        signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || vm.filteredHz<=0 -> context.getString(R.string.ui_signal_present_uncertain_frequency)
         vm.stableReading -> context.getString(R.string.ui_stable_note)
         else -> context.getString(R.string.ui_detecting_note)
     }
@@ -288,25 +305,27 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
     @Composable fun measurementHeader() {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                if(compactWide)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
+                if(compactWide && !capturing)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
                 Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
                     color=if(capturing)orange else muted,fontSize=12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
             }
+            if(compactWide && capturing)Text("●  ${"%02d:%02d".format(elapsed/60,elapsed%60)}",color=orange,
+                fontWeight=FontWeight.Bold,fontSize=14.sp,modifier=Modifier.testTag("recording-elapsed"))
             TextButton(onClick=onPresentationToggle) {Text(if(vm.fullScreen)stringResource(R.string.ui_normal_view) else stringResource(R.string.ui_wide_view))}
         }
     }
     if(!prioritizeReading)measurementHeader()
     Surface(Modifier.fillMaxWidth(),shape=RoundedCornerShape(28.dp),color=cardColor) {
         Column(Modifier.background(Brush.verticalGradient(listOf(Color(0xFF1D3839),cardColor)))
-            .padding(horizontal=20.dp,vertical=if(compactWide)8.dp else if(vm.fullScreen)28.dp else 20.dp),
+            .padding(horizontal=20.dp,vertical=if(compactWide)8.dp else if(capturing)12.dp else if(vm.fullScreen)28.dp else 20.dp),
             horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(if(compactWide)4.dp else 8.dp)) {
-            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
+            if(!compactWide || !capturing) Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
                 Text(stringResource(R.string.ui_fundamental_base_note),Modifier.weight(1f),color=muted,fontSize=12.sp)
-                if(capturing)Text("●  ${"%02d:%02d".format(elapsed/60,elapsed%60)}",color=orange,
+                if(capturing)Text("●  ${"%02d:%02d".format(elapsed/60,elapsed%60)}",color=orange,modifier=Modifier.testTag("recording-elapsed"),
                     fontWeight=FontWeight.Bold,fontSize=14.sp)
             }
             @Composable fun noteDisplay() { BoxWithConstraints(Modifier.fillMaxWidth(),contentAlignment=Alignment.Center) {
-                val label=if(hz>0)note.first().uppercase(Locale.getDefault()) else "—"
+                val label=if(hz>0)note.first().uppercase(Locale.getDefault()) else ""
                 val preferred=if(compactWide)(maxWidth.value*.3f).coerceIn(32f,44f)
                     else (maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(74f,155f)
                 val measurer=androidx.compose.ui.text.rememberTextMeasurer()
@@ -314,9 +333,10 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
                 val width=measurer.measure(label,style=androidx.compose.ui.text.TextStyle(fontSize=preferred.sp,fontWeight=FontWeight.Bold),softWrap=false).size.width
                 val size=(preferred*(with(density){maxWidth.toPx()}/width.coerceAtLeast(1)).coerceAtMost(1f)).sp
                 Column(horizontalAlignment=Alignment.CenterHorizontally) {
-                    Text(label,fontSize=size,
+                    if(hz>0)Text(label,fontSize=size,
                         fontWeight=FontWeight.Bold,lineHeight=size,color=ink,maxLines=1)
-                    Text(if(hz>0)note.getOrElse(1){""} else stringResource(R.string.ui_note_pending),modifier=Modifier.testTag("measurement-note-name"),color=blue,
+                    Text(if(hz>0)note.getOrElse(1){""} else stringResource(if(capturing)R.string.recording_waiting_stable else R.string.ui_note_pending),modifier=Modifier.testTag("measurement-note-name"),color=blue,
+                        textAlign=TextAlign.Center,
                         fontSize=if(compactWide)16.sp else if(vm.fullScreen)26.sp else 20.sp,fontWeight=FontWeight.Medium)
                 }
             } }
@@ -338,7 +358,7 @@ private fun MeasureScreen(vm:TallerViewModel,onPresentationToggle:()->Unit) {
         }
     }
     if(prioritizeReading)measurementHeader()
-    if(prioritizeReading)setupControls()
+    if(prioritizeReading && !capturing)setupControls()
     if(capturing) {
         Panel(context.getString(R.string.ui_live_reading),if(vm.stableReading)context.getString(R.string.ui_the_frequency_holds_between_readings) else context.getString(R.string.ui_the_note_may_still_change)) {
             if(hz>0) {

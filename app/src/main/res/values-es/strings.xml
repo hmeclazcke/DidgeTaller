@@ -574,4 +574,15 @@
     <string name="musical_component_frequency">Componente medido: %1$s</string>
     <string name="musical_high_candidate">Marcas naranjas: posible tono más agudo en lecturas originales; ver Diagnósticos avanzados.</string>
     <string name="musical_drone_axis_range">Componente medido; eje de frecuencia de %1$s Hz a %2$s Hz. No confirma la fundamental.</string>
+    <string name="recording_discard_title">¿Descartar grabación?</string>
+    <string name="recording_discard_message">Se perderá la grabación actual. Las sesiones guardadas no se modificarán.</string>
+    <string name="recording_continue">Seguir grabando</string>
+    <string name="recording_discard">Descartar grabación</string>
+    <string name="recording_discard_action">Descartar</string>
+    <string name="recording_discarding">Descartando grabación…</string>
+    <string name="recording_waiting_stable">Esperando una nota estable</string>
+    <string name="recording_discarded">Grabación descartada.</string>
+    <string name="recording_discard_failed">No se pudo descartar por completo. Una captura temporal podría recuperarse.</string>
+    <string name="recording_discard_too_late">La grabación ya estaba finalizando y se guardará.</string>
+    <string name="recording_release_failed">No se pudo liberar el micrófono.</string>
 </resources>

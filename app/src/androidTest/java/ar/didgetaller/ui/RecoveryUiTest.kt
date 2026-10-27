@@ -118,6 +118,8 @@ class RecoveryUiTest {
             capture(name)
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
+            compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
+            compose.onNodeWithTag("measurement-frequency").assertTextEquals("— Hz")
             capture("$name-silence")
             compose.runOnIdle {callback(PitchDetector.Reading(confidence=.52,rms=.10));assertEquals(0.0,vm.filteredHz,0.0)}
             compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).assertIsDisplayed()

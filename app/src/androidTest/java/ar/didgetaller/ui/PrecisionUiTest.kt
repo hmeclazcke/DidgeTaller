@@ -211,6 +211,25 @@ class PrecisionUiTest {
             compose.waitUntil(10000){!vm.fullScreen}
             compose.onNodeWithTag("measure-screen").assertIsDisplayed()
             compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertEquals(start,vm.sessionStartedAtMs)}
+            compose.onNodeWithTag("recording-primary").assertIsDisplayed()
+            compose.onNodeWithTag("discard-recording").assertIsDisplayed()
+            val normalNote=compose.onNodeWithTag("measurement-note-name").getUnclippedBoundsInRoot()
+            val normalStatus=compose.onNodeWithTag("acoustic-signal-status").getUnclippedBoundsInRoot()
+            val normalControls=compose.onNodeWithTag("recording-primary").getUnclippedBoundsInRoot()
+            assertTrue("The normal landscape reading must fit above the controls",maxOf(normalNote.bottom,normalStatus.bottom)<=normalControls.top)
+            capture("capture-landscape-normal")
+            compose.onNodeWithTag("discard-recording").performClick()
+            compose.onNodeWithText(uiText(R.string.recording_discard_message)).assertIsDisplayed()
+            val discardMessage=compose.onNodeWithText(uiText(R.string.recording_discard_message)).fetchSemanticsNode()
+            assertEquals("The complete discard message must be visible",discardMessage.size.height.toFloat(),discardMessage.boundsInRoot.height,1f)
+            val discardLayouts=mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+            compose.onNodeWithText(uiText(R.string.recording_discard_message)).performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult){it(discardLayouts)}
+            assertFalse("The discard message must not overflow",discardLayouts.single().didOverflowHeight)
+            compose.onNodeWithTag("confirm-discard").assertIsDisplayed()
+            compose.onNodeWithTag("continue-recording").assertIsDisplayed()
+            capture("capture-landscape-confirm")
+            compose.onNodeWithTag("continue-recording").performClick()
+            compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertEquals(start,vm.sessionStartedAtMs)}
             compose.runOnUiThread {compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT}
             compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_PORTRAIT}
             compose.runOnIdle {assertEquals(SessionPhase.CAPTURING,vm.sessionPhase);assertTrue(vm.listening)}

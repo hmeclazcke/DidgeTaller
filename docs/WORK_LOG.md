@@ -697,3 +697,13 @@ The Spanish README now follows the same hierarchy, two-column gallery, build
 path, and scientific limits as the English README. The Spanish screenshots
 use the same isolated synthetic signal and emulator capture paths. Existing
 English assets and production app code remain unchanged.
+
+## Live measurement and discard — 2026-10-27
+
+The active Measure layout now prioritizes the current reading and timer, with
+separate save and confirmed discard actions. The recorder lock resolves save,
+timeout, and discard ownership once; a discarded UUID capture is renamed out
+of recovery before cleanup. A failed cleanup is surfaced and never reported
+as success. The existing save-on-navigation/background policy and fullscreen
+back stack are retained. Validation and the remaining recovery and TalkBack
+limits are recorded in `docs/VALIDATION.md`.

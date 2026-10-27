@@ -574,4 +574,15 @@
     <string name="musical_component_frequency">Measured component: %1$s</string>
     <string name="musical_high_candidate">Orange marks: possible higher pitch in original readings; see Advanced diagnostics.</string>
     <string name="musical_drone_axis_range">Measured sound component; frequency axis %1$s Hz to %2$s Hz. Not a confirmed fundamental.</string>
+    <string name="recording_discard_title">Discard recording?</string>
+    <string name="recording_discard_message">The current recording will be lost. Saved sessions will not be changed.</string>
+    <string name="recording_continue">Continue recording</string>
+    <string name="recording_discard">Discard recording</string>
+    <string name="recording_discard_action">Discard</string>
+    <string name="recording_discarding">Discarding recording…</string>
+    <string name="recording_waiting_stable">Waiting for a stable note</string>
+    <string name="recording_discarded">Recording discarded.</string>
+    <string name="recording_discard_failed">Could not completely discard the recording. A temporary capture may remain recoverable.</string>
+    <string name="recording_discard_too_late">The recording was already finishing and will be saved.</string>
+    <string name="recording_release_failed">Could not release the microphone.</string>
 </resources>
