@@ -7,6 +7,9 @@ description: Use for Didge Taller code implementation, debugging, bug fixes, ref
 
 **First Make it Work → Then Make it Right → Practice.**
 
+This project adapts the ideas of [Uncle Bob's ub-mode at 57a8bdd](https://github.com/unclebob/ub-mode/tree/57a8bdd28e45ed41900ace0bafa2ff76dd9ed70f)
+in original wording.
+
 Apply this workflow to the current task, without expanding its scope. Read the
 repository's [AGENTS.md](../../../AGENTS.md) and only the project context relevant
 to the task. Scale the depth of investigation and validation to the risk described
@@ -35,8 +38,8 @@ documentation, and commit messages in English; preserve existing language and hi
   test before the fix. Confirm that it fails for the expected behavioral reason, rather
   than a broken environment. This is especially valuable for regressions and risky logic;
   do not require a red test for a text edit or another low-risk change it cannot protect.
-- Make the smallest change that passes the relevant check, then refactor where it
-  improves clarity while preserving the verified behavior.
+- Follow red, green, refactor: make the smallest change that passes the relevant
+  check, then improve clarity where useful while preserving the verified behavior.
 - Do not write dishonest, tautological, or meaningless tests when meaningful automation
   is impractical. Record the limitation and use a reproducible manual check or concrete
   evidence instead. For instruction-only or configuration work, validate its real format
@@ -50,8 +53,8 @@ documentation, and commit messages in English; preserve existing language and hi
 ### Attack the Premise
 
 - If successive fixes based on the same assumption fail, stop repeating that assumption.
-  Revisit the evidence and identify which component actually owns the problem before
-  trying another fix.
+  State the assumption, revisit the evidence, and identify the actors and ownership
+  involved before trying another fix.
 
 ### Subtract Before You Add
 
@@ -66,7 +69,8 @@ documentation, and commit messages in English; preserve existing language and hi
 ### Build the Lever
 
 - For repeated or nontrivial work, prefer a focused tool, replay, or reproducible test
-  over repeated manual actions. Keep helpers scoped and protect private inputs.
+  over repeated manual actions. Check one representative case before automating it;
+  keep helpers scoped and protect private inputs.
 
 ### Architecture and Domain Modeling
 
@@ -75,10 +79,11 @@ documentation, and commit messages in English; preserve existing language and hi
   and rendered traces rather than treating them as interchangeable.
 - Make invalid states difficult or impossible to represent; use Kotlin types, nullability,
   and sealed alternatives where appropriate instead of suppressing compiler warnings.
-- Validate data at system boundaries and prefer pure, testable domain logic.
-- Make operations idempotent where appropriate; minimize shared mutable state and give
-  unavoidable state an explicit owner and lifecycle. Define concurrency ownership,
-  cancellation, and thread boundaries for asynchronous audio or Android work.
+- Parse and validate external data at the boundary; use validated domain values inside
+  and prefer pure, testable domain logic.
+- Make operations idempotent where appropriate, including safe retries after partial
+  failure. Separate mutable state where possible; when shared state is needed, prefer
+  an enforced single writer and define its owner, lifecycle, cancellation, and threads.
 
 ## Then Make it Right
 
@@ -124,8 +129,10 @@ documentation, and commit messages in English; preserve existing language and hi
 
 ## Kotlin and Android Tool Compatibility
 
-This skill requires no installed analysis or mutation tools. Do not assume the
-Java-oriented `crapper`, `dryer`, or `mutator` utilities support Kotlin source code.
+This skill requires no installed analysis or mutation tools. At the upstream review,
+`crapper`, `dryer`, and `mutator` did not list Kotlin among their supported languages;
+`uml-viewer` accepts diagrams but does not document a Kotlin source scanner. Java
+support alone does not establish Kotlin support. Recheck compatibility before use.
 
 | Purpose | Optional Kotlin-compatible approach | Check before using |
 | --- | --- | --- |
@@ -176,8 +183,8 @@ without authorization for that separate work.
   Keep changes small, validated, and recoverable; review explicit staged paths and diffs.
 - Push to `origin/main` only with authorization under repository policy and after checking
   the proposed changes for private or sensitive files. Skill use itself is not authorization.
-- Never force-push or rewrite history without explicit approval. Never commit private WAV
-  recordings, secrets, signing keys, backups, or local fixtures.
+- Never force-push or rewrite history. Never commit private WAV recordings, secrets,
+  signing keys, backups, or local fixtures.
 - Preserve CI tasks and project versions unless the authorized task requires a concrete
   change. Check triggered CI results and report actual failures without claiming success.
 
@@ -189,7 +196,9 @@ without authorization for that separate work.
   actually verified in the final report.
 - Protect the available context window: retain constraints, decisions, and evidence
   locations; read focused references instead of copying entire logs or this skill repeatedly.
-- Keep changes small and recoverable. Avoid destructive cleanup and preserve previous work.
+- Keep changes small and recoverable. Before any authorized worktree cleanup, check
+  what is in use and preserve uncommitted or uncertain work; do not clean destructively
+  by default.
 - Create small, descriptive Git commits after relevant checks. Follow repository GitHub
   and CI policies; never push without applicable user authorization. State the final
   commit, synchronization status, and unresolved limits.

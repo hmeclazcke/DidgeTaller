@@ -1,4 +1,4 @@
-﻿# AGENTS.md — Didge Taller (Kotlin / Android)
+# AGENTS.md — Didge Taller (Kotlin / Android)
 
 Communicate with the user in clear Spanish. Write new source comments, agent instructions, technical documentation, and commit messages in English. Preserve existing text and history unless the task calls for a change.
 
