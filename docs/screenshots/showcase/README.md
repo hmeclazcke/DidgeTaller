@@ -1,10 +1,10 @@
-# README showcase captures
+# Current README showcase - en
 
-These five PNGs are unaltered screenshots of Didge Taller running on the
-`emulator-5554` Android emulator with the `81e33cb` debug APK. The emulator was
-set to 1080 x 2400 pixels, density 420, font scale 1.0. Android reported the
-app locale as `en`; the English labels were checked in the rendered images.
-No Samsung data or private recordings were used.
+Captured on 2026-11-06 from the real Android app on emulator-5554 (ranchu), based on production revision 0ed87d6. Production executable code and Android resources are unchanged; this task translates two comments and technical test messages and updates screenshot-only fixture preparation.
+
+Captured debug APK: package `ar.didgetaller`, version `3.2.6-beta1` / code `12`, SHA-256 `8287b1f3357f4f03a88d2a1039509495c06c0c5a66193a8a032fd58208453fa9`.
+
+Resolution: 1080 x 2400 px; density 420; font scale 1.0; app locale `en`. All five original PNGs were visually inspected independently. No retouching, overlays, generated UI, private recordings or Samsung access. Earlier originals remain available in Git history at 0ed87d6 and the dated evidence directories.
 
 `library.png`, `session-analysis.png`, `spectrogram.png`, and
 `harmonic-analysis.png` use an
@@ -17,6 +17,8 @@ synthetic WAV's SHA-256 is
 the real app calculate the drone trace, STFT spectrogram, and harmonic analysis.
 The WAV remains in ignored local evidence and is not committed.
 
+The selected session timestamp is 6.48 s; the measured supported component is 71.2 Hz. The test taps the actual plot, waits for the paused real player and checks cursor synchronization before capture. Demo names are localized fixture data, not translated user sessions. Spectrogram and harmonic peaks are calculated by the production pipeline from the same WAV.
+
 `live-measurement.png` comes from
 `RecoveryUiTest.controlledPcmReachesLiveMeterAndProfilesResetWithoutGraphFiltering`.
 Deterministic 70 Hz PCM passes through `PitchStream` and the production live
@@ -24,6 +26,15 @@ reading callback. The test deliberately uses no physical microphone or WAV
 writer. The image demonstrates the live display, not a physical measurement or
 a completed recording.
 
-The SVG mark is a direct transcription of the current Android adaptive icon's
-foreground paths and launcher background color. It is artwork, not a screenshot.
-Historical screenshots remain in their existing directories for dated evidence.
+
+## Original PNG integrity
+
+| File | Dimensions | SHA-256 |
+| --- | --- | --- |
+| harmonic-analysis.png | 1080 x 2400 | `1bea5adb95f63a19b537d273ea653ae9158cfecb90ccd37e8c5591b1ff0769da` |
+| library.png | 1080 x 2400 | `c1d598e47e8512396c188fb6232914b090002ed04fc537c2635a42e39b8d62b6` |
+| live-measurement.png | 1080 x 2400 | `e1689cd0a4c8d7da9b9314cf144697165a12b8f17ad3671fdc364d6ab12e1de6` |
+| session-analysis.png | 1080 x 2400 | `a93be741d5e59545c7d9393b12705a559e40e2f9ac6e72bebdacfe6d4517eb57` |
+| spectrogram.png | 1080 x 2400 | `b84da7f1b9a6d620d96fb9b63177d605443b7aec9025d17933dc9370df425002` |
+
+The SVG mark transcribes the current adaptive icon artwork; it is not a screenshot.

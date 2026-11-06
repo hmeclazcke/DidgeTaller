@@ -50,7 +50,7 @@ class SessionEvidenceUiTest {
                 result+=SessionAnalysis.Point(at*1000/44100,r.hz.takeIf {it>0},r.confidence)
             }};result
         }
-        item=RecordingStore(app).save(bytes,points,1000000)
+        item=RecordingStore(app).save(bytes,points,if(args.getString("evidenceLabel")?.startsWith("current-")==true)1793923200000L else 1000000)
         compose.runOnUiThread {vm=TallerViewModel(app);owners.put("evidence",vm)}
         compose.setContent {TallerApp(vm,{}, {}, {_,_,_->})}
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
@@ -67,12 +67,19 @@ class SessionEvidenceUiTest {
         bitmap.recycle()
     }
     @Test fun readmeShowcaseFromSyntheticWav(){
+        compose.runOnUiThread {vm.renameSession(item,if(compose.activity.resources.configuration.locales[0].language=="es")"Estudio sintético del dron" else "Synthetic drone study")}
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
         compose.onNodeWithTag("library-list").assertIsDisplayed()
         screenshot("library")
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         compose.waitUntil(20000){vm.musicalTrace(item)!=null}
         compose.onNodeWithTag("time-chart").assertIsDisplayed()
+        val chart=compose.onNodeWithTag("time-chart")
+        val area=chart.fetchSemanticsNode().config[PlotDataArea]
+        chart.performTouchInput {click(androidx.compose.ui.geometry.Offset(area.left+area.width*.36f,area.center.y))}
+        compose.waitUntil(5000){vm.playingId==item.id}
+        Thread.sleep(250);compose.mainClock.advanceTimeBy(500)
+        assertEquals(item.durationMs*.36,chart.fetchSemanticsNode().config[PlotPlaybackMs].toDouble(),100.0)
         screenshot("session")
         compose.onNodeWithTag("plot-tab-spectrogram").performScrollTo().performClick()
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null && !vm.workspace.state.loading}
