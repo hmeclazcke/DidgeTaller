@@ -61,4 +61,24 @@ Every protected Android entry point now requires explicit allowPrivateFixtures=t
 Coverage reproducibility was also checked: CI JVM reports 28.19% lines / 25.69% branches, pure core 98.47% / 77.25%. The earlier reused incremental local Compose outputs reported 23.39% overall branches. A local -Pkotlin.incremental=false recompilation exactly reproduced every CI source-file counter, including the branch denominator. Use that flag for canonical coverage reports; do not mix the cached-output snapshot with the fresh baseline. Method line coverage/CRAP mappings and core coverage were unchanged. Original gate floors remain unchanged.
 
 
-Fresh AVD focused validation (emulator-5556, no inherited userdata): 10 discovered / 3 passed / 7 explicit protected-fixture skips / 0 failures, 64.303 seconds. This includes the exact previously failing canonical-camera scenario and both new policy tests. Additional clean-emulator portrait/landscape 150%-font cases: 2 passed, no skips; gesture Back navigation: 1 passed, no skips (15.05 seconds). Original display size/font were restored. Current English compact captures were inspected from this clean emulator. The upcoming complete CI suite contains 127 cases; report its actual results rather than extrapolating this focused run.
+Fresh AVD focused validation (emulator-5556, no inherited userdata): 10 discovered / 3 passed / 7 explicit protected-fixture skips / 0 failures, 64.303 seconds. This includes the exact previously failing canonical-camera scenario and both new policy tests. Additional clean-emulator portrait/landscape 150%-font cases: 2 passed, no skips; gesture Back navigation: 1 passed, no skips (15.05 seconds). Original display size/font were restored. Current English compact captures were inspected from this clean emulator. The complete replacement CI result is recorded below; the focused run is not substituted for it.
+
+## Final verified code and CI delivery
+
+Validated code revision: 9e7b316a287babe173df324c123dc6ad2d3a716d. [Fast checks](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301032905) and [complete coverage-enabled emulator execution](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301033022) both passed. The emulator actually ran the entire runner discovery: **127 discovered, 117 passed/executed, 0 failed, 10 skipped**, 450.824 seconds. All seven protected cases emitted the explicit opt-in guard before file access. The other three skips require gesture navigation or compact/large-font configurations and passed separately on the new clean API 37 emulator. CI uses API 35 x86_64 Pixel 2. This is a clean synthetic run, unlike the superseded historical local fixture run described above.
+
+Both final CI JVM variants: 195 discovered / 187 passed / 8 protected skips / 0 failed each. JVM production coverage: 28.19% lines / 25.69% branches; pure core 98.47% / 77.25%, reproduced exactly after nonincremental compilation locally. Android coverage remains separate:
+
+| Android scope | Line coverage | Branch coverage |
+| --- | ---: | ---: |
+| Overall production | 91.14% | 67.17% |
+| Pure core | 95.25% | 69.19% |
+| Android audio adapters | 95.22% | 68.28% |
+| Session persistence | 94.37% | 58.60% |
+| UI | 90.21% | 68.19% |
+
+The real [manual PIT job](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42297582476) passed: 11 generated / 11 killed / 0 survived / 0 uncovered. Its production/JVM-test/build/tool/policy inputs are unchanged in the final code revision, verified by Git diff; no redundant mutation run was performed for Android-test/documentation-only corrections. The mutation job is intentionally skipped on main pushes. CPD: zero 100-token clone groups. Eight method mappings, 329 of 337 measured functions unmapped; the three historical high CRAP-L scores remain visible and ratcheted.
+
+Actual artifacts: Quality-Metrics-and-Test-Results, DidgeTaller-JVM-Coverage, Detekt reports, Complete-Emulator-Results (HTML/XML/probes/test-count metadata), and Focused-Kotlin-Mutations. Seven-day retention; no WAVs/private fixtures. Raw final runner output was independently checked against all terminal statuses and the successful summary. Local evidence remains under checkpoints/quality-final-* and checkpoints/github-ci/.
+
+This final evidence update changes documentation only. All build, production, test, tool and workflow inputs remain identical to the validated code revision. Documentation-only pushes intentionally do not run Android workflows; that is a scope skip, not a claim of another suite execution. Remaining debt: unmapped Kotlin constructs, historical high complexity, broader mutation scope, uncovered error/background branches and a future stable Android coverage ratchet. No acoustic behavior, session format or Samsung data changed; the earlier local fixture-access mistake and its correction remain explicitly recorded.
