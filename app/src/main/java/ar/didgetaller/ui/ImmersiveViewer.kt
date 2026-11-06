@@ -300,7 +300,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     if(tools)ModalBottomSheet(onDismissRequest={tools=false}){
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
             Text(stringResource(R.string.ui_explorer_tools),style=MaterialTheme.typography.titleLarge)
-            Text(reading,modifier=Modifier.fillMaxWidth().testTag("complete-reading"),style=MaterialTheme.typography.bodySmall)
+            Text(inspectionReading(state.inspected,reading),modifier=Modifier.fillMaxWidth().testTag("complete-reading"),style=MaterialTheme.typography.bodySmall)
             Text(stringResource(if(state.plot.temporal)R.string.graph_timeline_hint else R.string.ui_drag_along_both_axes_pinch_to_zoom_hold_to_inspect),style=MaterialTheme.typography.bodySmall)
             Row {
                 TextButton(onClick={state.transform(duration,visual.rate,scalePoints,.5,.5,2.0,2.0,0.0,0.0)}){Text(stringResource(R.string.ui_zoom_in))}

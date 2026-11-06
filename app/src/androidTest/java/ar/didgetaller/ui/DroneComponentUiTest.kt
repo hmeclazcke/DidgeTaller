@@ -246,9 +246,8 @@ class DroneComponentUiTest {
             assertNotEquals(originalWindow,
                 compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow])
             val zoomed=compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow]
-            compose.onNodeWithTag("immersive-plot").performTouchInput {
-                swipe(center,Offset(center.x+width*.12f,center.y),500)
-            }
+            compose.onNodeWithTag("immersive-plot").panViewport(Offset(
+                compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotDataArea].width*.12f,0f))
             assertNotEquals(zoomed,
                 compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config[PlotWindow])
             compose.onNodeWithTag("viewer-play").performClick()

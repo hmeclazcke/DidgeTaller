@@ -4,6 +4,29 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class MusicalTraceTest {
+    @Test fun previewProjectionPreservesGapsAndClampsToTheTraceBounds() {
+        val trace=MusicalTrace.flute(listOf(SessionAnalysis.Point(500,440.0,.96)),1000)
+        val sample=trace.samples.single()
+        val range=AxisWindow(400.0,480.0)
+        assertEquals(.5 to .5,trace.normalized(sample,range))
+        assertNull(trace.normalized(sample.copy(hz=null),range))
+        assertEquals(0.0 to 1.0,trace.normalized(sample.copy(timeMs=-10.0,hz=300.0),range))
+        assertEquals(1.0 to 0.0,trace.normalized(sample.copy(timeMs=2000.0,hz=500.0),range))
+        assertNotNull(trace.normalized(sample))
+    }
+
+    @Test fun unavailableTraceRetainsInstrumentMeaningWithoutInventingSamples() {
+        for(profile in InstrumentProfile.entries) {
+            val trace=MusicalTrace.unavailable(profile,0)
+            assertTrue(trace.samples.isEmpty())
+            assertNull(trace.frequencyAt(0))
+            assertNull(trace.medianHz())
+            assertEquals(profile.minHz.toDouble(),trace.frequencyRange().low,0.0)
+            assertEquals(if(profile==InstrumentProfile.DIDGERIDOO)MusicalTrace.Meaning.SPECTRAL_COMPONENT
+                else MusicalTrace.Meaning.ESTIMATED_PITCH,trace.meaning)
+        }
+    }
+
     private fun component(time: Double, hz: Double?) = DroneComponentCurve.Sample(
         time, hz, hz, if (hz == null) 0.0 else .1,
         if (hz == null) DroneComponentCurve.Reason.QUIET else DroneComponentCurve.Reason.COMPONENT,

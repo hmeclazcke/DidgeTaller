@@ -96,7 +96,9 @@ class StudioViewerTest {
         val previous=vm.sessions.map {it.id}.toSet()
         compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil(10000){vm.listening && vm.sessionTimeline.size>=3}
-        compose.onNodeWithTag("instrument-selector").assertIsNotEnabled()
+        // Capture hides instrument setup; the owner must still reject profile changes.
+        compose.onNodeWithTag("instrument-selector").assertDoesNotExist()
+        compose.runOnIdle {vm.selectInstrument(InstrumentProfile.DIDGERIDOO);assertEquals(InstrumentProfile.NATIVE_AMERICAN_FLUTE,vm.instrument)}
         compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).performClick()
         compose.waitUntil(10000){vm.sessionPhase==ar.didgetaller.SessionPhase.IDLE && vm.sessions.any {it.id !in previous}}
         val captured=vm.sessions.first {it.id !in previous};extraFixtures+=captured.id

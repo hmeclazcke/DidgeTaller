@@ -108,7 +108,8 @@ class PrecisionUiTest {
     private fun pick(title:String){
         val expected=AcousticPlot.entries.single {compose.activity.plotLabel(it)==title}
         val sessionId=checkNotNull(vm.workspace.state.sessionId)
-        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick();compose.onNodeWithText(title).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_change_chart)).performClick()
+        compose.onNodeWithText(title).performClick()
         compose.waitUntil(10000){
             vm.explorer(sessionId).plot==expected && compose.onAllNodes(isPopup()).fetchSemanticsNodes().isEmpty()
         }
@@ -306,9 +307,9 @@ class PrecisionUiTest {
         assertEquals(initial.y.value(.5),camera.y.value(.5),1.0)
         val beforePan=camera
         val area=graph.fetchSemanticsNode().config[PlotDataArea]
-        graph.performTouchInput {swipe(area.center,area.center+Offset(area.width*.08f,-area.height*.08f),500)}
+        graph.panViewport(Offset(area.width*.08f,-area.height*.08f))
         camera=state.camera(item.durationMs,44100,item.timeline)
-        assertTrue(camera.x.low<beforePan.x.low);assertTrue(camera.y.low<beforePan.y.low)
+        assertTrue("Horizontal pan: $beforePan -> $camera",camera.x.low<beforePan.x.low);assertTrue("Vertical pan: $beforePan -> $camera",camera.y.low<beforePan.y.low)
         val preserved=camera
         compose.onNodeWithTag("rotate-viewer").performClick()
         compose.waitUntil(10000){compose.activity.resources.configuration.orientation==Configuration.ORIENTATION_LANDSCAPE}

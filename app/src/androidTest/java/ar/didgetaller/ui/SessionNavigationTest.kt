@@ -255,6 +255,7 @@ class SessionNavigationTest {
         openAndPlay()
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         assertReturnedToSameList(offset)
+        compose.onNodeWithTag("session-${session.id}").assertIsDisplayed()
     }
 
     @Test fun returningToLibraryThenChangingSectionDoesNotRestoreDetail() {
@@ -433,7 +434,7 @@ class SessionNavigationTest {
         compose.waitUntil(10000){vm.workspace.state.wave?.let {it.end-it.start<vm.workspace.state.frames}==true}
         val explorer=vm.explorer(session.id)
         val before=explorer.camera(session.durationMs,44100,session.timeline)
-        compose.onNodeWithTag("immersive-plot").performTouchInput {swipe(center,center+androidx.compose.ui.geometry.Offset(-width*.15f,height*.15f),500)}
+        compose.onNodeWithTag("immersive-plot").panViewport(androidx.compose.ui.geometry.Offset(-120f,80f))
         compose.runOnIdle {val after=explorer.cameras[AcousticPlot.WAVE]!!;assertTrue(after.x.low>before.x.low);assertTrue(after.y.low>before.y.low);assertFalse(explorer.follow)}
         compose.onNodeWithTag("reset-viewport").performClick()
         compose.runOnIdle {assertEquals(-1.0,explorer.cameras[AcousticPlot.WAVE]!!.y.low,0.0)}
@@ -494,14 +495,14 @@ class SessionNavigationTest {
         compose.runOnIdle {vm.seekPlayback(session,1000)}
         compose.onNodeWithContentDescription(uiText(R.string.ui_follow)).performClick()
         compose.waitUntil {val view=state.cameras[AcousticPlot.PITCH]!!;vm.playbackPositionMs().toDouble() in view.x.low..view.x.high}
-        graph.performTouchInput {swipe(center,center+androidx.compose.ui.geometry.Offset(-50f,50f),400)}
+        graph.panViewport(androidx.compose.ui.geometry.Offset(-50f,50f))
         compose.runOnIdle {assertFalse(state.follow)}
         val manuallyMoved=state.cameras[AcousticPlot.PITCH]
         Thread.sleep(180)
         compose.runOnIdle {assertEquals(manuallyMoved,state.cameras[AcousticPlot.PITCH])}
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
         awaitDisplayed("session-detail")
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).assertIsDisplayed()
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).assertIsNotDisplayed()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.runOnIdle {assertEquals(manuallyMoved,state.cameras[AcousticPlot.PITCH])}
     }

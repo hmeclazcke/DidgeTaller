@@ -94,7 +94,7 @@ class ViewerRotationTest {
     @Test fun sessionChartSelectionAndPlaybackPositionSurviveRotation(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
-        compose.onNodeWithTag("plot-tab-spectrum").performClick()
+        compose.onNodeWithTag("plot-tab-spectrum").performScrollTo().assertIsDisplayed().performClick()
         compose.runOnIdle {assertEquals(AcousticPlot.SPECTRUM,vm.preview(item.id).plot)}
         compose.onNodeWithText(uiText(R.string.ui_play)).performClick()
         compose.waitUntil(5000){vm.playingId==item.id && vm.playbackPositionMs()>200}

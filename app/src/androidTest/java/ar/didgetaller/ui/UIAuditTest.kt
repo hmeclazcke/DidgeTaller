@@ -99,14 +99,18 @@ class UIAuditTest {
         compose.onNodeWithTag("log-frequency").assertContentDescriptionEquals(uiText(R.string.ui_logarithmic_frequency))
     }
 
-    @Test fun pitchLegendIsVisibleBeforeThePlotItExplains(){
+    @Test fun pitchReadoutPrecedesPlotAndExplanationRemainsAccessible(){
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.musical_drone_description)).performScrollTo()
         val legend=compose.onNodeWithText(uiText(R.string.musical_drone_description)).fetchSemanticsNode().boundsInRoot
         val plot=compose.onNodeWithTag("time-chart").fetchSemanticsNode().boundsInRoot
-        assertTrue("The pitch legend must precede the plot",legend.bottom<=plot.top)
-        shot("legend-before-plot")
+        assertTrue("The explanation follows the plot",legend.top>=plot.bottom)
+        compose.onNodeWithTag("component-readout").performScrollTo().assertIsDisplayed()
+        val readout=compose.onNodeWithTag("component-readout").fetchSemanticsNode().boundsInRoot
+        val visiblePlot=compose.onNodeWithTag("time-chart").fetchSemanticsNode().boundsInRoot
+        assertTrue("The selected frequency precedes the plot",readout.bottom<=visiblePlot.top)
+        shot("readout-before-plot")
     }
 
     @Test fun compactLandscapeKeepsTheMeasurementReadingOnScreen(){
@@ -141,7 +145,7 @@ class UIAuditTest {
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
         compose.onNodeWithTag("time-chart").performScrollTo()
-            .assertContentDescriptionEquals(uiText(R.string.playback_seek_label))
+            .assert(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress))
             .performSemanticsAction(SemanticsActions.SetProgress){it(3000f)}
         compose.waitUntil(10000){kotlin.math.abs(vm.playbackPositionMs()-3000)<80}
         compose.onNodeWithTag("time-chart").performScrollTo();shot("pitch-transport")

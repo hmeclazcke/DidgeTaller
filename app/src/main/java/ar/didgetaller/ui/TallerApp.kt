@@ -169,56 +169,81 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
             },contentWindowInsets=if(inViewer)WindowInsets(0,0,0,0) else ScaffoldDefaults.contentWindowInsets,
             snackbarHost={SnackbarHost(snackbars)}
         ) { padding ->
-            NavHost(navController,startDestination=TallerRoutes.Measure,modifier=Modifier.padding(padding).fillMaxSize()) {
+            NavHost(navController,startDestination=TallerRoutes.Measure,modifier=Modifier.fillMaxSize()) {
                 composable(TallerRoutes.Measure) {
-                    DestinationContent("measure-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
+                    DestinationFrame(padding,route==TallerRoutes.Measure) {
+                        DestinationContent("measure-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
+                    }
                 }
                 composable(TallerRoutes.MeasureWide) {
-                    DestinationContent("measure-wide-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
+                    DestinationFrame(padding,route==TallerRoutes.MeasureWide) {
+                        DestinationContent("measure-wide-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
+                    }
                 }
                 composable(TallerRoutes.Lab) {
-                    DestinationContent("lab-home") {LabHome {index->vm.labTab=index;navController.navigate(TallerRoutes.tool(index))}}
+                    DestinationFrame(padding,route==TallerRoutes.Lab) {
+                        DestinationContent("lab-home") {LabHome {index->vm.labTab=index;navController.navigate(TallerRoutes.tool(index))}}
+                    }
                 }
                 composable(TallerRoutes.LabTool,arguments=listOf(navArgument("tool"){type=NavType.IntType})) {tool ->
-                    val index=tool.arguments?.getInt("tool") ?: 0
-                    LaunchedEffect(index){vm.labTab=index}
-                    Column {
-                        ScrollableTabRow(selectedTabIndex=index,edgePadding=0.dp,containerColor=background){
-                            listOf(context.getString(R.string.ui_design),context.getString(R.string.ui_spectrum),context.getString(R.string.ui_search),context.getString(R.string.ui_guide)).forEachIndexed {i,label->Tab(selected=index==i,onClick={
-                                if(i!=index)navController.navigate(TallerRoutes.tool(i)){popUpTo(TallerRoutes.Lab);launchSingleTop=true}
-                            },text={Text(context.presetLabel(label),maxLines=1)})}
+                    DestinationFrame(padding,entry==tool) {
+                        val index=tool.arguments?.getInt("tool") ?: 0
+                        LaunchedEffect(index){vm.labTab=index}
+                        Column {
+                            ScrollableTabRow(selectedTabIndex=index,edgePadding=0.dp,containerColor=background){
+                                listOf(context.getString(R.string.ui_design),context.getString(R.string.ui_spectrum),context.getString(R.string.ui_search),context.getString(R.string.ui_guide)).forEachIndexed {i,label->Tab(selected=index==i,onClick={
+                                    if(i!=index)navController.navigate(TallerRoutes.tool(i)){popUpTo(TallerRoutes.Lab);launchSingleTop=true}
+                                },text={Text(context.presetLabel(label),maxLines=1)})}
+                            }
+                            key(index){DestinationContent("lab-screen"){when(index){0->DesignerScreen(vm,exportFile);1->SpectrumScreen(vm,toggleMic);2->EvolutionScreen(vm);else->GuideScreen()}}}
                         }
-                        key(index){DestinationContent("lab-screen"){when(index){0->DesignerScreen(vm,exportFile);1->SpectrumScreen(vm,toggleMic);2->EvolutionScreen(vm);else->GuideScreen()}}}
                     }
                 }
                 composable(TallerRoutes.Library) {
-                    Column {
-                        PrimaryTabRow(selectedTabIndex=vm.libraryTab,containerColor=background){
-                            listOf(context.getString(R.string.ui_sessions),context.getString(R.string.ui_designs)).forEachIndexed {i,label->Tab(selected=vm.libraryTab==i,onClick={vm.libraryTab=i},text={Text(label)})}
+                    DestinationFrame(padding,route==TallerRoutes.Library) {
+                        Column {
+                            PrimaryTabRow(selectedTabIndex=vm.libraryTab,containerColor=background){
+                                listOf(context.getString(R.string.ui_sessions),context.getString(R.string.ui_designs)).forEachIndexed {i,label->Tab(selected=vm.libraryTab==i,onClick={vm.libraryTab=i},text={Text(label)})}
+                            }
+                            key(vm.libraryTab){DestinationContent("library-list"){
+                                LibraryScreen(vm,exportFile,
+                                    onOpen={navController.navigate(TallerRoutes.session(it.id))},
+                                    onOpenDesign={vm.selectDesign(it);navController.navigateToSection(1);navController.navigate(TallerRoutes.tool(0))},
+                                    onCompare={navController.navigate(TallerRoutes.Compare)})
+                            }}
                         }
-                        key(vm.libraryTab){DestinationContent("library-list"){
-                            LibraryScreen(vm,exportFile,
-                                onOpen={navController.navigate(TallerRoutes.session(it.id))},
-                                onOpenDesign={vm.selectDesign(it);navController.navigateToSection(1);navController.navigate(TallerRoutes.tool(0))},
-                                onCompare={navController.navigate(TallerRoutes.Compare)})
-                        }}
                     }
                 }
                 composable(TallerRoutes.Viewer,arguments=listOf(navArgument("id"){type=NavType.StringType},navArgument("plot"){type=NavType.StringType})){viewer ->
-                    val item=vm.sessions.firstOrNull {it.id==viewer.arguments?.getString("id")}
-                    if(item!=null)ImmersiveViewer(vm,item,viewer.arguments?.getString("plot"),onBack={navController.popBackStack()})
+                    DestinationFrame(padding,entry==viewer) {
+                        val item=vm.sessions.firstOrNull {it.id==viewer.arguments?.getString("id")}
+                        if(item!=null)ImmersiveViewer(vm,item,viewer.arguments?.getString("plot"),onBack={navController.popBackStack()})
+                    }
                 }
-                composable(TallerRoutes.Compare) {DestinationContent("comparison-screen"){ComparisonScreen(vm)}}
+                composable(TallerRoutes.Compare) {DestinationFrame(padding,route==TallerRoutes.Compare) {DestinationContent("comparison-screen"){ComparisonScreen(vm)}}}
                 composable(TallerRoutes.Session,arguments=listOf(navArgument("id") {type=NavType.StringType})) { detail ->
-                    val item=vm.sessions.firstOrNull {it.id==detail.arguments?.getString("id")}
-                    DestinationContent("session-detail",compact=true) {
-                        if(item!=null)SessionDetail(vm,item,exportRecording,onBack={navController.popBackStack()},onExpand={vm.explorer(item.id).plot=it;navController.navigate(TallerRoutes.viewer(item.id,it))})
-                        else Text(stringResource(R.string.ui_this_session_is_no_longer_available),color=muted)
+                    DestinationFrame(padding,entry==detail) {
+                        val item=vm.sessions.firstOrNull {it.id==detail.arguments?.getString("id")}
+                        DestinationContent("session-detail",compact=true) {
+                            if(item!=null)SessionDetail(vm,item,exportRecording,onBack={navController.popBackStack()},onExpand={vm.explorer(item.id).plot=it;navController.navigate(TallerRoutes.viewer(item.id,it))})
+                            else Text(stringResource(R.string.ui_this_session_is_no_longer_available),color=muted)
+                        }
                     }
                 }
             }
         }
     }
+}
+
+/** Outgoing destinations retain their safe area instead of clamping their saved scroll. */
+@Composable
+private fun DestinationFrame(padding:PaddingValues,active:Boolean,content:@Composable ()->Unit) {
+    val direction=androidx.compose.ui.platform.LocalLayoutDirection.current
+    val current=PaddingValues(start=padding.calculateStartPadding(direction),top=padding.calculateTopPadding(),
+        end=padding.calculateEndPadding(direction),bottom=padding.calculateBottomPadding())
+    var retained by remember {mutableStateOf(current)}
+    SideEffect {if(active)retained=current}
+    Box(Modifier.fillMaxSize().padding(if(active)current else retained)){content()}
 }
 
 /** Each NavBackStackEntry saves its own scroll offset through rememberScrollState. */
