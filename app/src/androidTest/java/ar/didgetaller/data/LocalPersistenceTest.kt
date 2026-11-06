@@ -26,7 +26,7 @@ import java.util.UUID
 /** Uses isolated test preferences and a test-only directory in the target app. */
 @RunWith(AndroidJUnit4::class)
 class LocalPersistenceTest {
-    @Before fun emulatorOnly(){assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))}
+    @Before fun emulatorOnly(){assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))}
     private fun isolatedContext():Context {
         val target=InstrumentationRegistry.getInstrumentation().targetContext
         val testFiles=File(target.filesDir,"instrumentation-tests")

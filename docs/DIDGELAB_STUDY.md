@@ -1,3 +1,7 @@
+# DidgeLab reference study
+
+This historical study records the original model comparison and research proposals, not current support claims. Recorded sound spectra and simulated bore impedance are separate quantities. No DidgeLab/CADSD engine is bundled. Current implementation and attribution: [Laboratory guide](../README-LAB.md) and [Audio analysis](AUDIO_ANALYSIS.md). The original Spanish research record follows unchanged.
+
 # DidgeLab vs. Didge Taller Lab — referencia para Codex
 
 ## Estado 3.0 beta1 — 20/10/2026

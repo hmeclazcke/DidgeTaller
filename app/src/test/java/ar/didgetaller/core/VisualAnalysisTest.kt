@@ -57,7 +57,7 @@ class VisualAnalysisTest {
         val tile=AudioVisuals.spectrogram(signal,0,signal.frameCount,maxColumns=256,rows=256)
         assertTrue(tile.columns<=256);assertEquals(256,tile.rows);assertTrue(tile.power.size<=65536)
         assertEquals(39_690_000L,tile.end);assertNull(tile.relativeDb(0,0))
-        println("STFT 900 s: ${(System.nanoTime()-started)/1_000_000} ms JVM; ${tile.power.size*4} bytes de celdas; no valida batería/teléfono.")
+        println("STFT 900 s: ${(System.nanoTime()-started)/1_000_000} ms JVM; ${tile.power.size*4} cell bytes; does not validate battery or physical-device behavior.")
     }
     @Test fun transformsCancelWithoutReturningPartialResults() {
         val signal=source {i ->sin(i.toDouble())}

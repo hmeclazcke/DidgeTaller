@@ -36,7 +36,7 @@ class RecoveryUiTest {
     private lateinit var nav:NavHostController
     private val owner=ViewModelStore()
     @Before fun setup(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         app=IsolatedApp(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
     }
     private fun show(){

@@ -1,3 +1,7 @@
+# UI audit records
+
+This document retains historical inspection reports in their original language. Current interaction/layout contracts are in [Session explorer](SESSION_EXPLORER.md) and [Acoustic viewer](IMMERSIVE_VIEWER.md); current evidence is in the latest [Validation](VALIDATION.md) entries.
+
 # Auditoría de interfaz — Didge Taller 3.1
 
 ## Application-wide polish — 2026-10-24

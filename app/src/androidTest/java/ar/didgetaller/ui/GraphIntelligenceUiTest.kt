@@ -41,7 +41,7 @@ class GraphIntelligenceUiTest {
             compose.runOnUiThread {compose.activity.requestedOrientation=android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE}
             compose.waitUntil(5000){compose.activity.resources.configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE}
         }
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
         val store=RecordingStore(app)
         fun fixture(wav:ByteArray,points:List<SessionAnalysis.Point>,profile:InstrumentProfile)=store.save(wav,points,instrument=profile)

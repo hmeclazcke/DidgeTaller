@@ -1,5 +1,7 @@
 ## Musical Experience 4.0 — 2026-10-26
 
+Historical entries retain their original language and version-specific scope. See [Language policy](LANGUAGE_POLICY.md); current English entries appear with their delivery dates.
+
 Baseline: clean `main`/`origin/main` at `005b296`. The old Library miniature
 used historical saved YIN points, while session detail could display current
 WAV replay plus a separate spectral component. Their incompatible data sources

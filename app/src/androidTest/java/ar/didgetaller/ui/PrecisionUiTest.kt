@@ -34,7 +34,7 @@ class PrecisionUiTest {
     private lateinit var store:RecordingStore
     private val owned=mutableListOf<String>()
     @Before fun setup(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         compose.runOnUiThread {vm=ViewModelProvider(compose.activity)[TallerViewModel::class.java]}
         store=RecordingStore(compose.activity.application)
     }

@@ -1,3 +1,7 @@
+# Emulator screenshot evidence
+
+Current public galleries: [English](showcase/README.md) and [Spanish](showcase-es/README.md). The versioned Spanish index below is historical evidence, not a current UI guide. Original images remain unaltered.
+
 # Capturas reales del emulador
 
 ## Entrega 3.1 — antes y después

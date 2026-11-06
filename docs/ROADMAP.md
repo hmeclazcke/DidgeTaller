@@ -1,3 +1,13 @@
+# Roadmap
+
+Current priorities are independent physical acoustic reference measurements, repeatable microphone/device protocols, long-duration battery testing and a complete manual TalkBack review. Preserve original WAVs, uncertainty, both instrument profiles and the distinction between spectral components and physical fundamentals. Do not treat synthetic regression success as physical calibration.
+
+Direct graph scrubbing, responsive session layout, safe recording discard, fullscreen insets and conditional screen-awake ownership are implemented; see the latest [Validation](VALIDATION.md) and [Work log](WORK_LOG.md). New work should begin with current code and explicit acceptance criteria.
+
+## Historical delivery checklists
+
+The dated Spanish checklists below preserve original status and evidence. Old pending items and version-specific descriptions are historical, not an active command list.
+
 # Hoja de ruta priorizada — Didge Taller
 
 ## Real Audio Diagnostics 3.2.6 — 21/10/2026

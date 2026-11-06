@@ -2,6 +2,8 @@
 
 Communicate with the user in clear Spanish. Write new source comments, agent instructions, technical documentation, and commit messages in English. Preserve existing text and history unless the task calls for a change.
 
+Keep `README.es.md` and Spanish Android resources in Spanish. Apply the classification rules in [LANGUAGE_POLICY.md](docs/LANGUAGE_POLICY.md) before translating legacy strings, fixtures, or historical records.
+
 ## Start with the task
 
 - Inspect `git status`, the current branch, relevant changes, and `.gitignore` before editing. Preserve prior work. If relevant project changes are already uncommitted, make a truthful, privacy-reviewed baseline commit before new source edits; never create an empty checkpoint.

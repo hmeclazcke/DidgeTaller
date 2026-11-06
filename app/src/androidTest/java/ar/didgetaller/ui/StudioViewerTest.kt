@@ -29,7 +29,7 @@ class StudioViewerTest {
     private val extraFixtures=mutableListOf<String>()
     private var originalInstrument=InstrumentProfile.DIDGERIDOO
     @Before fun setup(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         store=RecordingStore(compose.activity.application)
         val pcm=ShortArray(44100*8){i->(6000*sin(2*PI*69.6*i/44100)+3500*sin(2*PI*139.2*i/44100)+
             1800*sin(2*PI*208.8*i/44100)).toInt().toShort()}

@@ -1,3 +1,17 @@
+# Acoustic viewer architecture
+
+The ordinary session and fullscreen viewer share ExplorerSelection and the existing SessionPlayer. Their viewport cameras remain independent. PlotProjection maps the actual plot margins and camera to time/frequency; raw screen width is not the timeline domain.
+
+Tap seeks. One-finger horizontal drag anywhere inside a temporal plot previews the target; release commits a serialized seek. Cancellation clears preview without changing committed selection or audio. Two fingers zoom/pan; vertical page drags remain available. Accessible SetProgress belongs to the graph. The primary session has no separate seek slider.
+
+Playback state and cursor survive fullscreen transitions. The viewer owns safe drawing insets; the outer Scaffold supplies no competing viewer insets. The normal session omits an empty bottom bar so Scaffold can reserve navigation insets. Measurement capture survives configuration changes; actual backgrounding follows the existing stop/save policy. One Activity composition owner requests screen-on only during active recording/playback while resumed.
+
+For current acoustic meaning and usage, see [Session explorer](SESSION_EXPLORER.md). The didgeridoo trace is canonical MusicalTrace with a maximum 100 ms sample-proximity readout policy; no invalid gap interpolation or estimator substitution.
+
+## Historical design notes
+
+The dated notes below retain their original language and describe previous versions. Statements about sliders, single-finger pan or prototype lifecycle rules are superseded by the current contracts above.
+
 # Visor acústico 3.1
 
 ## UX lifecycle clarification — 2026-10-23

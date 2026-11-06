@@ -1,3 +1,17 @@
+# Local data safety
+
+Original WAVs, session indexes, user names and preferences are user-owned data. Never translate them, rewrite analysis to improve presentation, clear storage, uninstall a data-bearing installation or replace its signing identity. Tests run only on an explicitly selected emulator. Instrumentation may uninstall packages; an unqualified connected-test task is unsafe when a physical phone is attached.
+
+A separately authorized physical update requires device/package/version/signature checks, confirmation that capture is inactive, a fresh read-only backup and SHA-256 baseline, an install-r update with the explicit serial, then startup and integrity checks. Stop on incompatibility or unexplained differences. Do not treat arbitrary changed preferences as Android-managed metadata. No physical-device operation is authorized by documentation cleanup.
+
+The session index is stored in SharedPreferences; retain its UUID relationships to recordings. Trash keys include `trash_session` and `trash_design`; tools/associations use `session_tools`. Derived analysis cache is regenerable under `files/analysis-cache`. Progressive `.part` recordings have their own recovery policy; historical WAVs must not be rewritten.
+
+For recovery, preserve the original backup and hashes. Validate archive paths, rejecting absolute paths, parent traversal and links, and extract only into a new local directory. Test complete restoration in isolated emulator storage before proposing it on a physical device. Never combine audio and an unrelated index or fabricate missing readings. Overwriting physical-device data requires explicit authorization and another fresh backup. App Trash is not an external backup.
+
+## Historical device evidence
+
+The original Spanish delivery records below retain their dates, counts and original wording. They are evidence of earlier updates, not observations about the current device or commands to repeat.
+
 # Datos locales, respaldo y recuperación
 
 ## Actualización 3.1 — 20/10/2026

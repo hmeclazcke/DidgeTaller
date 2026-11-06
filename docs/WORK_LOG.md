@@ -1,5 +1,7 @@
 ## Application-wide UX/UI audit — 2026-10-24
 
+Historical entries retain their original language and version-specific scope. See [Language policy](LANGUAGE_POLICY.md); current English entries appear with their delivery dates.
+
 - Started from clean `main`/`origin/main` at `514f3c4`; retained all existing
   acoustic behavior and historical data. Followed the screen inventory and
   existing UI test infrastructure. Used only `emulator-5554`, never the Samsung.

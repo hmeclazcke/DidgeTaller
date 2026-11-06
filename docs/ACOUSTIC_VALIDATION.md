@@ -1,3 +1,9 @@
+# Acoustic validation protocol
+
+Separate digital-signal regressions, bore-model comparisons and physical instrument measurements. A synthetic known-frequency WAV can test numerical behavior; it cannot establish microphone calibration or the physical lip fundamental during vocalizations/toots. Preserve exact WAV hashes, frame intervals, sample rates, window/hop settings, reference versions and justified tolerances for reproducible comparisons. Never equate sound-spectrum peaks with bore-impedance resonances by index.
+
+The original phase-specific Spanish protocol follows as historical evidence. Its reported tests and unexecuted comparisons retain their original scope; consult the latest [Validation](VALIDATION.md) for subsequent work.
+
 # Validación acústica: estructura de continuidad
 
 ## Estado real

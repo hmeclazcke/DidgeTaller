@@ -4,7 +4,7 @@ import kotlin.math.abs
 import kotlin.math.log2
 import kotlin.math.roundToInt
 
-/** Resumen robusto de las lecturas obtenidas mientras se grabó el WAV. */
+/** Robust summary of readings captured while recording the WAV. */
 object SessionAnalysis {
     data class Point(val timeMs: Long, val hz: Double?, val confidence: Double) {
         val usable: Boolean get() = isUsable(35.0, 220.0)
@@ -25,7 +25,7 @@ object SessionAnalysis {
         require(minHz > 0 && maxHz > minHz)
         val valid = points.filter { it.isUsable(minHz, maxHz) }
         if (valid.size < 3) return null
-        // Agrupar por semitono evita que un toot u octave breve desplace al drone predominante.
+        // Grouping by semitone prevents a brief toot or octave shift from displacing the predominant drone.
         val dominant = valid.groupBy { Music.midi(it.hz!!).roundToInt() }
             .maxWithOrNull(compareBy<Map.Entry<Int, List<Point>>> { it.value.size }.thenBy { it.value.sumOf(Point::confidence) })
             ?.value.orEmpty()

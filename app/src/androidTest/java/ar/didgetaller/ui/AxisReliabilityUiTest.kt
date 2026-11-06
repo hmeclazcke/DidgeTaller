@@ -24,7 +24,7 @@ class AxisReliabilityUiTest {
     @get:Rule val compose=createAndroidComposeRule<ComponentActivity>()
 
     @Test fun measuredFrequencyMarginsAndTimeMarksFitBothRenderers(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         val state=ExplorerState()
         val points=List(100){SessionAnalysis.Point(it*470L,70.0,.97)}
         compose.setContent {MaterialTheme {Column(Modifier.fillMaxSize().padding(16.dp)){

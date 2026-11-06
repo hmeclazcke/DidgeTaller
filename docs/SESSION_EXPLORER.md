@@ -1,10 +1,10 @@
 # Session explorer
 
-The explorer connects a saved recording to its pitch timeline, spectrogram, waveform, and harmonic spectrum. All processing is local. Use [Getting started](../README.md#getting-started) for installation and [Audio analysis](AUDIO_ANALYSIS.md) for formulas and processing parameters.
+The explorer connects a saved recording to its pitch timeline, spectrogram, waveform, and harmonic spectrum. All processing is local. Use [Getting started](../README.md#build-from-source) for installation and [Audio analysis](AUDIO_ANALYSIS.md) for formulas and processing parameters.
 
 ## Open and listen
 
-Open **Library → Sessions / Biblioteca → Sesiones** and choose a recording. Play/Pause, Restart, elapsed/total time and an accessible playback-position slider sit with the session chart. Drag the slider and release to seek; its preview does not replace the player's actual chart cursor. File actions such as export and rename are separate. A session without reliable pitch still preserves its WAV.
+Open **Library → Sessions / Biblioteca → Sesiones** and choose a recording. Play/Pause, Restart and elapsed/total time sit with the session chart. Tap inside the plot to seek, or drag horizontally to preview a target and release to commit. The graph also exposes accessible SetProgress actions; the primary layout has no separate seek bar. Use two fingers to zoom/pan, and drag vertically to scroll the page. Cancelled scrubs preserve the previous position. File actions such as export and rename are separate. A session without reliable pitch still preserves its WAV.
 
 Choose a chart, then open it full-screen for detailed exploration. Playback continues when changing charts or moving between detail and the full-screen viewer. Android Back returns to the session; leaving that session or backgrounding the app stops playback.
 
@@ -14,7 +14,7 @@ The cursor uses the player's reported position. Seeking and excerpt loops use Me
 
 | View | Axes | What it shows |
 | --- | --- | --- |
-| Fundamental | Time / Hz, with secondary musical-note labels | Captured pitch estimates and their display trend |
+| Drone (didgeridoo) / Pitch (flute) | Time / Hz | Canonical MusicalTrace: supported spectral component for didgeridoo, estimated pitch for flute |
 | Spectrogram / Espectrograma | Time / Hz, linear or logarithmic | STFT power distribution, with relative dB colors |
 | Waveform / Forma de onda | Time / normalized PCM amplitude | Actual amplitude extrema; individual samples at close zoom |
 | Harmonics / Armónicos | Hz / relative dB | Averaged power spectrum, measured peaks, and candidate harmonic orders |

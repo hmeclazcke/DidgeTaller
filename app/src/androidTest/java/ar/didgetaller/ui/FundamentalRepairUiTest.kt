@@ -33,9 +33,9 @@ class FundamentalRepairUiTest {
     private val owner=ViewModelStore()
     private val items=mutableListOf<Pair<String,RecordingStore.Session>>()
     @Before fun setup(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         val source=File(compose.activity.getExternalFilesDir(null),"v324-real-fixtures.json")
-        assumeTrue("Fixture privado local requerido para comparación real",source.isFile)
+        assumeTrue("Local private fixture required for real-recording comparison",source.isFile)
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
         val store=RecordingStore(app);val raw=JSONArray(source.readText())
         repeat(raw.length()){i->

@@ -548,7 +548,7 @@ class SessionNavigationTest {
     @Test fun androidEdgeGesturePopsViewerThenDetailAndReleasesAudio(){
         val resources=compose.activity.resources
         val mode=resources.getIdentifier("config_navBarInteractionMode","integer","android")
-        assumeTrue("Requiere navegación por gestos en el emulador",mode!=0 && resources.getInteger(mode)==2)
+        assumeTrue("Requires gesture navigation on the emulator",mode!=0 && resources.getInteger(mode)==2)
         val offset=scrollOffset();openAndPlay()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         fun edgeBack(){

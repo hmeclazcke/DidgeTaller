@@ -8,10 +8,10 @@ fun main() {
     val conical = AcousticModel.Shape(1500, 32, 60, 95)
     val p = AcousticModel.evaluate(pvc)
     val c = AcousticModel.evaluate(conical)
-    println("PVC resonancias="+p.frequenciesHz.take(5))
-    println("Conico resonancias="+c.frequenciesHz.take(5))
+    println("PVC resonances="+p.frequenciesHz.take(5))
+    println("Conical resonances="+c.frequenciesHz.take(5))
     check(p.impedance.size == 621)
-    check(p.baseHz in 40.0..125.0) { "fundamental física inesperada: ${p.baseHz}" }
+    check(p.baseHz in 40.0..125.0) { "Unexpected simulated base resonance: ${p.baseHz}" }
     check(abs(p.baseHz-c.baseHz) > 0.15)
     check(p.frequenciesHz.zipWithNext().all { (a,b)->b>a })
     val detailed=pvc.withControlPoints(listOf(
@@ -31,12 +31,12 @@ fun main() {
             BoreOptimizer.Settings(generations=8,population=10),
             progress={ gen, candidate -> if(gen==1)firstError=candidate.fitness; steps=gen }
         ) ?: error("Unexpected cancel")
-        println("optimizer fitness inicial=$firstError best=${best.fitness}; peaks=${best.peaks.take(4)}; shape=${best.shape}")
+        println("optimizer initial fitness=$firstError best=${best.fitness}; peaks=${best.peaks.take(4)}; shape=${best.shape}")
         check(best.fitness <= firstError + 1e-5)
         check(best.shape.points.size == 6)
         check(steps == 8)
     }
-    println("Optimización 8*10 duró ${duration}ms")
+    println("Optimization 8*10 took ${duration}ms")
     val cancelled=BoreOptimizer.search(pvc,BoreOptimizer.Target(),BoreOptimizer.Settings(2,4),cancelled={true})
     check(cancelled==null)
     println("PASS")

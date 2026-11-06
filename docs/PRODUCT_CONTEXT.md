@@ -1,3 +1,15 @@
+# Product context
+
+Didge Taller is an offline, bilingual Android workspace for didgeridoo and Native American flute practice. Measurement and WAV capture share one retained owner; saved sessions connect original audio to canonical MusicalTrace, spectrogram, waveform and harmonic analysis. For didgeridoo, the ordinary trace represents a supported spectral component, not a confirmed physical lip fundamental. Uncertainty and gaps remain visible.
+
+The current musician workflow is Measure, save or discard, then inspect sessions in Library. Session graphs support direct tap/drag seeking and two-finger viewport navigation. Laboratory design and bore simulation remain exploratory didgeridoo tools, separate from recorded sound analysis. No account or audio upload is required.
+
+Current implementation: [Architecture](ARCHITECTURE.md), [Session explorer](SESSION_EXPLORER.md), [Development](DEVELOPMENT.md). Physical accuracy and long-duration/device limitations are recorded in [Validation](VALIDATION.md).
+
+## Historical product conversations
+
+The original Spanish narrative below is retained as historical context, including superseded prototype descriptions. It is not a current feature specification.
+
 # Contexto funcional y recorrido del proyecto
 
 ## ¿Por qué existe Didge Taller?

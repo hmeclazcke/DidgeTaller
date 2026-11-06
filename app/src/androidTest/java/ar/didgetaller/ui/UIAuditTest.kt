@@ -36,7 +36,7 @@ class UIAuditTest {
     private val args=InstrumentationRegistry.getArguments()
     private val prefix get()=args.getString("auditPrefix") ?: "v31-audit"
     @Before fun setup(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         if(args.getString("auditOrientation")=="landscape") {
             compose.runOnUiThread { compose.activity.requestedOrientation=android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
             compose.waitUntil(5000) { compose.activity.resources.configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE }
@@ -220,7 +220,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_selection_and_excerpts)).performScrollTo().performClick()
         compose.onNodeWithTag("selection-mode-2").performScrollTo();shot("marcar-fin",nativeWindow=true)
         val chip=compose.onNodeWithTag("selection-mode-2").fetchSemanticsNode().boundsInRoot
-        assertTrue("Marcar fin debe tener ancho horizontal útil",chip.width>chip.height*1.3)
+        assertTrue("Mark end must have usable horizontal width",chip.width>chip.height*1.3)
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_compare_two_sessions)).performScrollTo().performClick();shot("comparar")

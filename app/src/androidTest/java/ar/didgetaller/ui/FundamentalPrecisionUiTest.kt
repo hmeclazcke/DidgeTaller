@@ -34,7 +34,7 @@ class FundamentalPrecisionUiTest {
     private lateinit var flute:RecordingStore.Session
     private val spikes=mapOf(12 to 60.0,24 to 65.0,36 to 77.0,48 to 82.5)
     @Before fun setup(){
-        assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
+        assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
         val store=RecordingStore(app)
         fun fixture(points:List<SessionAnalysis.Point>,profile:InstrumentProfile,wav:ByteArray)=store.save(wav,points,instrument=profile)
