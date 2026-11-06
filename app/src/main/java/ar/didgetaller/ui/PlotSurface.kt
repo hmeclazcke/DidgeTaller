@@ -69,6 +69,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
     swipe:SwipeCurve?=null,diagnostic:Boolean=false,
     musicianTrace:MusicalTrace?=null,
+    onScrub:(Long,Boolean)->Unit={_,_->},
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -149,12 +150,17 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         val mapped=PlotProjection(camera,w.toDouble(),h.toDouble(),left.toDouble(),top.toDouble(),log).data(position.x.toDouble(),position.y.toDouble())
         return mapped.x to mapped.y
     }
-    val gesture=if(immersive)Modifier.immersiveGestures(
+    val scrub by rememberUpdatedState(onScrub)
+    val cursorX=left+(camera.x.fraction((if(cursor>=0)cursor else state.selectedMs).toDouble())*plotWidth).toFloat()
+    val handleRadius=with(density){24.dp.toPx()}
+    val gesture=Modifier.immersiveGestures(
+        onScrubStart={p ->state.plot.temporal && abs(p.x-cursorX)<=handleRadius && p.y>=dimensions.height-bottom-handleRadius*2},
+        onScrub={p,commit ->scrub(data(p).first.toLong(),commit)},
         onTap={p->val d=data(p);point(d.first,d.second,false)},onInspect={p->val d=data(p);point(d.first,d.second,true)},
-        onReset=onReset,onActive={state.gestureActive=it},onTransform={center,pan,zx,zy ->
+        onReset=onReset,onActive={state.gestureActive=it;if(!it)state.selection.scrubMs=null},onTransform={center,pan,zx,zy ->
             val w=(dimensions.width-left-right).coerceAtLeast(1f);val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
             transform(((center.x-left)/w).toDouble().coerceIn(0.0,1.0),((center.y-top)/h).toDouble().coerceIn(0.0,1.0),zx.toDouble(),zy.toDouble(),(pan.x/w).toDouble(),(pan.y/h).toDouble())
-        }) else Modifier.pointerInput(onPreview){detectTapGestures(onTap={onPreview()})}
+        })
     // Reduction is retained while the native playback cursor advances.
     val spectrum=analysis?.spectrum
     val spectrumReference=remember(spectrum){spectrum?.density?.maxOrNull() ?: 0.0}
@@ -258,8 +264,11 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                 }
                 if(state.plot.temporal){
                     state.region?.let {region ->val a=x(region.first.toDouble());val b=x(region.last.toDouble());drawRect(Color(0xFF8CCFF3).copy(alpha=.13f),Offset(a,0f),Size(max(0f,b-a),h))}
-                    if(state.selectedMs.toDouble() in camera.x.low..camera.x.high)drawLine(Color.White.copy(alpha=.7f),Offset(x(state.selectedMs.toDouble()),0f),Offset(x(state.selectedMs.toDouble()),h),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(3f,5f)))
-                    if(cursor>=0 && cursor.toDouble() in camera.x.low..camera.x.high)drawLine(Color(0xFF9AD9FF),Offset(x(cursor.toDouble()),0f),Offset(x(cursor.toDouble()),h),2.5f)
+                    if(cursor<0 && state.selectedMs.toDouble() in camera.x.low..camera.x.high)drawLine(Color.White.copy(alpha=.7f),Offset(x(state.selectedMs.toDouble()),0f),Offset(x(state.selectedMs.toDouble()),h),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(3f,5f)))
+                    if(cursor>=0 && cursor.toDouble() in camera.x.low..camera.x.high){
+                        drawLine(Color(0xFF9AD9FF),Offset(x(cursor.toDouble()),0f),Offset(x(cursor.toDouble()),h),2.5f)
+                        drawCircle(Color(0xFF9AD9FF),with(density){8.dp.toPx()},Offset(x(cursor.toDouble()),h-10f))
+                    }
                 }
             }
             yt.forEach {tick ->

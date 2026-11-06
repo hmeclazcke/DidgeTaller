@@ -715,3 +715,8 @@ controls now follow the card before secondary details; compact landscape and
 large-text spacing keep controls above navigation. Emulator-only evidence and
 validation limits are recorded in VALIDATION.md. Audio and recording lifecycle
 were not changed.
+
+
+## 2026-11-06 ? Session graph interaction and display lifecycle
+
+Verified clean main and remote HEAD at 76ad193 before implementation. Kept acoustic estimators, trace construction, persisted formats, recording policy, package and signing untouched. Reused PlotProjection, shared ExplorerSelection and serialized SessionPlayer seeks. The measurement overlap came from the fullscreen bottom action losing the navigation padding supplied by the ordinary navigation bar. Added one lifecycle-owned View screen-on request at the Activity composition boundary. Validation and remaining physical-test limits are recorded in VALIDATION.md; device update evidence stays in ignored checkpoints.

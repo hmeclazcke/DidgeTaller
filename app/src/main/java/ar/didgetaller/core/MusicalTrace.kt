@@ -34,6 +34,10 @@ data class MusicalTrace(
     /** Historical YIN evidence, marked separately; it does not change the spectral trace. */
     data class HighRegisterCandidate(val timeMs:Long,val hz:Double)
 
+    /** Nearest original sample within 100 ms; rejected samples remain unavailable. */
+    fun frequencyAt(timeMs: Long): Double? = samples.minByOrNull { abs(it.timeMs-timeMs) }
+        ?.takeIf { abs(it.timeMs-timeMs)<=100.0 && !it.bridged }?.hz
+
     fun frequencyRange(): AxisWindow {
         val frequencies = samples.mapNotNull { it.hz }
         if (frequencies.isEmpty()) return AxisWindow(instrument.minHz.toDouble(), instrument.initialMaxHz.toDouble())

@@ -81,6 +81,46 @@ class GraphIntelligenceUiTest {
         val delta=Offset(area.width*.15f,area.height*.1f)
         graph.performTouchInput {pinch(area.center-delta,area.center+delta,area.center-delta*1.5f,area.center+delta*1.5f,500)}
     }
+    @Test fun playingGraphSeekContinuesAndConsecutiveRequestsKeepLatestPosition() {
+        open(a);expand()
+        compose.runOnIdle {vm.togglePlayback(a)}
+        compose.waitUntil(5000){vm.playingId==a.id && !vm.playbackPaused}
+        val graph=compose.onNodeWithTag("immersive-plot")
+        val area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {click(Offset(area.left+area.width*.6f,area.center.y))}
+        Thread.sleep(400);compose.mainClock.advanceTimeBy(500)
+        compose.runOnIdle {assertFalse(vm.playbackPaused);assertEquals(a.durationMs*.6,vm.playbackPositionMs().toDouble(),1000.0)}
+        compose.runOnIdle {vm.seekPlayback(a,100);vm.seekPlayback(a,9000);vm.seekPlayback(a,2000)}
+        Thread.sleep(500);compose.mainClock.advanceTimeBy(500)
+        compose.runOnIdle {assertFalse(vm.playbackPaused);assertEquals(2500.0,vm.playbackPositionMs().toDouble(),1000.0)}
+        capture("playing-seek")
+        back()
+        compose.runOnIdle {assertFalse(vm.playbackPaused);vm.seekPlayback(a,a.durationMs-100)}
+        compose.waitUntil(5000){vm.playbackPaused}
+    }
+
+    @Test fun graphTapAndCursorDragSeekWithoutStartingPausedAudio() {
+        open(a);expand()
+        compose.waitUntil(15000){vm.musicalTrace(a)!=null}
+        val graph=compose.onNodeWithTag("immersive-plot")
+        val area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {click(Offset(area.left+area.width*.4f,area.center.y))}
+        compose.waitUntil(5000){vm.playingId==a.id}
+        compose.runOnIdle {
+            assertTrue(vm.playbackPaused)
+            assertEquals(a.durationMs*.4,vm.playbackPositionMs().toDouble(),350.0)
+        }
+        graph.performTouchInput {swipe(Offset(area.left+area.width*.4f,area.bottom-12f),Offset(area.left+area.width*.7f,area.bottom-12f),600)}
+        compose.waitUntil(5000){vm.playbackPositionMs()>a.durationMs*.6}
+        compose.runOnIdle {assertTrue(vm.playbackPaused)}
+        compose.onNodeWithTag("component-readout").assertIsDisplayed()
+        compose.mainClock.advanceTimeBy(500)
+        compose.runOnIdle {assertEquals(a.durationMs*.7,vm.playbackPositionMs().toDouble(),350.0)}
+        capture("scrub-paused")
+        back()
+        compose.runOnIdle {assertTrue(vm.playbackPaused);assertTrue(vm.playbackPositionMs()>a.durationMs*.6)}
+    }
+
     @Test fun summaryPreviewAndReopenedSessionNeverInheritExploratoryCamera(){
         card(a);capture("card-before")
         val summary=compose.onNodeWithTag("summary-${a.id}",useUnmergedTree=true).fetchSemanticsNode().config[PlotWindow]

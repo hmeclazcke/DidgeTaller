@@ -9,6 +9,7 @@ enum class AcousticPlot(val title:String,val temporal:Boolean) {
 
 /** Selection belongs to the active session; cameras belong to each presentation. */
 class ExplorerSelection {
+    var scrubMs by mutableStateOf<Long?>(null)
     var selectedMs by mutableLongStateOf(0)
     var regionStart by mutableLongStateOf(0)
     var regionEnd by mutableLongStateOf(0)

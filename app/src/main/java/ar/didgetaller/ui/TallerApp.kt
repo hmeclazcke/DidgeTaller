@@ -151,7 +151,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 )
             },
             bottomBar={
-                if(!inViewer)Column {
+                if(!inViewer)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
                     if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
                     if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
                         sections.forEachIndexed { idx,title ->

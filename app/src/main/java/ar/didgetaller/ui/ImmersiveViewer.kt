@@ -62,9 +62,9 @@ internal fun playbackCursor(vm:TallerViewModel,item:RecordingStore.Session):Long
     var cursor by remember(item.id){mutableLongStateOf(0)}
     LaunchedEffect(item.id,vm.playingId){
         while(vm.playingId==item.id){cursor=vm.playbackPositionMs().toLong();delay(80)}
-        cursor=0
+        cursor=vm.explorer(item.id).selectedMs
     }
-    return cursor
+    return vm.explorer(item.id).selection.scrubMs ?: cursor
 }
 
 /** Stable session owner supplies both preview and immersive adapters. No WAV in camera state. */
@@ -108,9 +108,24 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
             s.cameras[s.plot]=camera.copy(x=domain.constrain(AxisWindow(left,left+camera.x.span)))
         }
     }
-    PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else -1,modifier,immersive,
+    val readTime = s.selection.scrubMs ?: if(vm.playingId==item.id)cursor else s.selectedMs
+    Column(modifier) {
+    if(s.plot==AcousticPlot.PITCH && !diagnostic && musician.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT) {
+        val hz=musician.frequencyAt(readTime)
+        Column {
+            Text("${seconds(readTime)} | "+(hz?.let {context.getString(R.string.musical_component_frequency,hzLabel(it))}
+                ?: context.getString(R.string.ui_no_nearby_reliable_reading)),
+                modifier=Modifier.testTag("component-readout"),style=MaterialTheme.typography.labelSmall)
+        }
+    }
+    PlotSurface(s,visual,camera,points,result,if(vm.playingId==item.id)cursor else s.selectedMs,Modifier.fillMaxWidth().weight(1f),immersive,
         swipe=if(diagnostic)swipe else null,diagnostic=diagnosticMode,
         musicianTrace=if(diagnostic)null else musician,onPreview=onExpand,
+        onScrub={time,commit ->
+            s.selectedMs=time.coerceIn(0,duration);s.follow=false
+            s.selection.scrubMs=if(commit)null else s.selectedMs
+            if(commit)vm.seekPlayback(item,s.selectedMs)
+        },
         onReset={s.reset(duration,visual.rate,scalePoints)},onTransform={x,y,zx,zy,dx,dy->s.transform(duration,visual.rate,scalePoints,x,y,zx,zy,dx,dy)},
         onPoint={x,y,inspect ->
             s.selectedY=y;s.follow=false
@@ -125,9 +140,8 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                 val point=points.minByOrNull {abs(it.timeMs-time)}?.takeIf {abs(it.timeMs-time)<=750}
                 s.inspected=when(s.plot){
                     AcousticPlot.PITCH->if(!diagnostic && musician.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT){
-                        val nearest=musician.samples.minByOrNull {abs(it.timeMs-time)}
-                            ?.takeIf {abs(it.timeMs-time)<=250 && it.hz!=null}
-                        "${seconds(time)} · "+(nearest?.hz?.let {context.getString(R.string.musical_component_frequency,hzLabel(it))}
+                        val frequency=musician.frequencyAt(time)
+                        "${seconds(time)} · "+(frequency?.let {context.getString(R.string.musical_component_frequency,hzLabel(it))}
                             ?: context.getString(R.string.ui_no_nearby_reliable_reading))
                     }else "${seconds(time)} · "+(point?.let {p->trace.firstOrNull {it.point===p}}?.let {sample->
                         val hz=sample.point.hz!!
@@ -157,6 +171,7 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                     else context.getString(R.string.ui_no_nearby_assigned_peak, hzLabel(x))
             }
         })
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -194,7 +209,11 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
     }
     val duration=visual.durationMs.takeIf {it>0} ?: item.durationMs
     val camera=state.camera(duration,visual.rate,scalePoints)
-    val reading=state.inspected ?:
+    val reading=if(state.plot==AcousticPlot.PITCH && !vm.swipeComparison.enabled && musician.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT) {
+        val time=state.selection.scrubMs ?: if(vm.playingId==item.id)cursor else state.selectedMs
+        "${seconds(time)} | "+(musician.frequencyAt(time)?.let {context.getString(R.string.musical_component_frequency,hzLabel(it))}
+            ?: context.getString(R.string.ui_no_nearby_reliable_reading))
+    } else state.inspected ?:
         "${axisLabel(camera.y.low,camera.y.span)}–${axisLabel(camera.y.high,camera.y.span)} ${if(state.plot==AcousticPlot.WAVE)"PCM" else if(state.plot==AcousticPlot.SPECTRUM)"dB rel" else "Hz"}"
     val playing=vm.playingId==item.id && !vm.playbackPaused
     @Composable fun transport(){

@@ -10,8 +10,10 @@ import kotlin.math.*
 
 /** Dedicated plot surface: pan in both axes; no enclosing scroll or gesture Back handler. */
 @Composable
-internal fun Modifier.immersiveGestures(onTap:(Offset)->Unit,onInspect:(Offset)->Unit,onReset:()->Unit,
+internal fun Modifier.immersiveGestures(onScrubStart:(Offset)->Boolean={false},
+    onScrub:(Offset,Boolean)->Unit={_,_->},onTap:(Offset)->Unit,onInspect:(Offset)->Unit,onReset:()->Unit,
     onActive:(Boolean)->Unit,onTransform:(Offset,Offset,Float,Float)->Unit):Modifier {
+    val startScrub by rememberUpdatedState(onScrubStart);val scrub by rememberUpdatedState(onScrub)
     val tap by rememberUpdatedState(onTap);val inspect by rememberUpdatedState(onInspect)
     val reset by rememberUpdatedState(onReset);val active by rememberUpdatedState(onActive)
     val transform by rememberUpdatedState(onTransform)
@@ -19,16 +21,20 @@ internal fun Modifier.immersiveGestures(onTap:(Offset)->Unit,onInspect:(Offset)-
         var lastTapTime=0L;var lastTap=Offset.Unspecified
         awaitEachGesture {
             val first=awaitFirstDown();var moved=false;var inspecting=false;var point=first.position
+            var scrubbing=startScrub(point)
+            if(scrubbing){active(true);scrub(point,false)}
             var pressed=true
             try {
                 while(pressed){
-                    val event=if(!moved && !inspecting)withTimeoutOrNull(viewConfiguration.longPressTimeoutMillis){awaitPointerEvent()} else awaitPointerEvent()
+                    val event=if(!scrubbing && !moved && !inspecting)withTimeoutOrNull(viewConfiguration.longPressTimeoutMillis){awaitPointerEvent()} else awaitPointerEvent()
                     if(event==null){inspecting=true;active(true);inspect(point);continue}
                     val down=event.changes.filter {it.pressed};pressed=down.isNotEmpty()
-                    if(!pressed){event.changes.forEach {it.consume()};break}
+                    if(!pressed){if(scrubbing)scrub(point,true);event.changes.forEach {it.consume()};break}
+                    if(scrubbing && down.size>1){scrubbing=false;active(false)}
                     point=event.calculateCentroid();val displacement=point-first.position
                     if(down.size>1 || displacement.getDistance()>viewConfiguration.touchSlop)moved=true
-                    if(inspecting){inspect(point);event.changes.forEach {it.consume()}}
+                    if(scrubbing && down.size==1){scrub(point,false);event.changes.forEach {it.consume()}}
+                    else if(inspecting){inspect(point);event.changes.forEach {it.consume()}}
                     else if(moved){
                         active(true)
                         val pan=event.calculatePan()
@@ -38,7 +44,7 @@ internal fun Modifier.immersiveGestures(onTap:(Offset)->Unit,onInspect:(Offset)-
                         transform(point,pan,zoom,zoom);event.changes.forEach {it.consume()}
                     }
                 }
-                if(!moved && !inspecting){
+                if(!scrubbing && !moved && !inspecting){
                     val now=first.uptimeMillis
                     if(lastTapTime!=0L && now-lastTapTime in 1..viewConfiguration.doubleTapTimeoutMillis && (point-lastTap).getDistance()<viewConfiguration.touchSlop*3){reset();lastTapTime=0}
                     else {tap(point);lastTapTime=now;lastTap=point}

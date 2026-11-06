@@ -1916,3 +1916,14 @@ exposed clipping and height differences; the final targeted reruns passed.
 and `detekt` succeeded; localization parity passed. No full instrumentation
 suite or spoken TalkBack walkthrough was performed. The validated debug APK
 SHA-256 is `6886a817415d380f86a74fe599ff0d621790a388bdfa71e0d5bc8d7bfad59c5a`.
+
+
+## 2026-11-06 ? Interactive session graph and foreground screen awake
+
+- Canonical MusicalTrace readout uses the nearest original sample within an explicit 100 ms tolerance, including rejected/null samples in nearest-neighbor selection. No interpolation, estimator substitution, note assignment, or persisted analysis changes.
+- Session graphs share player time and a transient shared scrub preview. The 48 dp cursor-handle region previews a drag and commits one seek on release; taps seek without starting paused audio. Other drags pan and two fingers zoom. Pending MediaPlayer seeks expose the latest queued target until completion.
+- Fullscreen measurement bottom-bar container applies navigation-bar padding once. One Activity composition owner requests screen-on only for active capture or playback while resumed; pause/background/disposal release it.
+- Final local Gradle run: JVM 184 cases, 176 passed, 8 skipped, zero failures/errors; debug APK, instrumentation APK and Detekt succeeded. Localization parity: 563 strings, 5 plurals, 2 arrays. Logs: ignored checkpoints/ux-final-build.log and ux-final-emulator.log.
+- Final emulator run (explicit emulator-5554): six tests passed, zero failures/skips, covering real synthetic-WAV MediaPlayer seeks before play, paused and active playback, consecutive seeks/completion, shared fullscreen state, gap readout, zoomed coordinates, pinch/pan regression, measurement actions, and actual View screen-on lifecycle/disposal.
+- Additional measurement runs passed with Spanish 150% font / three-button navigation in portrait and compact 360x640 dp landscape; English default-font gesture-navigation portrait was inspected too. Inspected local screenshots include ux-final-scrub, ux-final-zoom, ux-gap, ux-wide-idle/active, ux-large-idle/active and ux-landscape-idle/active. Images and synthetic fixtures remain untracked.
+- Limits: emulator synthetic playback is not physical acoustic accuracy or a prolonged Samsung screen-timeout test. The matrix is representative, not every locale/font/navigation/orientation combination. Recording error/timeout release follows the existing CAPTURING state owner; these paths were not separately exercised end-to-end in the new UI tests. CI compiles instrumentation but does not execute it. Delivery and device-integrity evidence is kept locally under checkpoints.

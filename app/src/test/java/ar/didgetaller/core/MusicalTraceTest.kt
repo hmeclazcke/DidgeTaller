@@ -9,6 +9,18 @@ class MusicalTraceTest {
         if (hz == null) DroneComponentCurve.Reason.QUIET else DroneComponentCurve.Reason.COMPONENT,
     )
 
+    @Test fun readoutPreservesRejectedSamplesAndUsesBoundedTolerance() {
+        val trace=MusicalTrace.didgeridoo(DroneComponentCurve(listOf(
+            component(22400.0,137.6),component(22586.0,null),component(22772.0,140.0)
+        ),186.0),23000)
+        assertEquals(137.6,trace.frequencyAt(22400)!!,0.001)
+        assertEquals(137.6,trace.frequencyAt(22300)!!,0.001)
+        assertNull(trace.frequencyAt(22299))
+        assertNull(trace.frequencyAt(22586))
+        assertNull(trace.frequencyAt(22500))
+        assertNull(trace.frequencyAt(24000))
+    }
+
     @Test fun didgeridooUsesMeasuredComponentsWithoutInsertingConflictingYin() {
         val curve = DroneComponentCurve(listOf(
             component(200.0, 70.0), component(386.0, 69.0),

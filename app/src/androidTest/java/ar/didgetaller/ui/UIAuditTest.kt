@@ -259,6 +259,41 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_cancel)).performClick()
         assertEquals(original,RecordingStore(application).list().first {it.id==session.id}.name)
     }
+    @Test fun selectedComponentGapAndZoomUseVisibleTimeline() {
+        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        compose.waitUntil(15000){vm.musicalTrace(session)!=null}
+        val graph=compose.onNodeWithTag("immersive-plot")
+        var area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {click(androidx.compose.ui.geometry.Offset(area.left+area.width*5.5f/12f,area.center.y))}
+        compose.onNodeWithTag("component-readout").assertTextContains(uiText(R.string.ui_no_nearby_reliable_reading),substring=true)
+        shot("gap",nativeWindow=true)
+        compose.runOnIdle {
+            val state=vm.explorer(session.id)
+            state.cameras[state.plot]=PlotViewport(AxisWindow(2000.0,6000.0),state.camera(session.durationMs,44100,session.timeline).y)
+        }
+        area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {click(androidx.compose.ui.geometry.Offset(area.left+area.width*.25f,area.center.y))}
+        compose.runOnIdle {assertEquals(3000.0,vm.explorer(session.id).selectedMs.toDouble(),20.0)}
+        Thread.sleep(300);compose.mainClock.advanceTimeBy(500)
+        shot("zoom-selection",nativeWindow=true)
+    }
+
+    @Test fun fullscreenMeasurementActionsStayVisible() {
+        compose.onNodeWithText(uiText(R.string.ui_wide_view)).performScrollTo().performClick()
+        compose.onNodeWithTag("recording-primary").assertIsDisplayed().assertHasClickAction()
+        shot("wide-idle",nativeWindow=true)
+        InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(application.packageName,android.Manifest.permission.RECORD_AUDIO)
+        compose.onNodeWithTag("recording-primary").performClick()
+        compose.waitUntil(5000){vm.sessionPhase==SessionPhase.CAPTURING}
+        compose.onNodeWithTag("recording-primary").assertIsDisplayed()
+        compose.onNodeWithTag("discard-recording").assertIsDisplayed()
+        shot("wide-active",nativeWindow=true)
+        compose.runOnUiThread {vm.discardSession()}
+        compose.waitUntil(5000){vm.sessionPhase==SessionPhase.IDLE}
+    }
+
     @Test fun measurementStatesAndFinalForms(){
         shot("medir")
         compose.runOnIdle {vm.onPermissionResult(false,true)};shot("permiso-denegado")

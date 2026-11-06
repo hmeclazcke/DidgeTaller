@@ -43,6 +43,9 @@ class MainActivity:ComponentActivity() {
         WindowCompat.getInsetsController(window,window.decorView).isAppearanceLightNavigationBars=false
         vm=ViewModelProvider(this)[TallerViewModel::class.java]
         setContent {
+            val active = vm.sessionPhase == SessionPhase.CAPTURING ||
+                (vm.playingId != null && !vm.playbackPaused)
+            ar.didgetaller.ui.ScreenAwake(window.decorView,lifecycle,active)
             TallerApp(vm,
                 startMeasurement = {
                     if(ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO)==PackageManager.PERMISSION_GRANTED)

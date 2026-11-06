@@ -20,6 +20,7 @@ class SessionPlayer(private val changed:(String?,Boolean)->Unit,private val erro
     private var queuedSeek:Long?=null
     private fun requestSeek(target:Long){
         if(seeking){queuedSeek=target;return}
+        requested=target
         seeking=true
         player?.seekTo(target,MediaPlayer.SEEK_CLOSEST)
     }
@@ -67,7 +68,7 @@ class SessionPlayer(private val changed:(String?,Boolean)->Unit,private val erro
     }
     fun loop(region:LongRange?){require(region==null || region.last>region.first);loop=region
         if(region!=null && ready && position().toLong() !in region)runCatching {requestSeek(region.first)}.onFailure {fail(it)}}
-    fun position():Int=if(ready)runCatching {player?.currentPosition ?: 0}.getOrDefault(0) else requested.toInt()
+    fun position():Int=if(seeking)(queuedSeek ?: requested).toInt() else if(ready)runCatching {player?.currentPosition ?: 0}.getOrDefault(0) else requested.toInt()
     fun duration():Int=if(ready)runCatching {player?.duration ?: 0}.getOrDefault(0) else 0
     fun restart(sessionId:String,file:File){if(id!=sessionId || !ready)open(sessionId,file,true) else {seek(sessionId,file,0);if(paused)toggle(sessionId,file)}}
     fun stop(){handler.removeCallbacks(poll);val old=player;player=null;id=null;pendingId=null;playWhenReady=false;seeking=false;queuedSeek=null;ready=false;paused=true;requested=0;loop=null
