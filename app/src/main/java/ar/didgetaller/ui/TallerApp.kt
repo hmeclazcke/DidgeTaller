@@ -151,7 +151,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 )
             },
             bottomBar={
-                if(!inViewer)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
+                if(!inViewer && route!=TallerRoutes.Session)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
                     if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
                     if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
                         sections.forEachIndexed { idx,title ->
@@ -211,7 +211,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 composable(TallerRoutes.Compare) {DestinationContent("comparison-screen"){ComparisonScreen(vm)}}
                 composable(TallerRoutes.Session,arguments=listOf(navArgument("id") {type=NavType.StringType})) { detail ->
                     val item=vm.sessions.firstOrNull {it.id==detail.arguments?.getString("id")}
-                    DestinationContent("session-detail") {
+                    DestinationContent("session-detail",compact=true) {
                         if(item!=null)SessionDetail(vm,item,exportRecording,onBack={navController.popBackStack()},onExpand={vm.explorer(item.id).plot=it;navController.navigate(TallerRoutes.viewer(item.id,it))})
                         else Text(stringResource(R.string.ui_this_session_is_no_longer_available),color=muted)
                     }

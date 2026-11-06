@@ -7,8 +7,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.*
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.math.*
+import ar.didgetaller.core.PlotTouch
+import ar.didgetaller.core.plotTouch
 
-/** Dedicated plot surface: pan in both axes; no enclosing scroll or gesture Back handler. */
+/** One finger scrubs temporal plots; two fingers own viewport transforms. Vertical drags scroll. */
 @Composable
 internal fun Modifier.immersiveGestures(onScrubStart:(Offset)->Boolean={false},
     onScrub:(Offset,Boolean)->Unit={_,_->},onTap:(Offset)->Unit,onInspect:(Offset)->Unit,onReset:()->Unit,
@@ -21,21 +23,35 @@ internal fun Modifier.immersiveGestures(onScrubStart:(Offset)->Boolean={false},
         var lastTapTime=0L;var lastTap=Offset.Unspecified
         awaitEachGesture {
             val first=awaitFirstDown();var moved=false;var inspecting=false;var point=first.position
-            var scrubbing=startScrub(point)
-            if(scrubbing){active(true);scrub(point,false)}
+            val canScrub=startScrub(point)
+            var scrubbing=false
+            var transforming=false
+            var released=false
             var pressed=true
             try {
                 while(pressed){
                     val event=if(!scrubbing && !moved && !inspecting)withTimeoutOrNull(viewConfiguration.longPressTimeoutMillis){awaitPointerEvent()} else awaitPointerEvent()
                     if(event==null){inspecting=true;active(true);inspect(point);continue}
                     val down=event.changes.filter {it.pressed};pressed=down.isNotEmpty()
-                    if(!pressed){if(scrubbing)scrub(point,true);event.changes.forEach {it.consume()};break}
-                    if(scrubbing && down.size>1){scrubbing=false;active(false)}
+                    if(!pressed){
+                        released=event.changes.none {it.isConsumed}
+                        if(scrubbing && released)scrub(point,true)
+                        event.changes.forEach {it.consume()};break
+                    }
+                    if(down.size>1){if(scrubbing)active(false);scrubbing=false;inspecting=false;transforming=true}
                     point=event.calculateCentroid();val displacement=point-first.position
-                    if(down.size>1 || displacement.getDistance()>viewConfiguration.touchSlop)moved=true
-                    if(scrubbing && down.size==1){scrub(point,false);event.changes.forEach {it.consume()}}
+                    if(!transforming && !scrubbing && !inspecting){
+                        when(plotTouch(displacement.x,displacement.y,viewConfiguration.touchSlop,down.size,canScrub)){
+                            PlotTouch.SCRUB -> scrubbing=true
+                            PlotTouch.VIEWPORT -> transforming=true
+                            PlotTouch.SCROLL -> {moved=true;break}
+                            PlotTouch.WAIT -> Unit
+                        }
+                    }
+                    if(transforming || scrubbing)moved=true
+                    if(scrubbing){active(true);scrub(point,false);event.changes.forEach {it.consume()}}
                     else if(inspecting){inspect(point);event.changes.forEach {it.consume()}}
-                    else if(moved){
+                    else if(transforming && down.size>1 || transforming && !canScrub){
                         active(true)
                         val pan=event.calculatePan()
                         // Radial centroid-size ratio is continuous for every finger angle.
@@ -44,7 +60,7 @@ internal fun Modifier.immersiveGestures(onScrubStart:(Offset)->Boolean={false},
                         transform(point,pan,zoom,zoom);event.changes.forEach {it.consume()}
                     }
                 }
-                if(!scrubbing && !moved && !inspecting){
+                if(released && !scrubbing && !moved && !inspecting){
                     val now=first.uptimeMillis
                     if(lastTapTime!=0L && now-lastTapTime in 1..viewConfiguration.doubleTapTimeoutMillis && (point-lastTap).getDistance()<viewConfiguration.touchSlop*3){reset();lastTapTime=0}
                     else {tap(point);lastTapTime=now;lastTap=point}

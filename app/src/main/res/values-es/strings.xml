@@ -585,4 +585,5 @@
     <string name="recording_discard_failed">No se pudo descartar por completo. Una captura temporal podría recuperarse.</string>
     <string name="recording_discard_too_late">La grabación ya estaba finalizando y se guardará.</string>
     <string name="recording_release_failed">No se pudo liberar el micrófono.</string>
+    <string name="graph_timeline_hint">Tocá o arrastrá para buscar. Dos dedos para zoom o desplazar.</string>
 </resources>

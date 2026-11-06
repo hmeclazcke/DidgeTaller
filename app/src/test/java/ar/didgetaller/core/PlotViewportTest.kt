@@ -6,6 +6,14 @@ import kotlin.math.*
 
 /** Display math tolerances: 1e-9 coordinates, 1e-6 Hz on logarithmic transforms. */
 class PlotViewportTest {
+    @Test fun longRecordingMapsSixtySecondsUsingPlotMarginsAndZoom() {
+        val full=PlotProjection(PlotViewport(AxisWindow(0.0,117000.0),AxisWindow(50.0,180.0)),390.0,260.0,56.0,20.0)
+        assertEquals(60000.0,full.data(56.0+390.0*60/117,100.0).x,1e-6)
+        val zoom=PlotProjection(PlotViewport(AxisWindow(45000.0,85000.0),AxisWindow(50.0,180.0)),390.0,260.0,56.0,20.0)
+        assertEquals(60000.0,zoom.data(56.0+390.0*.375,100.0).x,1e-6)
+        assertEquals(85000.0,zoom.data(10000.0,100.0).x,1e-6)
+    }
+
     @Test fun pixelProjectionRespectsMarginsAndInvertsVerticalDirection(){
         val p=PlotProjection(PlotViewport(AxisWindow(3000.0,7000.0),AxisWindow(65.0,75.0)),800.0,400.0,60.0,20.0)
         assertEquals(PlotPoint(3000.0,75.0),p.data(60.0,20.0));assertEquals(PlotPoint(7000.0,65.0),p.data(860.0,420.0))

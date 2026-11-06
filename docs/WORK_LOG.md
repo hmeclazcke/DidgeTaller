@@ -720,3 +720,8 @@ were not changed.
 ## 2026-11-06 ? Session graph interaction and display lifecycle
 
 Verified clean main and remote HEAD at 76ad193 before implementation. Kept acoustic estimators, trace construction, persisted formats, recording policy, package and signing untouched. Reused PlotProjection, shared ExplorerSelection and serialized SessionPlayer seeks. The measurement overlap came from the fullscreen bottom action losing the navigation padding supplied by the ordinary navigation bar. Added one lifecycle-owned View screen-on request at the Activity composition boundary. Validation and remaining physical-test limits are recorded in VALIDATION.md; device update evidence stays in ignored checkpoints.
+
+
+## 2026-11-06 ? Direct graph timeline and compact session workspace
+
+Replaced handle-only scrub eligibility with plot-wide horizontal scrubbing; two-finger translation/pinch owns viewport navigation. Kept pending preview separate from committed selection and fixed consumed cancellation releases committing a seek. Removed the primary transport slider and moved accessible SetProgress onto the graph. Compacted only the session workspace and fixed its empty Scaffold bottom bar suppressing navigation insets. No acoustic or persisted-data changes. Final checks and representative screenshot/configuration evidence are recorded in VALIDATION.md. Private delivery evidence stays under ignored checkpoints.

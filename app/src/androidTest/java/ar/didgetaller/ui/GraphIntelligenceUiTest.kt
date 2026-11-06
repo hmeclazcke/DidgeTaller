@@ -36,6 +36,11 @@ class GraphIntelligenceUiTest {
     private lateinit var b:RecordingStore.Session
     private lateinit var c:RecordingStore.Session
     @Before fun setup(){
+        val orientation=InstrumentationRegistry.getArguments().getString("directOrientation")
+        if(orientation=="landscape"){
+            compose.runOnUiThread {compose.activity.requestedOrientation=android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE}
+            compose.waitUntil(5000){compose.activity.resources.configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE}
+        }
         assumeTrue("Solo emulador",Build.HARDWARE in listOf("ranchu","goldfish"))
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()
         val store=RecordingStore(app)
@@ -90,6 +95,9 @@ class GraphIntelligenceUiTest {
         graph.performTouchInput {click(Offset(area.left+area.width*.6f,area.center.y))}
         Thread.sleep(400);compose.mainClock.advanceTimeBy(500)
         compose.runOnIdle {assertFalse(vm.playbackPaused);assertEquals(a.durationMs*.6,vm.playbackPositionMs().toDouble(),1000.0)}
+        graph.performTouchInput {swipe(Offset(area.left+area.width*.3f,area.center.y),Offset(area.left+area.width*.1f,area.center.y),600)}
+        Thread.sleep(300);compose.mainClock.advanceTimeBy(400)
+        compose.runOnIdle {assertFalse(vm.playbackPaused);assertEquals(a.durationMs*.1,vm.playbackPositionMs().toDouble(),1000.0)}
         compose.runOnIdle {vm.seekPlayback(a,100);vm.seekPlayback(a,9000);vm.seekPlayback(a,2000)}
         Thread.sleep(500);compose.mainClock.advanceTimeBy(500)
         compose.runOnIdle {assertFalse(vm.playbackPaused);assertEquals(2500.0,vm.playbackPositionMs().toDouble(),1000.0)}
@@ -97,6 +105,38 @@ class GraphIntelligenceUiTest {
         back()
         compose.runOnIdle {assertFalse(vm.playbackPaused);vm.seekPlayback(a,a.durationMs-100)}
         compose.waitUntil(5000){vm.playbackPaused}
+    }
+
+    @Test fun embeddedGraphScrubsAcrossThePlotAndPinchDoesNotSeek() {
+        card(a).performClick()
+        capture("embedded-open")
+        capture("embedded-before")
+        compose.onNodeWithTag("session-playback-seek").assertDoesNotExist()
+        val graph=compose.onNodeWithTag("time-chart").performScrollTo()
+        var area=graph.fetchSemanticsNode().config[PlotDataArea]
+        graph.performTouchInput {swipe(Offset(area.left+area.width*.2f,area.center.y),Offset(area.left+area.width*.8f,area.center.y),600)}
+        compose.waitUntil(5000){vm.playingId==a.id}
+        Thread.sleep(300);compose.mainClock.advanceTimeBy(500)
+        compose.runOnIdle {assertTrue(vm.playbackPaused);assertEquals(a.durationMs*.8,vm.playbackPositionMs().toDouble(),350.0)}
+        capture("embedded-selected")
+        val position=vm.playbackPositionMs()
+        val selection=vm.preview(a.id).selectedMs
+        graph.performTouchInput {down(Offset(area.left+area.width*.4f,area.center.y));moveTo(Offset(area.left+area.width*.6f,area.center.y),100)}
+        compose.runOnIdle {assertNotNull(vm.preview(a.id).selection.scrubMs)}
+        capture("embedded-scrubbing")
+        graph.performTouchInput {cancel()}
+        compose.runOnIdle {assertNull(vm.preview(a.id).selection.scrubMs);assertEquals(selection,vm.preview(a.id).selectedMs);assertEquals(position,vm.playbackPositionMs())}
+        area=graph.fetchSemanticsNode().config[PlotDataArea]
+        val delta=Offset(area.width*.18f,area.height*.1f)
+        val camera=graph.fetchSemanticsNode().config[PlotWindow]
+        graph.performTouchInput {pinch(area.center-delta,area.center+delta,area.center-delta*1.4f,area.center+delta*1.4f,500)}
+        compose.runOnIdle {assertEquals(position,vm.playbackPositionMs());assertTrue(vm.preview(a.id).camera(a.durationMs,44100,a.timeline).x.span<camera.x.span)}
+        capture("embedded-zoom")
+        compose.runOnIdle {vm.togglePlayback(a)}
+        compose.waitUntil(5000){!vm.playbackPaused}
+        Thread.sleep(200);compose.mainClock.advanceTimeBy(400)
+        capture("embedded-playing")
+        compose.runOnIdle {vm.togglePlayback(a)}
     }
 
     @Test fun graphTapAndCursorDragSeekWithoutStartingPausedAudio() {
@@ -110,7 +150,7 @@ class GraphIntelligenceUiTest {
             assertTrue(vm.playbackPaused)
             assertEquals(a.durationMs*.4,vm.playbackPositionMs().toDouble(),350.0)
         }
-        graph.performTouchInput {swipe(Offset(area.left+area.width*.4f,area.bottom-12f),Offset(area.left+area.width*.7f,area.bottom-12f),600)}
+        graph.performTouchInput {swipe(Offset(area.left+area.width*.4f,area.center.y),Offset(area.left+area.width*.7f,area.center.y),600)}
         compose.waitUntil(5000){vm.playbackPositionMs()>a.durationMs*.6}
         compose.runOnIdle {assertTrue(vm.playbackPaused)}
         compose.onNodeWithTag("component-readout").assertIsDisplayed()

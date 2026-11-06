@@ -140,7 +140,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
-        compose.onNodeWithTag("session-playback-seek").performScrollTo()
+        compose.onNodeWithTag("time-chart").performScrollTo()
             .assertContentDescriptionEquals(uiText(R.string.playback_seek_label))
             .performSemanticsAction(SemanticsActions.SetProgress){it(3000f)}
         compose.waitUntil(10000){kotlin.math.abs(vm.playbackPositionMs()-3000)<80}

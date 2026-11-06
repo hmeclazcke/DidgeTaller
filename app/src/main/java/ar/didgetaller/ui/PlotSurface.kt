@@ -69,6 +69,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     analysis:WavAnalysis.Result?,cursor:Long,modifier:Modifier=Modifier,immersive:Boolean=false,
     swipe:SwipeCurve?=null,diagnostic:Boolean=false,
     musicianTrace:MusicalTrace?=null,
+    durationMs:Long=visual.durationMs,
     onScrub:(Long,Boolean)->Unit={_,_->},
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
@@ -151,10 +152,8 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         return mapped.x to mapped.y
     }
     val scrub by rememberUpdatedState(onScrub)
-    val cursorX=left+(camera.x.fraction((if(cursor>=0)cursor else state.selectedMs).toDouble())*plotWidth).toFloat()
-    val handleRadius=with(density){24.dp.toPx()}
     val gesture=Modifier.immersiveGestures(
-        onScrubStart={p ->state.plot.temporal && abs(p.x-cursorX)<=handleRadius && p.y>=dimensions.height-bottom-handleRadius*2},
+        onScrubStart={p ->state.plot.temporal && p.x in left..(dimensions.width-right) && p.y in top..(dimensions.height-bottom)},
         onScrub={p,commit ->scrub(data(p).first.toLong(),commit)},
         onTap={p->val d=data(p);point(d.first,d.second,false)},onInspect={p->val d=data(p);point(d.first,d.second,true)},
         onReset=onReset,onActive={state.gestureActive=it;if(!it)state.selection.scrubMs=null},onTransform={center,pan,zx,zy ->
@@ -178,9 +177,15 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         }
     }
     Canvas(modifier.background(palette).then(gesture).testTag(if(diagnostic)"diagnostic-time-chart" else if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
-        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(diagnostic)context.getString(R.string.diagnostic_chart_accessibility) else if(immersive)context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect) else context.getString(R.string.ui_tap_to_open_viewer))}
+        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(diagnostic)context.getString(R.string.diagnostic_chart_accessibility) else if(state.plot.temporal)context.getString(R.string.graph_timeline_hint) else context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect))}
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
             this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
+            if(state.plot.temporal){
+                progressBarRangeInfo=ProgressBarRangeInfo(cursor.coerceAtLeast(0).toFloat(),0f..durationMs.coerceAtLeast(1).toFloat())
+                setProgress(context.getString(R.string.playback_seek_label)){target ->
+                    scrub(target.toLong().coerceIn(0,durationMs.coerceAtLeast(1)),true);true
+                }
+            }
             this[PlotPlaybackMs]=cursor
             this[PlotAudioLevelCount]=level?.rms?.size ?: 0
             this[PlotDroneComponentCount]=if(spectralTrace)displayedTrace?.samples?.count {it.hz!=null} ?: 0 else 0

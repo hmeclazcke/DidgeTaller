@@ -165,7 +165,7 @@ class SessionNavigationTest {
         val original = RecordingStore(application).file(session.id).readBytes()
         compose.onNodeWithTag("session-${session.id}").performClick()
         compose.waitUntil(15000){vm.savedYinReplay.sessionId==session.id && vm.savedYinReplay.result!=null}
-        compose.onNodeWithTag("session-playback-seek").performScrollTo()
+        compose.onNodeWithTag("time-chart").performScrollTo()
             .performSemanticsAction(SemanticsActions.SetProgress) { it(5000f) }
         compose.waitUntil(10000) { kotlin.math.abs(vm.playbackPositionMs()-5000)<80 }
         compose.waitUntil(5000) {

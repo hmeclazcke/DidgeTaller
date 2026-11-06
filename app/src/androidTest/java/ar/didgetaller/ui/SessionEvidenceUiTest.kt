@@ -89,7 +89,7 @@ class SessionEvidenceUiTest {
         val store=RecordingStore(app);val original=store.file(item.id).readBytes()
         val index=app.getSharedPreferences("local_data",0).all.toMap()
         compose.onNodeWithTag("time-chart").performScrollTo();screenshot("pitch")
-        compose.onNodeWithTag("session-playback-seek").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("time-chart").performScrollTo().assertIsDisplayed()
             .performSemanticsAction(SemanticsActions.SetProgress){it(2000f)}
         compose.waitUntil(10000){abs(vm.playbackPositionMs()-2000)<100}
         screenshot("seek")
