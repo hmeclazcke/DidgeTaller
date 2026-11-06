@@ -91,7 +91,7 @@ The Android app uses Kotlin, Jetpack Compose/Material 3, `AudioRecord`, and `Med
 
 Phone microphones, room noise, strong harmonics, vocalizations, and short attacks can make a pitch estimate uncertain or unavailable. The app preserves gaps rather than inventing readings. Spectral levels are relative digital values, not calibrated sound-pressure levels; simulation results are exploratory. Synthetic tests and emulator captures do not establish physical acoustic accuracy or universal device compatibility.
 
-Fast GitHub Actions checks run both JVM variants and measured quality ratchets. Full emulator execution is a separate manual diagnostic workflow and currently has unresolved failures; compiling its APK is not a passing run. See [Quality baseline](docs/quality/QUALITY_BASELINE.md), [Development](docs/DEVELOPMENT.md) and [SWIPE comparison](docs/SWIPE_COMPARISON.md).
+Fast GitHub Actions checks run both JVM variants and measured quality ratchets. Relevant main-branch changes also execute the complete emulator suite, with a separate Android coverage report; compiling its APK is not a passing run. See [Quality baseline](docs/quality/QUALITY_BASELINE.md), [Development](docs/DEVELOPMENT.md) and [SWIPE comparison](docs/SWIPE_COMPARISON.md).
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
@@ -101,11 +101,11 @@ Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/uncle
 - **Then Make it Right:** preserve behavior while refactoring; use BDD-style acceptance scenarios, coverage, complexity and mutation evidence to investigate risk and duplicated knowledge (DRY).
 - **Practice:** focused investigation, reviewable commits, concise evidence and risk-based validation. BDD scenarios do not imply Cucumber.
 
-Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD and free PIT. Relevant-code CI checks both JVM variants, lint, localization, builds, coverage and measured ratchets. CPD detects token clones; PIT mutates a small verified pure-Kotlin gesture scope. Expensive mutations and full emulator tests have a manual workflow, not a README-triggered schedule.
+Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD and free PIT. Relevant-code CI checks both JVM variants, lint, localization, builds, coverage and measured ratchets. CPD detects token clones; PIT mutates a small verified pure-Kotlin gesture scope. Full emulator tests run for relevant main pushes and manual dispatch; focused mutation runs on manual dispatch. README-only changes avoid those costs.
 
 Reviewed method-level Detekt/JaCoCo correspondences produce **CRAP-L**, using line coverage explicitly; unmapped functions remain visible. This is not official Crapper basis-path coverage. Coverage, unique-function complexity, mapped CRAP-L and duplication have measured regression baselines. Thresholds, scope, reports and verified commands are in the quality guide.
 
-**Incomplete:** the complete Android suite was executed and exposed failures. A green fast check is not a complete application pass. Instrumentation coverage, broader reliable CRAP mapping and repair/CI proof of the full emulator suite remain outstanding. See the [baseline and debt](docs/quality/QUALITY_BASELINE.md). No acoustic algorithm was changed to improve a metric.
+**Measurement limits:** JVM and emulator coverage are separate measurements. CRAP-L is enforced only for reviewed function mappings; other functions remain visibly unmapped. Mutation strength applies to its selected Kotlin scope. Historical complexity debt and uncovered paths remain in the [baseline and backlog](docs/quality/QUALITY_BASELINE.md); acoustic algorithms were not changed to improve metrics. Check the linked execution records for actual CI outcomes.
 
 ## License and contributions
 

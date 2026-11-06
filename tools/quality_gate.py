@@ -36,7 +36,8 @@ def measure():
         coverage = ratio(r['coverage']['LINE'])
         methods.append(dict(identity=r['owner'] + '.' + r['name'] + r['descriptor'],
                             file=r['source'], cc=r['cyclomatic'], line_coverage=coverage,
-                            crap_line=crap(r['cyclomatic'], coverage)))
+                            crap_line=crap(r['cyclomatic'], coverage),
+                            risk='above-target' if crap(r['cyclomatic'], coverage) >= float(POLICY['crapTarget']) else 'within-target'))
     cpd = ET.parse('app/build/reports/quality/cpd.xml').getroot()
     if not cpd.findall('{*}file'):
         raise ValueError('CPD did not scan production files')
@@ -96,6 +97,7 @@ def main():
         BASELINE.write_text(json.dumps(current, indent=2)+'\n')
     errors = violations(current, json.loads(BASELINE.read_text()))
     print(json.dumps(dict(mapped=len(current['methods']), unmapped=current['unmapped_functions'],
+                          high_risk=sum(r['risk']=='above-target' for r in current['methods']),
                           cpd_groups=len(current['duplicates']), violations=errors)))
     if errors:
         raise SystemExit(1)

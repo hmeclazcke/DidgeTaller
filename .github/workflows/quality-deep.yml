@@ -1,10 +1,20 @@
-name: Deep quality (manual, full emulator and focused mutations)
+name: Full emulator and manual mutation quality
 on:
+  push:
+    branches: [main]
+    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   workflow_dispatch:
+    inputs:
+      scope:
+        description: Select deep checks without repeating unchanged successful evidence
+        type: choice
+        default: all
+        options: [all, instrumentation, mutation]
 permissions:
   contents: read
 jobs:
   mutation:
+    if: github.event_name == 'workflow_dispatch' && inputs.scope != 'instrumentation'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -25,6 +35,7 @@ jobs:
           retention-days: 7
           if-no-files-found: error
   instrumentation:
+    if: github.event_name != 'workflow_dispatch' || inputs.scope != 'mutation'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -36,7 +47,7 @@ jobs:
       - uses: android-actions/setup-android@v4
       - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: chmod +x gradlew
-      - run: ./gradlew --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest
+      - run: ./gradlew --no-daemon -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -48,11 +59,18 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: python3 tools/run_instrumentation.py --serial emulator-5554
+          script: python3 tools/run_instrumentation.py --serial emulator-5554 --coverage
+      - name: Separate emulator coverage report
+        if: always()
+        run: |
+          ./gradlew --no-daemon -PandroidCoverage=true :app:jacocoEmulatorReport
+          python3 tools/emulator_coverage_summary.py
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: Complete-Emulator-Results
-          path: build/reports/quality/instrumentation.*
+          path: |
+            build/reports/quality/instrumentation.*
+            app/build/reports/jacoco/emulator/
           retention-days: 7
           if-no-files-found: error

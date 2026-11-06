@@ -44,7 +44,7 @@ jobs:
       - name: Ratchet coverage, reliable CRAP-L, complexity and duplication
         run: python3 tools/quality_gate.py
       - name: Test quality failure semantics
-        run: python3 -m unittest discover -s tools -p test_quality_gate.py
+        run: python3 -m unittest discover -s tools -p 'test_*.py'
       - uses: actions/upload-artifact@v7
         if: always()
         with:

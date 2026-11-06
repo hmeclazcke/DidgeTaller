@@ -18,21 +18,22 @@ tasks.withType<Test>().configureEach {
     }
 }
 
+val productionCoverageClasses=files(
+    layout.buildDirectory.dir("tmp/kotlin-classes/debug"),
+    layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
+).asFileTree.matching {
+    include("ar/didgetaller/**/*.class")
+    exclude("**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest*.class", "**/*\$WhenMappings.class")
+    // Retain handwritten lambdas and Compose code; JaCoCo filters compiler scaffolding.
+}
+
 tasks.register<JacocoReport>("jacocoDebugUnitTestReport") {
     group = "verification"
     description = "Reports debug JVM coverage without enforcing a coverage threshold."
     dependsOn("testDebugUnitTest")
     executionData(layout.buildDirectory.file("jacoco/testDebugUnitTest.exec"))
     sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
-    classDirectories.setFrom(files(
-        layout.buildDirectory.dir("tmp/kotlin-classes/debug"),
-        layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
-    ).asFileTree.matching {
-        include("ar/didgetaller/**/*.class")
-        exclude("**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest*.class", "**/*\$WhenMappings.class")
-        // Keep lambda/ComposableSingletons classes: they can contain handwritten code.
-        // JaCoCo's Kotlin/Compose bytecode filters handle compiler scaffolding.
-    })
+    classDirectories.setFrom(productionCoverageClasses)
     reports {
         html.required.set(true)
         xml.required.set(true)
@@ -43,6 +44,32 @@ tasks.register<JacocoReport>("jacocoDebugUnitTestReport") {
     doFirst {
         check(classDirectories.files.any { it.extension == "class" }) { "No production class files found for coverage." }
         check(executionData.files.all { it.isFile && it.length() > 0 }) { "Missing JVM coverage execution data." }
+    }
+}
+
+val verifyEmulatorCoverageData=tasks.register("verifyEmulatorCoverageData") {
+    doLast {
+        val data=rootProject.file("build/reports/quality/instrumentation.ec")
+        check(data.isFile && data.length()>0) {"Missing emulator coverage data; execute the coverage-enabled suite first."}
+    }
+}
+
+tasks.register<JacocoReport>("jacocoEmulatorReport") {
+    group="verification"
+    description="Reports a completed explicit-emulator run separately from JVM coverage."
+    dependsOn("compileDebugKotlin","compileDebugJavaWithJavac",verifyEmulatorCoverageData)
+    executionData(rootProject.file("build/reports/quality/instrumentation.ec"))
+    classDirectories.setFrom(productionCoverageClasses)
+    sourceDirectories.setFrom(files("src/main/java","src/main/kotlin"))
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/emulator/html"))
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/emulator/coverage.xml"))
+    }
+    doFirst {
+        check(classDirectories.files.any {it.extension=="class"}) {"Missing production classes."}
+        check(executionData.files.all {it.isFile && it.length()>0}) {"Missing emulator coverage data."}
     }
 }
 
@@ -70,6 +97,10 @@ android {
     kotlinOptions { jvmTarget = "17" }
     buildFeatures { compose = true }
     testOptions { unitTests.isReturnDefaultValues = true }
+    testCoverage {jacocoVersion="0.8.15"}
+    buildTypes.getByName("debug") {
+        enableAndroidTestCoverage=providers.gradleProperty("androidCoverage").orNull=="true"
+    }
 }
 
 dependencies {

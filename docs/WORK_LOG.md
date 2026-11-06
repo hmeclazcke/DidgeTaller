@@ -737,3 +737,9 @@ Classified tracked Spanish text before translation. Standardized technical comme
 ## 2026-11-06 ? Measured quality milestone
 
 Installed original licensed ub-mode and separated project safety. Added actual Kotlin CPD/PIT execution, explicit measured ratchets and manual deep CI. A real mutation survivor led to a diagonal boundary test. Complete instrumentation exposed 13 existing failures; no green full-suite claim or exclusions. See docs/quality/DECISIONS.md for decisions and the baseline for counts/debt. Samsung and private WAVs were untouched.
+
+## Quality modernization follow-up - 2026-11-06
+
+Resolved the 13 complete-suite Android failures through current gesture/visibility contracts and two presentation fixes: explicit inspection precedence and per-destination inset retention during navigation. The end-of-list scroll regression now preserves the exact offset. Default emulator suite: 125 discovered, 119 passed, 6 explicit skips, no failures; both conditional compact/150%-font scenarios subsequently passed. Final JVM variants: 195 discovered / 187 passed / 8 protected-fixture skips each. Selected coverage-enabled emulator smoke: 5 passed, real JaCoCo data/reports; full coverage execution belongs to the main/manual CI workflow.
+
+Retained original quality floors, expanded only reviewed CRAP method debt to eight exact mappings (three historical high scores), and added meaningful projection/inspection tests. JVM coverage is 28.19% lines / 23.39% branches overall, 98.47% / 77.25% pure core. CPD found zero 100-token groups; PIT killed all 11 selected Kotlin mutants. Lint, Detekt, localization, Actionlint and eight Python gate/parser tests completed. See docs/quality/QUALITY_BASELINE.md and QUALITY_GUIDE.md for scopes, limitations, verified commands, local evidence and actual CI links. Official ub-mode/MIT remain byte-identical; both README languages and Spanish resources preserved. Samsung/private recordings untouched.

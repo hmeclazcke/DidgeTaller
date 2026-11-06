@@ -89,7 +89,7 @@ La app usa Kotlin, Jetpack Compose/Material 3, `AudioRecord` y `MediaPlayer`. El
 
 Los micrófonos de los teléfonos, el ruido de la sala, los armónicos intensos, las vocalizaciones y los ataques breves pueden producir estimaciones inciertas o ausentes. La app conserva los huecos en lugar de inventar lecturas. Los niveles espectrales son valores digitales relativos, no niveles calibrados de presión sonora; las simulaciones son exploratorias. Las pruebas sintéticas y las capturas de emulador no establecen precisión acústica física ni compatibilidad universal con dispositivos.
 
-Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controles medidos de regresión. La suite completa de emulador tiene un flujo manual de diagnóstico y fallos pendientes; compilar su APK no equivale a aprobarla. Consultá la [base de calidad](docs/quality/QUALITY_BASELINE.md), [Desarrollo](docs/DEVELOPMENT.md) y [comparación SWIPE](docs/SWIPE_COMPARISON.md).
+Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controles medidos de regresión. Los cambios relevantes en main también ejecutan la suite completa de emulador con un informe separado de cobertura Android; compilar su APK no equivale a aprobarla. Consultá la [base de calidad](docs/quality/QUALITY_BASELINE.md), [Desarrollo](docs/DEVELOPMENT.md) y [comparación SWIPE](docs/SWIPE_COMPARISON.md).
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
@@ -99,11 +99,11 @@ Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original 
 - **Then Make it Right:** conservar el comportamiento al refactorizar; usar escenarios de aceptación BDD, cobertura, complejidad y mutaciones para investigar riesgo y conocimiento duplicado (DRY).
 - **Practice:** investigar con foco, crear commits revisables, registrar evidencia concisa y validar según el riesgo. Los escenarios BDD no implican Cucumber.
 
-Las herramientas reales son Gradle/JUnit, instrumentación Android, JaCoCo, Detekt, PMD CPD y PIT gratuito. CI verifica ambas variantes JVM, lint, localización, compilaciones y controles medidos de regresión cuando cambia código relevante. CPD detecta clones de tokens; PIT muta un alcance pequeño y verificado de lógica pura Kotlin de gestos. Las mutaciones y la suite completa de emulador tienen un flujo manual, no una ejecución costosa por cada cambio de README.
+Las herramientas reales son Gradle/JUnit, instrumentación Android, JaCoCo, Detekt, PMD CPD y PIT gratuito. CI verifica ambas variantes JVM, lint, localización, compilaciones y controles medidos de regresión cuando cambia código relevante. CPD detecta clones de tokens; PIT muta un alcance pequeño y verificado de lógica pura Kotlin de gestos. La suite completa de emulador se ejecuta en cambios relevantes de main y manualmente; las mutaciones se ejecutan manualmente. Los cambios exclusivos de README evitan esos costos.
 
 Las correspondencias revisadas entre métodos Detekt/JaCoCo producen **CRAP-L**, usando cobertura de líneas explícitamente; las funciones sin correspondencia quedan visibles. No es cobertura de caminos base de Crapper. Cobertura, complejidad de funciones únicas, CRAP-L y duplicación tienen bases medidas para prevenir regresiones. La guía describe umbrales, alcance, informes y comandos.
 
-**Incompleto:** se ejecutó la suite Android completa y se encontraron fallos. Un control rápido aprobado no significa que toda la app haya pasado. Quedan pendientes la cobertura instrumentada, ampliar las correspondencias CRAP y reparar/probar en CI la suite completa. Consultá la [base y deuda](docs/quality/QUALITY_BASELINE.md). No se cambiaron algoritmos acústicos para mejorar una métrica.
+**Límites de medición:** las coberturas JVM y de emulador se informan por separado. CRAP-L se controla solamente donde hay correspondencias de funciones revisadas; las demás quedan visibles sin puntuar. La fortaleza de las mutaciones corresponde a su alcance Kotlin seleccionado. La [base y deuda](docs/quality/QUALITY_BASELINE.md) conserva la complejidad histórica y los caminos sin cubrir; no se cambiaron algoritmos acústicos para mejorar métricas. Consultá los registros de ejecución para conocer el resultado real de CI.
 
 ## Licencia y colaboración
 

@@ -340,83 +340,72 @@
   },
   "methods": [
     {
+      "identity": "ar/didgetaller/core/PitchDetector.analyzeWithDiagnostics([SIIIZLkotlin/jvm/functions/Function1;)Lar/didgetaller/core/PitchDetector$Reading;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
+      "cc": 43,
+      "line_coverage": 1.0,
+      "crap_line": 43.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchDetector.spectrum([SI)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
+      "cc": 4,
+      "line_coverage": 1.0,
+      "crap_line": 4.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.build(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 33,
+      "line_coverage": 1.0,
+      "crap_line": 33.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.isolated(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchTrace$Reason;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 15,
+      "line_coverage": 1.0,
+      "crap_line": 15.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.tone(DLjava/lang/Double;)Lar/didgetaller/core/PitchTrace$Tone;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 9,
+      "line_coverage": 1.0,
+      "crap_line": 9.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchStream.append([SI)Lar/didgetaller/core/PitchDetector$Reading;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
+      "cc": 6,
+      "line_coverage": 0.9230769230769231,
+      "crap_line": 6.0163859808830225,
+      "risk": "within-target"
+    },
+    {
       "identity": "ar/didgetaller/core/LivePitch.next(Lar/didgetaller/core/LivePitch$State;Lar/didgetaller/core/PitchDetector$Reading;Lar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/LivePitch$State;",
       "file": "app/src/main/java/ar/didgetaller/core/LivePitch.kt",
       "cc": 8,
       "line_coverage": 1.0,
-      "crap_line": 8.0
+      "crap_line": 8.0,
+      "risk": "within-target"
     },
     {
       "identity": "ar/didgetaller/core/AxisDomain.transform(Lar/didgetaller/core/AxisWindow;DDD)Lar/didgetaller/core/AxisWindow;",
       "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
       "cc": 4,
       "line_coverage": 1.0,
-      "crap_line": 4.0
+      "crap_line": 4.0,
+      "risk": "within-target"
     }
   ],
   "duplicates": [],
   "measured_functions": 335,
-  "unmapped_functions": 333,
-  "unmatched_specs": [
-    {
-      "source": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
-      "source_sha256_lf": "2b26cc47e6663c167b97c3975455d661a1cd531839b442de93545205f616b005",
-      "owner": "ar/didgetaller/core/PitchDetector",
-      "name": "analyzeWithDiagnostics",
-      "descriptor": "([SIIIZLkotlin/jvm/functions/Function1;)Lar/didgetaller/core/PitchDetector$Reading;",
-      "declaration_line": 26,
-      "bytecode_line": 28,
-      "reason": "Source changed; re-review correspondence before calculating a score."
-    },
-    {
-      "source": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
-      "source_sha256_lf": "2b26cc47e6663c167b97c3975455d661a1cd531839b442de93545205f616b005",
-      "owner": "ar/didgetaller/core/PitchDetector",
-      "name": "spectrum",
-      "descriptor": "([SI)Ljava/util/List;",
-      "declaration_line": 106,
-      "bytecode_line": 107,
-      "reason": "Source changed; re-review correspondence before calculating a score."
-    },
-    {
-      "source": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
-      "source_sha256_lf": "3a1965bec1c813edf6bf6ded1459fd8967daafa9151cec9411e512bdb9785450",
-      "owner": "ar/didgetaller/core/PitchTrace",
-      "name": "build",
-      "descriptor": "(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)Ljava/util/List;",
-      "declaration_line": 90,
-      "bytecode_line": 91,
-      "reason": "Source changed; re-review correspondence before calculating a score."
-    },
-    {
-      "source": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
-      "source_sha256_lf": "3a1965bec1c813edf6bf6ded1459fd8967daafa9151cec9411e512bdb9785450",
-      "owner": "ar/didgetaller/core/PitchTrace",
-      "name": "isolated",
-      "descriptor": "(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchTrace$Reason;",
-      "declaration_line": 31,
-      "bytecode_line": 32,
-      "reason": "Source changed; re-review correspondence before calculating a score."
-    },
-    {
-      "source": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
-      "source_sha256_lf": "3a1965bec1c813edf6bf6ded1459fd8967daafa9151cec9411e512bdb9785450",
-      "owner": "ar/didgetaller/core/PitchTrace",
-      "name": "tone",
-      "descriptor": "(DLjava/lang/Double;)Lar/didgetaller/core/PitchTrace$Tone;",
-      "declaration_line": 25,
-      "bytecode_line": 25,
-      "reason": "Source changed; re-review correspondence before calculating a score."
-    },
-    {
-      "source": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
-      "source_sha256_lf": "2854c774f5c4298d4568b850e66c9155dfe83d17af730d5ca314d4c38a1373b0",
-      "owner": "ar/didgetaller/core/PitchStream",
-      "name": "append",
-      "descriptor": "([SI)Lar/didgetaller/core/PitchDetector$Reading;",
-      "declaration_line": 16,
-      "bytecode_line": 17,
-      "reason": "Source changed; re-review correspondence before calculating a score."
-    }
-  ]
+  "unmapped_functions": 327,
+  "unmatched_specs": []
 }

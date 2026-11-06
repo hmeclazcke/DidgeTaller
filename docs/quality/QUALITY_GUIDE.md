@@ -18,7 +18,7 @@ python tools/detekt_summary.py
 python tools/coverage_summary.py
 .\gradlew.bat :app:qualityDuplication
 python tools/quality_gate.py
-python -m unittest discover -s tools -p test_quality_gate.py
+python -m unittest discover -s tools -p 'test_*.py'
 .\gradlew.bat :app:qualityMutation
 ```
 
@@ -30,29 +30,44 @@ Full instrumentation uses only a verified emulator:
 python tools/run_instrumentation.py --adb "$env:LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe" --serial emulator-5554
 ```
 
-On CI, adb is on PATH and --adb can be omitted. The wrapper installs only on emulator-* with ranchu/goldfish hardware, executes the entire AndroidJUnitRunner suite, saves output and fails on missing success or failures even if adb returns zero. The baseline suite was actually launched with the equivalent explicit adb install-r and am instrument commands; failures are recorded in QUALITY_BASELINE. Full verification means the component sequence above PLUS this entire instrumentation run, not merely an app-test APK build. A green complete verification is currently unavailable until the Android failures are repaired.
+On CI, adb is on PATH and --adb can be omitted. The wrapper installs only on emulator-* with ranchu/goldfish hardware, executes the entire AndroidJUnitRunner suite, saves output and fails on missing success or failures even if adb returns zero. The baseline suite was actually launched with the equivalent explicit adb install-r and am instrument commands; failures are recorded in QUALITY_BASELINE. Full verification means the component sequence above PLUS this entire instrumentation run, not merely an app-test APK build. Use the latest executed results in QUALITY_BASELINE; an initial failing run remains recorded there.
 
 ## Reports and enforcement
 
-- app/build/reports/jacoco/debug/: HTML/XML and summary.json/summary.md, debug JVM coverage only. All production Kotlin including handwritten lambdas/Compose remains in the denominator. Generated R/BuildConfig/WhenMappings are filtered; JaCoCo Kotlin filters handle bytecode scaffolding. Android adapters/persistence remain zero. No instrumentation coverage is merged. Device coverage remains unconfigured.
+- app/build/reports/jacoco/debug/: HTML/XML and summary.json/summary.md, debug JVM coverage only. All production Kotlin including handwritten lambdas/Compose remains in the denominator. Generated R/BuildConfig/WhenMappings are filtered; JaCoCo Kotlin filters handle bytecode scaffolding. Android adapters/persistence remain zero. Instrumentation coverage is reported separately, never merged into this JVM percentage.
 - build/reports/detekt/: static findings and per-function MCC/cognitive observations. Findings remain informational; reliable unique file/function MCC regressions are checked separately.
 - app/build/reports/quality/cpd.xml: real Kotlin lexer scan, exact token clones, not Dryer's structural similarity metric. Current threshold is in config/quality/policy.properties. Parser errors/empty scans fail; CPD findings feed the ratchet rather than being suppressed.
 - build/reports/quality/metrics.json: package coverage, reliable reviewed method CRAP-L, unmatched specs, function complexity and CPD findings. Config/quality/baseline.json records measured floors/debt; policy.properties is the sole policy setting source. Use python tools/quality_gate.py --record only after reviewing intended baseline changes, never in CI.
 - app/build/reports/quality/pit/: real XML/HTML mutations for PlotTouchKt.plotTouch and PlotTouchTest. The 11 generic bytecode mutations map to the source branches/arithmetic; one diagonal-boundary survivor exposed a missing test and is now killed. This scope excludes Compose, Android, generated enum methods and acoustic detectors. A selected-function score is not whole-app strength. PIT's warning about its optional commercial Kotlin plugin remains visible. The free operators work for this verified scope only. mutationThreshold is enforced by PIT; missing/stale mutation XML fails too.
 - build/reports/quality/instrumentation.txt/json: complete nonprivate synthetic emulator output. Private WAVs and screenshots are not CI artifacts.
 
-Coverage ratchets permit only the explicit fractional tolerance in policy.properties. New/increased MCC at or above the target fails. Reviewed mappings disappearing fail. Increasing high CRAP-L or adding a high mapped function fails. New CPD hashes/counts fail. Four unit checks exercise known CRAP examples and deliberately failing regressions. Existing debt is not silently cleared. CRAP-L = MCC squared times (1 - method line coverage) cubed plus MCC. Method-level line coverage is explicit; it is not basis-path coverage or an official Crapper score. Only source-hash/descriptor/line reviewed matches are scored. Overloads, lambdas, inline/suspend/Compose/name-mangled methods are unmapped unless explicitly reviewed. Current mapping is deliberately incomplete; missing measurements are visible.
+Coverage ratchets permit only the explicit fractional tolerance in policy.properties. New/increased MCC at or above the target fails. Reviewed mappings disappearing fail. Increasing high CRAP-L or adding a high mapped function fails. New CPD hashes/counts fail. Unit checks exercise known CRAP examples and deliberately failing regressions. Existing debt is not silently cleared. CRAP-L = MCC squared times (1 - method line coverage) cubed plus MCC. Method-level line coverage is explicit; it is not basis-path coverage or an official Crapper score. Only source-hash/descriptor/line reviewed matches are scored. Overloads, lambdas, inline/suspend/Compose/name-mangled methods are unmapped unless explicitly reviewed. Current mapping is deliberately incomplete; missing measurements are visible.
 
-## CI cadence and incomplete integration
+## CI cadence
 
 android.yml runs both JVM variants, lint, compilation, localization, JaCoCo, informational Detekt, CPD and enforced quality ratchets for relevant source/tool/config/workflow pushes and PRs. Documentation-only paths avoid these costs. Artifacts retain seven days and contain reports, not WAVs or user data.
 
-quality-deep.yml is manual: independent focused mutation and complete emulator execution jobs. No recurring paid schedule. The full suite must be repaired and the actual workflow proven before claiming a mandatory main-branch complete-test gate. Manual diagnostic jobs fail honestly on existing test failures; there is no continue-on-error. CI verification results and remaining gaps belong in QUALITY_BASELINE, not a green badge implying unexecuted tests.
+quality-deep.yml executes the complete emulator suite on relevant main pushes and manual dispatch. Its scope input selects all, instrumentation, or mutation to reuse unchanged evidence. Focused mutation runs only on manual dispatch; a skipped mutation job on a push does not mean mutations ran. There is no recurring schedule, paid tool, or continue-on-error. Main emulator failures fail the workflow; repository branch-protection settings are not changed. Actual CI outcomes are linked in QUALITY_BASELINE. Documentation-only pushes avoid both workflows; manual dispatch can verify an exact documentation revision.
+
+## Separate emulator coverage
+
+AGP instruments only the optional coverage-enabled debug APK. Default developer/debug builds remain unchanged. Both reports use JaCoCo 0.8.15 and the same production-class filters. Build, execute, then report without modifying production sources between those steps:
+
+```powershell
+.\gradlew.bat -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
+python tools/run_instrumentation.py --adb "$env:LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe" --serial emulator-5554 --coverage
+.\gradlew.bat -PandroidCoverage=true :app:jacocoEmulatorReport
+python tools/emulator_coverage_summary.py
+```
+
+The runner removes only its named emulator coverage probe file before execution, retrieves the new binary execution data, and requires complete per-test results plus a matching successful runner summary. Missing execution data and reports with no covered production lines fail. Reports are app/build/reports/jacoco/emulator/ (HTML/XML/summary.json); raw probe data is build/reports/quality/instrumentation.ec. These contain code coverage, not audio. They measure the executed synthetic scenarios, not all physical-device behavior or JNI/C++ coverage. No percentages or probe sets are merged across JVM/Android. This optional build uses AGP's [documented instrumentation coverage](https://developer.android.com/studio/test/coverage-report), not a second coverage framework.
+
+Complete quality verification consists of the fast/build/static sequence, focused mutation, and this coverage-enabled full emulator sequence. Run expensive components only for explicitly requested deep validation or relevant high-risk changes. Keep the emulator serial explicit even when Samsung is attached.
 
 ## Prioritized debt
 
-1. Repair complete Android-suite failures, distinguishing stale gesture/readout assertions from production regressions. Do not weaken assertions or exclude failing classes. Re-run only affected scenarios before another complete run.
-2. Review the six obsolete method correspondence specs and cover critical Android recording/persistence lifecycle paths with instrumentation coverage; never substitute class coverage into CRAP.
+1. Expand reviewed function mappings beyond the eight exact descriptor/declaration/entry matches. Three acoustic functions exceed CRAP-L 10 despite complete method line coverage: characterize their branches before any separately scoped refactor. Do not change accepted acoustics merely to improve a metric.
+2. Improve critical uncovered Android error/background paths using the separate instrumentation report. Android coverage is informational until a stable cross-environment baseline is established; the existing JVM ratchets remain enforced. Never substitute class coverage into CRAP.
 3. Expand mutation scope incrementally to pure persistence/recording decisions after reviewing generated Kotlin operators; keep generic operators and paid enhancements distinct.
 4. Reduce measured high complexity in UI presentation only with behavioral characterization. PlotSurface MCC 139 is a prioritization signal, not proof of an acoustic fault. Do not split stable logic solely to improve a number.
 
