@@ -116,7 +116,7 @@ def markdown(summary):
         lines.append(f"| {name} | {row['cyclomatic']} | {percent(row['coverage'], 'LINE')} | "
                      f"{percent(row['coverage'], 'BRANCH')} | {row['crap_line_approximation']:.3f} | "
                      f"{row['crap_instruction_approximation']:.3f} |")
-    lines += ["", summary["crap_limit"], "No project-wide CRAP score or coverage gate.", ""]
+    lines += ["", summary["crap_limit"], "No project-wide CRAP score. Separate regression enforcement: tools/quality_gate.py.", ""]
     for row in summary["unmatched_method_specs"]:
         lines.append(f"Score omitted for {row['owner']}.{row['name']}: {row['reason']}")
     return "\n".join(lines)

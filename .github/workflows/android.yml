@@ -1,7 +1,9 @@
 name: Android Kotlin CI
 on:
   push:
+    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   pull_request:
+    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,7 +24,7 @@ jobs:
       - name: Enable Gradle wrapper
         run: chmod +x ./gradlew
       - name: Tests JVM
-        run: ./gradlew --no-daemon :app:testDebugUnitTest
+        run: ./gradlew --no-daemon :app:test :app:lintDebug
       - name: Build APK
         run: ./gradlew --no-daemon :app:assembleDebug
       - name: Compile instrumented tests
@@ -37,10 +39,28 @@ jobs:
         run: python3 tools/detekt_summary.py
       - name: Summarize JVM coverage and reviewed method matches
         run: python3 tools/coverage_summary.py
+      - name: Kotlin CPD
+        run: ./gradlew --no-daemon :app:qualityDuplication
+      - name: Ratchet coverage, reliable CRAP-L, complexity and duplication
+        run: python3 tools/quality_gate.py
+      - name: Test quality failure semantics
+        run: python3 -m unittest discover -s tools -p test_quality_gate.py
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: Quality-Metrics-and-Test-Results
+          path: |
+            build/reports/quality/
+            app/build/reports/quality/cpd.xml
+            app/build/test-results/
+            app/build/reports/lint-results-debug.*
+          retention-days: 7
+          if-no-files-found: error
       - name: Upload JVM coverage reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
+          retention-days: 7
           name: DidgeTaller-JVM-Coverage
           path: app/build/reports/jacoco/debug/
           if-no-files-found: error
@@ -48,11 +68,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
+          retention-days: 7
           name: DidgeTaller-Detekt
           path: build/reports/detekt/
-          if-no-files-found: error
-      - uses: actions/upload-artifact@v7
-        with:
-          name: DidgeTaller-Kotlin-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error

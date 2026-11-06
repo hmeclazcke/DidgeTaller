@@ -89,54 +89,21 @@ La app usa Kotlin, Jetpack Compose/Material 3, `AudioRecord` y `MediaPlayer`. El
 
 Los micrófonos de los teléfonos, el ruido de la sala, los armónicos intensos, las vocalizaciones y los ataques breves pueden producir estimaciones inciertas o ausentes. La app conserva los huecos en lugar de inventar lecturas. Los niveles espectrales son valores digitales relativos, no niveles calibrados de presión sonora; las simulaciones son exploratorias. Las pruebas sintéticas y las capturas de emulador no establecen precisión acústica física ni compatibilidad universal con dispositivos.
 
-Las pruebas JVM y de emulador cubren los caminos relevantes del código. GitHub Actions ejecuta pruebas JVM, compila la app de depuración y el APK de pruebas Android, verifica la localización y genera informes informativos de Detekt y JaCoCo; **no ejecuta** las pruebas instrumentadas Android. La [guía de desarrollo](docs/DEVELOPMENT.md) explica los controles actuales y la [comparación SWIPE′](docs/SWIPE_COMPARISON.md) describe sus límites experimentales; ambos documentos están en inglés.
+Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controles medidos de regresión. La suite completa de emulador tiene un flujo manual de diagnóstico y fallos pendientes; compilar su APK no equivale a aprobarla. Consultá la [base de calidad](docs/quality/QUALITY_BASELINE.md), [Desarrollo](docs/DEVELOPMENT.md) y [comparación SWIPE](docs/SWIPE_COMPARISON.md).
 
-## Prácticas de ingeniería — Inspiradas en ub-mode de Uncle Bob
+## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
-La [habilidad local del proyecto](.agents/skills/ub-mode/SKILL.md) adapta
-[ub-mode](https://github.com/unclebob/ub-mode), de Robert C. Martin, como un conjunto
-de instrucciones de ingeniería que utiliza Codex. No es un agente autónomo, una
-copia idéntica del original ni un proyecto avalado por su autor.
+Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, copiado sin modificaciones con su licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). La seguridad del proyecto y la ejecución para Kotlin se definen aparte en AGENTS.md y la [guía de calidad](docs/quality/QUALITY_GUIDE.md).
 
-1. **First Make it Work — Primero, hacerlo funcionar:** comprender el dominio,
-   validar entradas, investigar causas y definir quién controla cada estado
-   mutable. Para cambios de comportamiento que puedan automatizarse, se prefiere
-   TDD: una regresión que falla, el cambio mínimo que la resuelve y luego
-   refactorización. Cada paso debe poder verificarse.
-2. **Then Make it Right — Después, mejorarlo:** mejorar la estructura sin alterar
-   el comportamiento comprobado. Aplicar DRY (Don't Repeat Yourself: no duplicar
-   conocimiento) a las reglas compartidas, reducir complejidad innecesaria y usar
-   pruebas de comportamiento y evidencia de cobertura para orientar la arquitectura.
-3. **Practice — Practicar:** mantener el contexto enfocado, automatizar controles
-   repetibles con seguridad, crear commits revisables y validar según el riesgo.
-   La incertidumbre acústica y la integridad de las grabaciones tienen prioridad.
+- **First Make it Work:** modelar el dominio, validar entradas, definir quién controla el estado y aplicar TDD/rojo-verde-refactorización a cambios verificables.
+- **Then Make it Right:** conservar el comportamiento al refactorizar; usar escenarios de aceptación BDD, cobertura, complejidad y mutaciones para investigar riesgo y conocimiento duplicado (DRY).
+- **Practice:** investigar con foco, crear commits revisables, registrar evidencia concisa y validar según el riesgo. Los escenarios BDD no implican Cucumber.
 
-Los escenarios de aceptación al estilo BDD describen resultados observables; no
-implican una integración con Cucumber. Las pruebas JVM con JUnit comprueban lógica
-determinista; la instrumentación Android/Compose seleccionada verifica interacciones
-reales en emulador y reproducción de WAV sintéticos. Las señales sintéticas no
-demuestran precisión acústica física.
+Las herramientas reales son Gradle/JUnit, instrumentación Android, JaCoCo, Detekt, PMD CPD y PIT gratuito. CI verifica ambas variantes JVM, lint, localización, compilaciones y controles medidos de regresión cuando cambia código relevante. CPD detecta clones de tokens; PIT muta un alcance pequeño y verificado de lógica pura Kotlin de gestos. Las mutaciones y la suite completa de emulador tienen un flujo manual, no una ejecución costosa por cada cambio de README.
 
-| Herramientas utilizadas | Función |
-| --- | --- |
-| Gradle, JUnit e instrumentación Android | Compilación, regresiones enfocadas y verificación en emulador |
-| Detekt | Informes informativos de análisis estático y complejidad |
-| JaCoCo | Cobertura JVM informativa; cobertura no equivale a eficacia de las pruebas |
-| GitHub Actions | Pruebas JVM, APK, localización e informes; las pruebas Android se compilan, **no se ejecutan** |
+Las correspondencias revisadas entre métodos Detekt/JaCoCo producen **CRAP-L**, usando cobertura de líneas explícitamente; las funciones sin correspondencia quedan visibles. No es cobertura de caminos base de Crapper. Cobertura, complejidad de funciones únicas, CRAP-L y duplicación tienen bases medidas para prevenir regresiones. La guía describe umbrales, alcance, informes y comandos.
 
-Las herramientas originales son **referencias, no controles Kotlin integrados**:
-[Dryer](https://github.com/unclebob/dryer) se relaciona con el análisis de duplicación;
-[Crapper](https://github.com/unclebob/crapper) implementa CRAP (Change Risk
-Anti-Patterns), que combina complejidad y cobertura para señalar riesgo;
-[Mutator](https://github.com/unclebob/mutator) evalúa si las pruebas detectan
-mutaciones deliberadas del código. [UML Viewer](https://github.com/unclebob/uml-viewer)
-sirve como referencia de visualización arquitectónica. El repositorio no afirma
-extraer automáticamente arquitectura Kotlin, calcular umbrales CRAP ni tener
-puntajes de mutación o controles obligatorios de duplicación. La habilidad local
-no instala estas herramientas.
-
-La [política de idiomas y auditoría](docs/LANGUAGE_POLICY.md), en inglés, distingue
-el material técnico de la interfaz bilingüe y los registros históricos conservados.
+**Incompleto:** se ejecutó la suite Android completa y se encontraron fallos. Un control rápido aprobado no significa que toda la app haya pasado. Quedan pendientes la cobertura instrumentada, ampliar las correspondencias CRAP y reparar/probar en CI la suite completa. Consultá la [base y deuda](docs/quality/QUALITY_BASELINE.md). No se cambiaron algoritmos acústicos para mejorar una métrica.
 
 ## Licencia y colaboración
 

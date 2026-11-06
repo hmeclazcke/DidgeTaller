@@ -16,6 +16,10 @@ class PlotTouchTest {
     @Test fun secondFingerNavigatesEvenBeforeTouchSlop(){
         assertEquals(PlotTouch.VIEWPORT,plotTouch(0f,0f,10f,2,true))
     }
+    @Test fun diagonalTimelineMovementBelongsToPageScroll(){
+        assertEquals(PlotTouch.SCROLL,plotTouch(40f,40f,10f,1,true))
+        assertEquals(PlotTouch.SCROLL,plotTouch(-40f,-40f,10f,1,true))
+    }
     @Test fun spectrumDragStillNavigates(){
         assertEquals(PlotTouch.VIEWPORT,plotTouch(40f,0f,10f,1,false))
     }

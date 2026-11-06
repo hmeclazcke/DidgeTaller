@@ -91,50 +91,21 @@ The Android app uses Kotlin, Jetpack Compose/Material 3, `AudioRecord`, and `Med
 
 Phone microphones, room noise, strong harmonics, vocalizations, and short attacks can make a pitch estimate uncertain or unavailable. The app preserves gaps rather than inventing readings. Spectral levels are relative digital values, not calibrated sound-pressure levels; simulation results are exploratory. Synthetic tests and emulator captures do not establish physical acoustic accuracy or universal device compatibility.
 
-JVM and emulator tests cover the relevant code paths. GitHub Actions runs JVM tests, builds the debug and Android-test APKs, checks localization, and produces informational Detekt and JaCoCo reports; it **does not execute** Android instrumentation tests. See [Development](docs/DEVELOPMENT.md) for current checks and [SWIPE′ comparison](docs/SWIPE_COMPARISON.md) for its experimental limits.
+Fast GitHub Actions checks run both JVM variants and measured quality ratchets. Full emulator execution is a separate manual diagnostic workflow and currently has unresolved failures; compiling its APK is not a passing run. See [Quality baseline](docs/quality/QUALITY_BASELINE.md), [Development](docs/DEVELOPMENT.md) and [SWIPE comparison](docs/SWIPE_COMPARISON.md).
 
-## Engineering Practices — Inspired by Uncle Bob's ub-mode
+## Engineering Practices - Official Uncle Bob ub-mode
 
-The [project-local skill](.agents/skills/ub-mode/SKILL.md) adapts Robert C. Martin's
-[ub-mode](https://github.com/unclebob/ub-mode) as engineering instructions used by
-Codex. It is not an autonomous development agent, an identical upstream copy, or
-an endorsement by the original author.
+Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), copied verbatim with its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). Project safety and Kotlin-specific execution live separately in AGENTS.md and the [quality guide](docs/quality/QUALITY_GUIDE.md).
 
-1. **First Make it Work:** understand the domain, validate boundaries, find root
-   causes and give mutable state an explicit owner. For meaningful behavioral
-   changes, prefer TDD: a failing regression, the smallest working change, then
-   refactoring. Keep each step small enough to verify.
-2. **Then Make it Right:** improve structure without changing verified behavior.
-   Apply DRY (Don't Repeat Yourself) to shared rules, remove unnecessary complexity
-   and use behavioral tests and coverage evidence to guide architectural work.
-3. **Practice:** keep context focused, automate repeatable checks safely, make
-   reviewable commits and choose validation according to risk. Audio uncertainty
-   and recording integrity take priority over cosmetic results.
+- **First Make it Work:** model the domain, validate boundaries, establish state ownership and use TDD/red-green-refactor for verifiable changes.
+- **Then Make it Right:** preserve behavior while refactoring; use BDD-style acceptance scenarios, coverage, complexity and mutation evidence to investigate risk and duplicated knowledge (DRY).
+- **Practice:** focused investigation, reviewable commits, concise evidence and risk-based validation. BDD scenarios do not imply Cucumber.
 
-BDD-style acceptance scenarios describe observable outcomes; they do not imply a
-Cucumber integration. JUnit JVM tests check deterministic logic, and selected
-Android/Compose instrumentation tests exercise real emulator interactions and
-synthetic-WAV playback. Synthetic signals do not prove physical acoustic accuracy.
+Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD and free PIT. Relevant-code CI checks both JVM variants, lint, localization, builds, coverage and measured ratchets. CPD detects token clones; PIT mutates a small verified pure-Kotlin gesture scope. Expensive mutations and full emulator tests have a manual workflow, not a README-triggered schedule.
 
-| In use | Role |
-| --- | --- |
-| Gradle, JUnit, Android instrumentation | Builds, focused regressions and emulator verification |
-| Detekt | Informational static analysis and complexity reports |
-| JaCoCo | Informational JVM coverage; coverage alone is not test effectiveness |
-| GitHub Actions | JVM tests, APK builds, localization and quality reports; Android tests are compiled, **not executed** |
+Reviewed method-level Detekt/JaCoCo correspondences produce **CRAP-L**, using line coverage explicitly; unmapped functions remain visible. This is not official Crapper basis-path coverage. Coverage, unique-function complexity, mapped CRAP-L and duplication have measured regression baselines. Thresholds, scope, reports and verified commands are in the quality guide.
 
-The upstream tools remain **references, not integrated Kotlin checks**:
-[Dryer](https://github.com/unclebob/dryer) relates to duplication analysis;
-[Crapper](https://github.com/unclebob/crapper) implements CRAP (Change Risk
-Anti-Patterns), combining complexity and test coverage to highlight risk;
-[Mutator](https://github.com/unclebob/mutator) evaluates whether tests detect
-intentional code mutations. [UML Viewer](https://github.com/unclebob/uml-viewer)
-illustrates architectural visualization. This repository claims no automatic
-Kotlin architecture extraction, calculated CRAP threshold, mutation score or
-duplication gate. These tools are not installed by the local skill.
-
-See the [language policy and audit](docs/LANGUAGE_POLICY.md) for the distinction
-between English developer material, bilingual UI and preserved historical records.
+**Incomplete:** the complete Android suite was executed and exposed failures. A green fast check is not a complete application pass. Instrumentation coverage, broader reliable CRAP mapping and repair/CI proof of the full emulator suite remain outstanding. See the [baseline and debt](docs/quality/QUALITY_BASELINE.md). No acoustic algorithm was changed to improve a metric.
 
 ## License and contributions
 

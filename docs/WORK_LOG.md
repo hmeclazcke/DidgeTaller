@@ -732,3 +732,8 @@ Replaced handle-only scrub eligibility with plot-wide horizontal scrubbing; two-
 ## 2026-11-06 ? International repository presentation
 
 Classified tracked Spanish text before translation. Standardized technical comments/messages and documented explicit exceptions for localized UI, compatibility-sensitive mappings, fixtures and historical evidence. Added current English guidance without rewriting dated Spanish records. Updated the English/Spanish README pair with authentic refreshed emulator galleries and an attributed, technically honest explanation of the project-local ub-mode engineering instructions. Screenshot fixture changes are test-only; production executable code and all Android resources are unchanged. Validation and screenshot provenance are recorded in VALIDATION.md and the gallery indexes. Samsung was not accessed or modified.
+
+
+## 2026-11-06 ? Measured quality milestone
+
+Installed original licensed ub-mode and separated project safety. Added actual Kotlin CPD/PIT execution, explicit measured ratchets and manual deep CI. A real mutation survivor led to a diagonal boundary test. Complete instrumentation exposed 13 existing failures; no green full-suite claim or exclusions. See docs/quality/DECISIONS.md for decisions and the baseline for counts/debt. Samsung and private WAVs were untouched.

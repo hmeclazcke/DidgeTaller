@@ -8,7 +8,7 @@ Keep `README.es.md` and Spanish Android resources in Spanish. Apply the classifi
 
 - Inspect `git status`, the current branch, relevant changes, and `.gitignore` before editing. Preserve prior work. If relevant project changes are already uncommitted, make a truthful, privacy-reviewed baseline commit before new source edits; never create an empty checkpoint.
 - Read only the source and documentation needed for the task. `docs/PRODUCT_CONTEXT.md`, `docs/ROADMAP.md`, `docs/VALIDATION.md`, `docs/WORK_LOG.md`, and historical Git versions are references to consult when relevant, not mandatory full reads on every turn. Existing successful evidence may be reused when its inputs have not changed.
-- Use the local [ub-mode skill](.agents/skills/ub-mode/SKILL.md) for code implementation, debugging, refactoring, and review. Its methods scale with risk; it does not require tests or builds for instruction-only changes.
+- Use the local [ub-mode skill](.agents/skills/ub-mode/SKILL.md) for code implementation, debugging, refactoring, and review. The file is the unmodified official methodology. Project-specific safety, Kotlin tool equivalents and risk-based execution are defined here and in [QUALITY_GUIDE.md](docs/quality/QUALITY_GUIDE.md).
 - The code is the source of truth when older documentation conflicts with current behavior. Do not restart completed investigations or treat historical version notes as active instructions.
 
 ## Engineering and data safety
@@ -24,7 +24,7 @@ Keep `README.es.md` and Spanish Android resources in Spanish. Apply the classifi
 - **Small production change:** run directly related tests and the smallest build/check that catches integration errors. Add a regression test when behavior can be meaningfully automated.
 - **UI, navigation, or charts:** run focused JVM/Compose tests and inspect the changed screen or interaction on an explicitly selected emulator when visual behavior matters. Test relevant locale, orientation, and font-size cases.
 - **Audio, persistence, recording, or lifecycle:** use deterministic affected-area regressions, protected real fixtures only when relevant and available, and read-only data-integrity checks. Distinguish synthetic results from physical accuracy.
-- **Broad or release-critical change:** run the full required gates once on the final state, including emulator instrumentation when relevant. Inspect `.github/workflows/android.yml` before relying on CI: it builds instrumentation tests but does not execute them. Never represent a partial or historical run as a final pass.
+- **Broad or release-critical change:** run the full required gates once on the final state, including emulator instrumentation when relevant. Inspect `.github/workflows/` before relying on CI. Fast checks and manual deep checks have different scopes; only an actual emulator run counts as instrumentation. Never represent a partial or historical run as a final pass.
 - Diagnose a failure before rerunning. Use bounded retries only for evidenced infrastructure faults, preserve logs, and report unresolved gates. Do not suppress tests or relax meaningful assertions for a green result.
 
 ## Efficient execution
@@ -39,3 +39,9 @@ Keep `README.es.md` and Spanish Android resources in Spanish. Apply the classifi
 - Commit validated, coherent changes with English messages. Stage explicit paths (`git add -- <paths>`), then review staged names, diff, binary files, `git diff --cached --stat`, and `git diff --cached --check`. Do not use blanket staging, reset/clean to discard work, amend/rebase to rewrite history, or force-push.
 - Push only when explicitly authorized for the current work and a normal safe fast-forward is possible. Check outgoing privacy and licensing, verify remote HEAD, and report CI as passed, failed, or pending based on the actual run. Never change repository visibility automatically.
 - Finish with the commit hash, working-tree/remote status, tests actually run, and material limits. Historical release evidence remains in `docs/VALIDATION.md`, `docs/WORK_LOG.md`, and Git history; it is not an active command list.
+
+## Executable quality policy
+
+See [Quality guide](docs/quality/QUALITY_GUIDE.md) for verified commands, report limits and current failures. Documentation-only work uses links/syntax checks, not deep analysis. Small UI work needs focused JVM/UI and screenshots; recording/playback/persistence needs state/lifecycle/integration tests; acoustics needs deterministic affected-area regressions. Architecture/CI changes require broad applicable checks. Full quality work adds both JVM variants, emulator instrumentation, coverage, complexity, duplication and selected mutation analysis. Preserve uncertainty and never tune algorithms to improve metrics.
+
+The official skill's Crapper/Dryer/Mutator objectives are pursued through the explicitly documented Kotlin tooling; do not mislabel numeric equivalents. Keep a concise decision/evidence log in docs/quality and ignored full logs, rather than shell transcripts in conversation. Do not install optional tools, clean worktrees or operate physical devices solely because the upstream skill recommends it. Invocation does not grant publication or installation authority.

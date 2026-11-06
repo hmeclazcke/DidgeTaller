@@ -45,3 +45,7 @@ credentials.json
 secrets.properties
 /secrets/
 /credentials/
+
+# Python quality-tool caches
+__pycache__/
+*.pyc

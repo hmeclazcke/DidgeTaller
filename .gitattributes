@@ -2,3 +2,6 @@
 # and historical trailing whitespace. PROVENANCE.json records source hashes.
 app/src/main/cpp/vendor/sptk/** -text -whitespace
 app/src/main/assets/third_party/SWIPE.txt -text -whitespace
+
+.agents/skills/ub-mode/SKILL.md text eol=lf
+.agents/skills/ub-mode/LICENSE text eol=lf

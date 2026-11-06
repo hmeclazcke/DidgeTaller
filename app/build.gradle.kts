@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -91,4 +93,39 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     // API 37 removed InputManager.getInstance, used reflectively by older Espresso.
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+}
+
+// Standalone JVM tools avoid coupling mutation execution to an unsupported Android PIT plugin.
+val qualityPolicy=Properties().apply {rootProject.file("config/quality/policy.properties").inputStream().use {load(it)}}
+val qualityCpd by configurations.creating
+val qualityPit by configurations.creating
+dependencies {
+    qualityCpd("net.sourceforge.pmd:pmd-cli:7.19.0")
+    qualityCpd("net.sourceforge.pmd:pmd-kotlin:7.19.0")
+    qualityPit("org.pitest:pitest-command-line:1.20.0")
+}
+tasks.register<JavaExec>("qualityDuplication") {
+    group="verification"
+    classpath=qualityCpd
+    mainClass.set("net.sourceforge.pmd.cli.PmdCli")
+    val output=layout.buildDirectory.file("reports/quality/cpd.xml")
+    doFirst {output.get().asFile.parentFile.mkdirs()}
+    args("cpd","--language","kotlin","--minimum-tokens",qualityPolicy.getProperty("cpdMinimumTokens"),"--dir","src/main/java",
+        "--format","xml","--report-file",output.get().asFile.absolutePath,"--no-fail-on-violation")
+}
+tasks.register<JavaExec>("qualityMutation") {
+    group="verification"
+    dependsOn("testDebugUnitTest")
+    val unit=tasks.named<Test>("testDebugUnitTest")
+    classpath=files(layout.buildDirectory.dir("tmp/kotlin-classes/debug")) + qualityPit + files(provider {unit.get().classpath}) + files(provider {unit.get().testClassesDirs})
+    mainClass.set("org.pitest.mutationtest.commandline.MutationCoverageReport")
+    val mutationXml=layout.buildDirectory.file("reports/quality/pit/mutations.xml")
+    doFirst {mutationXml.get().asFile.delete()}
+    doLast {check(mutationXml.get().asFile.let {it.isFile && it.readText().contains("<mutation ")}) {"PIT did not produce mutations; inspect tool output."}}
+    args("--reportDir",layout.buildDirectory.dir("reports/quality/pit").get().asFile.absolutePath,
+        "--targetClasses","ar.didgetaller.core.PlotTouchKt",
+        "--targetTests","ar.didgetaller.core.PlotTouchTest",
+        "--sourceDirs","src/main/java","--outputFormats","XML,HTML","--timestampedReports","false",
+        "--mutationThreshold",qualityPolicy.getProperty("mutationThreshold"),
+        "--threads","1","--mutators","DEFAULTS","--timeoutConst","4000")
 }

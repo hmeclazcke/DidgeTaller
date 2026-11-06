@@ -1,204 +1,152 @@
 ---
 name: ub-mode
-description: Use for Didge Taller code implementation, debugging, bug fixes, refactoring, and code review using Uncle Bob-inspired engineering principles, behavior-focused tests, and small verifiable changes.
+description: >
+  Follow the reduced principles when writing or changing code. Every change
+  follows First Make it Work, then Then Make it Right, then Follow Practice.
+  Use when the user runs /ub-mode or asks for the reduced principles.
 ---
 
-# Uncle Bob-Inspired Engineering Mode
+# ub-mode
 
-**First Make it Work → Then Make it Right → Practice.**
+Every time you are asked to make a change follow:
+* First Make it Work.
+* Then Make it Right.
+* Follow Practice
 
-This project adapts the ideas of [Uncle Bob's ub-mode at 57a8bdd](https://github.com/unclebob/ub-mode/tree/57a8bdd28e45ed41900ace0bafa2ff76dd9ed70f)
-in original wording.
+# First Make it Work
 
-Apply this workflow to the current task, without expanding its scope. Read the
-repository's [AGENTS.md](../../../AGENTS.md) and only the project context relevant
-to the task. Scale the depth of investigation and validation to the risk described
-there; the phases below are a way to reason, not a fixed list of tool calls.
-Existing repository safety, data protection, testing, and Git requirements take
-precedence over this skill. Invoking `$ub-mode` does not authorize tool installation,
-device operations, publication, or a push. Write new instructions, technical
-documentation, and commit messages in English; preserve existing language and history.
+## Laziness Protocol
 
-## First Make it Work
+* One decision lives in one place.
+* Ship the smallest edit that solves the problem.
 
-### Laziness Protocol
+## Foundational Thinking
 
-- One decision lives in one place: keep each business rule with its responsible component.
-- Ship the smallest edit that solves the problem. Avoid speculative frameworks.
+* Get the data shape right before you write the logic.
+* Do first whatever helps every later phase.
+* If a concurrent writer would matter, do not share state.
 
-### Foundational Thinking
+## TDD
 
-- Get the data shape right before writing logic. Identify inputs, outputs, invariants,
-  ownership, and lifetimes.
-- Prioritize decisions that simplify later phases and avoid unnecessary shared mutable state.
+* Write the failing test before you change the code.
+* See it fail for the reason you expect.
+* Make the smallest change that makes it pass.
+* If an honest test is impractical, do not write a bad one.
 
-### TDD
+## Redesign From First Principles
 
-- For behavior changes with a meaningful automatable contract, prefer a focused failing
-  test before the fix. Confirm that it fails for the expected behavioral reason, rather
-  than a broken environment. This is especially valuable for regressions and risky logic;
-  do not require a red test for a text edit or another low-risk change it cannot protect.
-- Follow red, green, refactor: make the smallest change that passes the relevant
-  check, then improve clarity where useful while preserving the verified behavior.
-- Do not write dishonest, tautological, or meaningless tests when meaningful automation
-  is impractical. Record the limitation and use a reproducible manual check or concrete
-  evidence instead. For instruction-only or configuration work, validate its real format
-  and discovery rather than inventing unrelated application tests.
+* Do not bolt a new requirement onto the old design.
+* Ask what you would have built if it had been there from the start, think that through, and deliver it in pieces.
 
-### Redesign From First Principles
+## Attack the Premise
 
-- Consider the design that would exist if the new requirement had been present from
-  the beginning. Improve toward it incrementally, without unnecessary rewrites.
+* When two fixes that share one premise fail the same gate, write that premise in one sentence and count which actors hold the imbalance.
+* Remove the assignment.
+* Do not start another fix until you have done that.
 
-### Attack the Premise
+## Subtract Before You Add
 
-- If successive fixes based on the same assumption fail, stop repeating that assumption.
-  State the assumption, revisit the evidence, and identify the actors and ownership
-  involved before trying another fix.
+* Take complexity out before you add anything.
 
-### Subtract Before You Add
+## Outcome-Oriented Execution
 
-- Remove unnecessary complexity before adding abstractions, state, filters, or heuristics.
-  Preserve domain responsibilities and scientifically meaningful information.
+* Aim at the end state you can check.
+* A break in the middle is allowed when you planned it and can undo it.
 
-### Outcome-Oriented Execution
+## Build the Lever
 
-- Define observable, verifiable outcomes and the evidence needed to demonstrate them.
-- Work through small, reversible steps; distinguish implementation from verified results.
+* If the work is not obvious at a glance, build the tool that does it.
+* Do one unit by hand, then make the tool match that unit.
 
-### Build the Lever
+## Architecture
 
-- For repeated or nontrivial work, prefer a focused tool, replay, or reproducible test
-  over repeated manual actions. Check one representative case before automating it;
-  keep helpers scoped and protect private inputs.
+### Model the Domain
 
-### Architecture and Domain Modeling
+* Put the domain in a structure that makes the illegal states impossible.
+* Maintain a glossary of domain terms.
+* If the code is already clear and local, leave it.
 
-- Model the domain explicitly and maintain a consistent glossary with the existing code
-  and product documentation. Distinguish recordings, measurements, estimates, confidence,
-  and rendered traces rather than treating them as interchangeable.
-- Make invalid states difficult or impossible to represent; use Kotlin types, nullability,
-  and sealed alternatives where appropriate instead of suppressing compiler warnings.
-- Parse and validate external data at the boundary; use validated domain values inside
-  and prefer pure, testable domain logic.
-- Make operations idempotent where appropriate, including safe retries after partial
-  failure. Separate mutable state where possible; when shared state is needed, prefer
-  an enforced single writer and define its owner, lifecycle, cancellation, and threads.
+### Boundary Discipline
 
-## Then Make it Right
+* Check the data where it enters.
+* Inside, trust it.
+* Keep the business logic in a pure function.
 
-### Fix Root Causes
+### Type System Discipline
 
-- Reproduce bugs before fixing them. Trace inputs and decisions to the responsible layer;
-  fix underlying causes instead of concealing symptoms.
+* Make the illegal value impossible to write.
+* Parse outside data once, where it comes in.
+* Do not silence the compiler.
 
-### Sequence Verifiable Units
+### Make Operations Idempotent
 
-- Prefer small, independently verifiable units when the task has multiple changes.
-  Keep failed attempts distinguishable from validated results; avoid a full validation
-  cycle after each trivial edit.
+* Running it twice, or running it after a crash halfway through, ends in the same state.
 
-### Test Behavior, Not Implementation
+### Separate Before Serializing Shared State
 
-- Assert observable outcomes and relevant boundary cases. Reject tests that still pass
-  when the feature is broken, or that merely duplicate the implementation.
+* If they do not need the same mutable thing, give each its own.
+* If they do, allow one writer, and enforce that in the structure.
 
-### Complexity Analysis
+# Then Make it Right
 
-- When complexity and test effectiveness matter to the task, apply the intent behind
-  Uncle Bob's CRAP metric: prioritize complex code whose behavior lacks meaningful
-  coverage. Combine measured complexity with coverage only when compatible data exists.
-- Never claim a CRAP score, enforce a CRAP threshold, or equate coverage with effective
-  tests unless the required measurements were actually calculated and interpreted.
+## Fix Root Causes
 
-### Duplication Analysis
+* Reproduce it.
+* Fix the cause.
+* A guard that only hides the crash is not a fix.
 
-- Apply DRY to duplicated knowledge and business rules. Similar text or code may serve
-  different responsibilities; do not merge it mechanically or create false coupling.
+## Sequence work into verifiable units
 
-### Mutation Testing
+* Finish one small unit and check it.
+* Then start the next.
 
-- When suitable tools are available and justified, use a focused mutation run to assess
-  test effectiveness. Investigate surviving mutations and distinguish equivalent mutations
-  from untested behavior. Do not start expensive project-wide mutation testing by default.
+## Test Behavior, Not Implementation
 
-### Refactoring
+* The test calls the code the way its user does and checks the result that user would see.
+* If the test would still pass when every function returned nothing, throw it out.
 
-- Characterize existing behavior, improve structure, and verify that observable behavior
-  remains unchanged. Separate intentional behavior changes from structural cleanup.
+## Crapper
 
-## Kotlin and Android Tool Compatibility
+* Use the crapper tool
+* Reduce each function under  CRAP 10 by splitting it, by testing it, or both.
+* Consider whether case statements are worth reducing.
 
-This skill requires no installed analysis or mutation tools. At the upstream review,
-`crapper`, `dryer`, and `mutator` did not list Kotlin among their supported languages;
-`uml-viewer` accepts diagrams but does not document a Kotlin source scanner. Java
-support alone does not establish Kotlin support. Recheck compatibility before use.
+## Dryer
 
-| Purpose | Optional Kotlin-compatible approach | Check before using |
-| --- | --- | --- |
-| Static analysis and complexity | Detekt | Availability and compatibility with the project's Kotlin and Gradle versions |
-| Coverage | JaCoCo or another compatible coverage solution | Kotlin/Android support, report configuration, and interpretation of generated code |
-| Duplication | PMD CPD with Kotlin support | The installed version's Kotlin language support and the intended source scope |
-| Mutation testing | A verified Kotlin-compatible solution | Actual support for this Kotlin/Android toolchain, bytecode behavior, cost, and task scope |
+* Use the dryer tool to eliminate duplication that rank 0.8 or above.
 
-These optional tools are not installed as part of this skill. Before using one, verify
-availability and suitability. If unavailable, report that the measurement was not run
-and use existing tests, focused code inspection, and reproducible checks. Do not fabricate
-tool output, metric values, or coverage. Do not install tools or change Gradle dependencies
-without authorization for that separate work.
+## Mutator
 
-## Didge Taller Engineering Rules
+* Use the mutator tool
+* Cover the uncovered.
+* Kill the survivors.
+* Delete dead code.
 
-### Audio and DSP
+## Refactoring
 
-- Preserve raw WAV recordings and original measurements, including uncertainty and gaps.
-- Validate audio changes with reproducible signals and, when available, private real
-  recordings in read-only replays. Report missing recordings or reference measurements;
-  synthetic success is not physical acoustic validation.
-- Distinguish detector behavior, confidence classification, and graphical presentation.
-  Find the owning layer before changing thresholds or rendering rules.
-- Never invent frequency estimates to hide uncertainty. Preserve support for both
-  Didgeridoo and Native American Flute, including profile-specific behavior.
+* Pin what the code does.
+* Change the structure.
+* Prove the behavior did not change.
 
-### Visualization
+# Practice
 
-- Test observable chart behavior and inspect actual screenshots when visual chart
-  behavior changes.
-  Preserve scientifically meaningful data, original readings, and access to uncertainty.
-- Avoid misleading interpolation, filtering, or scaling. A successful build alone does
-  not verify a chart; record visual evidence and any remaining validation limits.
+## Keep a Log
 
-### Android
+* Keep a log of every action you take and the reason you took it.
+* Report that log upon completion.
 
-- Preserve application data and follow the repository's lifecycle and migration rules.
-- Run instrumented tests only on an explicitly selected emulator, never the user's Samsung.
-  Never run an unqualified connected-test task when it could target that phone.
-- Do not perform destructive migrations or uninstall operations. Never clear app data
-  or automatically restore over the Samsung. Follow the stricter existing backup and
-  update requirements.
+## Guard the Context Window
 
-### Git and CI
+* Keep the main thread small.
+* Send the bulk elsewhere, and keep the summary.
 
-- Follow the repository's existing Git, identity, validation, staging, and GitHub rules.
-  Keep changes small, validated, and recoverable; review explicit staged paths and diffs.
-- Push to `origin/main` only with authorization under repository policy and after checking
-  the proposed changes for private or sensitive files. Skill use itself is not authorization.
-- Never force-push or rewrite history. Never commit private WAV recordings, secrets,
-  signing keys, backups, or local fixtures.
-- Preserve CI tasks and project versions unless the authorized task requires a concrete
-  change. Check triggered CI results and report actual failures without claiming success.
+## Worktree Cleanup
 
-## Practice
+* Find what is safe to remove, confirm nothing still in use needs it, then reclaim the disk.
+* Uncommitted work waits for a decision.
 
-- Record material decisions, validation, and limits in the repository's existing
-  WORK_LOG and VALIDATION documents when the scope warrants it. A small edit does not
-  require a log entry for every action. Explain why the change was made and what was
-  actually verified in the final report.
-- Protect the available context window: retain constraints, decisions, and evidence
-  locations; read focused references instead of copying entire logs or this skill repeatedly.
-- Keep changes small and recoverable. Before any authorized worktree cleanup, check
-  what is in use and preserve uncommitted or uncertain work; do not clean destructively
-  by default.
-- Create small, descriptive Git commits after relevant checks. Follow repository GitHub
-  and CI policies; never push without applicable user authorization. State the final
-  commit, synchronization status, and unresolved limits.
+## Commit and Push
+
+* Commit often, in small ordered commits.
+* Each commit says why, what changed, and how you proved it.
+* Push to the main line at the end.
