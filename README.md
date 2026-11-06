@@ -16,7 +16,7 @@ Didge Taller brings live pitch readings, WAV recording, and saved-session analys
 <tr>
 <td width="50%" valign="top">
   <a href="docs/screenshots/showcase/session-analysis.png"><img src="docs/screenshots/showcase/session-analysis.png" alt="Saved session with playback, compact chart tabs, and a changing drone-component trace" width="420"></a>
-  <p><strong>Saved session.</strong> Follow the supported drone component while listening; playback and the chart share a cursor.</p>
+  <p><strong>Saved session.</strong> Tap the graph to seek, or drag across it to scrub. The cursor, time and supported component readout follow the same position.</p>
 </td>
 <td width="50%" valign="top">
   <a href="docs/screenshots/showcase/spectrogram.png"><img src="docs/screenshots/showcase/spectrogram.png" alt="Session spectrogram showing several changing harmonic bands and a silent gap" width="420"></a>
@@ -33,9 +33,13 @@ Didge Taller brings live pitch readings, WAV recording, and saved-session analys
   <p><strong>Harmonic analysis.</strong> Inspect peaks from an analyzed WAV, with frequency in Hz and relative level in dB.</p>
 </td>
 </tr>
+<tr><td colspan="2" align="center">
+  <a href="docs/screenshots/showcase/library.png"><img src="docs/screenshots/showcase/library.png" alt="Library with a synthetic drone study and canonical trace preview" width="420"></a>
+  <p>Library. Original audio, supported component previews and session actions stay together.</p>
+</td></tr>
 </table>
 
-The four featured images are unaltered captures from the real app on an English-configured emulator. The session images use synthetic demonstration audio processed by the app; the live reading uses controlled synthetic PCM. They illustrate behavior, not physical accuracy. A [Library capture](docs/screenshots/showcase/library.png) also shows the same session as a trace preview. [Capture conditions and provenance](docs/screenshots/showcase/README.md).
+The five featured images are unaltered captures from the real app on an English-configured emulator. The session images use synthetic demonstration audio processed by the app; the live reading uses controlled synthetic PCM. They illustrate behavior, not physical accuracy. [Capture conditions and provenance](docs/screenshots/showcase/README.md).
 
 ## What you can do
 
@@ -47,10 +51,12 @@ The four featured images are unaltered captures from the real app on an English-
 
 The interface supports English and Spanish through Android's app-language settings. Didge Taller needs no account, advertising service, or Internet permission.
 
+During active recording or playback in the foreground, the app requests that the display stay awake. Pausing or finishing releases that request; it does not enable background microphone capture.
+
 ## A typical session
 
 1. Choose an instrument in **Measure**, then start measurement and recording.
-2. Stop and save. The original WAV and its captured readings remain available in **Library**.
+2. Save to keep the original WAV and its captured readings in **Library**, or discard after confirmation.
 3. Open the session to listen and follow its chart. Use the horizontal tabs to inspect the spectrogram, waveform, or harmonic spectrum.
 4. Run WAV analysis when you want spectral and harmonic detail. Open **Tools** for ranges, excerpts, markers, and advanced diagnostics.
 
@@ -86,6 +92,49 @@ The Android app uses Kotlin, Jetpack Compose/Material 3, `AudioRecord`, and `Med
 Phone microphones, room noise, strong harmonics, vocalizations, and short attacks can make a pitch estimate uncertain or unavailable. The app preserves gaps rather than inventing readings. Spectral levels are relative digital values, not calibrated sound-pressure levels; simulation results are exploratory. Synthetic tests and emulator captures do not establish physical acoustic accuracy or universal device compatibility.
 
 JVM and emulator tests cover the relevant code paths. GitHub Actions runs JVM tests, builds the debug and Android-test APKs, checks localization, and produces informational Detekt and JaCoCo reports; it **does not execute** Android instrumentation tests. See [Development](docs/DEVELOPMENT.md) for current checks and [SWIPE′ comparison](docs/SWIPE_COMPARISON.md) for its experimental limits.
+
+## Engineering Practices — Inspired by Uncle Bob's ub-mode
+
+The [project-local skill](.agents/skills/ub-mode/SKILL.md) adapts Robert C. Martin's
+[ub-mode](https://github.com/unclebob/ub-mode) as engineering instructions used by
+Codex. It is not an autonomous development agent, an identical upstream copy, or
+an endorsement by the original author.
+
+1. **First Make it Work:** understand the domain, validate boundaries, find root
+   causes and give mutable state an explicit owner. For meaningful behavioral
+   changes, prefer TDD: a failing regression, the smallest working change, then
+   refactoring. Keep each step small enough to verify.
+2. **Then Make it Right:** improve structure without changing verified behavior.
+   Apply DRY (Don't Repeat Yourself) to shared rules, remove unnecessary complexity
+   and use behavioral tests and coverage evidence to guide architectural work.
+3. **Practice:** keep context focused, automate repeatable checks safely, make
+   reviewable commits and choose validation according to risk. Audio uncertainty
+   and recording integrity take priority over cosmetic results.
+
+BDD-style acceptance scenarios describe observable outcomes; they do not imply a
+Cucumber integration. JUnit JVM tests check deterministic logic, and selected
+Android/Compose instrumentation tests exercise real emulator interactions and
+synthetic-WAV playback. Synthetic signals do not prove physical acoustic accuracy.
+
+| In use | Role |
+| --- | --- |
+| Gradle, JUnit, Android instrumentation | Builds, focused regressions and emulator verification |
+| Detekt | Informational static analysis and complexity reports |
+| JaCoCo | Informational JVM coverage; coverage alone is not test effectiveness |
+| GitHub Actions | JVM tests, APK builds, localization and quality reports; Android tests are compiled, **not executed** |
+
+The upstream tools remain **references, not integrated Kotlin checks**:
+[Dryer](https://github.com/unclebob/dryer) relates to duplication analysis;
+[Crapper](https://github.com/unclebob/crapper) implements CRAP (Change Risk
+Anti-Patterns), combining complexity and test coverage to highlight risk;
+[Mutator](https://github.com/unclebob/mutator) evaluates whether tests detect
+intentional code mutations. [UML Viewer](https://github.com/unclebob/uml-viewer)
+illustrates architectural visualization. This repository claims no automatic
+Kotlin architecture extraction, calculated CRAP threshold, mutation score or
+duplication gate. These tools are not installed by the local skill.
+
+See the [language policy and audit](docs/LANGUAGE_POLICY.md) for the distinction
+between English developer material, bilingual UI and preserved historical records.
 
 ## License and contributions
 

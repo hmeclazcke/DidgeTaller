@@ -727,3 +727,8 @@ Verified clean main and remote HEAD at 76ad193 before implementation. Kept acous
 ## 2026-11-06 ? Direct graph timeline and compact session workspace
 
 Replaced handle-only scrub eligibility with plot-wide horizontal scrubbing; two-finger translation/pinch owns viewport navigation. Kept pending preview separate from committed selection and fixed consumed cancellation releases committing a seek. Removed the primary transport slider and moved accessible SetProgress onto the graph. Compacted only the session workspace and fixed its empty Scaffold bottom bar suppressing navigation insets. No acoustic or persisted-data changes. Final checks and representative screenshot/configuration evidence are recorded in VALIDATION.md. Private delivery evidence stays under ignored checkpoints.
+
+
+## 2026-11-06 ? International repository presentation
+
+Classified tracked Spanish text before translation. Standardized technical comments/messages and documented explicit exceptions for localized UI, compatibility-sensitive mappings, fixtures and historical evidence. Added current English guidance without rewriting dated Spanish records. Updated the English/Spanish README pair with authentic refreshed emulator galleries and an attributed, technically honest explanation of the project-local ub-mode engineering instructions. Screenshot fixture changes are test-only; production executable code and all Android resources are unchanged. Validation and screenshot provenance are recorded in VALIDATION.md and the gallery indexes. Samsung was not accessed or modified.

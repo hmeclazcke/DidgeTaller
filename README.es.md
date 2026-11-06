@@ -16,7 +16,7 @@ Didge Taller reúne lecturas de frecuencia en vivo, grabación WAV y análisis d
 <tr>
 <td width="50%" valign="top">
   <a href="docs/screenshots/showcase-es/session-analysis.png"><img src="docs/screenshots/showcase-es/session-analysis.png" alt="Sesión guardada con reproducción, pestañas compactas y una curva variable de la componente del dron" width="420"></a>
-  <p><strong>Sesión guardada.</strong> Seguí la componente del dron respaldada por el espectro mientras escuchás; la reproducción y el gráfico comparten el cursor.</p>
+  <p><strong>Sesión guardada.</strong> Tocá el gráfico para buscar o arrastrá para recorrer el audio. Cursor, tiempo y lectura de la componente respaldada siguen la misma posición.</p>
 </td>
 <td width="50%" valign="top">
   <a href="docs/screenshots/showcase-es/spectrogram.png"><img src="docs/screenshots/showcase-es/spectrogram.png" alt="Espectrograma de la sesión con bandas armónicas variables y un intervalo de silencio" width="420"></a>
@@ -33,9 +33,13 @@ Didge Taller reúne lecturas de frecuencia en vivo, grabación WAV y análisis d
   <p><strong>Análisis armónico.</strong> Inspeccioná los picos de un WAV analizado, con frecuencia en Hz y nivel relativo en dB.</p>
 </td>
 </tr>
+<tr><td colspan="2" align="center">
+  <a href="docs/screenshots/showcase-es/library.png"><img src="docs/screenshots/showcase-es/library.png" alt="Biblioteca con un estudio sintético del dron y su vista previa canónica" width="420"></a>
+  <p>Biblioteca. Audio original, vista previa de la componente respaldada y acciones de sesión en un mismo lugar.</p>
+</td></tr>
 </table>
 
-Las cuatro imágenes destacadas son capturas originales de la app real en un emulador configurado en español. Las vistas de sesión usan audio sintético procesado por la app; la lectura en vivo usa PCM sintético controlado. Ilustran el funcionamiento, no la precisión física. Una [captura de Biblioteca](docs/screenshots/showcase-es/library.png) muestra la misma sesión con su vista previa musical. [Condiciones y procedencia de las capturas](docs/screenshots/showcase-es/README.md).
+Las cinco imágenes destacadas son capturas originales de la app real en un emulador configurado en español. Las vistas de sesión usan audio sintético procesado por la app; la lectura en vivo usa PCM sintético controlado. Ilustran el funcionamiento, no la precisión física. [Condiciones y procedencia de las capturas](docs/screenshots/showcase-es/README.md).
 
 ## Qué podés hacer
 
@@ -47,10 +51,12 @@ Las cuatro imágenes destacadas son capturas originales de la app real en un emu
 
 La interfaz está disponible en español e inglés mediante los ajustes de idioma de Android. Didge Taller no requiere cuenta, servicios publicitarios ni permiso de Internet.
 
+Durante la grabación o reproducción activa en primer plano, la app solicita mantener la pantalla encendida. Al pausar o terminar libera esa solicitud; no habilita el micrófono en segundo plano.
+
 ## Una sesión habitual
 
 1. Elegí un instrumento en **Medir** e iniciá la medición y la grabación.
-2. Detené y guardá. El WAV original y las lecturas capturadas quedan disponibles en **Biblioteca**.
+2. Guardá para conservar el WAV original y las lecturas capturadas en **Biblioteca**, o descartá después de confirmar.
 3. Abrí la sesión para escucharla y seguir su gráfico. Usá las pestañas horizontales para explorar el espectrograma, la onda o el espectro armónico.
 4. Ejecutá el análisis WAV cuando necesites más detalle espectral y armónico. Abrí **Herramientas** para rangos, fragmentos, marcadores y diagnósticos avanzados.
 
@@ -84,6 +90,53 @@ La app usa Kotlin, Jetpack Compose/Material 3, `AudioRecord` y `MediaPlayer`. El
 Los micrófonos de los teléfonos, el ruido de la sala, los armónicos intensos, las vocalizaciones y los ataques breves pueden producir estimaciones inciertas o ausentes. La app conserva los huecos en lugar de inventar lecturas. Los niveles espectrales son valores digitales relativos, no niveles calibrados de presión sonora; las simulaciones son exploratorias. Las pruebas sintéticas y las capturas de emulador no establecen precisión acústica física ni compatibilidad universal con dispositivos.
 
 Las pruebas JVM y de emulador cubren los caminos relevantes del código. GitHub Actions ejecuta pruebas JVM, compila la app de depuración y el APK de pruebas Android, verifica la localización y genera informes informativos de Detekt y JaCoCo; **no ejecuta** las pruebas instrumentadas Android. La [guía de desarrollo](docs/DEVELOPMENT.md) explica los controles actuales y la [comparación SWIPE′](docs/SWIPE_COMPARISON.md) describe sus límites experimentales; ambos documentos están en inglés.
+
+## Prácticas de ingeniería — Inspiradas en ub-mode de Uncle Bob
+
+La [habilidad local del proyecto](.agents/skills/ub-mode/SKILL.md) adapta
+[ub-mode](https://github.com/unclebob/ub-mode), de Robert C. Martin, como un conjunto
+de instrucciones de ingeniería que utiliza Codex. No es un agente autónomo, una
+copia idéntica del original ni un proyecto avalado por su autor.
+
+1. **First Make it Work — Primero, hacerlo funcionar:** comprender el dominio,
+   validar entradas, investigar causas y definir quién controla cada estado
+   mutable. Para cambios de comportamiento que puedan automatizarse, se prefiere
+   TDD: una regresión que falla, el cambio mínimo que la resuelve y luego
+   refactorización. Cada paso debe poder verificarse.
+2. **Then Make it Right — Después, mejorarlo:** mejorar la estructura sin alterar
+   el comportamiento comprobado. Aplicar DRY (Don't Repeat Yourself: no duplicar
+   conocimiento) a las reglas compartidas, reducir complejidad innecesaria y usar
+   pruebas de comportamiento y evidencia de cobertura para orientar la arquitectura.
+3. **Practice — Practicar:** mantener el contexto enfocado, automatizar controles
+   repetibles con seguridad, crear commits revisables y validar según el riesgo.
+   La incertidumbre acústica y la integridad de las grabaciones tienen prioridad.
+
+Los escenarios de aceptación al estilo BDD describen resultados observables; no
+implican una integración con Cucumber. Las pruebas JVM con JUnit comprueban lógica
+determinista; la instrumentación Android/Compose seleccionada verifica interacciones
+reales en emulador y reproducción de WAV sintéticos. Las señales sintéticas no
+demuestran precisión acústica física.
+
+| Herramientas utilizadas | Función |
+| --- | --- |
+| Gradle, JUnit e instrumentación Android | Compilación, regresiones enfocadas y verificación en emulador |
+| Detekt | Informes informativos de análisis estático y complejidad |
+| JaCoCo | Cobertura JVM informativa; cobertura no equivale a eficacia de las pruebas |
+| GitHub Actions | Pruebas JVM, APK, localización e informes; las pruebas Android se compilan, **no se ejecutan** |
+
+Las herramientas originales son **referencias, no controles Kotlin integrados**:
+[Dryer](https://github.com/unclebob/dryer) se relaciona con el análisis de duplicación;
+[Crapper](https://github.com/unclebob/crapper) implementa CRAP (Change Risk
+Anti-Patterns), que combina complejidad y cobertura para señalar riesgo;
+[Mutator](https://github.com/unclebob/mutator) evalúa si las pruebas detectan
+mutaciones deliberadas del código. [UML Viewer](https://github.com/unclebob/uml-viewer)
+sirve como referencia de visualización arquitectónica. El repositorio no afirma
+extraer automáticamente arquitectura Kotlin, calcular umbrales CRAP ni tener
+puntajes de mutación o controles obligatorios de duplicación. La habilidad local
+no instala estas herramientas.
+
+La [política de idiomas y auditoría](docs/LANGUAGE_POLICY.md), en inglés, distingue
+el material técnico de la interfaz bilingüe y los registros históricos conservados.
 
 ## Licencia y colaboración
 
