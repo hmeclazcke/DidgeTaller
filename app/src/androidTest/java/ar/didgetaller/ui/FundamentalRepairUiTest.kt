@@ -34,6 +34,7 @@ class FundamentalRepairUiTest {
     private val items=mutableListOf<Pair<String,RecordingStore.Session>>()
     @Before fun setup(){
         assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
+        ar.didgetaller.requirePrivateFixtures()
         val source=File(compose.activity.getExternalFilesDir(null),"v324-real-fixtures.json")
         assumeTrue("Local private fixture required for real-recording comparison",source.isFile)
         app=TestApplication(InstrumentationRegistry.getInstrumentation().targetContext);app.clean()

@@ -57,6 +57,7 @@ class SwipeNativeTest {
     }
 
     @Test fun optionalPrivateFixtureMatchesWholeSignalReferenceWithoutMutation() {
+        ar.didgetaller.requirePrivateFixtures()
         emulator()
         val args=InstrumentationRegistry.getArguments()
         val path=args.getString("swipeFixture")

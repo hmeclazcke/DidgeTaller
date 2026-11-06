@@ -225,6 +225,7 @@ class RecoveryUiTest {
     }
 
     private fun inspectTimelines(name:String,prefix:String){
+        ar.didgetaller.requirePrivateFixtures()
         val source=File(compose.activity.getExternalFilesDir(null),name)
         assumeTrue("Fixture privado local requerido",source.isFile)
         val raw=JSONArray(source.readText());val store=RecordingStore(app)

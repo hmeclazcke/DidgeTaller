@@ -69,6 +69,7 @@ class DroneComponentUiTest {
     @Test fun privateFourBoutWavFitsLandscape()=checkPrivateWav(true)
 
     @Test fun privateFourBoutLibraryPreviewMatchesDetail(){
+        ar.didgetaller.requirePrivateFixtures()
         assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         val target=InstrumentationRegistry.getInstrumentation().targetContext
         val fixture=File(target.getExternalFilesDir(null),"drone-component-private.wav")
@@ -127,6 +128,7 @@ class DroneComponentUiTest {
     }
 
     private fun checkPrivateWav(landscape:Boolean){
+        ar.didgetaller.requirePrivateFixtures()
         assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
         if(landscape){
             compose.runOnUiThread {compose.activity.requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE}

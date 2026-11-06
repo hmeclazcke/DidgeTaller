@@ -162,7 +162,10 @@ class GraphIntelligenceUiTest {
     }
 
     @Test fun summaryPreviewAndReopenedSessionNeverInheritExploratoryCamera(){
-        card(a);capture("card-before")
+        card(a)
+        // Compare stable canonical evidence, not the provisional range while analysis loads.
+        compose.waitUntil(15000){vm.musicalTrace(a)!=null}
+        capture("card-before")
         val summary=compose.onNodeWithTag("summary-${a.id}",useUnmergedTree=true).fetchSemanticsNode().config[PlotWindow]
         open(a);val preview=compose.onNodeWithTag("time-chart").fetchSemanticsNode().config[PlotWindow]
         expand();repeat(4){zoom()}

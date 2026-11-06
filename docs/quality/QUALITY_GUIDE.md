@@ -13,7 +13,7 @@ Run from repository root with JDK 17 and the existing Android SDK/NDK/CMake tool
 ```powershell
 .\gradlew.bat :app:test
 .\gradlew.bat :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
-.\gradlew.bat :app:jacocoDebugUnitTestReport detekt detektComplexity
+.\gradlew.bat '-Pkotlin.incremental=false' :app:jacocoDebugUnitTestReport detekt detektComplexity
 python tools/detekt_summary.py
 python tools/coverage_summary.py
 .\gradlew.bat :app:qualityDuplication
@@ -22,7 +22,7 @@ python -m unittest discover -s tools -p 'test_*.py'
 .\gradlew.bat :app:qualityMutation
 ```
 
-Together these are the fast/build/static quality sequence; mutation is a separate deep step, not appropriate for README-only work. Both debug/release JVM suites are selected by :app:test. Synthetic acoustics are part of those suites. Private fixture environment variables/Android arguments must remain unset in public verification; their assumption skips are intentional, not replaced with fake recordings.
+Together these are the fast/build/static quality sequence; mutation is a separate deep step, not appropriate for README-only work. Both debug/release JVM suites are selected by :app:test. Synthetic acoustics are part of those suites. Public verification must use a clean emulator containing only synthetic data. Protected Android fixture entry points require both current user authorization and the explicit allowPrivateFixtures=true argument; existing files alone never opt in. Public CI never supplies that flag. Private JVM fixture variables must remain unset. Their assumption skips are intentional, not replaced with fake recordings. Preserve older emulator/private fixtures without opening or deleting them.
 
 Full instrumentation uses only a verified emulator:
 
@@ -51,12 +51,12 @@ quality-deep.yml executes the complete emulator suite on relevant main pushes an
 
 ## Separate emulator coverage
 
-AGP instruments only the optional coverage-enabled debug APK. Default developer/debug builds remain unchanged. Both reports use JaCoCo 0.8.15 and the same production-class filters. Build, execute, then report without modifying production sources between those steps:
+AGP instruments only the optional coverage-enabled debug APK. Default developer/debug builds remain unchanged. Both reports use JaCoCo 0.8.15 and the same production-class filters. Use the nonincremental compiler flag shown below for a canonical measurement. Reused incremental Compose outputs produced extra uncovered branches locally; a nonincremental rebuild reproduced every CI source-file counter exactly (global JVM branch coverage 25.69%, rather than the earlier cached-output 23.39%; line/core measurements unchanged). This observation does not establish a general Kotlin compiler bug. CI starts from a fresh checkout with no reused project compilation outputs. Build, execute, then report without modifying production sources between those steps:
 
 ```powershell
-.\gradlew.bat -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
+.\gradlew.bat '-Pkotlin.incremental=false' -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
 python tools/run_instrumentation.py --adb "$env:LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe" --serial emulator-5554 --coverage
-.\gradlew.bat -PandroidCoverage=true :app:jacocoEmulatorReport
+.\gradlew.bat '-Pkotlin.incremental=false' -PandroidCoverage=true :app:jacocoEmulatorReport
 python tools/emulator_coverage_summary.py
 ```
 
