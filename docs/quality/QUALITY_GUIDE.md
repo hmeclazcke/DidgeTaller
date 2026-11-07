@@ -74,6 +74,16 @@ python tools/emulator_coverage_summary.py
 
 The runner removes only its named emulator coverage probe file before execution, retrieves the new binary execution data, and requires complete per-test results plus a matching successful runner summary. Missing execution data and reports with no covered production lines fail. Reports are app/build/reports/jacoco/emulator/ (HTML/XML/summary.json); raw probe data is build/reports/quality/instrumentation.ec. These contain code coverage, not audio. They measure the executed synthetic scenarios, not all physical-device behavior or JNI/C++ coverage. No percentages or probe sets are merged across JVM/Android. This optional build uses AGP's [documented instrumentation coverage](https://developer.android.com/studio/test/coverage-report), not a second coverage framework.
 
+The existing function mapper also accepts that separate Android XML after generating a fresh compiler inventory and Detekt summary for the **same production revision**:
+
+```powershell
+python tools/function_mapping.py --coverage app/build/reports/jacoco/emulator/coverage.xml --output build/reports/quality/android-function-mapping.json
+```
+
+This invocation was exercised with the exact downloaded d90926c CI XML (stored locally under checkpoints/ci-android-coverage.xml), matching the unchanged local production source hashes. It mapped the same 330 functions, with 71 visibly unscored and 32 above CRAP-L target, separately from JVM's 83. It is informational local analysis, not an added automatic CI gate or combined coverage. Never feed an older report after source edits or substitute class coverage.
+
+For hand-created AVDs, verify hardware main keys are disabled before claiming gesture navigation works: a gestural resource mode alone does not prove System UI attached its edge handler. The rebuild's fresh API 37 AVD required hw.mainKeys=no and recovery from a cold-boot System UI ANR under host memory pressure. The unchanged native edge-Back test and native MainActivity probe then passed. Prefer an existing valid phone profile; do not change app navigation, suppress a test, or use KEYCODE_BACK to hide an invalid emulator configuration. All emulator actions must keep the explicit serial and protected-fixture rules above.
+
 Complete quality verification consists of the fast/build/static sequence, focused mutation, and this coverage-enabled full emulator sequence. Run expensive components only for explicitly requested deep validation or relevant high-risk changes. Keep the emulator serial explicit even when Samsung is attached.
 
 ## Prioritized debt

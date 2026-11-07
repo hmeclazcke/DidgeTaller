@@ -64,7 +64,7 @@ The runtime inventory currently contains 63 project-owned Kotlin files: 32 core,
 | ComparisonScreen.kt | A/B selection, interval validation and metrics; move interval decisions to a pure validated boundary in a future cycle. |
 | DiagnosticText.kt | Compatibility mapping of historical technical messages; retain existing data meanings and localized boundary. |
 | ExplorerState.kt | Camera/selection state; retain shared session selection and independent view cameras; test gesture cancellation across navigation. |
-| ImmersiveViewer.kt | Fullscreen orchestration, tools, interpretation and shared rendering; high complexity remains, with native Back/configuration diagnosis outstanding. |
+| ImmersiveViewer.kt | Fullscreen orchestration, tools, interpretation and shared rendering; high complexity remains. Native Back/playback passed unchanged after correcting the local AVD and recovering System UI. |
 | InspectionReading.kt | Explicit inspection precedence; cohesive pure helper retained. |
 | LibraryTools.kt | Tools/library controls and labels; retain accepted workflows; accessibility/layout verification continues. |
 | LocalizedLabels.kt | Context/localization adapters for stored domain labels; preserve both languages and persisted identifiers. |
@@ -77,7 +77,7 @@ The runtime inventory currently contains 63 project-owned Kotlin files: 32 core,
 | SessionTransport.kt | Compact controls and authoritative playback/selection projection; retain synchronization across detail/fullscreen. |
 | SwipeComparisonPanel.kt | Opt-in secondary estimator diagnostics; retain its exclusion from canonical missing-measurement replacement. |
 | TallerApp.kt | Root navigation plus many screen/render/business decisions; substantial decomposition remains; accepted visual identity is preserved. |
-| TallerNavigation.kt | Section/back-stack policy; cohesive helper retained; actual native gesture behavior needs the recorded API 37 differential diagnosis. |
+| TallerNavigation.kt | Section/back-stack policy; cohesive helper retained. Actual edge-Back passed after fixing the API 37 AVD's hardware-key configuration; no navigation patch was needed. |
 | ViewerIcons.kt | Small presentation-only icon definitions; retain without an unnecessary abstraction layer. |
 
 ## Additional project-owned production boundaries

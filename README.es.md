@@ -93,7 +93,7 @@ Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controle
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
-Hay una [reconstrucción de ingeniería](docs/engineering/REBUILD_CASE_STUDY.md), documentada en inglés, **en curso** en `refactor/uncle-bob-rebuild`. Conserva main como referencia de comportamiento. El estudio registra cambios reales de responsabilidades en DSP y trazas, control de reproducción independiente de Android, contratos diferenciales y límites de medición; no presenta la reconstrucción completa de la aplicación como terminada.
+Hay una [reconstrucción de ingeniería](docs/engineering/REBUILD_CASE_STUDY.md), documentada en inglés, **en curso** en `refactor/uncle-bob-rebuild`. Conserva main como referencia de comportamiento. El estudio registra cambios en DSP y trazas, reproducción independiente de Android, grabación con propiedad por captura, publicación atómica independiente de caché, contratos diferenciales y evidencia real de CI. La [revisión por archivo](docs/engineering/REBUILD_REVIEW.md), en inglés, registra el trabajo arquitectónico pendiente; la reconstrucción completa de la aplicación sigue en curso.
 
 Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, copiado sin modificaciones con su licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). La seguridad del proyecto y la ejecución para Kotlin se definen aparte en AGENTS.md y la [guía de calidad](docs/quality/QUALITY_GUIDE.md).
 

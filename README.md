@@ -95,7 +95,7 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
-An isolated [engineering reconstruction](docs/engineering/REBUILD_CASE_STUDY.md) is **in progress** on `refactor/uncle-bob-rebuild`. It preserves main as the behavioral reference. The case study records actual DSP/trace responsibility changes, framework-independent playback ownership, differential contracts and measurement limits; it does not claim a completed application rebuild.
+An isolated [engineering reconstruction](docs/engineering/REBUILD_CASE_STUDY.md) is **in progress** on `refactor/uncle-bob-rebuild`. It preserves main as the behavioral reference. The case study records DSP/trace responsibility changes, framework-independent playback, worker-owned recording, independent atomic cache publication, differential contracts and actual CI evidence. The [per-file review](docs/engineering/REBUILD_REVIEW.md) records remaining architectural work; this is not a completed application rebuild.
 
 Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), copied verbatim with its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). Project safety and Kotlin-specific execution live separately in AGENTS.md and the [quality guide](docs/quality/QUALITY_GUIDE.md).
 
