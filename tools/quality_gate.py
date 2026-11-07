@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 BASELINE = Path('config/quality/baseline.json')
 OUT = Path('build/reports/quality')
 POLICY = dict(line.split('=', 1) for line in Path('config/quality/policy.properties').read_text().splitlines() if line and not line.startswith('#'))
+RETIRED = json.loads(Path('config/quality/retired-methods.json').read_text())
 
 
 def ratio(counter):
@@ -72,7 +73,9 @@ def violations(current, baseline):
     now = {r['identity']: r for r in current['methods']}
     for key, row in previous.items():
         if key not in now:
-            errors.append(f'Reviewed mapping lost: {key}')
+            replacement = RETIRED.get(key, {}).get('replacement')
+            if replacement not in now:
+                errors.append(f'Reviewed mapping lost: {key}')
         elif now[key]['crap_line'] >= float(POLICY['crapTarget']) and now[key]['crap_line'] > row['crap_line'] + 1e-9:
             errors.append(f'CRAP-L regression: {key}')
     for key, row in now.items():

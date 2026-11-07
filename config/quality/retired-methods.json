@@ -1,0 +1,10 @@
+{
+  "ar/didgetaller/audio/SessionPlayer.requestSeek(J)V": {
+    "replacement": "ar/didgetaller/core/PlaybackController.requestSeek(J)V",
+    "reason": "Move asynchronous seek ownership into the tested framework-independent playback controller."
+  },
+  "ar/didgetaller/audio/SessionPlayer.fail(Ljava/lang/Throwable;)V": {
+    "replacement": "ar/didgetaller/core/PlaybackController.fail(Ljava/lang/Throwable;)V",
+    "reason": "Move failure cleanup into the state owner; retain localized error formatting at the Android boundary."
+  }
+}
