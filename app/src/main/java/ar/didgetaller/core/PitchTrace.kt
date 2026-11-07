@@ -28,13 +28,22 @@ object PitchTrace {
         else->Tone.STABLE
     }
 
-    private fun isolated(points:List<SessionAnalysis.Point>,i:Int,instrument:InstrumentProfile):Reason? {
-        if(i==0 || i==points.lastIndex)return null
-        val a=points[i-1];val p=points[i];val b=points[i+1]
+    private fun shortReturn(a:SessionAnalysis.Point,p:SessionAnalysis.Point,b:SessionAnalysis.Point)=
+        p.timeMs-a.timeMs in 1..400 && b.timeMs-p.timeMs in 1..400 && b.timeMs-a.timeMs<=600
+
+    private fun returnCenter(points:List<SessionAnalysis.Point>,i:Int,instrument:InstrumentProfile):Double? {
+        val a=points.getOrNull(i-1) ?: return null
+        val b=points.getOrNull(i+1) ?: return null
+        val p=points[i]
         if(!supported(a,instrument) || !supported(b,instrument) || p.confidence>=.92)return null
-        if(p.timeMs-a.timeMs !in 1..400 || b.timeMs-p.timeMs !in 1..400 || b.timeMs-a.timeMs>600)return null
-        if(cents(a.hz!!,b.hz!!)>80)return null
-        val center=sqrt(a.hz*b.hz);val ratio=max(center/p.hz!!,p.hz/center)
+        if(!shortReturn(a,p,b) || cents(a.hz!!,b.hz!!)>80)return null
+        return sqrt(a.hz*b.hz)
+    }
+
+    private fun isolated(points:List<SessionAnalysis.Point>,i:Int,instrument:InstrumentProfile):Reason? {
+        val center=returnCenter(points,i,instrument) ?: return null
+        val p=points[i]
+        val ratio=max(center/p.hz!!,p.hz/center)
         val multiple=ratio.roundToInt()
         if(multiple in 2..4 && cents(ratio,multiple.toDouble())<=80)return Reason.ISOLATED_PERIOD
         if(instrument==InstrumentProfile.DIDGERIDOO && p.confidence<.90 && cents(p.hz,center)>=100)
@@ -47,12 +56,16 @@ object PitchTrace {
         if(instrument!=InstrumentProfile.DIDGERIDOO || p.confidence>=.90)return false
         if(hasSupport(points,i,instrument))return false
         // Require two coherent measured neighbours; do not remove ordinary attacks/releases.
-        return listOf(-1,1).any {d->
-            val a=points.getOrNull(i+d);val b=points.getOrNull(i+2*d)
-            a!=null && b!=null && supported(a,instrument) && supported(b,instrument) &&
-                abs(p.timeMs-a.timeMs) in 1..400 && abs(a.timeMs-b.timeMs) in 1..400 &&
-                cents(a.hz!!,b.hz!!)<=80 && cents(p.hz!!,sqrt(a.hz*b.hz))>=600
-        }
+        return listOf(-1,1).any {direction->jumpWitness(points,i,direction,instrument)}
+    }
+
+    private fun jumpWitness(points:List<SessionAnalysis.Point>,i:Int,direction:Int,instrument:InstrumentProfile):Boolean {
+        val p=points[i]
+        val a=points.getOrNull(i+direction) ?: return false
+        val b=points.getOrNull(i+2*direction) ?: return false
+        if(!supported(a,instrument) || !supported(b,instrument))return false
+        return abs(p.timeMs-a.timeMs) in 1..400 && abs(a.timeMs-b.timeMs) in 1..400 &&
+            cents(a.hz!!,b.hz!!)<=80 && cents(p.hz!!,sqrt(a.hz*b.hz))>=600
     }
 
     private fun hasSupport(points:List<SessionAnalysis.Point>,i:Int,instrument:InstrumentProfile):Boolean {
@@ -71,58 +84,92 @@ object PitchTrace {
         while(start<points.lastIndex){
             val before=points[start-1]
             if(!supported(before,instrument)){start++;continue}
-            fun alternative(p:SessionAnalysis.Point):Boolean {
-                if(!supported(p,instrument) || p.confidence>=.90 || p.hz!!>=before.hz!!/1.4)return false
-                return listOf(1.5,2.0,3.0,4.0).any {cents(before.hz/p.hz,it)<=80}
-            }
-            if(!alternative(points[start])){start++;continue}
-            var end=start+1
-            while(end<points.size && alternative(points[end]) && points[end].timeMs-points[end-1].timeMs in 1..400)end++
-            if(end<points.size && end-start<=4 && supported(points[end],instrument) &&
-                points[start].timeMs-before.timeMs in 1..400 && points[end].timeMs-points[end-1].timeMs in 1..400 &&
-                points[end].timeMs-before.timeMs<=1000 && cents(before.hz!!,points[end].hz!!)<=80)
-                for(j in start until end)flags[j]=true
+            if(!lowerAlternative(points[start],before,instrument)){start++;continue}
+            val end=alternativeEnd(points,start,before,instrument)
+            if(returned(points,start,end,before,instrument))for(j in start until end)flags[j]=true
             start=end
         }
         return flags
     }
 
-    fun build(points:List<SessionAnalysis.Point>,instrument:InstrumentProfile):List<Sample> {
-        val result=ArrayList<Sample>(points.size)
-        val alternatives=alternativePeriods(points,instrument)
-        var previous:Int?=null;var omitted=0
-        for((i,point) in points.withIndex()){
-            val hz=point.hz
-            if(point.timeMs<0 || hz==null || !hz.isFinite() || hz<=0 || hz>22050){
-                if(hz==null && point.timeMs>=0 && point.confidence in .5..<.70)omitted++
-                else {previous=null;omitted=0}
-                continue
-            }
-            val reason=when {
-                hz !in instrument.validMinHz..instrument.validMaxHz->Reason.OUTSIDE_PROFILE
-                !supported(point,instrument)->Reason.LOW_CONFIDENCE
-                alternatives[i]->Reason.ISOLATED_PERIOD
-                unsupportedJump(points,i,instrument)->Reason.UNSUPPORTED_JUMP
-                else->isolated(points,i,instrument)
-            }
-            if(reason!=null){result+=Sample(point,null,true,reason);omitted++;continue}
+    private fun lowerAlternative(p:SessionAnalysis.Point,before:SessionAnalysis.Point,instrument:InstrumentProfile):Boolean {
+        if(!supported(p,instrument) || p.confidence>=.90 || p.hz!!>=before.hz!!/1.4)return false
+        return listOf(1.5,2.0,3.0,4.0).any {cents(before.hz/p.hz,it)<=80}
+    }
+
+    private fun alternativeEnd(points:List<SessionAnalysis.Point>,start:Int,before:SessionAnalysis.Point,instrument:InstrumentProfile):Int {
+        var end=start+1
+        while(end<points.size && lowerAlternative(points[end],before,instrument) &&
+            points[end].timeMs-points[end-1].timeMs in 1..400)end++
+        return end
+    }
+
+    private fun returned(points:List<SessionAnalysis.Point>,start:Int,end:Int,before:SessionAnalysis.Point,instrument:InstrumentProfile):Boolean {
+        val after=points.getOrNull(end) ?: return false
+        return end-start<=4 && supported(after,instrument) &&
+            points[start].timeMs-before.timeMs in 1..400 && after.timeMs-points[end-1].timeMs in 1..400 &&
+            after.timeMs-before.timeMs<=1000 && cents(before.hz!!,after.hz!!)<=80
+    }
+
+    private fun renderableFrequency(point:SessionAnalysis.Point)=point.hz?.takeIf {
+        point.timeMs>=0 && it.isFinite() && it>0 && it<=22050
+    }
+
+    /** One builder owns connection state for one immutable input sequence. */
+    fun build(points:List<SessionAnalysis.Point>,instrument:InstrumentProfile):List<Sample> =
+        Builder(points,instrument).build()
+
+    private class Builder(val points:List<SessionAnalysis.Point>,val instrument:InstrumentProfile) {
+        private val result=ArrayList<Sample>(points.size)
+        private val alternatives=alternativePeriods(points,instrument)
+        private var previous:Int?=null
+        private var omitted=0
+
+        fun build():List<Sample> {
+            points.forEachIndexed {i,point->append(i,point)}
+            return result
+        }
+
+        private fun append(i:Int,point:SessionAnalysis.Point) {
+            val hz=renderableFrequency(point) ?: return omit(point)
+            val reason=rejection(i,point,hz)
+            if(reason!=null){result+=Sample(point,null,true,reason);omitted++;return}
             val backed=hasSupport(points,i,instrument)
-            val before=previous?.takeIf {idx->
-                val prior=result[idx].point;val gap=point.timeMs-prior.timeMs
-                val jump=cents(hz,prior.hz!!)
-                val weakUnsupportedEnd=(point.confidence<.90 && !backed) || (prior.confidence<.90 && !result[idx].backed)
-                val registerChange=jump>=600
-                gap in 1..1200 && (omitted==0 || (omitted<=4 && gap<=1000 && jump<=80)) &&
-                    // Preserve the estimate as a point, but do not imply a supported pitch sweep.
-                    !(instrument==InstrumentProfile.DIDGERIDOO && (registerChange || (jump>=300 && weakUnsupportedEnd)))
-            }
+            val before=previous?.takeIf {connects(result[it],point,hz,backed)}
             val prior=before?.let {result[it].point}
             val variation=prior?.hz?.let {cents(hz,it)}
             val confidence=min(point.confidence,prior?.confidence ?: point.confidence)
             result+=Sample(point,before,false,bridged=before!=null && omitted>0,
                 variationCents=variation,tone=tone(confidence,variation),backed=backed)
-            previous=result.lastIndex;omitted=0
+            previous=result.lastIndex
+            omitted=0
         }
-        return result
+
+        private fun omit(point:SessionAnalysis.Point) {
+            if(point.hz==null && point.timeMs>=0 && point.confidence in .5..<.70)omitted++
+            else {previous=null;omitted=0}
+        }
+
+        private fun rejection(i:Int,point:SessionAnalysis.Point,hz:Double):Reason?=when {
+            hz !in instrument.validMinHz..instrument.validMaxHz->Reason.OUTSIDE_PROFILE
+            !supported(point,instrument)->Reason.LOW_CONFIDENCE
+            alternatives[i]->Reason.ISOLATED_PERIOD
+            unsupportedJump(points,i,instrument)->Reason.UNSUPPORTED_JUMP
+            else->isolated(points,i,instrument)
+        }
+
+        private fun connects(prior:Sample,point:SessionAnalysis.Point,hz:Double,backed:Boolean):Boolean {
+            val gap=point.timeMs-prior.point.timeMs
+            val jump=cents(hz,prior.point.hz!!)
+            return gap in 1..1200 && (omitted==0 || (omitted<=4 && gap<=1000 && jump<=80)) &&
+                !unsupportedSweep(prior,point,jump,backed)
+        }
+
+        private fun unsupportedSweep(prior:Sample,point:SessionAnalysis.Point,jump:Double,backed:Boolean):Boolean {
+            if(instrument!=InstrumentProfile.DIDGERIDOO)return false
+            if(jump>=600)return true
+            val unsupported=(point.confidence<.90 && !backed) || (prior.point.confidence<.90 && !prior.backed)
+            return jump>=300 && unsupported
+        }
     }
 }
