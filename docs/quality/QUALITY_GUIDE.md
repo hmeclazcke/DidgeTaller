@@ -102,7 +102,7 @@ When analyzing downloaded coverage, verify the artifact run's head SHA against t
 
 1. Complete remaining function measurement limitations after the compiler-PSI expansion. The original eight-function allowlist is superseded; mapped and explicitly unscored declarations are recorded in function-mapping.json. The original 43/33/15 acoustic hotspots were restructured under differential protection. Broad high-risk UI/Android functions remain unfinished; JVM zeros must not be confused with separate emulator coverage.
 2. Improve critical uncovered Android error/background paths using the separate instrumentation report. Android coverage is informational until a stable cross-environment baseline is established; the existing JVM ratchets remain enforced. Never substitute class coverage into CRAP.
-3. Expand mutation scope incrementally to pure persistence/recording decisions after reviewing generated Kotlin operators; keep generic operators and paid enhancements distinct.
+3. Review the remaining selected-domain survivors, including the 26 new persistence/JSON/library survivors. The seven-class persistence expansion is implemented and executed; do not repeat its integration. Keep generic Kotlin bytecode operators and paid enhancements distinct.
 4. Reduce measured high complexity in UI presentation only with behavioral characterization. PlotSurface MCC 139 is a prioritization signal, not proof of an acoustic fault. Do not split stable logic solely to improve a number.
 
 When a gate fails, inspect its saved report, reproduce one failure, fix the cause, and preserve the failed evidence. Do not reset baselines or add exclusions to manufacture green CI. Samsung installation is outside this task and all private recordings remain untouched.

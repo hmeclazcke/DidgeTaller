@@ -3,27 +3,64 @@
 - Branch: refactor/uncle-bob-rebuild; draft PR: https://github.com/hmeclazcke/DidgeTaller/pull/1. Do not merge.
 - Worktree: C:/projects/DidgeTaller-uncle-bob. Original main checkout retained separately and clean.
 - Original main: 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67. Never commit/push to main or rewrite history.
-- Validated implementation/test/configuration HEAD: d90926c81a9590ad7f67a8a235586f1aa0524e18. Later evidence-only commits may advance this checkpoint with unchanged runtime/test inputs; use git rev-parse HEAD for its current revision.
+- Validated implementation/test/configuration HEAD: 6c6f00d (resolve the full SHA with git rev-parse 6c6f00d). Later evidence-only commits may advance this checkpoint with unchanged runtime/test inputs; use git rev-parse HEAD for its current revision.
 - Official ub-mode SKILL.md/LICENSE unchanged, byte-verified against upstream 3da62bf3fcfd2034de41f30d920d2739e566171f.
 - No Samsung access, private recording access, format migration or metronome implementation. Never enable protected fixture arguments/environment variables without current authorization.
 
 ## Current persistence/library continuation ? IN PROGRESS
 
-Resumed existing branch at 5f93e23. Persistence milestone c132642 replaces corrupt-as-empty mutation, per-instance writer locks and destructive unknown-row filtering. See [design/invariants](PERSISTENCE_REBUILD.md). Current library work replaces six separately published collections/counters with LibrarySnapshot/LibraryCatalog, adds explicit ES/EN recovery confirmation and catches metadata-command failures at the UI boundary. The new UI failure test first reproduced an uncaught StoredDocument.Unavailable on the main thread; the source correction compiles and awaits the clean API 35 CI run.
+Resumed existing branch at 5f93e23. Persistence milestone c132642 replaces corrupt-as-empty mutation, per-instance writer locks and destructive unknown-row filtering. See [design/invariants](PERSISTENCE_REBUILD.md). Current library work replaces six separately published collections/counters with LibrarySnapshot/LibraryCatalog, adds explicit ES/EN recovery confirmation and catches metadata-command failures at the UI boundary. The new UI failure test first reproduced an uncaught StoredDocument.Unavailable on the main thread; the source correction passed the clean API 35 suite; the local failure chronology is retained below.
 
 Local final-source JVM checks: 548 discovered / 532 passed / 16 protected skips / zero failures across debug/release. JVM lines/branches 33.69%/31.23%; pure core 98.54%/78.93%; data package 38.85%/33.46%. Different source denominators and host from the previous Linux result. Ratchets pass: 361 measured / 76 unscored Detekt functions; 79 above-target JVM CRAP-L; all 481 PSI declarations explicitly classified (361 measured, 40 nested, 16 bodyless, 6 anonymous-owner, 58 Compose-transformed). CPD zero >=100-token groups. Detekt 1,966; Lint zero errors / 52 warnings / 9 hints. Lint UseKtx observations decrease 12 to 4 through consolidation; dependency-advisory counts are time-dependent. Parser/Python/localization and 741 differential outputs pass.
 
 The expanded local Windows PIT execution completed: 26 bytecode classes, 1,369 mutants, 960 killed / 390 survived / 17 uncovered / 2 timeouts; detected score 962/1369 = 70.27%, not whole-app strength. Scoped production/test inputs are unchanged by subsequent ViewModel-only error handling. The existing PlotTouch gate remains 11/11. Windows capture file-lock limitations remain separate from Linux evidence. Do not claim all survivors are equivalent or killed.
 
-Android: final persistence focus 25/25 passed on the owned synthetic API 37 emulator. The initial three library cases passed semantics, but seven screenshots were rejected after visual inspection exposed a System UI ANR overlay. Screenshot capture now requires the active accessibility window to belong to the test activity. The later four-case run aborted before discovery with `Process crashed`; the crash buffer records the API 37 launcher, not a proven Didge Java failure. Heavy build/emulator overlap exhausted host memory. Failed evidence is retained under ignored checkpoints. Do not count this as a final Android pass or valid screenshots. Clean API 35 CI must resolve the remaining framework gate. CI now collects only LibraryRecoveryUiTest's synthetic screenshots after a successful full run, with fail-fast shell propagation.
+Android: final persistence focus 25/25 passed on the owned synthetic API 37 emulator. The initial three library cases passed semantics, but seven screenshots were rejected after visual inspection exposed a System UI ANR overlay. Screenshot capture now requires the active accessibility window to belong to the test activity. The later four-case run aborted before discovery with `Process crashed`; the crash buffer records the API 37 launcher, not a proven Didge Java failure. Heavy build/emulator overlap exhausted host memory. Failed evidence is retained under ignored checkpoints. Do not count this as a final Android pass or valid screenshots. Clean API 35 CI subsequently resolved this framework gate; see the final evidence below. CI now collects only LibraryRecoveryUiTest's synthetic screenshots after a successful full run, with fail-fast shell propagation.
 
-Current exact next actions: commit/push only this feature branch; inspect fast, full API 35 emulator/coverage and one manual mutation run; download reports and inspect the seven synthetic library screenshots. Fix actual failures, then replace this pending evidence paragraph with exact run URLs/results. Keep PR #1 draft. Subsequent production priority: capture-device/terminal-event ViewModel ownership, then SessionWorkspace/renderers/PlotSurface and canonical Loading versus Unavailable. Do not repeat persistence reconstruction or the initial all-file review.
+Next exact production cycle: characterize MicrophoneEngine/TallerViewModel terminal capture events, freeze the capture's persistence metadata before asynchronous publication, and enforce callback/cancellation ownership. Preserve the already-correct per-worker RecordingCapture writer model. Then separate SessionWorkspace/renderers/PlotSurface responsibilities and canonical Loading versus Unavailable. Do not repeat the persistence reconstruction, initial all-file review or successful unchanged deep checks. Whole-preference/storage-device recovery and broader process-death fault injection remain explicit persistence limitations. Keep PR #1 draft.
 
 ### 22655bb remote checkpoint and visual follow-up
 
 Fast PR run 42412056518, full emulator/coverage run 42412053137 and manual mutation run 42412071596 all passed. Downloaded evidence confirms Linux JVM 548 discovered / 532 passed / 16 protected skips; 33.71% lines / 31.33% branches, pure core 98.61% / 79.23%. Full API 35: 144 discovered / 134 passed / 10 explicit skips, separate coverage 91.44% / 68.75%, data package 94.92% / 65.24%. Linux PIT: 26 classes, 1369 mutants, 970 killed / 381 survived / 16 uncovered / 2 timeouts; detected 71.00%, engine 78 seconds. All selected mutation sources/tests remain unchanged by the later dialog-only fix.
 
 Seven API 35 screenshots were actually inspected. Normal recovery is readable and its audio/index assertions pass, but the caller-locale Spanish fixture exposed an English dialog and an ineffective platform-font simulation. Follow-up resolves localized content outside the platform dialog context, asserts translated strings, makes its explanation scrollable, and adds two real Android locale/font/compact runs. Compilation/Lint/Detekt/YAML/shell validation passed; the new CI configuration runs must be observed. Do not present the first green suite as proof that this visual gap was absent. No valid physical/Samsung test is claimed.
+
+## Final verified continuation at 6c6f00d
+
+The continuation remains **IN PROGRESS** at application level. This milestone is published and validated, not permission to merge. c132642 rebuilds persistence, 22655bb publishes coherent library state/recoverable metadata commands, and 6c6f00d fixes caller-locale dialog ownership and verifies actual platform font/locale configurations. Later documentation-only commits do not invalidate unchanged source/test evidence.
+
+| Check | Previous d90926c | Current 6c6f00d evidence |
+| --- | --- | --- |
+| JVM debug + release | 492 discovered / 476 passed / 16 protected skips | 548 / 532 / 16, zero failures; 274/266/8 per variant |
+| Complete API 35 suite | 129 / 119 / 10 skips | 144 / 134 / 10, zero failures |
+| Additional real configuration runs | Historical separate configurations | Two targeted recovery cases, both passed; Android en/es, font_scale 1.5, 720x1280, three-button navigation |
+| JVM Linux lines / branches | 31.51% / 28.84% | 33.69% / 31.33%, changed source denominator |
+| Pure core JVM lines / branches | 98.61% / 79.18% | 98.61% / 79.23%; no acoustic policy change |
+| Separate Android lines / branches | 91.15% / 68.10% | 91.41% / 68.72%; excludes the two later configuration runs |
+| Android data package | See prior report | 94.92% lines / 65.24% branches |
+| Function correspondence | 330 measured / 71 unscored | 361 / 76; all 481 PSI declarations classified |
+| High CRAP-L | JVM 83; separate Android 32 | JVM 79; separate Android 30 (local mapper on exact CI XML) |
+| RecordingStore.list MCC | 16 | 4; codec responsibilities now independently testable |
+| PMD CPD | Zero >=100-token groups | Zero, unchanged threshold |
+| Detekt | 1970 informational findings | 1965 under the same configuration |
+| Android Lint | 0 errors / 59 warnings / 10 hints | 0 / 53 / 9 remotely; dependency-advisory counts vary over time |
+| Differential outputs | 741 identical | 741 identical; no broader persistence-differential claim |
+| Python tooling | 21 passed | 21 passed in CI; six additional local shell failure probes passed separately |
+| Linux PIT | 19 classes; 1198 mutants | 26 classes; 1369 mutants, 970 killed / 381 survived / 16 uncovered / 2 timeouts; detected 972/1369 = 71.00% |
+
+Actual successful runs:
+
+- [Fast PR gates](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42413957308), head 6c6f00d: both JVM variants, APK/test compilation, Lint, localization, JaCoCo, Detekt, compiler inventory, differential, CPD, Python and enforced ratchets.
+- [Full emulator and real configurations](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42413952372), head 6c6f00d: complete instrumentation plus separate en/es compact 150%-font runs, coverage and synthetic screenshot collection.
+- [Manual mutations](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42412071596), head 22655bb: enforced PlotTouch 11/11 plus informational 26-class domain score. Selected production/tests/build/config inputs are byte-unchanged at 6c6f00d; no unnecessary rerun was made for dialog-only changes. Engine time 78 seconds.
+
+All 71 production Kotlin source hashes from the final CI inventory match the local source. Seven newly selected persistence/JSON/library classes contribute 171 mutants: 145 killed / 26 survived / zero uncovered. This does not eliminate existing-scope survivors or establish whole-application mutation strength. The 16 JVM and seven Android private guards remain protected; three other Android configuration cases retain their previously recorded separate execution evidence.
+
+Thirteen final authentic PNGs were downloaded and visually inspected: seven default/caller-locale views and six real compact en/es platform-font views. Their local location is checkpoints/library-final-ci-screenshots; reports/ZIPs/logs are under checkpoints/github-ci. The compact explanation is intentionally scrollable, while confirm/cancel stay outside system navigation. Earlier API 37 ANR images and the first CI caller-locale mismatch remain rejected historical evidence, not final screenshots. Screenshots are synthetic test evidence, not README showcase assets. No new rendering-performance claim is made.
+
+Six local fault probes stubbed every device command and verified preflight failure, actual JUnit-failure parsing despite adb zero, timeout, missing image collection, failed settings restoration and successful cleanup. They are local probes (checkpoints/probe_emulator_script.py), not six additional Android or active CI Python tests.
+
+Main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67 and clean; no merge, Samsung/private-audio access or format migration occurred. The official SKILL.md and MIT license still match the pinned upstream hashes. The PR must remain draft until remaining whole-application architecture criteria are met.
 
 ## Implemented and verified
 

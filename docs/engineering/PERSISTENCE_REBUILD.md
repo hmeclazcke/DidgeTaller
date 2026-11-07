@@ -77,6 +77,10 @@ Commands are in the [quality guide](../quality/QUALITY_GUIDE.md). The new focuse
 execution and a nonempty report are required. Real Android JSON/preferences/filesystem tests
 remain essential: the JVM-only org.json test dependency is not Android's implementation.
 
-Remaining work includes library recovery UX/state ownership, wider lifecycle/UI reconstruction,
+Library recovery UX and one library-state snapshot are now implemented. Remaining work includes wider capture/lifecycle/UI reconstruction,
 process-death fault injection, whole-preference/storage-device disaster recovery and the
 application-wide architecture acceptance criteria. No physical device or private audio was used.
+
+## Published validation closure
+
+At 6c6f00d, fast CI 42413957308 and full emulator CI 42413952372 pass. Full JVM: 548 discovered / 532 pass / 16 protected skips; full Android: 144 / 134 / 10; two additional real en/es compact 150%-font recovery cases pass. Thirteen actual synthetic screenshots were inspected. The caller-locale mismatch found in the first green run was corrected and assertions now verify translated content. RecordingStore.list MCC falls from 16 to 4 through actual codec/file/publication separation. Final correspondence is 361 measured / 76 unscored; high CRAP-L remains 79 JVM and 30 separate Android. Linux mutation evidence at 22655bb remains valid for unchanged selected code: 26 classes, 1369 mutants, 970 killed, 381 survived, 16 uncovered, 2 timeouts. Full source/run/provenance details and remaining limitations are in the [checkpoint](REBUILD_PROGRESS.md). These are completed subsystem milestones within an unfinished application rebuild.
