@@ -16,6 +16,15 @@ class RecordingCaptureTest {
     private fun begin(file: File = partial(), rate: Int = 44100, seconds: Int = 900) =
         RecordingCapture().also { assertTrue(it.start(file, rate, seconds)) }
 
+    /** Probe the host independently of the mutated production code, never infer success from its result. */
+    private fun hostAllowsOpenFileRename(): Boolean {
+        val source = partial()
+        val target = File(folder.root, "${source.nameWithoutExtension}.probe")
+        return try {
+            RandomAccessFile(source, "rw").use { it.writeInt(123); source.renameTo(target) }
+        } finally { source.delete(); target.delete() }
+    }
+
     @Test fun retiringMonitorCannotCloseOrAppendToItsSuccessor() {
         val monitor = RecordingCapture()
         val file = partial()
@@ -72,6 +81,19 @@ class RecordingCaptureTest {
         assertArrayEquals(WavCodec.encode(shortArrayOf(), 0, 44100), file.readBytes())
     }
 
+    @Test fun reachedLimitDoesNotAttemptMoreStorageWhenTheDiskFills() {
+        val file = partial()
+        var freeBytes = Long.MAX_VALUE
+        val writer = ProgressiveWavWriter(file, 8000) { freeBytes }
+        val capture = RecordingCapture { _, _ -> writer }
+        assertTrue(capture.start(file, 8000, 1))
+        assertTrue(capture.append(ShortArray(8000) { 1 }, 8000))
+        freeBytes = 0
+        assertTrue(capture.append(shortArrayOf(99), 1))
+        assertEquals(RecordingCapture.Outcome.Ready(file), capture.finish(true))
+        assertArrayEquals(WavCodec.encode(ShortArray(8000) { 1 }, 8000, 8000), file.readBytes())
+    }
+
     @Test fun completionAndDiscardAreIdempotent() {
         val file = partial()
         val capture = begin(file)
@@ -94,21 +116,22 @@ class RecordingCaptureTest {
     }
 
     @Test fun discardingClaimsOnlyTheOwnedPartialAndNeverAuthorizesSave() {
+        val canRename = hostAllowsOpenFileRename()
         val file = partial()
         val other = partial().apply { writeText("saved bytes") }
         val capture = begin(file)
         capture.append(shortArrayOf(1), 1)
         assertTrue(capture.discard())
-        val claimed = File(file.parentFile, "${file.nameWithoutExtension}.discard").exists()
         // Windows can reject renaming an open RandomAccessFile. This is a failed discard,
         // never permission to save; Android's successful rename is exercised on the emulator.
-        assertEquals(!claimed, file.exists())
+        assertEquals(canRename, File(file.parentFile, "${file.nameWithoutExtension}.discard").exists())
+        assertEquals(!canRename, file.exists())
         assertFalse(capture.discard())
-        assertEquals(RecordingCapture.Outcome.Discarded(claimed), capture.finish(true))
+        assertEquals(RecordingCapture.Outcome.Discarded(canRename), capture.finish(true))
         assertNull(capture.finish(true))
         assertFalse(File(file.parentFile, "${file.nameWithoutExtension}.discard").exists())
-        assertEquals(!claimed, file.exists())
-        if (!claimed) assertArrayEquals(WavCodec.encode(shortArrayOf(1), 1, 44100), file.readBytes())
+        assertEquals(!canRename, file.exists())
+        if (!canRename) assertArrayEquals(WavCodec.encode(shortArrayOf(1), 1, 44100), file.readBytes())
         assertEquals("saved bytes", other.readText())
     }
 
@@ -134,12 +157,12 @@ class RecordingCaptureTest {
     }
 
     @Test fun failedMicrophoneReleaseCannotReportSuccessfulDiscard() {
+        val canRename = hostAllowsOpenFileRename()
         val file = partial()
         val capture = begin(file)
         assertTrue(capture.discard())
-        val claimed = !file.exists()
         assertEquals(RecordingCapture.Outcome.Discarded(false), capture.finish(false))
-        assertEquals(!claimed, file.exists())
+        assertEquals(!canRename, file.exists())
     }
 
     @Test fun failedCloseNeverHandsOffThePartialForSaving() {
