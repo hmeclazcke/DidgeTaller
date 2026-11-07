@@ -8,7 +8,9 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  # A branch push and its PR update validate the same head: keep one automatic run.
+  # Fork branches and explicitly dispatched evidence runs retain separate ownership.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'automatic' }}
   cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   test-and-apk:
