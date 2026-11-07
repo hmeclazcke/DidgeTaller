@@ -170,8 +170,10 @@ val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$C
     "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture")
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}
     .files.sortedBy {it.name}.joinToString(",") {"ar.didgetaller.core."+it.nameWithoutExtension}
-registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"}, syntheticTests, null)
+registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile",
+    syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest", null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
+registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
 
 fun registerComparison(name: String, benchmark: Boolean) {
  tasks.register(name) {

@@ -23,8 +23,10 @@ class AnalysisCache(context:Context) {
     }
     private fun trim(){val files=root.listFiles().orEmpty().filter {it.extension=="bin"}.sortedBy {it.lastModified()};var size=files.sumOf {it.length()}
         for(file in files){if(size<=LIMIT)break;val length=file.length();if(file.delete())size-=length}}
-    private fun write(file:File,block:(DataOutputStream)->Unit){val temp=File(root,file.name+".tmp")
-        try{DataOutputStream(BufferedOutputStream(FileOutputStream(temp))).use(block);check(temp.renameTo(file));trim()}finally{temp.delete()}}
+    private fun write(file:File,block:(DataOutputStream)->Unit){
+        AtomicCacheFile.write(file,block)
+        trim()
+    }
     fun remove(id:String){require(java.util.UUID.fromString(id).toString()==id);root.listFiles().orEmpty().filter {it.name.startsWith("$id-")}.forEach {it.delete()}}
     fun analyze(id:String,file:File,startMs:Long=0,endMs:Long?=null,cancelled:()->Boolean={false},progress:(Int)->Unit={},force:Boolean=false,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):WavAnalysis.Result {
         val signature=fingerprint(file,cancelled)

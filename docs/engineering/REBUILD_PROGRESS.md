@@ -29,14 +29,18 @@
 - Initial 18-class PIT: 1,197 total, 806 killed/365 survived/24 uncovered/2 timed out. Reviewing capture survivors added duration/empty-chunk assertions; focused capture strengthened from 38 to 40 killed out of 51 (10 survived/1 uncovered), not a whole-suite score. Windows cannot exercise successful open-writer rename paths; inspect Linux CI mutations separately.
 - Published 07c756c passed actual fast/differential run 42368989332, full emulator run 42368900284 (127 discovered/117 passed/10 skipped/0 failed), and manual mutation run 42368987707 (17-class 1,146 distribution). Report artifacts downloaded and inspected. Its Android line/branch coverage is separately 91.08%/68.12%. Subsequent capture changes need new CI evidence.
 - Fresh local Didge_Rebuild_API37 AVD uses synthetic data only. Eight focused UI methods passed across ES/EN, portrait/landscape and compact 150% font. Screenshots are ignored local evidence, not new public promotional assets. Main/physical device/private fixtures untouched.
+- Cache milestone: a controlled emulator test reproduced two same-key writers mixing bytes through a shared temporary file. AtomicCacheFile now owns unique same-directory temporary files and atomic whole-value publication. Six JVM contracts and all 27 selected Android persistence/capture tests pass; formats/keys and original WAVs unchanged. Focused cache PIT kills its one DEFAULTS mutant (narrow scope, not comprehensive I/O mutation coverage). Full current JVM/static/build/differential and ratchets pass.
+- Native edge-Back on the fresh API 37 AVD fails while default API 35 CI skips this configuration-dependent test. Lifecycle/longer-swipe and enabled-animation probes did not fix it; those test edits were removed. The exact original main test also FAILS on that same clean AVD (checkpoints/edge-original-main.log, source 3a16004), so this is not a newly introduced behavior. The rebuilt APKs were restored on the emulator afterward. Do not call this configuration passed or silently substitute KEYCODE_BACK. Next diagnosis must distinguish the Compose test-clock/native predictive-Back boundary from normal MainActivity behavior; do not keep retrying unchanged swipes. Other compact ES/EN cases pass.
+- Initial reading is complete for all 63 runtime Kotlin files and the owned JNI boundary; REBUILD_REVIEW.md records each responsibility and retained/rebuilt/unresolved decision. This is not a claim that every architectural issue is fixed. New pure canonical-frequency text assertions protect export formatting under a comma-decimal UI locale.
+- Latest integrated local evidence after the cache and canonical-text assertions: each JVM variant 245 discovered/237 passed/8 protected skips/0 failures, total 490/474/16. JVM coverage 31.49% lines/28.73% branches, core 98.54%/78.88%; 330 measured/71 unscored, 83 high. Detekt 1,970; Lint 0 errors/59 warnings/10 hints; CPD no groups. The 19-class broad mutation selection is configured and must execute in remote manual CI; do not relabel the previous 18-class local result as current.
 
 ## Review and execution order
 
-Reviewed directly: recording/playback/workspace adapters, persistence/cache stores, all original core Kotlin files, MainActivity, full ViewModel, ExplorerState/gestures/transport, measurement/diagnostics/analysis UI and most of TallerApp. Full UI/native-wrapper review is NOT yet complete.
+Initial direct source reading and file inventory are complete; see REBUILD_REVIEW.md. Material redesign and verification remain unfinished across several reviewed responsibilities.
 
-1. Finish the remaining UI/native source review and record per-subsystem decisions. Do not claim file inventory equals review.
+1. Continue the per-subsystem redesign cycles in REBUILD_REVIEW.md, using the existing characterization and exact source evidence. Do not repeat unchanged source-reading audits or confuse the completed reading checklist with implementation acceptance.
 2. Capture-generation writer ownership is fixed and characterized. Continue reviewing microphone device creation/release error paths and ViewModel terminal-event ownership; the complete capture subsystem is not declared finished. Preserve all handoff tests' save/discard/index/byte assertions.
-3. Address cache temporary-file writer collisions and index error recovery using synthetic historical fixtures; do not change persisted keys or rewrite original WAVs.
+3. Cache temporary-file collision is fixed. Continue index corruption and interrupted transaction recovery with synthetic historical fixtures; preserve raw corrupt index evidence, keys and original WAVs.
 4. Separate remaining ViewModel/UI responsibilities, especially PlotSurface MCC 139 and MeasureScreen nested decisions; inspect actual compact/landscape/ES/EN/150%-font output.
 5. Review all 354 mutation survivors and 23 uncovered outcomes, distinguishing real assertion gaps from Kotlin artifacts without marking unreviewed cases equivalent. Add recording-state mutation scope after its pure boundary exists.
 6. Inspect actual feature-branch fast/differential/full-emulator/manual-PIT results and reports; record exact SHAs. Reproduce only evidenced failures.
@@ -55,6 +59,7 @@ python -m unittest discover -s tools -p 'test_*.py'
 .\gradlew.bat :app:qualityDifferential :app:qualityPerformanceComparison '-PdifferentialBaseline=checkpoints/baseline-production.jar'
 .\gradlew.bat :app:qualityMutation :app:qualityMutationDomain
 .\gradlew.bat :app:qualityMutationCapture
+.\gradlew.bat :app:qualityMutationCache
 ```
 
 Detailed logs/reports are under ignored checkpoints and build reports. The original oracle JAR is local and code-only; fresh CI rebuilds it from the pinned commit. Do not overwrite it with rebuilt classes. Never execute protected fixture cases or operate the physical phone.

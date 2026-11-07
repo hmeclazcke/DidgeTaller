@@ -5,6 +5,16 @@ import org.junit.Test
 import kotlin.math.*
 
 class MusicAxisTest {
+    @Test fun canonicalFrequencyTextDoesNotDependOnTheInterfaceLocale(){
+        val previous=java.util.Locale.getDefault()
+        try {
+            java.util.Locale.setDefault(java.util.Locale.FRANCE)
+            assertEquals("66.1 Hz",Music.hzText(66.14))
+            assertEquals("0.0 Hz",Music.hzText(Double.MIN_VALUE))
+            for(hz in listOf(0.0,-1.0,Double.NaN,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY))
+                assertEquals("— Hz",Music.hzText(hz))
+        } finally {java.util.Locale.setDefault(previous)}
+    }
     @Test fun referenceNotesOctavesAndCents(){
         listOf(69.2957 to "C#2",261.6256 to "C4",392.0 to "G4",440.0 to "A4",880.0 to "A5").forEach {(hz,name)->
             val note=Music.pitch(hz)!!;assertEquals(name,note.note);assertEquals(0.0,note.cents,.025)
