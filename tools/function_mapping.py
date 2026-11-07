@@ -22,14 +22,14 @@ def argument_count(descriptor):
 
 
 def correlate(function, methods, complexity):
+    if '<anonymous>' in function['owner'] or not function['name']:
+        return dict(status='anonymous-owner')
     for flag, reason in [('local', 'nested-metric-in-parent'), ('compose', 'compose-transformation'),
                          ('inline', 'inline-source-mapping'), ('suspend', 'suspend-state-machine')]:
         if function[flag] == 'true':
             return dict(status=reason)
     if function['body'] != 'true':
         return dict(status='declaration-without-body')
-    if '<anonymous>' in function['owner'] or not function['name']:
-        return dict(status='anonymous-owner')
     if complexity is None:
         return dict(status='missing-complexity')
     parameters = int(function['parameters']) + (function['receiver'] == 'true')

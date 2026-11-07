@@ -93,6 +93,8 @@ Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controle
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
+Hay una [reconstrucción de ingeniería](docs/engineering/REBUILD_CASE_STUDY.md), documentada en inglés, **en curso** en `refactor/uncle-bob-rebuild`. Conserva main como referencia de comportamiento. El estudio registra cambios reales de responsabilidades en DSP y trazas, control de reproducción independiente de Android, contratos diferenciales y límites de medición; no presenta la reconstrucción completa de la aplicación como terminada.
+
 Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, copiado sin modificaciones con su licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). La seguridad del proyecto y la ejecución para Kotlin se definen aparte en AGENTS.md y la [guía de calidad](docs/quality/QUALITY_GUIDE.md).
 
 - **First Make it Work:** modelar el dominio, validar entradas, definir quién controla el estado y aplicar TDD/rojo-verde-refactorización a cambios verificables.
@@ -101,7 +103,7 @@ Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original 
 
 Las herramientas reales son Gradle/JUnit, instrumentación Android, JaCoCo, Detekt, PMD CPD y PIT gratuito. CI verifica ambas variantes JVM, lint, localización, compilaciones y controles medidos de regresión cuando cambia código relevante. CPD detecta clones de tokens; PIT muta un alcance pequeño y verificado de lógica pura Kotlin de gestos. La suite completa de emulador se ejecuta en cambios relevantes de main y manualmente; las mutaciones se ejecutan manualmente. Los cambios exclusivos de README evitan esos costos.
 
-Las correspondencias revisadas entre métodos Detekt/JaCoCo producen **CRAP-L**, usando cobertura de líneas explícitamente; las funciones sin correspondencia quedan visibles. No es cobertura de caminos base de Crapper. Cobertura, complejidad de funciones únicas, CRAP-L y duplicación tienen bases medidas para prevenir regresiones. La guía describe umbrales, alcance, informes y comandos.
+Las declaraciones del compilador PSI y las correspondencias inequívocas de fuente, propietario, parámetros, cuerpo y bytecode producen **CRAP-L** por método, usando explícitamente cobertura de líneas JaCoCo. Las transformaciones no soportadas quedan clasificadas y visibles. No es cobertura de caminos base de Crapper. Cobertura, complejidad, CRAP-L y duplicación tienen bases medidas para prevenir regresiones. Las mutaciones ampliadas de dominio siguen siendo informativas mientras se revisan supervivientes; el umbral del alcance original continúa obligatorio. La guía describe umbrales, alcance, informes y comandos.
 
 **Límites de medición:** las coberturas JVM y de emulador se informan por separado. CRAP-L se controla solamente donde hay correspondencias de funciones revisadas; las demás quedan visibles sin puntuar. La fortaleza de las mutaciones corresponde a su alcance Kotlin seleccionado. La [base y deuda](docs/quality/QUALITY_BASELINE.md) conserva la complejidad histórica y los caminos sin cubrir; no se cambiaron algoritmos acústicos para mejorar métricas. Consultá los registros de ejecución para conocer el resultado real de CI.
 

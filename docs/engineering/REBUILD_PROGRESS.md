@@ -13,19 +13,45 @@
 - Conservative mapper now correlates 276 functions (rather than 8), and classifies every other named declaration: 57 Compose, 41 local functions included in parent complexity, 3 abstract declarations, 1 anonymous owner.
 - The expanded JVM perspective exposes 97 high scores; this is newly visible existing debt, not an improvement. Android method coverage is measured separately.
 - Parser ownership/overload/local-function test passes; 16 Python tests pass including eight new ambiguity/boundary correspondence cases.
-- Original production bytecode frozen locally in ignored checkpoints/baseline-production.jar. A synthetic differential executable is being established before DSP changes.
+- Original production bytecode frozen locally in ignored checkpoints/baseline-production.jar; 741 synthetic observable-output lines match after the DSP/trace reconstruction.
+
+## Implemented production milestones
+
+- `ab69dfa`: period comparison/search/refinement separated into YinPeriodSearch; trace builder owns omission/connection state. Original 43/33/15 hotspots become 9/entry-point 1/7; all extracted trace/search work stays below 10. Preserve exact finite acoustics, gaps, diagnostics and WAV bytes.
+- `cf26f28`: framework-independent PlaybackController with stopped/preparing/ready and coalesced-seek state; SessionPlayer is an Android adapter. Twenty-two deterministic playback tests cover errors, stale callbacks, start selection, pause, loop, completion and disposal.
+- LivePitch rejects nonfinite display input after a demonstrated red/green defect test. Finite acceptance policy is unchanged.
+- Local integration: both JVM variants each 223 discovered / 215 passed / 0 failed / 8 protected skips; debug and Android-test APKs built. Lint 0 errors / 59 warnings / 10 hints after correcting the worktree-local SDK property and invalidating its stale lint cache. No lint rule was suppressed.
+- JaCoCo: total JVM 30.66% lines / 27.84% branches; core 98.50% / 78.36%, with changed code denominators disclosed. CPD zero groups. Current mapping 324/395 Detekt functions; all 439 PSI named declarations classified. Ratchets pass with original coverage floors and exactly two explicit measured method replacements.
+- Expanded PIT: 17 selected classes; first 1,143 mutants exposed missing assertions. Strengthened run: 1,146 total, 767 killed / 354 survived / 23 uncovered / 2 timeouts, 769/1,146 = 67.10% PIT-detected score; survivors remain unfinished. Focused 11/11 gate still enforced. Mutation scope does not cover the entire app.
+- Controlled JVM DSP microbenchmark executed for both profiles; samples/allocation tradeoffs are recorded in REBUILD_CASE_STUDY. No Android CPU/battery/rendering claim.
 
 ## Review and execution order
 
-Reviewed directly: recording/playback/workspace adapters; persistence/cache stores; PitchDetector/PitchTrace; WAV reader/writer/encoder; canonical MusicalTrace; music/geometry/profile/stream/acceptance core; first analysis ownership portion of ViewModel. Full 59-file review is NOT yet complete.
+Reviewed directly: recording/playback/workspace adapters, persistence/cache stores, all original core Kotlin files, MainActivity, full ViewModel, ExplorerState/gestures/transport, measurement/diagnostics/analysis UI and most of TallerApp. Full UI/native-wrapper review is NOT yet complete.
 
-1. Finish differential probe and pin observable DSP/trace/geometry/WAV behavior.
-2. Separate YIN window preparation, CMNDF search/refinement and acceptance from visualization; preserve arithmetic, thresholds and diagnostic contracts.
-3. Establish explicit playback/capture ownership and domain state tests; characterize error paths before replacement.
-4. Complete remaining core, ViewModel and UI source review; rebuild identified responsibilities in verified increments.
-5. Integrate broad mapping into existing ratchets without disguising expanded measurement as improved code. Extend PIT across critical pure logic and investigate survivors.
-6. Validate branch CI, fresh synthetic emulator suite, locale/compact/150%-font screenshots and differential/persistence/performance checks.
-7. Publish branch only and maintain a draft PR; preserve main. Update bilingual README and case study with actual evidence.
+1. Finish the remaining UI/native source review and record per-subsystem decisions. Do not claim file inventory equals review.
+2. Reproduce capture-generation ownership: stop an old monitoring worker, start a new recording, then release the old worker. Its shared finishRecording currently observes engine-global writer state. Introduce run-owned capture/finalization only after deterministic characterization. Existing RecordingHandoffTest uses reflection into engine fields; replace that coupling with behavioral ports while preserving every save/discard/integrity assertion.
+3. Address cache temporary-file writer collisions and index error recovery using synthetic historical fixtures; do not change persisted keys or rewrite original WAVs.
+4. Separate remaining ViewModel/UI responsibilities, especially PlotSurface MCC 139 and MeasureScreen nested decisions; inspect actual compact/landscape/ES/EN/150%-font output.
+5. Review all 354 mutation survivors and 23 uncovered outcomes, distinguishing real assertion gaps from Kotlin artifacts without marking unreviewed cases equivalent. Add recording-state mutation scope after its pure boundary exists.
+6. Inspect actual feature-branch fast/differential/full-emulator/manual-PIT results and reports; record exact SHAs. Reproduce only evidenced failures.
+7. Maintain the draft PR, rebuild case study and bilingual README. All major subsystems and final compatible-scope scorecard remain required before readiness.
+
+## Exact local commands
+
+Run in this worktree with protected fixture environment variables unset:
+
+```powershell
+.\gradlew.bat '-Pkotlin.incremental=false' :app:test :engineering-tools:test :app:jacocoDebugUnitTestReport detekt detektComplexity :engineering-tools:sourceInventory :app:qualityDuplication :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
+python tools/detekt_summary.py
+python tools/coverage_summary.py
+python tools/quality_gate.py
+python -m unittest discover -s tools -p 'test_*.py'
+.\gradlew.bat :app:qualityDifferential :app:qualityPerformanceComparison '-PdifferentialBaseline=checkpoints/baseline-production.jar'
+.\gradlew.bat :app:qualityMutation :app:qualityMutationDomain
+```
+
+Detailed logs/reports are under ignored checkpoints and build reports. The original oracle JAR is local and code-only; fresh CI rebuilds it from the pinned commit. Do not overwrite it with rebuilt classes. Never execute protected fixture cases or operate the physical phone.
 
 ## Acceptance state
 

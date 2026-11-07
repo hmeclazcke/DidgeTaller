@@ -45,6 +45,10 @@ class FunctionMappingTest(unittest.TestCase):
         f = self.function(); f['parameters'] = '3'
         self.assertEqual(correlate(f, [self.method(desc='([[D[SLjava/util/List;)V')], 3)['status'], 'measured')
 
+    def test_anonymous_members_are_not_assumed_to_contribute_to_enclosing_metric(self):
+        f=self.function();f['owner']='test/Example$<anonymous>';f['local']='true'
+        self.assertEqual(correlate(f, [self.method()], None)['status'], 'anonymous-owner')
+
 
 if __name__ == '__main__':
     unittest.main()

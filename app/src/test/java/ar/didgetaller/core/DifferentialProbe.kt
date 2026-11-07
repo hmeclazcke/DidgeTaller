@@ -47,4 +47,5 @@ object DifferentialProbe {
         val projection = PlotProjection(viewport, 320.0, 200.0, 48.0, 12.0)
         for (x in listOf(-10.0, 48.0, 208.0, 368.0, 400.0)) println("projection/$x: " + projection.data(x, 100.0))
     }
+
 }

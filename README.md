@@ -95,6 +95,8 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
+An isolated [engineering reconstruction](docs/engineering/REBUILD_CASE_STUDY.md) is **in progress** on `refactor/uncle-bob-rebuild`. It preserves main as the behavioral reference. The case study records actual DSP/trace responsibility changes, framework-independent playback ownership, differential contracts and measurement limits; it does not claim a completed application rebuild.
+
 Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), copied verbatim with its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). Project safety and Kotlin-specific execution live separately in AGENTS.md and the [quality guide](docs/quality/QUALITY_GUIDE.md).
 
 - **First Make it Work:** model the domain, validate boundaries, establish state ownership and use TDD/red-green-refactor for verifiable changes.
@@ -103,7 +105,7 @@ Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/uncle
 
 Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD and free PIT. Relevant-code CI checks both JVM variants, lint, localization, builds, coverage and measured ratchets. CPD detects token clones; PIT mutates a small verified pure-Kotlin gesture scope. Full emulator tests run for relevant main pushes and manual dispatch; focused mutation runs on manual dispatch. README-only changes avoid those costs.
 
-Reviewed method-level Detekt/JaCoCo correspondences produce **CRAP-L**, using line coverage explicitly; unmapped functions remain visible. This is not official Crapper basis-path coverage. Coverage, unique-function complexity, mapped CRAP-L and duplication have measured regression baselines. Thresholds, scope, reports and verified commands are in the quality guide.
+Compiler-PSI declarations and unambiguous source/owner/parameter/body/bytecode correspondences produce method-level **CRAP-L**, using JaCoCo line coverage explicitly. Unsupported transformations remain classified and visible. This is not official Crapper basis-path coverage. Coverage, complexity, mapped CRAP-L and duplication have measured regression baselines. Expanded domain mutation results remain informational during survivor review; the original focused mutation threshold stays enforced. Thresholds, scope, reports and verified commands are in the quality guide.
 
 **Measurement limits:** JVM and emulator coverage are separate measurements. CRAP-L is enforced only for reviewed function mappings; other functions remain visibly unmapped. Mutation strength applies to its selected Kotlin scope. Historical complexity debt and uncovered paths remain in the [baseline and backlog](docs/quality/QUALITY_BASELINE.md); acoustic algorithms were not changed to improve metrics. Check the linked execution records for actual CI outcomes.
 

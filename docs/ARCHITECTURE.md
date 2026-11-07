@@ -1,6 +1,6 @@
 # Architecture
 
-Didge Taller is a native Android application with one Gradle module, `app`. Kotlin/JVM code handles signal processing and models; Android adapters handle audio, local files, and presentation. There is no backend or Internet permission.
+Didge Taller has one Android runtime module, `app`, and a JVM-only `engineering-tools` module for compiler-PSI inventory and controlled performance probes. The tooling module is not packaged into the app. Kotlin/JVM code handles signal processing and models; Android adapters handle audio, local files, and presentation. There is no backend or Internet permission. The isolated [rebuild](engineering/REBUILD_CASE_STUDY.md) remains IN PROGRESS; this map describes implemented boundaries, not a completed Clean Architecture claim.
 
 ## Responsibility map
 
@@ -9,11 +9,12 @@ Paths below are relative to [app/src/main/java/ar/didgetaller](../app/src/main/j
 | Area | Main components | Responsibility |
 | --- | --- | --- |
 | Entry and coordination | `MainActivity`, `TallerViewModel` | Permissions, lifecycle, document export, capture/session state, background work |
-| Signal processing | `core/PitchDetector`, `PitchStream`, `LivePitch`, `SessionAnalysis` | YIN-based estimates, window cadence, live acceptance/display decisions, summaries |
+| Signal processing | `core/PitchDetector`, `YinPeriodSearch`, `PitchStream`, `LivePitch`, `SessionAnalysis` | PCM/visual preparation, period evidence/search, window cadence, live acceptance/display decisions, summaries |
 | Recorded audio | `core/Pcm16WavReader`, `WavAnalysis`, `SpectralAnalysis`, `HarmonicAnalysis`, `Radix2Fft` | Block reading, interval analysis, power spectra, harmonic candidates |
 | Chart data and mathematics | `core/AudioVisuals`, `PitchTrace`, `PlotViewport`, `PitchAxis`, `SpectralPalette` | STFT, waveform envelopes, pitch classification/links, coordinates, scales and colors |
 | Design models | `core/AcousticModel`, `BoreOptimizer` | Approximate input impedance and evolutionary bore search |
 | Android audio | `audio/MicrophoneEngine`, `SessionPlayer`, `SessionWorkspace` | AudioRecord, MediaPlayer, cancellable viewport work |
+| Playback domain | `core/PlaybackController`, backend/events/scheduler ports | Preparation/ready/stopped ownership, latest seek, pause intent, loops, stale callback rejection |
 | Storage | `data/LocalStore`, `RecordingStore`, `SessionToolsStore`, `TrashStore`, `AnalysisCache` | Local JSON/preferences, WAV index, associations/markers, recoverable deletion, derived caches |
 | Presentation | `ui/TallerApp`, `TallerNavigation`, `SessionExplorer`, `ImmersiveViewer`, `AcousticCharts`, `ComparisonScreen` | Compose screens, navigation, interactive plots, comparison |
 
@@ -43,7 +44,9 @@ Optional diagnostic metadata travels beside the accepted frequency. A bounded in
 
 `SessionWorkspace` generates the visible waveform/STFT on background dispatchers. The UI retains a bounded viewport rather than a full-recording spectrogram. Completed tiles remain in their data coordinates during gestures; new rendering follows the gesture. Color references stay fixed during an exploration. Playback cursor updates do not require recomputing the FFT.
 
-When captured readings exist, Fundamental uses that series even after reanalysis. Sessions without a captured series can use analyzed readings. Cards, detail, and full-screen plots share the pitch classification.
+The ordinary didgeridoo Drone uses canonical `MusicalTrace` from supported WAV spectral components; it is not a physically confirmed lip-oscillator fundamental and does not automatically receive musical notes. Captured YIN readings remain separate historical/diagnostic evidence. Flute uses its accepted estimated-pitch series. Cards, detail and fullscreen share the canonical trace; uncertain spans remain gaps.
+
+`PlaybackController` owns one immutable preparation/ready state and at most one native seek plus its latest requested target. `SessionPlayer` supplies Android effects through ports. Every callback checks backend ownership, including errors; disposal cancels polling before releasing the backend. The public facade used by ViewModel/screens is preserved. The remaining ViewModel and capture/store responsibilities have not yet been fully reconstructed.
 
 Technical definitions and limits: [Audio analysis](AUDIO_ANALYSIS.md), [Harmonic candidates](HARMONICS.md), and [Session explorer](SESSION_EXPLORER.md).
 

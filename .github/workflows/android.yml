@@ -39,6 +39,13 @@ jobs:
         run: ./gradlew --no-daemon :engineering-tools:test :app:testDebugUnitTest :app:testReleaseUnitTest :app:lintDebug
       - name: Build APK
         run: ./gradlew --no-daemon :app:assembleDebug
+      - name: Differential synthetic contracts against pinned original main
+        run: |
+          git fetch --no-tags origin 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67
+          git worktree add --detach "$RUNNER_TEMP/didge-original" 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67
+          (cd "$RUNNER_TEMP/didge-original" && bash ./gradlew --no-daemon :app:compileDebugKotlin)
+          jar --create --file "$RUNNER_TEMP/didge-original.jar" -C "$RUNNER_TEMP/didge-original/app/build/tmp/kotlin-classes/debug" .
+          ./gradlew --no-daemon :app:qualityDifferential "-PdifferentialBaseline=$RUNNER_TEMP/didge-original.jar"
       - name: Compile instrumented tests
         run: ./gradlew --no-daemon :app:assembleDebugAndroidTest
       - name: Validate English and Spanish resources
