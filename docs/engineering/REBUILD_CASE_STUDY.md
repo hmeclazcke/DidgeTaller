@@ -42,19 +42,39 @@ Intentional deviations from demonstrated original defects:
 
 ## Characterization and differential evidence
 
+### Worker-owned recording milestone
+
+The original MicrophoneEngine guarded reads with AudioRecord identity but finalized an engine-global writer. A retiring monitoring worker could therefore close a newly attached recording. A controlled emulator regression invoked the old worker's delayed finalization boundary after attaching the next writer; appending the next sample failed because that writer had been closed. This is a demonstrated ownership bug, not a proposed acoustic change. The boundary is controlled without opening a microphone; the separate timeout/discard integration test uses the emulator AudioRecord.
+
+[RecordingCapture](../../app/src/main/java/ar/didgetaller/core/RecordingCapture.kt) now owns one worker's monitoring/recording/finished state, writer, sample limit, discard claim and typed terminal outcome. MicrophoneEngine passes that same owner through append and finally; it never looks up a replacement's writer. State claims are synchronized; file finalization happens after the exactly-once terminal claim. Retiring the device is synchronized with start/stop, and queued device errors check capture ownership before reaching the UI. Existing UUID.part/discard names, PCM format, finalization/recovery policy and callback contracts remain intact.
+
+Fifteen JVM cases cover ownership, exact one- and two-second limits, empty chunks, invalid inputs, repeated completion, close/open errors and save/discard races. All twelve RecordingHandoffTest cases pass on the clean API 37 emulator, including saved index/WAV integrity, failed close and discard, recovery, ViewModel disposal, actual timeout and the new delayed-finalizer case. The tests now inject one capture boundary rather than mutating independent recording/writer flags. Windows can reject renaming an open RandomAccessFile; portable JVM assertions check the corresponding recoverable failure instead of pretending it succeeded. Android separately proves the successful rename/cleanup path.
+
+The capture production methods have MCC/CRAP-L 3, 3, 5.019 and 6 with JVM method lines 100%, 100%, 90.91% and 100%. Android adapter readLoop still has MCC 18 (original 20) and JVM-only CRAP-L 342 (original 420); this remains visible unfinished adapter debt, not an under-10 claim. Explicit reviewed signature lineage preserves the original ceiling without allowing regressions or erasing that debt.
+
+The complete local suites now discover 476 cases across debug/release: 460 pass, 16 protected skips, no failures. JVM lines/branches are 31.38%/28.62%; core 98.47%/78.58%, with changed source denominators. Mapping accounts for all 444 named declarations: 329 measured, 40 nested in parent metrics, 14 without bodies, 4 anonymous-owner and 57 Compose declarations. Detekt sees 400 named functions; 71 are unscored and 84 measured functions exceed target. Detekt remains 1,970 findings; Lint 0 errors/59 warnings/10 hints; CPD has no groups at 100 tokens. These numbers do not complete architecture acceptance.
+
+An initial 18-class mutation run generated 1,197 mutants: 806 killed, 365 survived, 24 uncovered and 2 timed out (PIT detected 808/1,197, 67.50%; two minutes two seconds engine time). Capture contributed 51: 38 killed, 12 survived, 1 uncovered. Reviewing survivors exposed missing two-second multiplication and empty-chunk assertions. The strengthened focused capture run kills 40/51, with 10 survivors and 1 uncovered. Remaining file-claim/success-path mutations require Linux comparison: Windows's open-file rename rejection prevents those paths; one accepted-zero append boundary may be behavior-equivalent but has not been silently removed. Broad reruns and final survivor classification remain outstanding; do not combine independently timed reports into a fabricated whole-suite score.
+
+### Verified remote and visual evidence
+
+The published code at `07c756c0055ff84c2600b6658b73111ab392fb4b` has successful [fast/differential CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42368989332), [complete emulator instrumentation](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42368900284), and [manual expanded mutations](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42368987707). Downloaded report artifacts confirm both JVM variants 223 discovered/215 passed/8 skipped each, Android 127/117/10 with no failures, separate Android coverage 4,349/4,775 lines and 3,874/5,687 branches, and the exact 17-class 1,146-mutant distribution above. A duplicate fast push run was explicitly cancelled after the identical PR run started; it is not counted as a pass. Artifacts retain seven days; these links identify the source revision independently of later changes. Capture changes require their own subsequent CI result.
+
+A newly created Didge_Rebuild_API37 emulator (1080x2400, density 420) uses only synthetic data. Local real screenshots were captured in English/Spanish, plus 1080x1920 portrait and landscape at 150% font. The corresponding eight UI audit methods passed. Inspected images show readable controls, intentional scrolling and accessible compact measurement actions; a canonical no-supported-reading state is shown honestly, without inventing a frequency. Screenshot capture does not prove every UI state or device configuration. No physical phone or historical emulator fixture was accessed.
+
 [DifferentialProbe](../../app/src/test/java/ar/didgetaller/core/DifferentialProbe.kt) runs unchanged against two isolated production classpaths: the pinned original JAR and rebuilt classes. The local oracle was compiled before production edits. CI regenerates it in a detached temporary worktree from the exact baseline commit.
 
 The current contract compares **741 output lines byte-for-byte**: 128 synthetic PCM cases across frame sizes, low/flute frequencies, silence, harmonic interference and late attacks, including full readings/diagnostics and WAV hashes; 160 seeded trace/summary/range scenarios; five viewport coordinate cases. Equality passed after each DSP/trace restructuring. This protects those contracts, not all application behavior. JNI, persistence transactions and UI navigation require their separate integration evidence. No private audio is an input.
 
-## Before/after scorecard — current milestone, not final acceptance
+## Before/after scorecard — published 07c756c milestone, not final acceptance
 
 | Category | Original main | Current local rebuild milestone | Interpretation |
 | --- | --- | --- | --- |
 | App JVM tests, both variants | 390 discovered / 374 passed / 16 skips | 446 discovered / 430 passed / 16 skips | 28 added cases per variant; private assumptions remain |
-| Android suite | 127 discovered / 117 passed / 10 skips | Await branch CI evidence | Compilation alone is not acceptance |
+| Android suite | 127 discovered / 117 passed / 10 skips | 127 discovered / 117 passed / 10 skips | Complete real branch emulator run, not compilation |
 | JVM production coverage | 28.19% lines / 25.69% branches | 30.66% / 27.84% | Code and denominator changed; generated-code exclusions unchanged |
 | Pure core JVM coverage | 98.47% / 77.25% | 98.50% / 78.36% | Playback logic is now measurable on JVM; not whole-app coverage |
-| Android coverage | 91.09% / 68.25% | Await actual branch emulator probes | Always separate from JVM |
+| Android coverage | 91.09% / 68.25% | 91.08% lines / 68.12% branches | Changed production denominators; always separate from JVM |
 | Function measurement | 8 mapped / 329 unmapped of 337 | 324 mapped / 71 unscored of 395 Detekt functions | A different, broader measurement scope; 439 PSI named declarations remain accounted |
 | Broader original CRAP-L baseline | 276 mapped, 97 high, measured before production edits | 324 mapped, 85 high | Existing hidden debt exposed; many high Android functions still need work |
 | Known complex acoustic functions | 43 / 33 / 15 | 9 / entry-point 1 / 7; actual builder work <=9 | Responsibility separation plus differential protection |

@@ -12,6 +12,7 @@ import ar.didgetaller.SessionPhase
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.ProgressiveWavWriter
+import ar.didgetaller.core.RecordingCapture
 import ar.didgetaller.core.WavCodec
 import ar.didgetaller.data.RecordingStore
 import ar.didgetaller.data.SessionToolsStore
@@ -46,12 +47,39 @@ class RecordingHandoffTest {
     // Test-only access keeps fault injection out of the production API. Names are debug fields.
     private fun field(target: Any, name: String) = target.javaClass.getDeclaredField(name).apply { isAccessible = true }
     private fun attach(engine: MicrophoneEngine, writer: ProgressiveWavWriter) {
-        field(engine, "writer").set(engine, writer)
-        field(engine, "recording").setBoolean(engine, true)
+        val capture = RecordingCapture { _, _ -> writer }
+        assertTrue(capture.start(writer.file, writer.sampleRate, MicrophoneEngine.MAX_RECORD_SECONDS))
+        field(engine, "capture").set(engine, capture)
     }
-    private fun finish(engine: MicrophoneEngine) {
-        engine.javaClass.getDeclaredMethod("finishRecording", Boolean::class.javaPrimitiveType)
-            .apply { isAccessible = true }.invoke(engine, true)
+    private fun finish(engine: MicrophoneEngine, released: Boolean = true) {
+        finishOwned(engine, field(engine, "capture").get(engine) as RecordingCapture, released)
+    }
+    private fun finishOwned(engine: MicrophoneEngine, capture: RecordingCapture, released: Boolean) {
+        engine.javaClass.getDeclaredMethod("finishRecording", RecordingCapture::class.java, Boolean::class.javaPrimitiveType)
+            .apply { isAccessible = true }.invoke(engine, capture, released)
+    }
+    private fun pendingWorkerFinalization(engine: MicrophoneEngine): () -> Unit {
+        val owned = (field(engine, "capture").get(engine) as RecordingCapture?) ?: RecordingCapture()
+        return { finishOwned(engine, owned, true) }
+    }
+
+    @Test fun retiringMonitorCannotFinalizeTheNextRecording() {
+        val engine = MicrophoneEngine({}, {}, {}, {})
+        // Capture the worker's finalization responsibility before its replacement is attached.
+        // No microphone is opened: the delayed worker boundary is controlled by the test.
+        val retiringWorker = pendingWorkerFinalization(engine)
+        val partial = RecordingStore(app).newCapture()
+        val writer = ProgressiveWavWriter(partial)
+        writer.append(shortArrayOf(10), 1)
+        attach(engine, writer)
+        try {
+            retiringWorker()
+            writer.append(shortArrayOf(20), 1)
+            finish(engine)
+            assertArrayEquals(WavCodec.encode(shortArrayOf(10, 20), 2, 44100), partial.readBytes())
+        } finally {
+            writer.close()
+        }
     }
     private fun breakOwnedHandle(writer: ProgressiveWavWriter) {
         // Real IOException on finalization, without mocking close or changing file bytes.
@@ -217,8 +245,7 @@ class RecordingHandoffTest {
             onRecordingDiscarded = { if (it) successes.incrementAndGet() else failures.incrementAndGet() })
         attach(engine, writer)
         assertTrue(engine.discardRecording())
-        engine.javaClass.getDeclaredMethod("finishRecording", Boolean::class.javaPrimitiveType)
-            .apply { isAccessible = true }.invoke(engine, false)
+        finish(engine, false)
         instrumentation.waitForIdleSync()
         assertEquals(0, successes.get())
         assertEquals(1, failures.get())

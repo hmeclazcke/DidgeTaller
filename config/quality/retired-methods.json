@@ -6,5 +6,13 @@
   "ar/didgetaller/audio/SessionPlayer.fail(Ljava/lang/Throwable;)V": {
     "replacement": "ar/didgetaller/core/PlaybackController.fail(Ljava/lang/Throwable;)V",
     "reason": "Move failure cleanup into the state owner; retain localized error formatting at the Android boundary."
+  },
+  "ar/didgetaller/audio/MicrophoneEngine.finishRecording(Z)V": {
+    "replacement": "ar/didgetaller/audio/MicrophoneEngine.finishRecording(Lar/didgetaller/core/RecordingCapture;Z)V",
+    "reason": "Finalize the worker-owned capture rather than the engine-global writer; retain the original method's risk ceiling across its explicit owner parameter."
+  },
+  "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;)V": {
+    "replacement": "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;Lar/didgetaller/core/RecordingCapture;)V",
+    "reason": "Bind each worker to its own recording state. Preserve original loop metric lineage while moving file decisions into the JVM-tested capture state owner."
   }
 }

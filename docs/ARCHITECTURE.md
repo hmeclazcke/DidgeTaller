@@ -14,6 +14,7 @@ Paths below are relative to [app/src/main/java/ar/didgetaller](../app/src/main/j
 | Chart data and mathematics | `core/AudioVisuals`, `PitchTrace`, `PlotViewport`, `PitchAxis`, `SpectralPalette` | STFT, waveform envelopes, pitch classification/links, coordinates, scales and colors |
 | Design models | `core/AcousticModel`, `BoreOptimizer` | Approximate input impedance and evolutionary bore search |
 | Android audio | `audio/MicrophoneEngine`, `SessionPlayer`, `SessionWorkspace` | AudioRecord, MediaPlayer, cancellable viewport work |
+| Capture domain | `core/RecordingCapture` | One worker's writer, duration limit, discard claim and exactly-once finalization outcome |
 | Playback domain | `core/PlaybackController`, backend/events/scheduler ports | Preparation/ready/stopped ownership, latest seek, pause intent, loops, stale callback rejection |
 | Storage | `data/LocalStore`, `RecordingStore`, `SessionToolsStore`, `TrashStore`, `AnalysisCache` | Local JSON/preferences, WAV index, associations/markers, recoverable deletion, derived caches |
 | Presentation | `ui/TallerApp`, `TallerNavigation`, `SessionExplorer`, `ImmersiveViewer`, `AcousticCharts`, `ComparisonScreen` | Compose screens, navigation, interactive plots, comparison |
@@ -24,15 +25,16 @@ The ViewModel coordinates these components; the directory boundaries describe re
 
 ```text
 AudioRecord → MicrophoneEngine
-                ├─ ProgressiveWavWriter → owned .part → finalized WAV
+                ├─ RecordingCapture (one per worker) → ProgressiveWavWriter → owned .part → finalized WAV
                 └─ PitchStream → PitchDetector → LivePitch
                                                    ├─ live display
                                                    └─ captured points → session summary/index
 
-Captured points → PitchTrace → Library preview / detail / full-screen Fundamental
+Captured points → historical summary / advanced YIN evidence
+Original WAV → canonical MusicalTrace → Library preview / detail / full-screen Drone
 ```
 
-Capture starts explicitly. PCM16 mono at 44.1 kHz is written progressively; the app does not retain the whole recording in RAM. Stopping, reaching the configured limit, leaving Measure, or backgrounding the app finalizes the capture. Recovery examines only the app's own interrupted partial files. It does not repair historical WAVs or reconstruct missing pitch readings.
+Capture starts explicitly. Each worker receives its own `RecordingCapture`; an older worker's append/finalization cannot observe a replacement's writer. The capture atomically claims its terminal outcome before closing outside the state lock. Save/discard races have one outcome; failed discard claims cannot authorize saving. PCM16 mono at 44.1 kHz is written progressively; the app does not retain the whole recording in RAM. Stopping, reaching the configured limit, leaving Measure, or backgrounding the app finalizes the capture. Recovery examines only the app's own interrupted partial files. It does not repair historical WAVs or reconstruct missing pitch readings.
 
 `InstrumentProfile` defines didgeridoo and Native American flute ranges/windows. The detector estimates periodicity; `LivePitch` applies the live decision and display smoothing while stored points retain accepted detector frequencies. `SessionAnalysis` derives summaries. `PitchTrace` classifies original points and display links without rewriting measurements or filling gaps.
 

@@ -80,7 +80,14 @@ def violations(current, baseline):
             errors.append(f'CRAP-L regression: {key}')
     for key, row in now.items():
         if key not in previous and row['crap_line'] >= float(POLICY['crapTarget']):
-            errors.append(f'New high CRAP-L: {key}')
+            # An explicitly reviewed signature evolution keeps its measured predecessor's
+            # ceiling. It must not reset debt, allow ambiguous lineage, or hide an increase.
+            predecessors = [old for identity, old in previous.items()
+                            if identity not in now and RETIRED.get(identity, {}).get('replacement') == key]
+            if len(predecessors) != 1:
+                errors.append(f'New high CRAP-L: {key}')
+            elif row['crap_line'] > predecessors[0]['crap_line'] + 1e-9:
+                errors.append(f'CRAP-L replacement regression: {key}')
     allowed = Counter(r['hash'] for r in baseline['duplicates'])
     for key, count in Counter(r['hash'] for r in current['duplicates']).items():
         if count > allowed[key]:

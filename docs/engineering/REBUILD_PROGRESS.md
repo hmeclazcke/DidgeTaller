@@ -24,13 +24,18 @@
 - JaCoCo: total JVM 30.66% lines / 27.84% branches; core 98.50% / 78.36%, with changed code denominators disclosed. CPD zero groups. Current mapping 324/395 Detekt functions; all 439 PSI named declarations classified. Ratchets pass with original coverage floors and exactly two explicit measured method replacements.
 - Expanded PIT: 17 selected classes; first 1,143 mutants exposed missing assertions. Strengthened run: 1,146 total, 767 killed / 354 survived / 23 uncovered / 2 timeouts, 769/1,146 = 67.10% PIT-detected score; survivors remain unfinished. Focused 11/11 gate still enforced. Mutation scope does not cover the entire app.
 - Controlled JVM DSP microbenchmark executed for both profiles; samples/allocation tradeoffs are recorded in REBUILD_CASE_STUDY. No Android CPU/battery/rendering claim.
+- Capture ownership milestone: reproduced the delayed-finalizer writer-close defect on the clean emulator, then introduced one RecordingCapture per worker. Fifteen new JVM cases and all twelve RecordingHandoffTest cases pass, preserving saved bytes/index, discard failures, recovery and disposal contracts. No persisted format changed.
+- Current local full JVM suites: 238 discovered/230 passed/8 protected skips each; 21 Python tests pass. All 444 PSI declarations accounted (329 mapped/71 unscored of 400 Detekt functions), 84 high scores. JVM 31.38% lines/28.62% branches; core 98.47%/78.58%. Static counts unchanged from previous milestone. Differential 741 outputs still exact.
+- Initial 18-class PIT: 1,197 total, 806 killed/365 survived/24 uncovered/2 timed out. Reviewing capture survivors added duration/empty-chunk assertions; focused capture strengthened from 38 to 40 killed out of 51 (10 survived/1 uncovered), not a whole-suite score. Windows cannot exercise successful open-writer rename paths; inspect Linux CI mutations separately.
+- Published 07c756c passed actual fast/differential run 42368989332, full emulator run 42368900284 (127 discovered/117 passed/10 skipped/0 failed), and manual mutation run 42368987707 (17-class 1,146 distribution). Report artifacts downloaded and inspected. Its Android line/branch coverage is separately 91.08%/68.12%. Subsequent capture changes need new CI evidence.
+- Fresh local Didge_Rebuild_API37 AVD uses synthetic data only. Eight focused UI methods passed across ES/EN, portrait/landscape and compact 150% font. Screenshots are ignored local evidence, not new public promotional assets. Main/physical device/private fixtures untouched.
 
 ## Review and execution order
 
 Reviewed directly: recording/playback/workspace adapters, persistence/cache stores, all original core Kotlin files, MainActivity, full ViewModel, ExplorerState/gestures/transport, measurement/diagnostics/analysis UI and most of TallerApp. Full UI/native-wrapper review is NOT yet complete.
 
 1. Finish the remaining UI/native source review and record per-subsystem decisions. Do not claim file inventory equals review.
-2. Reproduce capture-generation ownership: stop an old monitoring worker, start a new recording, then release the old worker. Its shared finishRecording currently observes engine-global writer state. Introduce run-owned capture/finalization only after deterministic characterization. Existing RecordingHandoffTest uses reflection into engine fields; replace that coupling with behavioral ports while preserving every save/discard/integrity assertion.
+2. Capture-generation writer ownership is fixed and characterized. Continue reviewing microphone device creation/release error paths and ViewModel terminal-event ownership; the complete capture subsystem is not declared finished. Preserve all handoff tests' save/discard/index/byte assertions.
 3. Address cache temporary-file writer collisions and index error recovery using synthetic historical fixtures; do not change persisted keys or rewrite original WAVs.
 4. Separate remaining ViewModel/UI responsibilities, especially PlotSurface MCC 139 and MeasureScreen nested decisions; inspect actual compact/landscape/ES/EN/150%-font output.
 5. Review all 354 mutation survivors and 23 uncovered outcomes, distinguishing real assertion gaps from Kotlin artifacts without marking unreviewed cases equivalent. Add recording-state mutation scope after its pure boundary exists.
@@ -49,6 +54,7 @@ python tools/quality_gate.py
 python -m unittest discover -s tools -p 'test_*.py'
 .\gradlew.bat :app:qualityDifferential :app:qualityPerformanceComparison '-PdifferentialBaseline=checkpoints/baseline-production.jar'
 .\gradlew.bat :app:qualityMutation :app:qualityMutationDomain
+.\gradlew.bat :app:qualityMutationCapture
 ```
 
 Detailed logs/reports are under ignored checkpoints and build reports. The original oracle JAR is local and code-only; fresh CI rebuilds it from the pinned commit. Do not overwrite it with rebuilt classes. Never execute protected fixture cases or operate the physical phone.
