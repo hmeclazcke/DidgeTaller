@@ -13,7 +13,7 @@ Run from repository root with an installed JDK 21, Gradle wrapper 9.6.0, AGP 9.4
 ```powershell
 .\gradlew.bat :app:test
 .\gradlew.bat :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
-.\gradlew.bat '-Pkotlin.incremental=false' :app:jacocoDebugUnitTestReport detekt detektComplexity
+.\gradlew.bat '-Pkotlin.incremental=false' :app:jacocoDebugUnitTestReport detekt detektComplexity :engineering-tools:test :engineering-tools:sourceInventory
 python tools/detekt_summary.py
 python tools/coverage_summary.py
 .\gradlew.bat :app:qualityDuplication
@@ -37,6 +37,8 @@ python tools/run_instrumentation.py --adb "$env:LOCALAPPDATA/Android/Sdk/platfor
 On CI, adb is on PATH and --adb can be omitted. The wrapper installs only on emulator-* with ranchu/goldfish hardware, executes the entire AndroidJUnitRunner suite, saves output and fails on missing success or failures even if adb returns zero. The baseline suite was actually launched with the equivalent explicit adb install-r and am instrument commands; failures are recorded in QUALITY_BASELINE. Full verification means the component sequence above PLUS this entire instrumentation run, not merely an app-test APK build. Use the latest executed results in QUALITY_BASELINE; an initial failing run remains recorded there.
 
 ## Reports and enforcement
+
+The isolated `refactor/uncle-bob-rebuild` effort is **IN PROGRESS**; see [baseline](../engineering/REBUILD_BASELINE.md) and [checkpoint](../engineering/REBUILD_PROGRESS.md). Compiler PSI inventories every named declaration, lambda and explicit accessor. The source/owner/parameter-count/body-location/descriptor mapper replaces the eight-function allowlist for actual gate inputs; legacy manual pins remain provenance checks. Baseline expansion records previously invisible original debt, not an improvement. Named functions without their own Detekt metric (locals), Compose transformations, declarations without bodies and anonymous owners remain explicitly classified. JVM and Android scores must be generated separately with the corresponding JaCoCo XML. Inline/suspend/ambiguous candidates are rejected rather than guessed. Reports and the expanded ratchet do not certify architecture or prove branch-path coverage.
 
 - app/build/reports/jacoco/debug/: HTML/XML and summary.json/summary.md, debug JVM coverage only. All production Kotlin including handwritten lambdas/Compose remains in the denominator. Generated R/BuildConfig/WhenMappings are filtered; JaCoCo Kotlin filters handle bytecode scaffolding. Android adapters/persistence remain zero. Instrumentation coverage is reported separately, never merged into this JVM percentage.
 - build/reports/detekt/: static findings and per-function MCC/cognitive observations. Findings remain informational; reliable unique file/function MCC regressions are checked separately.

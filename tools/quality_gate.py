@@ -32,7 +32,7 @@ def measure():
     complexity = {r['file'] + ':' + r['function']: r['cyclomatic'] for r in functions
                   if counts[r['file'], r['function']] == 1}
     methods = []
-    for r in cov['reviewed_method_matches']:
+    for r in cov.get('source_method_matches', cov['reviewed_method_matches']):
         coverage = ratio(r['coverage']['LINE'])
         methods.append(dict(identity=r['owner'] + '.' + r['name'] + r['descriptor'],
                             file=r['source'], cc=r['cyclomatic'], line_coverage=coverage,

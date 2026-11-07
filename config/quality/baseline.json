@@ -340,6 +340,574 @@
   },
   "methods": [
     {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.start()Z",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.stop()V",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.isRunning()Z",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.startRecording(Ljava/io/File;I)Z",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.discardRecording()Z",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.finishRecording(Z)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 7,
+      "line_coverage": 0.0,
+      "crap_line": 56.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "cc": 20,
+      "line_coverage": 0.0,
+      "crap_line": 420.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.requestSeek(J)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.fail(Ljava/lang/Throwable;)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.open(Ljava/lang/String;Ljava/io/File;ZJ)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.toggle(Ljava/lang/String;Ljava/io/File;)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 9,
+      "line_coverage": 0.0,
+      "crap_line": 90.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.seek(Ljava/lang/String;Ljava/io/File;J)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.loop(Lkotlin/ranges/LongRange;)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.position()I",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.duration()I",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.restart(Ljava/lang/String;Ljava/io/File;)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionPlayer.stop()V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionPlayer.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionWorkspace.open(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionWorkspace.cancel()V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionWorkspace.clear()V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionWorkspace.render(Lar/didgetaller/data/RecordingStore$Session;Lar/didgetaller/audio/VisualRequest;Z)V",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "cc": 17,
+      "line_coverage": 0.0,
+      "crap_line": 306.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/audio/SessionWorkspace.stateSnapshot(Lar/didgetaller/audio/VisualState;Lar/didgetaller/core/AudioVisuals$Spectrogram;Landroid/graphics/Bitmap;)Lar/didgetaller/audio/VisualState;",
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticDiagnostics.record(JLar/didgetaller/core/PitchDetector$Reading;Lar/didgetaller/core/LivePitch$State;Lar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/AcousticDiagnostics$Sample;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticDiagnostics.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticDiagnostics.clear()V",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticDiagnostics.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Shape.controlPoints()Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Shape.diameter(I)D",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Shape.withControlPoints(Ljava/util/List;)Lar/didgetaller/core/AcousticModel$Shape;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Shape.csv()Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Complex.plus(Lar/didgetaller/core/AcousticModel$Complex;)Lar/didgetaller/core/AcousticModel$Complex;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Complex.times(Lar/didgetaller/core/AcousticModel$Complex;)Lar/didgetaller/core/AcousticModel$Complex;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Complex.times(D)Lar/didgetaller/core/AcousticModel$Complex;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Complex.div(Lar/didgetaller/core/AcousticModel$Complex;)Lar/didgetaller/core/AcousticModel$Complex;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel$Complex.magnitude()D",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel.evaluate(Lar/didgetaller/core/AcousticModel$Shape;III)Lar/didgetaller/core/AcousticModel$Simulation;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 7,
+      "line_coverage": 1.0,
+      "crap_line": 7.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel.detectPeaks([DII)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 14,
+      "line_coverage": 0.9333333333333333,
+      "crap_line": 14.058074074074074,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AcousticModel.description(Lar/didgetaller/core/AcousticModel$Simulation;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AudioLevel$Companion.read(Lar/didgetaller/core/MonoPcmSource;Lkotlin/jvm/functions/Function0;)Lar/didgetaller/core/AudioLevel;",
+      "file": "app/src/main/java/ar/didgetaller/core/AudioLevel.kt",
+      "cc": 4,
+      "line_coverage": 1.0,
+      "crap_line": 4.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AudioVisuals$Spectrogram.frequency(D)D",
+      "file": "app/src/main/java/ar/didgetaller/core/AudioVisuals.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AudioVisuals$Spectrogram.relativeDb(II)Ljava/lang/Double;",
+      "file": "app/src/main/java/ar/didgetaller/core/AudioVisuals.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AudioVisuals.checkCancel(Lkotlin/jvm/functions/Function0;)V",
+      "file": "app/src/main/java/ar/didgetaller/core/AudioVisuals.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AudioVisuals.waveform(Lar/didgetaller/core/MonoPcmSource;JJILkotlin/jvm/functions/Function0;)Lar/didgetaller/core/AudioVisuals$Wave;",
+      "file": "app/src/main/java/ar/didgetaller/core/AudioVisuals.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AudioVisuals.spectrogram(Lar/didgetaller/core/MonoPcmSource;JJDDZIILkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lar/didgetaller/core/AudioVisuals$Spectrogram;",
+      "file": "app/src/main/java/ar/didgetaller/core/AudioVisuals.kt",
+      "cc": 19,
+      "line_coverage": 1.0,
+      "crap_line": 19.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/BoreOptimizer.search(Lar/didgetaller/core/AcousticModel$Shape;Lar/didgetaller/core/BoreOptimizer$Target;Lar/didgetaller/core/BoreOptimizer$Settings;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)Lar/didgetaller/core/BoreOptimizer$Candidate;",
+      "file": "app/src/main/java/ar/didgetaller/core/BoreOptimizer.kt",
+      "cc": 23,
+      "line_coverage": 1.0,
+      "crap_line": 23.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/DroneComponentOverlay.visible(Lar/didgetaller/core/DroneComponentCurve;Lar/didgetaller/core/InstrumentProfile;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/DroneComponentAnalysis.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/DroneComponentAnalysis.analyze(Lar/didgetaller/core/MonoPcmSource;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lar/didgetaller/core/DroneComponentCurve;",
+      "file": "app/src/main/java/ar/didgetaller/core/DroneComponentAnalysis.kt",
+      "cc": 10,
+      "line_coverage": 0.967741935483871,
+      "crap_line": 10.003356718472022,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/DroneComponentAnalysis.classify(DDLar/didgetaller/core/PowerSpectrum;)Lar/didgetaller/core/DroneComponentCurve$Sample;",
+      "file": "app/src/main/java/ar/didgetaller/core/DroneComponentAnalysis.kt",
+      "cc": 23,
+      "line_coverage": 1.0,
+      "crap_line": 23.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/DroneComponentAnalysis.peaks([DIID)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/DroneComponentAnalysis.kt",
+      "cc": 14,
+      "line_coverage": 1.0,
+      "crap_line": 14.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/HarmonicAnalysis.analyze(Lar/didgetaller/core/PowerSpectrum;Ljava/lang/Double;)Lar/didgetaller/core/HarmonicAnalysis$Result;",
+      "file": "app/src/main/java/ar/didgetaller/core/HarmonicAnalysis.kt",
+      "cc": 20,
+      "line_coverage": 1.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/InstrumentProfile.accepts(Lar/didgetaller/core/SessionAnalysis$Point;)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/InstrumentProfile.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/InstrumentProfile$Companion.fromStored(Ljava/lang/String;)Lar/didgetaller/core/InstrumentProfile;",
+      "file": "app/src/main/java/ar/didgetaller/core/InstrumentProfile.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/LivePitch.next(Lar/didgetaller/core/LivePitch$State;Lar/didgetaller/core/PitchDetector$Reading;Lar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/LivePitch$State;",
+      "file": "app/src/main/java/ar/didgetaller/core/LivePitch.kt",
+      "cc": 8,
+      "line_coverage": 1.0,
+      "crap_line": 8.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Music.midi(D)D",
+      "file": "app/src/main/java/ar/didgetaller/core/Music.kt",
+      "cc": 4,
+      "line_coverage": 1.0,
+      "crap_line": 4.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Music.frequency(I)D",
+      "file": "app/src/main/java/ar/didgetaller/core/Music.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Music.pitch(D)Lar/didgetaller/core/Music$Pitch;",
+      "file": "app/src/main/java/ar/didgetaller/core/Music.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Music.note(D)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/core/Music.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Music.cents(D)I",
+      "file": "app/src/main/java/ar/didgetaller/core/Music.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Music.hzText(D)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/core/Music.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace.frequencyAt(J)Ljava/lang/Double;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace.frequencyRange()Lar/didgetaller/core/AxisWindow;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace.medianHz()Ljava/lang/Double;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace.normalized(Lar/didgetaller/core/MusicalTrace$Sample;Lar/didgetaller/core/AxisWindow;)Lkotlin/Pair;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace$Companion.unavailable(Lar/didgetaller/core/InstrumentProfile;J)Lar/didgetaller/core/MusicalTrace;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace$Companion.didgeridoo(Lar/didgetaller/core/DroneComponentCurve;JLjava/util/List;)Lar/didgetaller/core/MusicalTrace;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 14,
+      "line_coverage": 1.0,
+      "crap_line": 14.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/MusicalTrace$Companion.flute(Ljava/util/List;J)Lar/didgetaller/core/MusicalTrace;",
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTrace.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Pcm16WavReader.read(J[S)I",
+      "file": "app/src/main/java/ar/didgetaller/core/Pcm16WavReader.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Pcm16WavReader.ascii()Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/core/Pcm16WavReader.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Pcm16WavReader.uint16()I",
+      "file": "app/src/main/java/ar/didgetaller/core/Pcm16WavReader.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Pcm16WavReader.uint32()J",
+      "file": "app/src/main/java/ar/didgetaller/core/Pcm16WavReader.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Pcm16WavReader.close()V",
+      "file": "app/src/main/java/ar/didgetaller/core/Pcm16WavReader.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchAxis.ticks(Lar/didgetaller/core/AxisWindow;I)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchAxis.kt",
+      "cc": 6,
+      "line_coverage": 1.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchDetector.analyze([SIIIZ)Lar/didgetaller/core/PitchDetector$Reading;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
       "identity": "ar/didgetaller/core/PitchDetector.analyzeWithDiagnostics([SIIIZLkotlin/jvm/functions/Function1;)Lar/didgetaller/core/PitchDetector$Reading;",
       "file": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
       "cc": 43,
@@ -356,20 +924,28 @@
       "risk": "within-target"
     },
     {
-      "identity": "ar/didgetaller/core/PitchTrace.build(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)Ljava/util/List;",
-      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
-      "cc": 33,
-      "line_coverage": 1.0,
-      "crap_line": 33.0,
-      "risk": "above-target"
+      "identity": "ar/didgetaller/core/PitchStream.append([SI)Lar/didgetaller/core/PitchDetector$Reading;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
+      "cc": 6,
+      "line_coverage": 0.9230769230769231,
+      "crap_line": 6.0163859808830225,
+      "risk": "within-target"
     },
     {
-      "identity": "ar/didgetaller/core/PitchTrace.isolated(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchTrace$Reason;",
+      "identity": "ar/didgetaller/core/PitchTrace.cents(DD)D",
       "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
-      "cc": 15,
+      "cc": 1,
       "line_coverage": 1.0,
-      "crap_line": 15.0,
-      "risk": "above-target"
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.supported(Lar/didgetaller/core/SessionAnalysis$Point;Lar/didgetaller/core/InstrumentProfile;)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
     },
     {
       "identity": "ar/didgetaller/core/PitchTrace.tone(DLjava/lang/Double;)Lar/didgetaller/core/PitchTrace$Tone;",
@@ -380,19 +956,91 @@
       "risk": "within-target"
     },
     {
-      "identity": "ar/didgetaller/core/PitchStream.append([SI)Lar/didgetaller/core/PitchDetector$Reading;",
-      "file": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
-      "cc": 6,
-      "line_coverage": 0.9230769230769231,
-      "crap_line": 6.0163859808830225,
+      "identity": "ar/didgetaller/core/PitchTrace.isolated(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchTrace$Reason;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 15,
+      "line_coverage": 1.0,
+      "crap_line": 15.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.unsupportedJump(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 11,
+      "line_coverage": 1.0,
+      "crap_line": 11.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.hasSupport(Ljava/util/List;ILar/didgetaller/core/InstrumentProfile;)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
       "risk": "within-target"
     },
     {
-      "identity": "ar/didgetaller/core/LivePitch.next(Lar/didgetaller/core/LivePitch$State;Lar/didgetaller/core/PitchDetector$Reading;Lar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/LivePitch$State;",
-      "file": "app/src/main/java/ar/didgetaller/core/LivePitch.kt",
-      "cc": 8,
+      "identity": "ar/didgetaller/core/PitchTrace.alternativePeriods(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)[Z",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 22,
       "line_coverage": 1.0,
-      "crap_line": 8.0,
+      "crap_line": 22.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PitchTrace.build(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/PitchTrace.kt",
+      "cc": 33,
+      "line_coverage": 1.0,
+      "crap_line": 33.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotTouchKt.plotTouch(FFFIZ)Lar/didgetaller/core/PlotTouch;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotTouch.kt",
+      "cc": 6,
+      "line_coverage": 1.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AxisWindow.value(DZ)D",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AxisWindow.fraction(DZ)D",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AxisDomain.space(D)D",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AxisDomain.raw(D)D",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/AxisDomain.constrain(Lar/didgetaller/core/AxisWindow;)Lar/didgetaller/core/AxisWindow;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
       "risk": "within-target"
     },
     {
@@ -402,10 +1050,1507 @@
       "line_coverage": 1.0,
       "crap_line": 4.0,
       "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotViewport.transform(Lar/didgetaller/core/AxisDomain;Lar/didgetaller/core/AxisDomain;DDDDDD)Lar/didgetaller/core/PlotViewport;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotProjection.data(DD)Lar/didgetaller/core/PlotPoint;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotProjection.pixels(DD)Lar/didgetaller/core/PlotPoint;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotScales.overview(Ljava/util/List;Lar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchViewRange;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 8,
+      "line_coverage": 1.0,
+      "crap_line": 8.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotScales.pitch(Ljava/util/List;ZLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/PitchViewRange;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 8,
+      "line_coverage": 1.0,
+      "crap_line": 8.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PlotScales.ticks(Lar/didgetaller/core/AxisWindow;IZ)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/PlotViewport.kt",
+      "cc": 10,
+      "line_coverage": 1.0,
+      "crap_line": 10.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/ProgressiveWavWriter.ensureSpace(I)V",
+      "file": "app/src/main/java/ar/didgetaller/core/ProgressiveWavWriter.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/ProgressiveWavWriter.append([SI)V",
+      "file": "app/src/main/java/ar/didgetaller/core/ProgressiveWavWriter.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/ProgressiveWavWriter.close()V",
+      "file": "app/src/main/java/ar/didgetaller/core/ProgressiveWavWriter.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/ProgressiveWavWriter$Companion.le32(Ljava/io/RandomAccessFile;J)V",
+      "file": "app/src/main/java/ar/didgetaller/core/ProgressiveWavWriter.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/ProgressiveWavWriter$Companion.writeHeader(Ljava/io/RandomAccessFile;J)V",
+      "file": "app/src/main/java/ar/didgetaller/core/ProgressiveWavWriter.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/ProgressiveWavWriter$Companion.repair(Ljava/io/File;)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/ProgressiveWavWriter.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/Radix2Fft.forward([D[D)V",
+      "file": "app/src/main/java/ar/didgetaller/core/Radix2Fft.kt",
+      "cc": 9,
+      "line_coverage": 1.0,
+      "crap_line": 9.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SavedPitchEvidence.inspect(Lar/didgetaller/core/MonoPcmSource;JLar/didgetaller/core/InstrumentProfile;Lkotlin/jvm/functions/Function0;)Lar/didgetaller/core/SavedPitchEvidence$Snapshot;",
+      "file": "app/src/main/java/ar/didgetaller/core/SavedPitchEvidence.kt",
+      "cc": 11,
+      "line_coverage": 1.0,
+      "crap_line": 11.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SavedYinReplay.usesExpandedRange(Ljava/util/List;)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/SavedYinReplay.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SavedYinReplay.analyze(Lar/didgetaller/core/MonoPcmSource;ZLkotlin/jvm/functions/Function0;)Lar/didgetaller/core/SavedYinReplay$Result;",
+      "file": "app/src/main/java/ar/didgetaller/core/SavedYinReplay.kt",
+      "cc": 7,
+      "line_coverage": 0.9583333333333334,
+      "crap_line": 7.003544560185185,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SessionAnalysis$Point.isUsable(DD)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/SessionAnalysis.kt",
+      "cc": 4,
+      "line_coverage": 1.0,
+      "crap_line": 4.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SessionAnalysis.summarize(Ljava/util/List;DD)Lar/didgetaller/core/SessionAnalysis$Summary;",
+      "file": "app/src/main/java/ar/didgetaller/core/SessionAnalysis.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SessionAnalysis.median(Ljava/util/List;)D",
+      "file": "app/src/main/java/ar/didgetaller/core/SessionAnalysis.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PowerSpectrum.relativeDb(ID)Ljava/lang/Double;",
+      "file": "app/src/main/java/ar/didgetaller/core/SpectralAnalysis.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/PowerSpectrum.bands(Ljava/util/List;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/core/SpectralAnalysis.kt",
+      "cc": 6,
+      "line_coverage": 1.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SpectralAnalysis.frame([SII)Lar/didgetaller/core/PowerSpectrum;",
+      "file": "app/src/main/java/ar/didgetaller/core/SpectralAnalysis.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SpectralPalette.color(Ljava/lang/Double;D)I",
+      "file": "app/src/main/java/ar/didgetaller/core/SpectralPalette.kt",
+      "cc": 4,
+      "line_coverage": 1.0,
+      "crap_line": 4.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SwipeCurve.linked(I)Z",
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeAnalysis.kt",
+      "cc": 6,
+      "line_coverage": 1.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SwipeCurve.nearest(J)Lar/didgetaller/core/SwipeCurve$Sample;",
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeAnalysis.kt",
+      "cc": 1,
+      "line_coverage": 1.0,
+      "crap_line": 1.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/SwipeAnalysis.analyze(Lar/didgetaller/core/MonoPcmSource;Lar/didgetaller/core/InstrumentProfile;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lar/didgetaller/core/SwipeCurve;",
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeAnalysis.kt",
+      "cc": 12,
+      "line_coverage": 1.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/WavAnalysis.analyze(Lar/didgetaller/core/MonoPcmSource;JJLar/didgetaller/core/WavAnalysis$Settings;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lar/didgetaller/core/WavAnalysis$Result;",
+      "file": "app/src/main/java/ar/didgetaller/core/WavAnalysis.kt",
+      "cc": 29,
+      "line_coverage": 1.0,
+      "crap_line": 29.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/core/WavCodec.encode([SII)[B",
+      "file": "app/src/main/java/ar/didgetaller/core/WavCodec.kt",
+      "cc": 5,
+      "line_coverage": 1.0,
+      "crap_line": 5.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.fingerprint(Ljava/io/File;Lkotlin/jvm/functions/Function0;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.cacheFile(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.trim()V",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.write(Ljava/io/File;Lkotlin/jvm/functions/Function1;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.remove(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.analyze(Ljava/lang/String;Ljava/io/File;JLjava/lang/Long;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ZLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/core/WavAnalysis$Result;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 15,
+      "line_coverage": 0.0,
+      "crap_line": 240.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.read(Ljava/io/File;)Lar/didgetaller/core/WavAnalysis$Result;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.droneComponent(Ljava/lang/String;Ljava/io/File;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lar/didgetaller/core/DroneComponentCurve;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.readComponent(Ljava/io/File;)Lar/didgetaller/core/DroneComponentCurve;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 10,
+      "line_coverage": 0.0,
+      "crap_line": 110.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/AnalysisCache.visual(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lar/didgetaller/core/AudioVisuals$Spectrogram;",
+      "file": "app/src/main/java/ar/didgetaller/data/AnalysisCache.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.array(Ljava/lang/String;)Lorg/json/JSONArray;",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.measurements()Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.designs(Z)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.saveMeasurement(D)V",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.saveDesign(Ljava/lang/String;Lar/didgetaller/core/AcousticModel$Shape;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.deleteMeasurement(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.deleteDesign(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.delete(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/LocalStore.measurementsCsv()Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/data/LocalStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.entries()Lorg/json/JSONArray;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.list(Z)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 16,
+      "line_coverage": 0.0,
+      "crap_line": 272.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.newCapture()Ljava/io/File;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.recoverPending()I",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.importCapture(Ljava/io/File;Ljava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.save([BLjava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.indexCapture(Ljava/lang/String;JLjava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.rename(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.delete(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.file(Ljava/lang/String;)Ljava/io/File;",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/RecordingStore.duration(Ljava/io/File;)J",
+      "file": "app/src/main/java/ar/didgetaller/data/RecordingStore.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.root()Lorg/json/JSONObject;",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.save(Lorg/json/JSONObject;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.designId(Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.associate(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.markers(Ljava/lang/String;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.addMarker(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.deleteMarker(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.forget(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.forgetDesign(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.instrument()Lar/didgetaller/core/InstrumentProfile;",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.setInstrument(Lar/didgetaller/core/InstrumentProfile;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.limitSeconds()I",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/SessionToolsStore.setLimitSeconds(I)V",
+      "file": "app/src/main/java/ar/didgetaller/data/SessionToolsStore.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/TrashStore.ids(Ljava/lang/String;)Ljava/util/Set;",
+      "file": "app/src/main/java/ar/didgetaller/data/TrashStore.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/TrashStore.put(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/TrashStore.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/data/TrashStore.restore(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/data/TrashStore.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/MainActivity.onCreate(Landroid/os/Bundle;)V",
+      "file": "app/src/main/java/ar/didgetaller/MainActivity.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/MainActivity.onResume()V",
+      "file": "app/src/main/java/ar/didgetaller/MainActivity.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/MainActivity.onStop()V",
+      "file": "app/src/main/java/ar/didgetaller/MainActivity.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.explorer(Ljava/lang/String;)Lar/didgetaller/ui/ExplorerState;",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.preview(Ljava/lang/String;)Lar/didgetaller/ui/ExplorerState;",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.selectInstrument(Lar/didgetaller/core/InstrumentProfile;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.setRecordingLimit(I)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.availableMegabytes()J",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.sessionFile(Lar/didgetaller/data/RecordingStore$Session;)Ljava/io/File;",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.openTools(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.loadTools(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.associate(Lar/didgetaller/data/RecordingStore$Session;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.addMarker(Lar/didgetaller/data/RecordingStore$Session;JLjava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.removeMarker(Lar/didgetaller/data/RecordingStore$Session;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.compare(Lar/didgetaller/data/RecordingStore$Session;Lar/didgetaller/data/RecordingStore$Session;JLjava/lang/Long;JLjava/lang/Long;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.cancelComparison(Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.refreshLibrary()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.restore(Ljava/lang/String;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.undoDelete()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.clearUndo()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.emptyTrash()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.musicalTrace(Lar/didgetaller/data/RecordingStore$Session;)Lar/didgetaller/core/MusicalTrace;",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.musicalTraceFailed(Ljava/lang/String;)Z",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.requestMusicalTrace(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 16,
+      "line_coverage": 0.0,
+      "crap_line": 272.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.releaseMusicalTraceRequest(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.analyzeSavedYin(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.clearSavedYinReplay()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.analyzeDroneComponent(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 9,
+      "line_coverage": 0.0,
+      "crap_line": 90.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.clearDroneComponent()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.setSwipeComparison(Lar/didgetaller/data/RecordingStore$Session;Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 15,
+      "line_coverage": 0.0,
+      "crap_line": 240.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.clearSwipeComparison()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.inspectSavedEvidence(Lar/didgetaller/data/RecordingStore$Session;J)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.cancelSavedEvidence()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.clearAcousticDiagnostics()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.setRange(Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.onDestinationChanged(Ljava/lang/String;Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 6,
+      "line_coverage": 0.0,
+      "crap_line": 42.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.analyzeRecording(Lar/didgetaller/data/RecordingStore$Session;JLjava/lang/Long;Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.cancelRecordingAnalysis(Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.onPermissionRequest()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.onPermissionResult(ZZ)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.microphoneStart()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.startSession()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.finishSession()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.discardSession()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.microphoneStop()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.notify(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.clearMessage()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.permissionAvailable()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.saveDesign(Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.selectDesign(Lar/didgetaller/data/LocalStore$Design;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.duplicateDesign(Lar/didgetaller/data/LocalStore$Design;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.deleteDesign(Lar/didgetaller/data/LocalStore$Design;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.deleteMeasurement(Lar/didgetaller/data/LocalStore$Measurement;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.renameSession(Lar/didgetaller/data/RecordingStore$Session;Ljava/lang/String;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.deleteSession(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 7,
+      "line_coverage": 0.0,
+      "crap_line": 56.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.recordingBytes(Lar/didgetaller/data/RecordingStore$Session;)[B",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.togglePlayback(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.restartPlayback(Lar/didgetaller/data/RecordingStore$Session;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.seekPlayback(Lar/didgetaller/data/RecordingStore$Session;J)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.setPlaybackLoop(Lar/didgetaller/data/RecordingStore$Session;Lkotlin/ranges/LongRange;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.setPlaybackLoopOff()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.playbackPositionMs()I",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.stopPlayback()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.updateShape(Lar/didgetaller/core/AcousticModel$Shape;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.applyPreset(I)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.calculate()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.updateTarget(Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.optimize()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 7,
+      "line_coverage": 0.0,
+      "crap_line": 56.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.cancelOptimization()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.applyOptimization()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.updatePoints(Ljava/util/List;)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.exportProfile()[B",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.exportMeasurements()[B",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.measuredComparison()Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.onAppStopped(Z)V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/TallerViewModel.onCleared()V",
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/AcousticChartsKt.seconds(J)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/AcousticCharts.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/DiagnosticTextKt.localizedDiagnostic(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/DiagnosticText.kt",
+      "cc": 7,
+      "line_coverage": 0.0,
+      "crap_line": 56.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.pitch(Ljava/util/List;Z)Lar/didgetaller/core/PitchViewRange;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.configureComparisonRange(Lar/didgetaller/core/AxisWindow;)V",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 7,
+      "line_coverage": 1.0,
+      "crap_line": 7.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.overview(Ljava/util/List;)Lar/didgetaller/core/PitchViewRange;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 3,
+      "line_coverage": 1.0,
+      "crap_line": 3.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.defaults(Lar/didgetaller/ui/AcousticPlot;JILjava/util/List;)Lar/didgetaller/core/PlotViewport;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 7,
+      "line_coverage": 1.0,
+      "crap_line": 7.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.camera(JILjava/util/List;)Lar/didgetaller/core/PlotViewport;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.domains(JILjava/util/List;Z)Lkotlin/Pair;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 11,
+      "line_coverage": 0.6666666666666666,
+      "crap_line": 15.481481481481483,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.reset(JILjava/util/List;)V",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ExplorerState.transform(JILjava/util/List;DDDDDD)V",
+      "file": "app/src/main/java/ar/didgetaller/ui/ExplorerState.kt",
+      "cc": 9,
+      "line_coverage": 1.0,
+      "crap_line": 9.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ImmersiveViewerKt.activity(Landroid/content/Context;)Landroid/app/Activity;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ImmersiveViewerKt.sessionPlotPoints(Lar/didgetaller/TallerViewModel;Lar/didgetaller/data/RecordingStore$Session;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/ImmersiveViewerKt.musicianPlotPoints(Lar/didgetaller/core/MusicalTrace;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/InspectionReadingKt.inspectionReading(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/InspectionReading.kt",
+      "cc": 2,
+      "line_coverage": 1.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.instrumentLabel(Landroid/content/Context;Lar/didgetaller/core/InstrumentProfile;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.plotLabel(Landroid/content/Context;Lar/didgetaller/ui/AcousticPlot;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.plotLabel(Landroid/content/Context;Lar/didgetaller/ui/AcousticPlot;Lar/didgetaller/core/InstrumentProfile;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.reasonLabel(Landroid/content/Context;Lar/didgetaller/core/PitchTrace$Reason;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 7,
+      "line_coverage": 0.0,
+      "crap_line": 56.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.noteLabel(Landroid/content/Context;D)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.noteBase(Landroid/content/Context;D)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 2,
+      "line_coverage": 0.0,
+      "crap_line": 6.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.sessionName(Landroid/content/Context;Lar/didgetaller/data/RecordingStore$Session;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.markerLabel(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.presetLabel(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/LocalizedLabelsKt.categoryLabel(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/LocalizedLabels.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/PlotSurfaceKt.pitchColor(Lar/didgetaller/core/PitchTrace$Tone;)J",
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
+      "cc": 4,
+      "line_coverage": 0.0,
+      "crap_line": 20.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/PlotSurfaceKt.hzLabel(D)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/PlotSurfaceKt.axisLabel(DD)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
+      "cc": 7,
+      "line_coverage": 1.0,
+      "crap_line": 7.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/PlotSurfaceKt.placeAxisLabels(Ljava/util/List;Lar/didgetaller/core/AxisWindow;FFLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/util/List;",
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
+      "cc": 8,
+      "line_coverage": 1.0,
+      "crap_line": 8.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/SessionTransportKt.transportTime(J)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/SessionTransport.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerAppKt.resizeProfile(Lar/didgetaller/core/AcousticModel$Shape;I)Lar/didgetaller/core/AcousticModel$Shape;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "cc": 5,
+      "line_coverage": 0.0,
+      "crap_line": 30.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerAppKt.changeDiameter(Lar/didgetaller/core/AcousticModel$Shape;II)Lar/didgetaller/core/AcousticModel$Shape;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "cc": 8,
+      "line_coverage": 0.0,
+      "crap_line": 72.0,
+      "risk": "above-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerAppKt.sessionDate(J)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerAppKt.formatDuration(J)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerRoutes.session(Ljava/lang/String;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerRoutes.viewer(Ljava/lang/String;Lar/didgetaller/ui/AcousticPlot;)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerRoutes.tool(I)Ljava/lang/String;",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "cc": 1,
+      "line_coverage": 0.0,
+      "crap_line": 2.0,
+      "risk": "within-target"
+    },
+    {
+      "identity": "ar/didgetaller/ui/TallerNavigationKt.navigateToSection(Landroidx/navigation/NavHostController;I)V",
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "cc": 3,
+      "line_coverage": 0.0,
+      "crap_line": 12.0,
+      "risk": "above-target"
     }
   ],
   "duplicates": [],
   "measured_functions": 335,
-  "unmapped_functions": 327,
-  "unmatched_specs": []
+  "unmapped_functions": 61,
+  "unmatched_specs": [],
+  "measurement_baseline_source": "3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67; PSI inventory; expanded measurement, no production improvement claimed"
 }

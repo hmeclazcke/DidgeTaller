@@ -1,8 +1,8 @@
 name: Full emulator and manual mutation quality
 on:
   push:
-    branches: [main]
-    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
+    branches: [main, refactor/uncle-bob-rebuild]
+    paths: ['app/**', 'engineering-tools/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   workflow_dispatch:
     inputs:
       scope:

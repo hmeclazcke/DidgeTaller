@@ -1,9 +1,9 @@
 name: Android Kotlin CI
 on:
   push:
-    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
+    paths: ['app/**', 'engineering-tools/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   pull_request:
-    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
+    paths: ['app/**', 'engineering-tools/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -36,7 +36,7 @@ jobs:
       - name: Enable Gradle wrapper
         run: chmod +x ./gradlew
       - name: Tests JVM
-        run: ./gradlew --no-daemon :app:testDebugUnitTest :app:testReleaseUnitTest :app:lintDebug
+        run: ./gradlew --no-daemon :engineering-tools:test :app:testDebugUnitTest :app:testReleaseUnitTest :app:lintDebug
       - name: Build APK
         run: ./gradlew --no-daemon :app:assembleDebug
       - name: Compile instrumented tests
@@ -50,7 +50,9 @@ jobs:
       - name: Summarize Detekt reports
         run: python3 tools/detekt_summary.py
       - name: Summarize JVM coverage and reviewed method matches
-        run: python3 tools/coverage_summary.py
+        run: |
+          ./gradlew --no-daemon :engineering-tools:sourceInventory
+          python3 tools/coverage_summary.py
       - name: Kotlin CPD
         run: ./gradlew --no-daemon :app:qualityDuplication
       - name: Ratchet coverage, reliable CRAP-L, complexity and duplication

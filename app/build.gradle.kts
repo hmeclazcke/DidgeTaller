@@ -1,4 +1,5 @@
 import java.util.Properties
+import java.util.concurrent.TimeUnit
 
 plugins {
     id("com.android.application")
@@ -159,4 +160,36 @@ tasks.register<JavaExec>("qualityMutation") {
         "--sourceDirs","src/main/java","--outputFormats","XML,HTML","--timestampedReports","false",
         "--mutationThreshold",qualityPolicy.getProperty("mutationThreshold"),
         "--threads","1","--mutators","DEFAULTS","--timeoutConst","4000")
+}
+
+tasks.register("qualityDifferential") {
+    group = "verification"
+    description = "Runs the same synthetic behavioral probe against pinned original and rebuilt bytecode."
+    dependsOn("testDebugUnitTest")
+    val baseline = providers.gradleProperty("differentialBaseline")
+    doLast {
+        val original = rootProject.file(baseline.get())
+        check(original.isFile) { "Provide -PdifferentialBaseline pointing to the pinned original production JAR." }
+        val unit = tasks.named<Test>("testDebugUnitTest").get()
+        val production = layout.buildDirectory.dir("tmp/kotlin-classes/debug").get().asFile
+        val dependencies = unit.classpath.files.filterNot { it == production }
+        val report = rootProject.layout.buildDirectory.dir("reports/quality/differential").get().asFile.apply { mkdirs() }
+        for ((name, classes) in listOf("original" to original, "rebuilt" to production)) {
+            val classpath = (listOf(classes) + unit.testClassesDirs.files + dependencies).joinToString(File.pathSeparator)
+            val output = File(report, "$name.txt")
+            val error = File(report, "$name.stderr.txt")
+            val process = ProcessBuilder(File(System.getProperty("java.home"), "bin/java").absolutePath,
+                "-cp", classpath, "ar.didgetaller.core.DifferentialProbe")
+                .redirectOutput(output).redirectError(error).start()
+            if (!process.waitFor(120, TimeUnit.SECONDS)) {
+                process.destroyForcibly().waitFor()
+                error("Differential probe timed out: $name")
+            }
+            check(process.exitValue() == 0) { "Differential probe failed: $name; inspect $error" }
+        }
+        check(File(report, "original.txt").readBytes().contentEquals(File(report, "rebuilt.txt").readBytes())) {
+            "Behavior differs from the original oracle; inspect build/reports/quality/differential."
+        }
+        logger.lifecycle("Differential synthetic contracts match byte-for-byte.")
+    }
 }
