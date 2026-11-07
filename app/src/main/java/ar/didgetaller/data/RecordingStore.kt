@@ -1,147 +1,141 @@
 package ar.didgetaller.data
 
 import android.content.Context
-import ar.didgetaller.core.SessionAnalysis
 import ar.didgetaller.core.InstrumentProfile
-import ar.didgetaller.core.ProgressiveWavWriter
 import ar.didgetaller.core.Pcm16WavReader
-import org.json.JSONArray
+import ar.didgetaller.core.ProgressiveWavWriter
+import ar.didgetaller.core.SessionAnalysis
 import org.json.JSONObject
 import java.io.File
+import java.io.FileOutputStream
 import java.util.UUID
 
-/** WAV files stay in app-private storage; metadata never points outside this directory. */
+/** Owns WAV/index ordering. All instances share the preference file's process-local writer lock. */
 class RecordingStore(context: Context) {
-    private val trash=TrashStore(context)
     data class Session(
-        val id:String, val name:String, val createdAt:Long, val durationMs:Long, val sizeBytes:Long,
-        val summary:SessionAnalysis.Summary?, val timeline:List<SessionAnalysis.Point>,
-        val legacy:Boolean, val recovered:Boolean=false, val instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO,
+        val id: String, val name: String, val createdAt: Long, val durationMs: Long, val sizeBytes: Long,
+        val summary: SessionAnalysis.Summary?, val timeline: List<SessionAnalysis.Point>,
+        val legacy: Boolean, val recovered: Boolean = false,
+        val instrument: InstrumentProfile = InstrumentProfile.DIDGERIDOO,
         // In-memory provenance only; never serialized or used by WAV recovery.
-        val hasStoredName:Boolean=true
+        val hasStoredName: Boolean = true,
     )
-    private val directory=File(context.filesDir,"recordings").apply { mkdirs() }
-    private val prefs=context.getSharedPreferences("local_data",Context.MODE_PRIVATE)
 
-    private fun entries():JSONArray=runCatching {JSONArray(prefs.getString("recordings","[]"))}.getOrDefault(JSONArray())
-    @Synchronized fun list(includeTrash:Boolean=false):List<Session> {
-        val array=entries()
-        val indexed=(0 until array.length()).mapNotNull {i ->
-            val item=array.optJSONObject(i) ?: return@mapNotNull null
-            val id=item.optString("id")
-            val file=runCatching {file(id)}.getOrNull() ?: return@mapNotNull null
-            if(!file.isFile) return@mapNotNull null
-            val summary=item.optJSONObject("summary")?.let { value ->
-                runCatching { SessionAnalysis.Summary(
-                    value.getDouble("typicalHz"),value.getDouble("lowHz"),value.getDouble("highHz"),
-                    value.getInt("stabilityPercent"),value.getInt("validPoints"),value.getInt("totalPoints")
-                ) }.getOrNull()
+    private val directory = File(context.filesDir, "recordings").apply { mkdirs() }
+    private val prefs = context.getSharedPreferences("local_data", Context.MODE_PRIVATE)
+    private val index = JsonPreferenceDocument.array(prefs, "recordings")
+    private val trash = TrashStore(context)
+    val indexDamaged: Boolean get() = index.damaged
+
+    /** Requires a validated backup; quarantines damaged metadata and never deletes audio. */
+    fun recoverIndex(): Boolean = synchronized(prefs) { index.recover() }
+
+    fun list(includeTrash: Boolean = false): List<Session> = synchronized(prefs) {
+        val entries = index.read()
+        val indexed = (0 until entries.length()).mapNotNull { position ->
+            entries.optJSONObject(position)?.let { item ->
+                val file = runCatching { file(item.optString("id")) }.getOrNull()
+                file?.takeIf { it.isFile }?.let { RecordingMetadata.decode(item, it) }
             }
-            val samples=item.optJSONArray("timeline")?.let { values ->
-                (0 until values.length()).mapNotNull { index ->
-                    val point=values.optJSONArray(index) ?: return@mapNotNull null
-                    if(point.length()<3) return@mapNotNull null
-                    val hz=if(point.isNull(1)) null else point.optDouble(1).takeIf { it.isFinite() && it>0 }
-                    SessionAnalysis.Point(point.optLong(0),hz,point.optDouble(2))
-                }
-            }.orEmpty()
-            Session(id,item.optString("name","Grabación"),item.optLong("createdAt"),
-                item.optLong("durationMs"),file.length(),summary,samples,!item.has("timeline"),
-                item.optBoolean("recovered",false),InstrumentProfile.fromStored(item.optString("instrument")),hasStoredName=item.has("name"))
-        }
-        val known=indexed.mapTo(mutableSetOf()) {it.id}
-        val recovered=directory.listFiles().orEmpty().mapNotNull {candidate ->
-            if(!candidate.isFile || !candidate.name.endsWith(".wav") || candidate.length()<=44)return@mapNotNull null
-            val id=candidate.name.removeSuffix(".wav")
-            if(id in known || !runCatching {UUID.fromString(id).toString()==id}.getOrDefault(false))return@mapNotNull null
-            Session(id,"Audio recuperado",candidate.lastModified(),
-                duration(candidate),
-                candidate.length(),null,emptyList(),true,true,hasStoredName=false)
-        }
-        return (indexed+recovered).filter {includeTrash || it.id !in trash.ids("session")}.sortedByDescending {it.createdAt}
+        }.distinctBy { it.id }
+        val known = indexed.mapTo(mutableSetOf()) { it.id }
+        val recovered = directory.listFiles().orEmpty().mapNotNull { RecordingMetadata.recovered(it, known) }
+        val hidden = if (includeTrash) emptySet() else trash.ids("session")
+        (indexed + recovered).filter { it.id !in hidden }.sortedByDescending { it.createdAt }
     }
-    fun newCapture():File=File(directory,"${UUID.randomUUID()}.part")
-    fun recoverPending():Int {
-        var count=0
-        directory.listFiles().orEmpty().filter {it.extension=="part"}.forEach {partial ->
-            val id=partial.nameWithoutExtension
-            if(runCatching {UUID.fromString(id).toString()==id}.getOrDefault(false))runCatching {
-                if(!file(id).exists() && ProgressiveWavWriter.repair(partial) && partial.renameTo(file(id)))count++
-            }
+
+    fun newCapture(): File = File(directory, "${UUID.randomUUID()}.part")
+
+    /** Startup-only recovery. Never call while an AudioRecord worker is capturing into this directory. */
+    fun recoverPending(): Int = synchronized(prefs) {
+        directory.listFiles().orEmpty().count { partial ->
+            if (partial.extension != "part") false else runCatching {
+                val destination = file(partial.nameWithoutExtension)
+                !destination.exists() && ProgressiveWavWriter.repair(partial) && partial.renameTo(destination)
+            }.getOrDefault(false)
         }
-        return count
     }
-    @Synchronized fun importCapture(partial:File,points:List<SessionAnalysis.Point>,createdAt:Long,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
-        require(partial.parentFile?.canonicalFile==directory.canonicalFile && partial.extension=="part")
-        val id=partial.nameWithoutExtension;val destination=file(id)
-        check(!destination.exists()){"No se pudo conservar la captura."}
-        require(ProgressiveWavWriter.repair(partial)){"Captura parcial sin muestras completas."}
-        val duration=Pcm16WavReader(partial).use {it.frameCount*1000/it.sampleRate}
-        check(!destination.exists() && partial.renameTo(destination)){"No se pudo conservar la captura."}
-        return indexCapture(id,duration,points,createdAt,instrument)
+
+    fun importCapture(partial: File, points: List<SessionAnalysis.Point>, createdAt: Long,
+                      instrument: InstrumentProfile = InstrumentProfile.DIDGERIDOO): Session = synchronized(prefs) {
+        index.requireWritable()
+        require(partial.parentFile?.canonicalFile == directory.canonicalFile && partial.extension == "part")
+        val id = partial.nameWithoutExtension
+        val destination = file(id)
+        check(!destination.exists()) { "No se pudo conservar la captura." }
+        require(ProgressiveWavWriter.repair(partial)) { "Captura parcial sin muestras completas." }
+        val duration = Pcm16WavReader(partial).use { it.frameCount * 1000 / it.sampleRate }
+        val session = captured(id, duration, partial.length(), points, createdAt, instrument)
+        val metadata = RecordingMetadata.encode(session)
+        check(partial.renameTo(destination)) { "No se pudo conservar la captura." }
+        publish(session, metadata)
     }
-    @Synchronized fun save(bytes:ByteArray,points:List<SessionAnalysis.Point> = emptyList(),
-                           createdAt:Long=System.currentTimeMillis(),instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
-        require(bytes.size>44 && String(bytes,0,4,Charsets.US_ASCII)=="RIFF")
-        val id=UUID.randomUUID().toString()
-        val destination=file(id)
-        val temporary=File(directory,"$id.tmp")
+
+    fun save(bytes: ByteArray, points: List<SessionAnalysis.Point> = emptyList(),
+             createdAt: Long = System.currentTimeMillis(), instrument: InstrumentProfile = InstrumentProfile.DIDGERIDOO): Session = synchronized(prefs) {
+        index.requireWritable()
+        require(bytes.size > 44 && String(bytes, 0, 4, Charsets.US_ASCII) == "RIFF")
+        val id = UUID.randomUUID().toString()
+        val temporary = File(directory, "$id.tmp")
         try {
-            temporary.outputStream().use {it.write(bytes);it.flush()}
-            check(temporary.renameTo(destination)) {"No se pudo conservar el WAV"}
-            val duration=duration(destination)
-            return indexCapture(id,duration,points,createdAt,instrument)
-        } finally {temporary.delete()}
+            FileOutputStream(temporary).use { it.write(bytes); it.fd.sync() }
+            val session = captured(id, duration(temporary), temporary.length(), points, createdAt, instrument)
+            val metadata = RecordingMetadata.encode(session)
+            check(temporary.renameTo(file(id))) { "No se pudo conservar el WAV" }
+            publish(session, metadata)
+        } finally { temporary.delete() }
     }
-    private fun indexCapture(id:String,duration:Long,points:List<SessionAnalysis.Point>,createdAt:Long,instrument:InstrumentProfile=InstrumentProfile.DIDGERIDOO):Session {
-            val destination=file(id)
-            val now=createdAt
-            val name="Sesión ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm",java.util.Locale.getDefault()).format(java.util.Date(now))}"
-            val summary=SessionAnalysis.summarize(points,instrument.validMinHz,instrument.validMaxHz)
-            val array=entries()
-            val item=JSONObject().put("id",id).put("name",name).put("createdAt",now).put("durationMs",duration)
-                .put("instrument",instrument.name)
-                .put("timeline",JSONArray().also { timeline ->
-                    points.forEach { point -> timeline.put(JSONArray().put(point.timeMs)
-                        .put(point.hz ?: JSONObject.NULL).put(point.confidence)) }
-                })
-            if(summary!=null)item.put("summary",JSONObject()
-                .put("typicalHz",summary.typicalHz).put("lowHz",summary.lowHz).put("highHz",summary.highHz)
-                .put("stabilityPercent",summary.stabilityPercent).put("validPoints",summary.validPoints)
-                .put("totalPoints",summary.totalPoints))
-            array.put(item)
-            check(prefs.edit().putString("recordings",array.toString()).commit())
-            return Session(id,name,now,duration,destination.length(),summary,points,false,instrument=instrument)
+
+    private fun captured(id: String, duration: Long, size: Long, points: List<SessionAnalysis.Point>,
+                         createdAt: Long, instrument: InstrumentProfile): Session {
+        val name = "Sesión ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(java.util.Date(createdAt))}"
+        return Session(id, name, createdAt, duration, size,
+            SessionAnalysis.summarize(points, instrument.validMinHz, instrument.validMaxHz), points, false,
+            instrument = instrument)
     }
-    @Synchronized fun rename(id:String,name:String) {
+
+    private fun publish(session: Session, metadata: JSONObject): Session {
+        // A failed metadata publication leaves the complete WAV recoverable; never roll audio back by deleting it.
+        index.update { it.put(metadata) }
+        return session
+    }
+
+    fun rename(id: String, name: String) = synchronized(prefs) {
+        val destination = file(id)
         require(name.isNotBlank())
-        val array=entries()
-        var found=false
-        for(i in 0 until array.length()) array.optJSONObject(i)?.takeIf {it.optString("id")==id}?.let {
-            it.put("name",name.trim().take(80));found=true
+        index.update { entries ->
+            var found = false
+            for (i in 0 until entries.length()) {
+                entries.optJSONObject(i)?.takeIf { it.optString("id") == id }?.let {
+                    it.put("name", name.trim().take(80))
+                    found = true
+                }
+            }
+            if (!found) {
+                check(destination.isFile) { "No se encontró el WAV" }
+                entries.put(JSONObject().put("id", id).put("name", name.trim().take(80))
+                    .put("createdAt", destination.lastModified()).put("durationMs", duration(destination)).put("recovered", true))
+            }
         }
-        if(!found) {
-            val orphan=file(id)
-            check(orphan.isFile) {"No se encontró el WAV"}
-            array.put(JSONObject().put("id",id).put("name",name.trim().take(80))
-                .put("createdAt",orphan.lastModified())
-                .put("durationMs",duration(orphan))
-                .put("recovered",true))
+    }
+
+    fun delete(id: String) = synchronized(prefs) {
+        val destination = file(id) // Validate before changing any metadata.
+        index.update { entries ->
+            // Remove only matching rows; unknown fields and malformed unrelated records remain JSON values.
+            for (i in entries.length() - 1 downTo 0) {
+                if (entries.optJSONObject(i)?.optString("id") == id) entries.remove(i)
+            }
         }
-        check(prefs.edit().putString("recordings",array.toString()).commit())
+        check(!destination.exists() || destination.delete()) { "No se pudo eliminar el audio; permanece en la papelera." }
     }
-    @Synchronized fun delete(id:String) {
-        val source=entries();val next=JSONArray()
-        for(i in 0 until source.length()) {
-            val item=source.optJSONObject(i) ?: continue
-            if(item.optString("id")!=id)next.put(item)
-        }
-        check(prefs.edit().putString("recordings",next.toString()).commit())
-        check(!file(id).exists() || file(id).delete()){ "No se pudo eliminar el audio; permanece en la papelera." }
+
+    fun file(id: String): File {
+        require(UUID.fromString(id).toString() == id) { "Identificador inválido" }
+        return File(directory, "$id.wav")
     }
-    fun file(id:String):File {
-        require(UUID.fromString(id).toString()==id) {"Identificador inválido"}
-        return File(directory,"$id.wav")
-    }
-    private fun duration(file:File)=runCatching {Pcm16WavReader(file).use {it.frameCount*1000/it.sampleRate}}.getOrDefault(0L)
+
+    private fun duration(file: File) = runCatching {
+        Pcm16WavReader(file).use { it.frameCount * 1000 / it.sampleRate }
+    }.getOrDefault(0L)
 }

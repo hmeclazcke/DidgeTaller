@@ -14,5 +14,21 @@
   "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;)V": {
     "replacement": "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;Lar/didgetaller/core/RecordingCapture;)V",
     "reason": "Bind each worker to its own recording state. Preserve original loop metric lineage while moving file decisions into the JVM-tested capture state owner."
+  },
+  "ar/didgetaller/data/RecordingStore.entries()Lorg/json/JSONArray;": {
+    "replacement": "ar/didgetaller/data/JsonPreferenceDocument.read()Ljava/lang/Object;",
+    "reason": "Replace malformed-as-empty parsing with the shared validated, backup-aware document boundary. Corrupt documents cannot be mutated."
+  },
+  "ar/didgetaller/data/RecordingStore.indexCapture(Ljava/lang/String;JLjava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;": {
+    "replacement": "ar/didgetaller/data/RecordingStore.captured(Ljava/lang/String;JJLjava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;",
+    "reason": "Construct the captured session before WAV publication; RecordingMetadata owns the unchanged wire format and StoredDocument owns atomic metadata publication."
+  },
+  "ar/didgetaller/data/SessionToolsStore.root()Lorg/json/JSONObject;": {
+    "replacement": "ar/didgetaller/data/JsonPreferenceDocument.read()Ljava/lang/Object;",
+    "reason": "Consolidate JSON loading behind the same validated document boundary, retaining malformed evidence and read-only last-good data."
+  },
+  "ar/didgetaller/data/SessionToolsStore.save(Lorg/json/JSONObject;)V": {
+    "replacement": "ar/didgetaller/data/JsonPreferenceDocument.update(Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;",
+    "reason": "Replace separate load/save calls with one locked read-modify-publish operation; retain the original risk ceiling."
   }
 }

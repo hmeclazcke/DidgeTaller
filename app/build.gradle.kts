@@ -119,6 +119,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     testImplementation("junit:junit:4.13.2")
+    // JVM codec characterization; Android's own org.json is verified separately on the emulator.
+    testImplementation("org.json:json:20250517")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation(composeBom)
@@ -170,10 +172,15 @@ val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$C
     "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture")
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}
     .files.sortedBy {it.name}.joinToString(",") {"ar.didgetaller.core."+it.nameWithoutExtension}
-registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile",
-    syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest", null)
+val persistenceTargets = listOf("StoredDocument", "RecordingMetadata", "MeasurementMetadata", "SessionToolsMetadata",
+    "JsonPreferenceDocument", "JsonPreferenceDocument\$Companion").joinToString(",") { "ar.didgetaller.data.$it" }
+val persistenceTests = listOf("StoredDocumentTest", "RecordingMetadataTest", "AuxiliaryMetadataTest", "JsonPreferenceDocumentTest")
+    .joinToString(",") { "ar.didgetaller.data.$it" }
+registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets,
+    syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest," + persistenceTests, null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
 registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
+registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
 
 fun registerComparison(name: String, benchmark: Boolean) {
  tasks.register(name) {

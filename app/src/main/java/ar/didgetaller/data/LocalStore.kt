@@ -18,14 +18,11 @@ class LocalStore(context: Context) {
     data class Measurement(val id:String,val date: String,val hz: Double,val note: String,val cents:Int)
     data class Design(val id:String,val name: String,val shape: AcousticModel.Shape)
 
-    private fun array(key: String): JSONArray = runCatching { JSONArray(prefs.getString(key,"[]")) }.getOrDefault(JSONArray())
+    private fun document(key: String) = JsonPreferenceDocument.array(prefs, key)
+    private fun array(key: String): JSONArray = document(key).read()
     fun measurements(): List<Measurement> = array("measurements").let { arr ->
         (0 until arr.length()).mapNotNull { index ->
-            arr.optJSONObject(index)?.let { value ->
-                val hz=value.optString("hz").toDoubleOrNull() ?: value.optDouble("hz",0.0)
-                if(hz<=0.0) null else Measurement(value.optString("id","legacy-$index"),value.optString("time"),
-                    hz,value.optString("note",Music.note(hz)),value.optInt("cents",Music.cents(hz)))
-            }
+            arr.optJSONObject(index)?.let { MeasurementMetadata.decode(it, index) }
         }.asReversed()
     }
     fun designs(includeTrash:Boolean=false): List<Design> = array("designs").let { arr ->
@@ -43,28 +40,24 @@ class LocalStore(context: Context) {
         }.asReversed().filter {includeTrash || it.id !in trash.ids("design")}
     }
     fun saveMeasurement(hz: Double) {
-        require(hz>0)
-        val arr=array("measurements")
-        arr.put(JSONObject().put("id",UUID.randomUUID().toString())
+        require(hz.isFinite() && hz>0)
+        document("measurements").update { arr -> arr.put(JSONObject().put("id",UUID.randomUUID().toString())
             .put("time",SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault()).format(Date()))
-            .put("hz",hz).put("note",Music.note(hz)).put("cents",Music.cents(hz)))
-        check(prefs.edit().putString("measurements",arr.toString()).commit())
+            .put("hz",hz).put("note",Music.note(hz)).put("cents",Music.cents(hz))) }
     }
     fun saveDesign(name: String, shape: AcousticModel.Shape) {
-        val arr=array("designs")
-        arr.put(JSONObject().put("id",UUID.randomUUID().toString()).put("name",name.take(70)).put("length",shape.lengthMm)
+        document("designs").update { arr -> arr.put(JSONObject().put("id",UUID.randomUUID().toString()).put("name",name.take(70)).put("length",shape.lengthMm)
             .put("mouth",shape.mouthMm).put("mid",shape.middleMm).put("bell",shape.bellMm)
             .put("points",JSONArray().also { arr ->
                 shape.points.forEach { p -> arr.put(JSONArray().put(p.positionMm).put(p.diameterMm)) }
-            }))
-        check(prefs.edit().putString("designs",arr.toString()).commit())
+            })) }
     }
     fun deleteMeasurement(id:String)=delete("measurements",id)
     fun deleteDesign(id:String)=delete("designs",id)
     private fun delete(key:String,id:String) {
-        val arr=array(key);val next=JSONArray()
-        for(i in 0 until arr.length()) if(arr.optJSONObject(i)?.optString("id","legacy-$i")!=id)next.put(arr.get(i))
-        check(prefs.edit().putString(key,next.toString()).commit())
+        document(key).update { arr ->
+            for(i in arr.length()-1 downTo 0) if(arr.optJSONObject(i)?.optString("id","legacy-$i")==id)arr.remove(i)
+        }
     }
     fun measurementsCsv(): String = buildString {
         append("fecha,nota,frecuencia_hz\n")
