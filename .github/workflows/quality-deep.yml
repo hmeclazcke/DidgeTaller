@@ -92,6 +92,7 @@ jobs:
           path: |
             build/reports/quality/instrumentation.*
             build/reports/quality/library-screenshots/
+            build/reports/quality/library-configuration-*.txt
             app/build/reports/jacoco/emulator/
           retention-days: 7
           if-no-files-found: error

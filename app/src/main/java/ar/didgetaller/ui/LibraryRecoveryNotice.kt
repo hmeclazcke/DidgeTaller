@@ -3,6 +3,8 @@ package ar.didgetaller.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -20,18 +22,22 @@ import ar.didgetaller.R
 internal fun LibraryRecoveryNotice(damaged: Boolean = true, onRecover: () -> Unit) {
     if (!damaged) return
     var confirming by remember { mutableStateOf(false) }
+    // A platform dialog installs its own Context. Resolve content in the caller's locale first.
+    val recoverLabel = stringResource(R.string.library_index_recover)
+    val cancelLabel = stringResource(R.string.ui_cancel)
+    val recoveryExplanation = stringResource(R.string.library_index_recovery_confirmation)
     Card(Modifier.fillMaxWidth().testTag("library-index-warning")) {
         Column(Modifier.padding(12.dp)) {
             Text(stringResource(R.string.library_index_damaged), color = MaterialTheme.colorScheme.error)
             TextButton(onClick = { confirming = true }, modifier = Modifier.testTag("recover-session-index")) {
-                Text(stringResource(R.string.library_index_recover))
+                Text(recoverLabel)
             }
         }
     }
     if (confirming) AlertDialog(onDismissRequest = { confirming = false },
-        title = { Text(stringResource(R.string.library_index_recover)) },
-        text = { Text(stringResource(R.string.library_index_recovery_confirmation)) },
+        title = { Text(recoverLabel) },
+        text = { Text(recoveryExplanation, Modifier.verticalScroll(rememberScrollState())) },
         confirmButton = { TextButton(onClick = { confirming = false; onRecover() },
-            modifier = Modifier.testTag("confirm-index-recovery")) { Text(stringResource(R.string.library_index_recover)) } },
-        dismissButton = { TextButton(onClick = { confirming = false }) { Text(stringResource(R.string.ui_cancel)) } })
+            modifier = Modifier.testTag("confirm-index-recovery")) { Text(recoverLabel) } },
+        dismissButton = { TextButton(onClick = { confirming = false }) { Text(cancelLabel) } })
 }

@@ -57,7 +57,9 @@ class LibraryRecoveryUiTest {
         check(automation.rootInActiveWindow?.packageName?.toString() == compose.activity.packageName) {
             "A system window obscures the application; visual evidence is invalid"
         }
-        val directory = File(compose.activity.getExternalFilesDir(null), "rebuild-library-evidence").apply { mkdirs() }
+        val label = InstrumentationRegistry.getArguments().getString("libraryEvidenceLabel", "default")!!
+        require(label in setOf("default", "en-platform150", "es-platform150"))
+        val directory = File(compose.activity.getExternalFilesDir(null), "rebuild-library-evidence/$label").apply { mkdirs() }
         val bitmap = checkNotNull(automation.takeScreenshot())
         File(directory, "$name.png").outputStream().use {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
@@ -65,6 +67,11 @@ class LibraryRecoveryUiTest {
     }
 
     @Test fun libraryRecoveryRequiresConfirmationAndPreservesOriginalIndexAndWav() {
+        InstrumentationRegistry.getArguments().getString("libraryExpectedLanguage")?.let { expected ->
+            assertEquals(expected, compose.activity.resources.configuration.locales[0].language)
+            assertEquals(expected, app.resources.configuration.locales[0].language)
+            assertEquals(1.5f, compose.activity.resources.configuration.fontScale, .01f)
+        }
         val store = RecordingStore(app)
         val saved = store.save(wav)
         val prefs = app.getSharedPreferences("local_data", 0)
@@ -149,7 +156,7 @@ class LibraryRecoveryUiTest {
         assertArrayEquals(wav, store.file(saved.id).readBytes())
     }
 
-    @Test fun recoveryNoticeAndDialogRemainReadableInBothLocalesAtLargeFonts() {
+    @Test fun recoveryNoticeAndDialogUseTheCallerLocale() {
         var language by mutableStateOf("en")
         var recovered = false
         compose.setContent {
@@ -167,13 +174,18 @@ class LibraryRecoveryUiTest {
         }
         for (code in listOf("en", "es")) {
             compose.runOnIdle { language = code }
+            val configuration = Configuration(compose.activity.resources.configuration).apply { setLocale(Locale.forLanguageTag(code)) }
+            val resources = compose.activity.createConfigurationContext(configuration).resources
             compose.onNodeWithTag("recover-session-index").assertIsDisplayed().performClick()
             compose.onNodeWithTag("confirm-index-recovery").assertIsDisplayed().assertHasClickAction()
-            capture("$code-large-font-dialog")
+                .assertTextContains(resources.getString(R.string.library_index_recover))
+            compose.onNodeWithText(resources.getString(R.string.library_index_recovery_confirmation)).assertIsDisplayed()
+            compose.onNodeWithText(resources.getString(R.string.ui_cancel)).assertIsDisplayed()
+            capture("$code-caller-locale-dialog")
             compose.onNodeWithTag("confirm-index-recovery").performClick()
             assertTrue(recovered)
             recovered = false
-            capture("$code-large-font-warning")
+            capture("$code-caller-locale-warning")
         }
     }
 

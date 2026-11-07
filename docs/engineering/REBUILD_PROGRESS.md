@@ -19,6 +19,12 @@ Android: final persistence focus 25/25 passed on the owned synthetic API 37 emul
 
 Current exact next actions: commit/push only this feature branch; inspect fast, full API 35 emulator/coverage and one manual mutation run; download reports and inspect the seven synthetic library screenshots. Fix actual failures, then replace this pending evidence paragraph with exact run URLs/results. Keep PR #1 draft. Subsequent production priority: capture-device/terminal-event ViewModel ownership, then SessionWorkspace/renderers/PlotSurface and canonical Loading versus Unavailable. Do not repeat persistence reconstruction or the initial all-file review.
 
+### 22655bb remote checkpoint and visual follow-up
+
+Fast PR run 42412056518, full emulator/coverage run 42412053137 and manual mutation run 42412071596 all passed. Downloaded evidence confirms Linux JVM 548 discovered / 532 passed / 16 protected skips; 33.71% lines / 31.33% branches, pure core 98.61% / 79.23%. Full API 35: 144 discovered / 134 passed / 10 explicit skips, separate coverage 91.44% / 68.75%, data package 94.92% / 65.24%. Linux PIT: 26 classes, 1369 mutants, 970 killed / 381 survived / 16 uncovered / 2 timeouts; detected 71.00%, engine 78 seconds. All selected mutation sources/tests remain unchanged by the later dialog-only fix.
+
+Seven API 35 screenshots were actually inspected. Normal recovery is readable and its audio/index assertions pass, but the caller-locale Spanish fixture exposed an English dialog and an ineffective platform-font simulation. Follow-up resolves localized content outside the platform dialog context, asserts translated strings, makes its explanation scrollable, and adds two real Android locale/font/compact runs. Compilation/Lint/Detekt/YAML/shell validation passed; the new CI configuration runs must be observed. Do not present the first green suite as proof that this visual gap was absent. No valid physical/Samsung test is claimed.
+
 ## Implemented and verified
 
 1. Compiler-PSI source inventory and conservative Detekt/JaCoCo owner/signature/body correspondence replace the eight-function allowlist. Every one of 445 named declarations is classified. Constructors/accessors/lambdas are not silently claimed as independent source-function scores.

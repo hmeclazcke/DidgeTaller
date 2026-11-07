@@ -94,6 +94,10 @@ The [persistence reconstruction](../engineering/PERSISTENCE_REBUILD.md) adds a s
 
 On this Windows host, simultaneous Gradle/PIT and the API 37 Google Play emulator exhausted free memory and left a System UI ANR overlay. UI semantics alone did not detect the obstruction. Library screenshot capture now requires the active accessibility window to belong to the test activity. Serialize heavy builds/mutations and emulator verification, stop idle Gradle daemons, and inspect actual screenshots. Never hide a system failure by changing app navigation or suppressing an assertion.
 
+The emulator quality script also runs the recovery scenario in actual Android en/es application locales, 150% system font and a compact 720x1280 viewport. It records those two targeted runs separately (`library-configuration-en.txt`, `library-configuration-es.txt`) from the full suite and coverage. Fail-fast exit handling is preserved through evidence collection and settings restoration. Caller-locale Compose fixtures are not advertised as configuring a platform dialog window's font scale. Inspect the real PNGs; tags and passing assertions alone missed an English dialog inside the original Spanish fixture.
+
+When analyzing downloaded coverage, verify the artifact run's head SHA against the source revision. The mapper rejects a stale PSI inventory; JaCoCo XML itself does not embed a source-tree Git SHA, so successful parsing alone does not establish report provenance. Never substitute an older external XML after a production edit.
+
 ## Prioritized debt
 
 1. Complete remaining function measurement limitations after the compiler-PSI expansion. The original eight-function allowlist is superseded; mapped and explicitly unscored declarations are recorded in function-mapping.json. The original 43/33/15 acoustic hotspots were restructured under differential protection. Broad high-risk UI/Android functions remain unfinished; JVM zeros must not be confused with separate emulator coverage.

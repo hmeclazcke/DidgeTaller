@@ -5,7 +5,32 @@ set -euo pipefail
 emulator_serial="${1:?An explicit emulator serial is required}"
 python3 tools/run_instrumentation.py --serial "$emulator_serial" --coverage
 
-# The CI AVD is fresh. Only this synthetic, isolated test's screenshots are collected, never audio.
-adb -s "$emulator_serial" pull \
-  /sdcard/Android/data/ar.didgetaller/files/rebuild-library-evidence \
-  build/reports/quality/library-screenshots
+# Change settings only after the runner has verified this fresh emulator. Preserve failure status.
+collect_and_restore() {
+  result=$?
+  trap - EXIT
+  # Keep partial synthetic evidence when a configuration assertion fails, without hiding that failure.
+  if ! adb -s "$emulator_serial" pull \
+    /sdcard/Android/data/ar.didgetaller/files/rebuild-library-evidence \
+    build/reports/quality/library-screenshots; then result=1; fi
+  if ! adb -s "$emulator_serial" shell wm size reset; then result=1; fi
+  if ! adb -s "$emulator_serial" shell settings put system font_scale 1.0; then result=1; fi
+  if ! adb -s "$emulator_serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales en; then result=1; fi
+  exit "$result"
+}
+trap collect_and_restore EXIT
+
+# Compose-local overrides do not reproduce a separate Android dialog window's configuration.
+# Verify actual compact screen, application locales and system font at fresh process boundaries.
+adb -s "$emulator_serial" shell wm size 720x1280
+adb -s "$emulator_serial" shell settings put system font_scale 1.5
+for language in en es; do
+  adb -s "$emulator_serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales "$language"
+  adb -s "$emulator_serial" shell am force-stop ar.didgetaller
+  timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
+    -e class 'ar.didgetaller.ui.LibraryRecoveryUiTest#libraryRecoveryRequiresConfirmationAndPreservesOriginalIndexAndWav' \
+    -e libraryExpectedLanguage "$language" -e libraryEvidenceLabel "$language-platform150" \
+    ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
+    > "build/reports/quality/library-configuration-$language.txt"
+  python3 tools/run_instrumentation.py --verify-log "build/reports/quality/library-configuration-$language.txt"
+done
