@@ -1,5 +1,7 @@
 # Quality baseline - 2026-11-06
 
+For the 2026-11-07 final verification and separately authorized AGP 9.4.1 / Gradle 9.6.0 / JDK 21 migration, see [Quality audit verification](QUALITY_AUDIT_VERIFICATION.md). It distinguishes current local measurements from the prior exact-SHA CI evidence, records failure probes, restores release JVM execution after AGP's default changed, and defines the final publication gate. Historical evidence below remains intact.
+
 Starting revision 989bfb2, clean main and origin/main matched. Gradle 8.13, AGP 8.13.2, Kotlin 2.2.21, JDK target/runtime 17, Android compile/target 35, min 26; NDK 27.0.12077973 and CMake 3.22.1. JUnit 4.13.2, JaCoCo 0.8.15, Detekt 1.23.8.
 
 One workflow android.yml runs debug JVM tests, debug/application-test builds, localization and informational JaCoCo/Detekt reports. It does not execute instrumentation, lint, duplication or mutation. Detekt ignoreFailures is true; no coverage or CRAP regression gate. Reviewed method correspondences exist with source hashes, JVM descriptors and exact lines; their scores are explicitly line/instruction approximations, not basis-path coverage.

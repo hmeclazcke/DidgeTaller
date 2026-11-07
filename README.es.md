@@ -64,7 +64,7 @@ Para didgeridoo, la curva ordinaria de **Dron** sigue una componente espectral d
 
 ## Compilar desde el código fuente
 
-Necesitás Android Studio, JDK 17 como base documentada para Gradle, Android SDK Platform 35, NDK 27.0.12077973 y CMake 3.22.1. El repositorio incluye el Gradle Wrapper.
+Necesitás Android Studio, un JDK 21 instalado para el daemon de Gradle, Android SDK Platform 35, Build Tools 36.0.0, NDK 27.0.12077973 y CMake 3.22.1. El repositorio fija Gradle 9.6.0 y AGP 9.4.1; el bytecode de la aplicación sigue apuntando a Java 17. La guía de calidad explica las opciones temporales de compatibilidad Kotlin/DSL.
 
 ```sh
 git clone https://github.com/hmeclazcke/DidgeTaller.git
@@ -104,6 +104,8 @@ Las herramientas reales son Gradle/JUnit, instrumentación Android, JaCoCo, Dete
 Las correspondencias revisadas entre métodos Detekt/JaCoCo producen **CRAP-L**, usando cobertura de líneas explícitamente; las funciones sin correspondencia quedan visibles. No es cobertura de caminos base de Crapper. Cobertura, complejidad de funciones únicas, CRAP-L y duplicación tienen bases medidas para prevenir regresiones. La guía describe umbrales, alcance, informes y comandos.
 
 **Límites de medición:** las coberturas JVM y de emulador se informan por separado. CRAP-L se controla solamente donde hay correspondencias de funciones revisadas; las demás quedan visibles sin puntuar. La fortaleza de las mutaciones corresponde a su alcance Kotlin seleccionado. La [base y deuda](docs/quality/QUALITY_BASELINE.md) conserva la complejidad histórica y los caminos sin cubrir; no se cambiaron algoritmos acústicos para mejorar métricas. Consultá los registros de ejecución para conocer el resultado real de CI.
+
+La [auditoría de verificación](docs/quality/QUALITY_AUDIT_VERIFICATION.md), en inglés, compara informes numéricos, trabajos de CI ejecutados y pruebas de fallo. Las regresiones hacen fallar los trabajos; la protección de la rama es una configuración independiente. La caché exclusiva de descargas y los límites de concurrencia evitan reutilizar compilaciones o coberturas antiguas.
 
 ## Licencia y colaboración
 

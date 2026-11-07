@@ -1971,6 +1971,12 @@ CI 0e807dc fast checks and real PIT passed; the full emulator job failed one of 
 A nonincremental local compilation reproduces all fresh CI JVM coverage counters exactly: 28.19% lines / 25.69% branches overall, 98.47% / 77.25% core. Updated the coverage guide with the verified compiler flag rather than merging incompatible cached-output measurements.
 
 
+### Final verification and toolchain migration - 2026-11-07
+
+The user explicitly authorized including the pre-existing Android Studio toolchain upgrade. Original state preserved in ec3c134. AGP 9.4.1 / Gradle 9.6.0 / installed JDK 21 compile debug and Android tests; Java/Kotlin target remains 17. Restored both JVM variants after identifying AGP's new debug-only default: 195 discovered, 187 passed, 8 protected skips, zero failures per variant. Nonincremental JVM coverage 28.19% lines / 25.69% branches; core 98.47% / 77.25%. Lint 0 errors / 60 warnings / 10 hints; Detekt 1,978 informational findings, 337 functions; CPD 59 Kotlin files / zero 100-token groups; PIT 11 generated and killed, zero other outcomes (2s tool execution). Eight Python tests and localization parity passed. Eight deliberately invalid isolated report inputs failed the actual gate CLI; healthy input passed.
+
+See docs/quality/QUALITY_AUDIT_VERIFICATION.md for metrics, original upstream byte verification, exact historical run IDs, local-versus-CI distinction, branch protection limits, and final-commit publication requirements. New-toolchain full instrumentation is reserved for GitHub's clean emulator; no local device install, physical Samsung access, or private recording inspection occurred. Both README files and developer instructions now describe the actual daemon/tool versions. Published CI results must be inspected before reporting completion.
+
 ### Final passing CI evidence - 2026-11-06
 
 Code 9e7b316: fast run https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301032905 and full emulator run https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301033022 passed. Full clean API 35 emulator: 127 discovered / 117 passed / 10 explicit skips / 0 failed, 450.824 s. Seven skips are protected-fixture opt-in guards; the three configuration-dependent cases passed on the new clean API 37 AVD. Two JVM variants each: 195 discovered / 187 passed / 8 protected skips / 0 failed. JVM coverage 28.19% lines / 25.69% branches; core 98.47% / 77.25%. Separate Android coverage 91.14% / 67.17% (audio lines 95.22%, persistence 94.37%). All exact test counts and coverage data were read from retained CI artifacts.

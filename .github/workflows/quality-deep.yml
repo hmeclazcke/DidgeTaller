@@ -12,6 +12,9 @@ on:
         options: [all, instrumentation, mutation]
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ inputs.scope || 'push' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   mutation:
     if: github.event_name == 'workflow_dispatch' && inputs.scope != 'instrumentation'
@@ -22,9 +25,17 @@ jobs:
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
+      - name: Cache dependency downloads only
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/wrapper/dists
+          key: ${{ runner.os }}-gradle-downloads-${{ hashFiles('**/*.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-downloads-
       - uses: android-actions/setup-android@v4
-      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;36.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: chmod +x gradlew
       - run: ./gradlew --no-daemon :app:qualityMutation
       - uses: actions/upload-artifact@v7
@@ -43,9 +54,17 @@ jobs:
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
+      - name: Cache dependency downloads only
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/wrapper/dists
+          key: ${{ runner.os }}-gradle-downloads-${{ hashFiles('**/*.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-downloads-
       - uses: android-actions/setup-android@v4
-      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;36.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: chmod +x gradlew
       - run: ./gradlew --no-daemon -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
       - name: Enable KVM

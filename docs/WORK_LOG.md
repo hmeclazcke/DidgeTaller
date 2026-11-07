@@ -752,6 +752,12 @@ CI 0e807dc fast checks and real PIT passed; the full emulator job failed one of 
 A nonincremental local compilation reproduces all fresh CI JVM coverage counters exactly: 28.19% lines / 25.69% branches overall, 98.47% / 77.25% core. Updated the coverage guide with the verified compiler flag rather than merging incompatible cached-output measurements.
 
 
+### Final verification and toolchain ownership - 2026-11-07
+
+Included the user's existing AGP/Gradle/JDK migration only after explicit authorization; checkpoint ec3c134 preserves its original state. Removed vendor-pinned daemon downloads, retained installed JDK 21 criteria, checked the Gradle distribution checksum, aligned CI JDK/build tools, and restored release JVM tests omitted by AGP's new default. CI now names both variant tasks explicitly. Added download-only caches, bounded fast-job timeout and independent concurrency groups; no project build/coverage cache, threshold relaxation, new recurring schedule or branch-policy change.
+
+The audit reconciles remote README blobs, actual successful/failed runs, method-level metrics and controlled failure probes in docs/quality/QUALITY_AUDIT_VERIFICATION.md. All prior passing reports remain labeled with their real revision; changed-toolchain CI must run again. No application/source behavior changed, no metronome work, no Samsung/local emulator operation, no protected audio inspection. Legacy Kotlin/DSL compatibility and absent merge protection remain explicit debt.
+
 ### Final passing CI evidence - 2026-11-06
 
 Code 9e7b316: fast run https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301032905 and full emulator run https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301033022 passed. Full clean API 35 emulator: 127 discovered / 117 passed / 10 explicit skips / 0 failed, 450.824 s. Seven skips are protected-fixture opt-in guards; the three configuration-dependent cases passed on the new clean API 37 AVD. Two JVM variants each: 195 discovered / 187 passed / 8 protected skips / 0 failed. JVM coverage 28.19% lines / 25.69% branches; core 98.47% / 77.25%. Separate Android coverage 91.14% / 67.17% (audio lines 95.22%, persistence 94.37%). All exact test counts and coverage data were read from retained CI artifacts.

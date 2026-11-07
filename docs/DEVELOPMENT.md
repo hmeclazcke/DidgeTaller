@@ -4,9 +4,9 @@ Use the [README](../README.md) for cloning, Android Studio setup, and the first 
 
 ## Toolchain
 
-The checked-in build uses JDK target 17, Gradle 8.13, Android Gradle Plugin 8.13.2, Kotlin 2.2.21, and Android SDK Platform 35. The app requires Android API 26 or later. Configure Android Studio's **Gradle JDK** and the command-line `JAVA_HOME` consistently; JDK 17 is the documented baseline.
+The checked-in build uses JDK 21 for the Gradle daemon, Java/Kotlin bytecode target 17, Gradle 9.6.0, Android Gradle Plugin 9.4.1, Kotlin 2.2.21, and Android SDK Platform 35. The app requires Android API 26 or later. Configure Android Studio's **Gradle JDK** and command-line runtime consistently; daemon criteria require an installed JDK 21 of any vendor. Temporary legacy Kotlin/DSL opt-outs and their limits are documented in the [quality guide](quality/QUALITY_GUIDE.md).
 
-SDK Manager provides Platform 35, platform tools, and build tools. [CI](../.github/workflows/android.yml) explicitly installs Build Tools 35.0.0. Let Android Studio create the local SDK configuration; `local.properties` is machine-specific and ignored by Git.
+SDK Manager provides Platform 35, platform tools, and build tools. [CI](../.github/workflows/android.yml) explicitly installs Build Tools 36.0.0. Let Android Studio create the local SDK configuration; `local.properties` is machine-specific and ignored by Git.
 
 The optional SWIPE′ comparison also builds a small C/JNI library using **NDK
 27.0.12077973** and **CMake 3.22.1**. Install these pinned versions through SDK
@@ -21,7 +21,7 @@ Use the checked-in wrapper rather than an independently installed Gradle:
 .\gradlew.bat --version
 ```
 
-On macOS/Linux, use `sh ./gradlew --version`. The initial run needs network access. If the wrapper JAR is absent, the Windows wrapper invokes [setup-wrapper.ps1](../scripts/setup-wrapper.ps1); the Unix script downloads it with `curl`. Both bootstrap paths verify the expected SHA-256. The bootstrap JAR is version 8.11.1; [wrapper properties](../gradle/wrapper/gradle-wrapper.properties) select the actual Gradle 8.13 distribution. Do not change versions to resolve a missing JAR.
+On macOS/Linux, use `sh ./gradlew --version`. The initial run needs network access. If the wrapper JAR is absent, the Windows wrapper invokes [setup-wrapper.ps1](../scripts/setup-wrapper.ps1); the Unix script downloads it with `curl`. Both bootstrap paths verify the expected SHA-256. The bootstrap JAR is version 8.11.1; [wrapper properties](../gradle/wrapper/gradle-wrapper.properties) select and checksum the actual Gradle 9.6.0 distribution. Do not change versions to resolve a missing JAR.
 
 ## Build and JVM checks
 
@@ -74,7 +74,7 @@ After verifying the emulator serial and installing compatible application/test A
 adb -s emulator-5554 shell am instrument -w -r -e class ar.didgetaller.ui.SessionNavigationTest ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner
 ```
 
-The `-s` selects the emulator, `-w -r` waits and emits instrumentation results, and `-e class` selects a test class. Verify the actual emulator serial before using the command. CI compiles these tests but does not execute them.
+The `-s` selects the emulator, `-w -r` waits and emits instrumentation results, and `-e class` selects a test class. Verify the actual emulator serial before using the command. Fast CI compiles these tests; the separate main/manual emulator workflow actually executes the entire suite with coverage. Prefer the checked runner and verified commands in the [quality guide](quality/QUALITY_GUIDE.md).
 
 For a device containing recordings, use only a compatible update with the same package/signing identity after a fresh verified backup. Never uninstall, clear data, replace the signing identity, or restore over existing recordings as troubleshooting. [Data safety](DATA_SAFETY.md) retains the detailed protocol and historical evidence.
 

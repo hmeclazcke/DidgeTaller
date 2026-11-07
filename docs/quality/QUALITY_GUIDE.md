@@ -8,7 +8,7 @@ Crapper, Dryer and Mutator currently document other languages, not this Kotlin/C
 
 ## Verified local components
 
-Run from repository root with JDK 17 and the existing Android SDK/NDK/CMake toolchain. Windows uses gradlew.bat; Linux uses sh ./gradlew. Python 3 uses only the standard library.
+Run from repository root with an installed JDK 21, Gradle wrapper 9.6.0, AGP 9.4.1, SDK Platform 35, Build Tools 36.0.0, NDK 27.0.12077973 and CMake 3.22.1. The daemon criteria accept any JDK 21 vendor and do not download a vendor runtime. Application Java/Kotlin bytecode still targets 17; Kotlin remains 2.2.21. Windows uses gradlew.bat; Linux uses sh ./gradlew. Python 3 uses only the standard library.
 
 ```powershell
 .\gradlew.bat :app:test
@@ -23,6 +23,10 @@ python -m unittest discover -s tools -p 'test_*.py'
 ```
 
 Together these are the fast/build/static quality sequence; mutation is a separate deep step, not appropriate for README-only work. Both debug/release JVM suites are selected by :app:test. Synthetic acoustics are part of those suites. Public verification must use a clean emulator containing only synthetic data. Protected Android fixture entry points require both current user authorization and the explicit allowPrivateFixtures=true argument; existing files alone never opt in. Public CI never supplies that flag. Private JVM fixture variables must remain unset. Their assumption skips are intentional, not replaced with fake recordings. Preserve older emulator/private fixtures without opening or deleting them.
+
+AGP 9 defaults to creating only debug unit tests. The explicit `android.onlyEnableUnitTestForTheTestedBuildType=false` preserves both suites, and CI names both tasks so disappearance cannot silently pass. Legacy Kotlin/DSL opt-outs preserve the existing compiler integration. This empirically validated combination is outside Kotlin 2.2.21's published fully tested Gradle/AGP range; it is not a claim of complete vendor support. Remove the temporary opt-outs through a separately validated migration before AGP 10. Gradle 10 deprecation warnings are known debt.
+
+Execute each native command separately in Windows PowerShell and check `$LASTEXITCODE`; a later successful command must not hide an earlier failure. GitHub's required Bash steps use fail-fast exit propagation. The full command sequence includes `python tools/check_localization.py` before publishing. See the [verification audit](QUALITY_AUDIT_VERIFICATION.md) for actual measurements and deliberately failing gate probes.
 
 Full instrumentation uses only a verified emulator:
 
@@ -48,6 +52,8 @@ Coverage ratchets permit only the explicit fractional tolerance in policy.proper
 android.yml runs both JVM variants, lint, compilation, localization, JaCoCo, informational Detekt, CPD and enforced quality ratchets for relevant source/tool/config/workflow pushes and PRs. Documentation-only paths avoid these costs. Artifacts retain seven days and contain reports, not WAVs or user data.
 
 quality-deep.yml executes the complete emulator suite on relevant main pushes and manual dispatch. Its scope input selects all, instrumentation, or mutation to reuse unchanged evidence. Focused mutation runs only on manual dispatch; a skipped mutation job on a push does not mean mutations ran. There is no recurring schedule, paid tool, or continue-on-error. Main emulator failures fail the workflow; repository branch-protection settings are not changed. Actual CI outcomes are linked in QUALITY_BASELINE. Documentation-only pushes avoid both workflows; manual dispatch can verify an exact documentation revision.
+
+Required workflow steps fail their jobs; main currently has no branch protection/rulesets, so they are not merge-blocking repository rules. Timeouts are 30 minutes (fast), 45 (emulator), and 25 (mutation). Concurrency cancels superseded automatic runs, while separate workflows and manual scopes remain independent. Only downloaded Maven dependencies and wrapper distributions are cached; project compilation/coverage outputs are never restored. Artifacts retain seven days. No automatic schedule or redundant device matrix is configured.
 
 ## Separate emulator coverage
 

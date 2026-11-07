@@ -64,7 +64,7 @@ For didgeridoo, the ordinary **Drone** curve tracks a supported low-frequency sp
 
 ## Build from source
 
-You need Android Studio, JDK 17 as the documented Gradle baseline, Android SDK Platform 35, NDK 27.0.12077973, and CMake 3.22.1. The repository includes the Gradle wrapper.
+You need Android Studio, an installed JDK 21 for the Gradle daemon, Android SDK Platform 35, Build Tools 36.0.0, NDK 27.0.12077973, and CMake 3.22.1. The repository pins Gradle 9.6.0 and AGP 9.4.1; application bytecode still targets Java 17. See the quality guide for temporary Kotlin/DSL compatibility opt-outs.
 
 ```sh
 git clone https://github.com/hmeclazcke/DidgeTaller.git
@@ -106,6 +106,8 @@ Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD 
 Reviewed method-level Detekt/JaCoCo correspondences produce **CRAP-L**, using line coverage explicitly; unmapped functions remain visible. This is not official Crapper basis-path coverage. Coverage, unique-function complexity, mapped CRAP-L and duplication have measured regression baselines. Thresholds, scope, reports and verified commands are in the quality guide.
 
 **Measurement limits:** JVM and emulator coverage are separate measurements. CRAP-L is enforced only for reviewed function mappings; other functions remain visibly unmapped. Mutation strength applies to its selected Kotlin scope. Historical complexity debt and uncovered paths remain in the [baseline and backlog](docs/quality/QUALITY_BASELINE.md); acoustic algorithms were not changed to improve metrics. Check the linked execution records for actual CI outcomes.
+
+The [verification audit](docs/quality/QUALITY_AUDIT_VERIFICATION.md) reconciles numerical reports, executed CI jobs and failure probes. Job gates fail on regressions; repository branch protection is a separate setting. Download-only caches and bounded concurrency avoid restoring stale compilation/coverage outputs.
 
 ## License and contributions
 
