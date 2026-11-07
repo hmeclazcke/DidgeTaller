@@ -592,4 +592,8 @@
     <string name="library_index_restored">Session index recovered. Audio preserved.</string>
     <string name="library_index_recovery_failed">No readable backup could be restored. Audio and original metadata remain preserved.</string>
     <string name="library_metadata_write_failed">Metadata could not be saved reliably. Audio has been preserved.</string>
+    <string name="recording_finalize_failed">Could not finalize the WAV: %1$s. The capture remains pending recovery.</string>
+    <string name="recording_empty">No audio was captured. Try again.</string>
+    <string name="recording_saved">Session saved to Library.</string>
+    <string name="recording_save_failed">Could not save the session: %1$s</string>
 </resources>

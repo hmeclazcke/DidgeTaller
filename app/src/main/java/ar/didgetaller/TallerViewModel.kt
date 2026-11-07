@@ -1,6 +1,10 @@
 package ar.didgetaller
 
 import ar.didgetaller.core.LivePitch
+import ar.didgetaller.core.CaptureId
+import ar.didgetaller.core.RecordingCoordinator
+import ar.didgetaller.core.RecordingPhase
+import ar.didgetaller.core.CapturedSession
 import ar.didgetaller.core.AcousticDiagnostics
 import ar.didgetaller.core.SavedPitchEvidence
 import ar.didgetaller.core.SwipeAnalysis
@@ -45,7 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
 import kotlin.math.ln
 
-enum class SessionPhase { IDLE, CAPTURING, SAVING, DISCARDING }
+typealias SessionPhase = RecordingPhase
 private const val MIC_PERMISSION_NOTICE="Para medir hace falta permiso de micrófono. Podés concederlo desde Ajustes."
 data class RecordingAnalysisState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
                                   val result:WavAnalysis.Result?=null,val error:String?=null, val startMs:Long=0,val endMs:Long?=null)
@@ -78,7 +82,6 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private var activeDetail:String?=null
     var viewerOriginalOrientation:Int?=null
     var instrument by mutableStateOf(tools.instrument());private set
-    private var captureInstrument=instrument
     fun selectInstrument(profile:InstrumentProfile){
         if(listening || sessionPhase!=SessionPhase.IDLE)return
         instrument=profile;tools.setInstrument(profile);minHz=profile.minHz;maxHz=profile.initialMaxHz
@@ -310,14 +313,13 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private fun clearAcousticDiagnostics(){diagnosticHistory.clear();acousticSample=null}
     var filteredHz by mutableStateOf(0.0); private set
     var lastMeasuredHz by mutableStateOf(0.0); private set
-    var listening by mutableStateOf(false);private set
-    var sessionPhase by mutableStateOf(SessionPhase.IDLE);private set
-    var sessionStartedAtMs by mutableStateOf(0L);private set
-    private var sessionStartedAtWallMs=0L
-    var sessionTimeline by mutableStateOf<List<SessionAnalysis.Point>>(emptyList());private set
+    private var recordingState by mutableStateOf(RecordingCoordinator.State())
+    val listening get()=recordingState.listening
+    val sessionPhase get()=recordingState.phase
+    val sessionStartedAtMs get()=recordingState.startedAtMs
+    val sessionTimeline get()=recordingState.points
     val sessions get()=library.sessions
     val stableReading:Boolean get()=listening && consecutiveReadings>=5 && reading.hz>0 && filteredHz>0
-    private var pendingTimeline:List<SessionAnalysis.Point> = emptyList()
     var playingId by mutableStateOf<String?>(null);private set
     var playbackPaused by mutableStateOf(false);private set
     private val player=SessionPlayer({id,paused ->playingId=id;playbackPaused=paused},{message=it})
@@ -335,49 +337,47 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     val measurements get()=library.measurements
     val designs get()=library.designs
 
-    private val mic=MicrophoneEngine(onReading={incoming ->
+    private fun onLiveReading(incoming:PitchDetector.Reading) {
         reading=incoming
         val live=LivePitch.next(LivePitch.State(filteredHz,consecutiveReadings,lastMeasuredHz),incoming,instrument)
         acousticSample=incoming.diagnostic?.let {diagnosticHistory.record(SystemClock.elapsedRealtime(),incoming,live,instrument)}
         filteredHz=live.hz;consecutiveReadings=live.consecutive;lastMeasuredHz=live.lastMeasuredHz
-        if(sessionPhase==SessionPhase.CAPTURING) {
-            sessionTimeline=sessionTimeline+SessionAnalysis.Point(
-                (SystemClock.elapsedRealtime()-sessionStartedAtMs).coerceAtLeast(0),
-                live.storedHz,incoming.confidence)
+        recording.append(SessionAnalysis.Point(
+            (SystemClock.elapsedRealtime()-sessionStartedAtMs).coerceAtLeast(0),live.storedHz,incoming.confidence))
+    }
+    private val recording=RecordingCoordinator(object:RecordingCoordinator.Observer {
+        override fun changed(state:RecordingCoordinator.State) {
+            recordingState=state
         }
-    },onRecordingStopped={
-        if(sessionPhase==SessionPhase.CAPTURING)finishSession()
-    },onRecordingReady={file ->
-        main.post {
-            if(sessionPhase==SessionPhase.CAPTURING)finishSession()
-            val points=pendingTimeline;val profile=captureInstrument
-            sessionExecutor.execute {
-                val result=runCatching {
-                    check(file.length()>44) {"No se capturó audio. Intentá de nuevo."}
-                    recordingStore.importCapture(file,points,sessionStartedAtWallMs,profile)
-                }
-                main.post {
-                    pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE
-                    result.onSuccess {refreshLibrary();message="Sesión guardada en Biblioteca."}
-                        .onFailure {message="No se pudo guardar la sesión: ${it.message}"}
-                    if(cleared)sessionExecutor.shutdown()
-                }
+        override fun saved(){message=getApplication<Application>().getString(R.string.recording_saved)}
+        override fun saveFailed(error:Throwable){message=getApplication<Application>().getString(R.string.recording_save_failed,error.message.orEmpty())}
+        override fun discarded(success:Boolean) {
+            microphoneError=if(success)null else getApplication<Application>().getString(R.string.recording_discard_failed)
+            message=getApplication<Application>().getString(if(success) R.string.recording_discarded else R.string.recording_discard_failed)
+        }
+        override fun finalizationFailed(error:Throwable) {
+            microphoneError=getApplication<Application>().getString(R.string.recording_finalize_failed,error.message.orEmpty())
+            message=microphoneError.orEmpty()
+        }
+        override fun libraryChanged(){refreshLibrary()}
+        override fun idleAfterDisposal(){sessionExecutor.shutdown()}
+    },::publishCapture)
+
+    private val mic=MicrophoneEngine(onReading=::onLiveReading,onError={error ->
+        microphoneError=error;message=error
+        if(sessionPhase==SessionPhase.CAPTURING)finishSession() else recording.monitorStopped()
+    },onTerminal=recording::terminal)
+
+    private fun publishCapture(file:File,snapshot:CapturedSession,complete:(Result<Unit>)->Unit) {
+        // This immutable request outlives its screen and never reads a replacement capture's state.
+        sessionExecutor.execute {
+            val result=runCatching {
+                check(file.length()>44) {getApplication<Application>().getString(R.string.recording_empty)}
+                recordingStore.importCapture(file,snapshot.points,snapshot.startedAt,snapshot.instrument)
             }
+            main.post {complete(result.map {})}
         }
-    },onRecordingDiscarded={success ->
-        sessionTimeline=emptyList();pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE;listening=false
-        microphoneError=if(success)null else getApplication<Application>().getString(R.string.recording_discard_failed)
-        message=getApplication<Application>().getString(if(success) R.string.recording_discarded else R.string.recording_discard_failed)
-        if(cleared)sessionExecutor.shutdown()
-    },onRecordingFailed={error ->
-        if(sessionPhase==SessionPhase.CAPTURING)finishSession()
-        pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE;listening=false
-        microphoneError=error;message=error
-        if(cleared)sessionExecutor.shutdown()
-    },onError={error ->
-        microphoneError=error;message=error
-        if(sessionPhase==SessionPhase.CAPTURING)finishSession() else listening=false
-    })
+    }
 
     init { mic.instrument=instrument;mic.minHz=minHz;mic.maxHz=maxHz;calculate();if(recoveredCount>0)message="Se recuperaron $recoveredCount grabaciones interrumpidas. Están en Biblioteca." }
     fun setRange(expanded:Boolean){if(instrument!=InstrumentProfile.DIDGERIDOO || listening)return;minHz=35;maxHz=if(expanded)220 else 140;mic.minHz=minHz;mic.maxHz=maxHz}
@@ -420,31 +420,30 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     fun microphoneStart() {
         stopPlayback()
         microphoneError=null;permissionDenied=false
-        listening=mic.start()
-        if(listening) {permissionAvailable();reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0;clearAcousticDiagnostics()}
+        if(recording.startMonitor(mic::startOwned)) {permissionAvailable();reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0;clearAcousticDiagnostics()}
     }
     fun startSession() {
         if(sessionPhase!=SessionPhase.IDLE)return
         if(listening)microphoneStop()
-        captureInstrument=instrument
         microphoneStart()
         if(!listening)return
-        sessionTimeline=emptyList();pendingTimeline=emptyList()
-        sessionStartedAtMs=SystemClock.elapsedRealtime()
-        sessionStartedAtWallMs=System.currentTimeMillis()
-        if(mic.startRecording(recordingStore.newCapture(),recordingLimitSeconds))sessionPhase=SessionPhase.CAPTURING
+        if(mic.startRecording(recordingStore.newCapture(),recordingLimitSeconds)) {
+            registerCapture(checkNotNull(mic.captureId))
+        }
         else {microphoneStop();message="No se pudo iniciar la grabación."}
+    }
+    private fun registerCapture(id:CaptureId) {
+        recording.begin(id,System.currentTimeMillis(),instrument,SystemClock.elapsedRealtime())
     }
     fun finishSession() {
         if(sessionPhase!=SessionPhase.CAPTURING)return
-        sessionPhase=SessionPhase.SAVING
-        pendingTimeline=sessionTimeline
-        mic.stop();listening=false
+        recording.saving()
+        mic.stop()
     }
     fun discardSession() {
         if(sessionPhase!=SessionPhase.CAPTURING)return
         if(mic.discardRecording()) {
-            sessionPhase=SessionPhase.DISCARDING;listening=false
+            recording.discarding()
             reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0
             clearAcousticDiagnostics()
         } else {
@@ -454,7 +453,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     }
     fun microphoneStop(){
         if(sessionPhase==SessionPhase.CAPTURING){finishSession();return}
-        mic.stop();listening=false;reading=PitchDetector.Reading();filteredHz=0.0
+        mic.stop();recording.monitorStopped();reading=PitchDetector.Reading();filteredHz=0.0
         consecutiveReadings=0
     }
     fun notify(text:String){message=text}
@@ -569,7 +568,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     override fun onCleared(){
         cleared=true;onAppStopped();executor.shutdownNow()
         analysisVersion.incrementAndGet();analysisExecutor.shutdownNow()
-        if(sessionPhase==SessionPhase.IDLE)sessionExecutor.shutdown()
+        recording.dispose()
         optimizationVersion.incrementAndGet();optimizerExecutor.shutdownNow();super.onCleared()
     }
 }

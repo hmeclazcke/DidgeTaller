@@ -10,6 +10,7 @@ import ar.didgetaller.core.PitchDetector
 import ar.didgetaller.core.PitchStream
 import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.RecordingCapture
+import ar.didgetaller.core.CaptureTerminal
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -18,11 +19,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class MicrophoneEngine(
     private val onReading: (PitchDetector.Reading)->Unit,
-    private val onRecordingStopped: ()->Unit,
-    private val onRecordingReady: (File)->Unit,
     private val onError: (String)->Unit,
-    private val onRecordingFailed: (String)->Unit = onError,
-    private val onRecordingDiscarded: (Boolean)->Unit = {}
+    private val onTerminal: (CaptureTerminal)->Unit
 ) {
     companion object { const val RATE=44100; const val MAX_RECORD_SECONDS=900; private const val CHUNK=4096 }
     private val active=AtomicBoolean(false)
@@ -30,6 +28,7 @@ class MicrophoneEngine(
     @Volatile private var audio:AudioRecord?=null
     @Volatile private var thread:Thread?=null
     @Volatile private var capture:RecordingCapture?=null
+    val captureId get()=capture?.id
     @Volatile var instrument=InstrumentProfile.DIDGERIDOO
     @Volatile var minHz=35
     @Volatile var maxHz=140
@@ -37,6 +36,9 @@ class MicrophoneEngine(
     @SuppressLint("MissingPermission")
     @Synchronized fun start(): Boolean {
         if(active.get())return true
+        // A failed replacement attempt also retires queued errors from the previous worker.
+        val ownedCapture=RecordingCapture()
+        capture=ownedCapture
         val buffer=AudioRecord.getMinBufferSize(RATE,AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT)
         if(buffer<=0){onError("El micrófono no admite audio PCM a 44,1 kHz.");return false}
         val record=try {
@@ -46,8 +48,7 @@ class MicrophoneEngine(
         catch(ex:Exception) {onError("No se pudo inicializar el micrófono: ${ex.message}");return false}
         if(record.state!=AudioRecord.STATE_INITIALIZED){record.release();onError("Micrófono no disponible.");return false}
         try {record.startRecording()}catch(ex:Exception){record.release();onError("No se pudo comenzar: ${ex.message}");return false}
-        val ownedCapture=RecordingCapture()
-        capture=ownedCapture;audio=record;active.set(true)
+        audio=record;active.set(true)
         thread=Thread({readLoop(record,ownedCapture)},"didge-mic").apply {start()}
         return true
     }
@@ -60,6 +61,7 @@ class MicrophoneEngine(
         thread=null
     }
     fun isRunning()=active.get()
+    fun startOwned()=if(start())captureId else null
     @Synchronized fun startRecording(file:File,limitSeconds:Int=MAX_RECORD_SECONDS):Boolean {
         if(!active.get())return false
         return try {capture?.start(file,RATE,limitSeconds) == true}
@@ -71,18 +73,9 @@ class MicrophoneEngine(
         return true
     }
     private fun finishRecording(ownedCapture:RecordingCapture,released:Boolean) {
-        when(val outcome=ownedCapture.finish(released)) {
-            is RecordingCapture.Outcome.Discarded -> mainHandler.post {onRecordingDiscarded(outcome.success)}
-            is RecordingCapture.Outcome.Ready -> {
-                mainHandler.post(onRecordingStopped)
-                onRecordingReady(outcome.file)
-            }
-            is RecordingCapture.Outcome.Failed -> mainHandler.post {
-                onRecordingStopped()
-                onRecordingFailed("No se pudo cerrar el WAV: ${outcome.error.message}. La captura queda pendiente de recuperación.")
-            }
-            null -> Unit
-        }
+        val event=ownedCapture.complete(released) ?: return
+        // File finalization stays on its worker; all state transitions share one main-thread delivery.
+        mainHandler.post {onTerminal(event)}
     }
     private fun readLoop(record:AudioRecord,ownedCapture:RecordingCapture) {
         // Freeze one consistent profile/range for this capture. UI changes require stopping first.

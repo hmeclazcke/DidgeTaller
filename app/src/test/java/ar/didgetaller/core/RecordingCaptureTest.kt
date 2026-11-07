@@ -16,6 +16,36 @@ class RecordingCaptureTest {
     private fun begin(file: File = partial(), rate: Int = 44100, seconds: Int = 900) =
         RecordingCapture().also { assertTrue(it.start(file, rate, seconds)) }
 
+    @Test fun aMonitorEndsOnceAndADuplicateHasNoTerminalEnvelope() {
+        val monitor = RecordingCapture()
+        val terminal = checkNotNull(monitor.complete(true))
+        assertSame(monitor.id, terminal.id)
+        assertNull(terminal.outcome)
+        assertNull(monitor.complete(false))
+        assertFalse(monitor.start(partial(), 44100, 1))
+    }
+
+    @Test fun concurrentFinalizersCannotPostAnEmptyEventAheadOfTheRealOutcome() {
+        repeat(20) {
+            val capture = begin()
+            capture.append(shortArrayOf(10, 20), 2)
+            val start = CountDownLatch(1)
+            val events = java.util.Collections.synchronizedList(mutableListOf<CaptureTerminal>())
+            val failure = AtomicReference<Throwable?>()
+            val workers = List(2) { Thread {
+                try { start.await(); capture.complete(true)?.let(events::add) }
+                catch (error: Throwable) { failure.compareAndSet(null, error) }
+            } }
+            workers.forEach(Thread::start); start.countDown(); workers.forEach(Thread::join)
+            assertNull(failure.get())
+            val event = events.single()
+            assertSame(capture.id, event.id)
+            val ready = event.outcome as RecordingCapture.Outcome.Ready
+            assertArrayEquals(WavCodec.encode(shortArrayOf(10, 20), 2, 44100), ready.file.readBytes())
+            assertNull(capture.complete(true))
+        }
+    }
+
     /** Probe the host independently of the mutated production code, never infer success from its result. */
     private fun hostAllowsOpenFileRename(): Boolean {
         val source = partial()

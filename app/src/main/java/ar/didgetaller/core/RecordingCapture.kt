@@ -7,6 +7,7 @@ import java.util.UUID
 class RecordingCapture(
     private val openWriter: (File, Int) -> ProgressiveWavWriter = { file, rate -> ProgressiveWavWriter(file, rate) }
 ) {
+    val id = CaptureId()
     sealed interface Outcome {
         data class Ready(val file: File) : Outcome
         data class Failed(val error: Throwable) : Outcome
@@ -57,13 +58,24 @@ class RecordingCapture(
         return true
     }
 
-    /** Claim finalization once, then perform file I/O outside the state lock. */
-    fun finish(released: Boolean): Outcome? {
+    fun finish(released: Boolean): Outcome? = complete(released)?.outcome
+
+    /** Claim the terminal envelope once, including monitor-only workers. A duplicate emits no event. */
+    fun complete(released: Boolean): CaptureTerminal? {
         val current = synchronized(this) {
             val owned = state
             state = State.Finished
-            owned as? State.Recording
-        } ?: return null
+            owned
+        }
+        return when (current) {
+            State.Finished -> null
+            State.Monitoring -> CaptureTerminal(id, null)
+            is State.Recording -> CaptureTerminal(id, finalizeRecording(current, released))
+        }
+    }
+
+    /** File I/O happens outside the state lock; only the claiming worker owns this writer. */
+    private fun finalizeRecording(current: State.Recording, released: Boolean): Outcome {
         val finalized = runCatching { current.writer.close() }
         val discard = current.discard
         if (discard != null) {
