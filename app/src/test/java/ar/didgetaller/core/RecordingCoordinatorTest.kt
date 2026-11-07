@@ -161,10 +161,34 @@ class RecordingCoordinatorTest {
         assertFalse(h.owner.state.listening)
     }
 
+    @Test fun queuedMicrophoneErrorsCannotPublishFeedbackAfterDisposal() {
+        val h = Harness(); h.begin(); h.owner.saving(); h.owner.dispose()
+        h.owner.microphoneFailed { error("Disposed owner must not run device or UI effects") }
+        assertEquals(RecordingPhase.SAVING, h.owner.state.phase)
+        h.end(); h.acknowledge()
+        assertEquals(1, h.closures); assertTrue(h.notices.isEmpty())
+    }
+
+    @Test fun aMicrophoneErrorEndsListeningButRetainsTheOwnedRecordingForFinalization() {
+        val h = Harness(); h.begin(); h.owner.append(h.point)
+        var reports = 0
+        h.owner.microphoneFailed { reports++ }
+        assertEquals(1, reports); assertFalse(h.owner.state.listening)
+        assertEquals(RecordingPhase.SAVING, h.owner.state.phase)
+        h.end(); assertEquals(listOf(h.point), h.publications.single().first.points)
+        h.acknowledge(); assertEquals(RecordingPhase.IDLE, h.owner.state.phase)
+        val monitor = Harness(); monitor.owner.monitorStarted(monitor.first)
+        monitor.owner.microphoneFailed { reports++ }
+        assertEquals(2, reports); assertFalse(monitor.owner.state.listening)
+        assertEquals(RecordingPhase.IDLE, monitor.owner.state.phase)
+    }
+
     @Test fun startingPublishesOnlyASuccessfullyOpenedMicrophone() {
         val h = Harness()
         assertFalse(h.owner.startMonitor { null }); assertFalse(h.owner.state.listening)
         assertTrue(h.owner.startMonitor { h.first }); assertTrue(h.owner.state.listening)
+        assertFalse(h.owner.startMonitor { null }); assertFalse(h.owner.state.listening)
+        assertTrue(h.owner.startMonitor { h.first })
         h.owner.begin(h.first, 1, InstrumentProfile.DIDGERIDOO)
         assertEquals(RecordingPhase.CAPTURING, h.owner.state.phase)
     }

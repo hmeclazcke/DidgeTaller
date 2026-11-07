@@ -478,7 +478,11 @@ class RecordingHandoffTest {
                     if (phase == SessionPhase.SAVING) vm.finishSession()
                 }
                 breakOwnedHandle(writer)
-                if (cleared) instrumentation.runOnMainSync { owner.clear() }
+                if (cleared) instrumentation.runOnMainSync {
+                    owner.clear()
+                    val error = field(engine, "onError").get(engine) as (String) -> Unit
+                    error("Queued synthetic device failure after disposal")
+                }
                 repeat(2) { finish(engine) }
                 instrumentation.waitForIdleSync()
                 // Also drain any erroneously queued persistence before checking observable state.
@@ -494,7 +498,14 @@ class RecordingHandoffTest {
                 assertEquals(existingSessions, store.list())
                 assertEquals(existingSessions, vm.sessions)
                 assertArrayEquals(existingAudio, store.file(existing.id).readBytes())
-                assertEquals(vm.microphoneError, vm.message)
+                if (cleared) {
+                    assertNull("Disposed UI must not receive a late failure notice", vm.microphoneError)
+                    assertEquals("", vm.message)
+                } else {
+                    assertNotNull("A live owner must report finalization failure", vm.microphoneError)
+                    assertTrue(vm.message.isNotBlank())
+                    assertEquals(vm.microphoneError, vm.message)
+                }
                 assertFalse(store.file(id).exists())
                 assertEquals(design, tools.designId(id))
                 assertEquals(extras, app.getSharedPreferences("session_tools", 0).getString("extras", null))

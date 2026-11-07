@@ -363,10 +363,10 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         override fun idleAfterDisposal(){sessionExecutor.shutdown()}
     },::publishCapture)
 
-    private val mic=MicrophoneEngine(onReading=::onLiveReading,onError={error ->
-        microphoneError=error;message=error
-        if(sessionPhase==SessionPhase.CAPTURING)finishSession() else recording.monitorStopped()
-    },onTerminal=recording::terminal)
+    private fun onMicrophoneError(error:String) {
+        recording.microphoneFailed {microphoneError=error;message=error;mic.stop()}
+    }
+    private val mic=MicrophoneEngine(onReading=::onLiveReading,onError=::onMicrophoneError,onTerminal=recording::terminal)
 
     private fun publishCapture(file:File,snapshot:CapturedSession,complete:(Result<Unit>)->Unit) {
         // This immutable request outlives its screen and never reads a replacement capture's state.

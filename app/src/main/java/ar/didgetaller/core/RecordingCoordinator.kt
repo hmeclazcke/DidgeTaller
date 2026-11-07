@@ -32,7 +32,8 @@ class RecordingCoordinator(
     fun startMonitor(start: () -> CaptureId?): Boolean {
         if (disposed) return false
         handoff.starting()
-        val id = start() ?: return false
+        val id = start()
+        if (id == null) { monitorStopped(); return false }
         monitorStarted(id)
         return true
     }
@@ -46,6 +47,13 @@ class RecordingCoordinator(
     fun monitorStopped() {
         handoff.stop()
         change(state.copy(listening = false))
+    }
+
+    /** Device errors share the lifecycle boundary, including errors queued before disposal. */
+    fun microphoneFailed(report: () -> Unit) {
+        if (disposed) return
+        if (state.phase == RecordingPhase.CAPTURING) saving() else monitorStopped()
+        report()
     }
 
     fun begin(id: CaptureId, startedAt: Long, instrument: InstrumentProfile, elapsedMs: Long = 0) {
