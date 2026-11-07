@@ -48,12 +48,12 @@ The runtime inventory currently contains 63 project-owned Kotlin files: 32 core,
 | audio/SessionWorkspace.kt | Cancellable viewport work; retain bounded cache/tile coordinates; further lifecycle/error tests are needed before final acceptance. |
 | data/AnalysisCache.kt | Regenerable keyed analysis/visual/component serialization; concurrent temporary-file corruption reproduced and fixed; parser/orchestration complexity remains. |
 | data/AtomicCacheFile.kt | New unique temporary ownership and atomic publication primitive; failure/cancellation/concurrency contracts verified on JVM and through Android cache integration. |
-| data/LocalStore.kt | Historical measurements/design JSON; compatibility-sensitive names preserved; corrupt-index read/write/recovery separation remains unfinished. |
-| data/RecordingStore.kt | WAV/index relationship, recovery/import/rename; synthetic legacy integrity tests pass; silent malformed-index fallback before writes is a priority investigation. |
-| data/SessionToolsStore.kt | Associations/manual markers and extras; retain stored keys/values; transaction and malformed-entry behavior need characterization. |
-| data/TrashStore.kt | Recoverable deletion and relationships; retain explicit permanent-delete policy; interrupted multi-store transaction behavior remains to be evaluated. |
+| data/LocalStore.kt | Historical measurements/design formats retained; mutations now share the guarded document transaction. Pure legacy measurement validation rejects nonfinite values. |
+| data/RecordingStore.kt | Rebuilt WAV/index ordering with shared writer ownership, strict mutation preflight, preserved orphans, explicit backed-up/quarantined recovery and duplicate-ID display policy. No corrupt-as-empty mutation fallback remains. |
+| data/SessionToolsStore.kt | Shared read/modify/publish transaction; invalid individual marker rows stay preserved, unsupported mutation containers fail closed. Format/domain validation lives in SessionToolsMetadata. |
+| data/TrashStore.kt | Tombstones use the shared document owner/validated read-only backup. Permanent deletion still requires an acknowledged index publication; cross-store empty-trash remains sequential and retryable, not one database transaction. |
 | MainActivity.kt | Permission/activity lifecycle and SAF export boundary; retain public entry/package/signing behavior; error/cancellation cases still need broader evidence. |
-| TallerViewModel.kt | Coordinates many independent subsystems; major ownership/responsibility decomposition remains unfinished, especially terminal capture events and asynchronous analysis. |
+| TallerViewModel.kt | Library state now has one coherent immutable snapshot and recoverable metadata-command errors. Major remaining decomposition includes terminal capture events, acoustic requests and asynchronous analysis ownership. |
 
 ## Presentation
 
@@ -87,3 +87,7 @@ The native JNI wrapper, tracked allocation header and CMake boundary were read. 
 The JVM-only SourceInventory compiler-PSI utility and DspBenchmark harness were reviewed and executed. They never enter the APK. The mapper/gates retain explicit ambiguity and coverage semantics; not every lambda/accessor or Compose transformation receives an independent score. Review of tooling is not equivalent to universal Kotlin metric support.
 
 This inventory closes the initial file-reading checklist, not the rebuild. Prioritized unresolved responsibilities are captured in [the progress checkpoint](REBUILD_PROGRESS.md); actual changes and evidence are in [the case study](REBUILD_CASE_STUDY.md). No baseline regeneration, blanket suppression or arbitrary layer count constitutes architectural acceptance.
+
+## Persistence/library continuation
+
+New production files reviewed during this continuation: StoredDocument (transaction and fault ownership), JsonPreferenceDocument (Android JSON/preferences adapter), RecordingMetadata, MeasurementMetadata and SessionToolsMetadata (wire boundaries), LibrarySnapshot (pure visible/trash projection), LibraryCatalog (consistent Android reload), and LibraryRecoveryNotice (explicit localized presentation). These additions are included in the compiler inventory and relevant JVM/Android checks. They do not replace the unfinished application-wide review decisions above.

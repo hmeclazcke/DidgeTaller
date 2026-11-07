@@ -173,8 +173,8 @@ val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$C
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}
     .files.sortedBy {it.name}.joinToString(",") {"ar.didgetaller.core."+it.nameWithoutExtension}
 val persistenceTargets = listOf("StoredDocument", "RecordingMetadata", "MeasurementMetadata", "SessionToolsMetadata",
-    "JsonPreferenceDocument", "JsonPreferenceDocument\$Companion").joinToString(",") { "ar.didgetaller.data.$it" }
-val persistenceTests = listOf("StoredDocumentTest", "RecordingMetadataTest", "AuxiliaryMetadataTest", "JsonPreferenceDocumentTest")
+    "JsonPreferenceDocument", "JsonPreferenceDocument\$Companion", "LibrarySnapshot\$Companion").joinToString(",") { "ar.didgetaller.data.$it" }
+val persistenceTests = listOf("StoredDocumentTest", "RecordingMetadataTest", "AuxiliaryMetadataTest", "JsonPreferenceDocumentTest", "LibrarySnapshotTest")
     .joinToString(",") { "ar.didgetaller.data.$it" }
 registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets,
     syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest," + persistenceTests, null)

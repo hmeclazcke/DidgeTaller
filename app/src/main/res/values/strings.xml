@@ -586,4 +586,10 @@
     <string name="recording_discard_too_late">The recording was already finishing and will be saved.</string>
     <string name="recording_release_failed">Could not release the microphone.</string>
     <string name="graph_timeline_hint">Tap or drag to seek. Two fingers to zoom or pan.</string>
+    <string name="library_index_damaged">The session index is damaged. Audio is preserved; metadata changes are blocked until recovery.</string>
+    <string name="library_index_recover">Recover session index</string>
+    <string name="library_index_recovery_confirmation">Restore the last readable index? The damaged text will be preserved. Audio files will not be deleted.</string>
+    <string name="library_index_restored">Session index recovered. Audio preserved.</string>
+    <string name="library_index_recovery_failed">No readable backup could be restored. Audio and original metadata remain preserved.</string>
+    <string name="library_metadata_write_failed">Metadata could not be saved reliably. Audio has been preserved.</string>
 </resources>

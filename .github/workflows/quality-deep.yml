@@ -79,7 +79,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: python3 tools/run_instrumentation.py --serial emulator-5554 --coverage
+          script: bash scripts/run-emulator-quality.sh emulator-5554
       - name: Separate emulator coverage report
         if: always()
         run: |
@@ -91,6 +91,7 @@ jobs:
           name: Complete-Emulator-Results
           path: |
             build/reports/quality/instrumentation.*
+            build/reports/quality/library-screenshots/
             app/build/reports/jacoco/emulator/
           retention-days: 7
           if-no-files-found: error

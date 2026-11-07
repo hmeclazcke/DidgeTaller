@@ -97,6 +97,8 @@ Hay una [reconstrucción de ingeniería](docs/engineering/REBUILD_CASE_STUDY.md)
 
 Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, copiado sin modificaciones con su licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). La seguridad del proyecto y la ejecución para Kotlin se definen aparte en AGENTS.md y la [guía de calidad](docs/quality/QUALITY_GUIDE.md).
 
+La [reconstrucción de persistencia](docs/engineering/PERSISTENCE_REBUILD.md), documentada en inglés, separa la validación de metadatos, la publicación del índice y la gestión de los WAV. Un índice dañado no puede autorizar el borrado de audio ni convertirse silenciosamente en una base vacía. La lectura de la última copia válida, la recuperación explícita que conserva el texto dañado, las pruebas de publicación concurrente y una única instantánea de biblioteca protegen los formatos existentes. Los controles de recuperación siguen siendo bilingües; la reconstrucción general del ViewModel y los renderizadores continúa en curso.
+
 - **First Make it Work:** modelar el dominio, validar entradas, definir quién controla el estado y aplicar TDD/rojo-verde-refactorización a cambios verificables.
 - **Then Make it Right:** conservar el comportamiento al refactorizar; usar escenarios de aceptación BDD, cobertura, complejidad y mutaciones para investigar riesgo y conocimiento duplicado (DRY).
 - **Practice:** investigar con foco, crear commits revisables, registrar evidencia concisa y validar según el riesgo. Los escenarios BDD no implican Cucumber.

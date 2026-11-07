@@ -39,6 +39,7 @@ import ar.didgetaller.core.Pcm16WavReader
 import ar.didgetaller.core.WavAnalysis
 import ar.didgetaller.data.LocalStore
 import ar.didgetaller.data.RecordingStore
+import ar.didgetaller.data.LibraryCatalog
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
@@ -67,6 +68,8 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     private val cache=AnalysisCache(application)
     private val trash=TrashStore(application)
     private val tools=SessionToolsStore(application)
+    private val catalog=LibraryCatalog(application,recordingStore,store,trash)
+    private var library by mutableStateOf(catalog.load())
     val workspace=SessionWorkspace(viewModelScope,recordingStore,cache)
     private val explorers=mutableMapOf<String,ar.didgetaller.ui.ExplorerState>()
     fun explorer(id:String)=explorers.getOrPut(id){ar.didgetaller.ui.ExplorerState(sessions.firstOrNull {it.id==id}?.instrument ?: InstrumentProfile.DIDGERIDOO)}
@@ -85,9 +88,10 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     }
     var recordingLimitSeconds by mutableStateOf(tools.limitSeconds());private set
     var undoEntry by mutableStateOf<UndoEntry?>(null);private set
-    var trashCount by mutableStateOf(trash.ids("session").size+trash.ids("design").size);private set
-    var trashedSessions by mutableStateOf(recordingStore.list(true).filter {it.id in trash.ids("session")});private set
-    var trashedDesigns by mutableStateOf(store.designs(true).filter {it.id in trash.ids("design")});private set
+    val trashCount get()=library.trashCount
+    val trashedSessions get()=library.trashedSessions
+    val trashedDesigns get()=library.trashedDesigns
+    val sessionIndexDamaged get()=library.indexDamaged
     var markers by mutableStateOf<List<SessionToolsStore.Marker>>(emptyList());private set
     var associatedDesignId by mutableStateOf<String?>(null);private set
     var associatedSimulation by mutableStateOf<AcousticModel.Simulation?>(null);private set
@@ -103,9 +107,13 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         val selected=store.designs(true).find {it.id==associatedDesignId}
         if(selected!=null)associationJob=viewModelScope.launch {associatedSimulation=withContext(Dispatchers.Default){AcousticModel.evaluate(selected.shape)}}
     }
-    fun associate(item:RecordingStore.Session,designId:String?){if(item.instrument!=InstrumentProfile.DIDGERIDOO && designId!=null)return;tools.associate(item.id,designId);loadTools(item)}
-    fun addMarker(item:RecordingStore.Session,time:Long,type:String){tools.addMarker(item.id,time,type,"");markers=tools.markers(item.id)}
-    fun removeMarker(item:RecordingStore.Session,id:String){tools.deleteMarker(item.id,id);markers=tools.markers(item.id)}
+    private fun persistMetadata(change:()->Unit){
+        runCatching(change).onFailure {message=getApplication<Application>().getString(R.string.library_metadata_write_failed)}
+    }
+    fun associate(item:RecordingStore.Session,designId:String?){if(item.instrument!=InstrumentProfile.DIDGERIDOO && designId!=null)return
+        persistMetadata {tools.associate(item.id,designId);loadTools(item)}}
+    fun addMarker(item:RecordingStore.Session,time:Long,type:String){persistMetadata {tools.addMarker(item.id,time,type,"");markers=tools.markers(item.id)}}
+    fun removeMarker(item:RecordingStore.Session,id:String){persistMetadata {tools.deleteMarker(item.id,id);markers=tools.markers(item.id)}}
     fun compare(a:RecordingStore.Session,b:RecordingStore.Session,aStart:Long=0,aEnd:Long?=null,bStart:Long=0,bEnd:Long?=null){
         comparisonJob?.cancel();comparison=ComparisonState(running=true)
         comparisonJob=viewModelScope.launch {try {
@@ -117,10 +125,12 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         } catch(e:CancellationException){throw e} catch(e:Exception){comparison=ComparisonState(error=e.message ?: "Error de comparación.")}}
     }
     fun cancelComparison(clear:Boolean=false){comparisonJob?.cancel();comparison=if(clear)ComparisonState() else comparison.copy(running=false)}
-    private fun refreshLibrary(){sessions=recordingStore.list();designs=store.designs()
-        trashCount=trash.ids("session").size+trash.ids("design").size
-        trashedSessions=recordingStore.list(true).filter {it.id in trash.ids("session")}
-        trashedDesigns=store.designs(true).filter {it.id in trash.ids("design")}}
+    private fun refreshLibrary(){library=catalog.load()}
+    fun recoverSessionIndex(){
+        runCatching {recordingStore.recoverIndex();refreshLibrary()}
+            .onSuccess {message=getApplication<Application>().getString(R.string.library_index_restored)}
+            .onFailure {message=getApplication<Application>().getString(R.string.library_index_recovery_failed)}
+    }
     fun restore(kind:String,id:String){runCatching {trash.restore(kind,id);refreshLibrary();undoEntry=null}.onFailure {message="No se pudo restaurar: ${it.message}"}}
     fun undoDelete(){undoEntry?.let {restore(it.kind,it.id)}}
     fun clearUndo(){undoEntry=null}
@@ -305,7 +315,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     var sessionStartedAtMs by mutableStateOf(0L);private set
     private var sessionStartedAtWallMs=0L
     var sessionTimeline by mutableStateOf<List<SessionAnalysis.Point>>(emptyList());private set
-    var sessions by mutableStateOf(recordingStore.list());private set
+    val sessions get()=library.sessions
     val stableReading:Boolean get()=listening && consecutiveReadings>=5 && reading.hz>0 && filteredHz>0
     private var pendingTimeline:List<SessionAnalysis.Point> = emptyList()
     var playingId by mutableStateOf<String?>(null);private set
@@ -322,8 +332,8 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     var optimizationGeneration by mutableStateOf(0); private set
     var optimizationBest by mutableStateOf<BoreOptimizer.Candidate?>(null); private set
     var optimizationTarget by mutableStateOf(BoreOptimizer.Target()); private set
-    var measurements by mutableStateOf(store.measurements());private set
-    var designs by mutableStateOf(store.designs());private set
+    val measurements get()=library.measurements
+    val designs get()=library.designs
 
     private val mic=MicrophoneEngine(onReading={incoming ->
         reading=incoming
@@ -348,7 +358,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
                 }
                 main.post {
                     pendingTimeline=emptyList();sessionPhase=SessionPhase.IDLE
-                    result.onSuccess {sessions=recordingStore.list();message="Sesión guardada en Biblioteca."}
+                    result.onSuccess {refreshLibrary();message="Sesión guardada en Biblioteca."}
                         .onFailure {message="No se pudo guardar la sesión: ${it.message}"}
                     if(cleared)sessionExecutor.shutdown()
                 }
@@ -451,17 +461,17 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     fun clearMessage(){message=""}
     fun permissionAvailable(){permissionDenied=false;if(message==MIC_PERMISSION_NOTICE)message=""}
     fun saveDesign(name:String){if(name.isBlank()){message="Escribí un nombre para el diseño.";return}
-        store.saveDesign(name.trim(),shape);designs=store.designs();message="Diseño guardado."
+        persistMetadata {store.saveDesign(name.trim(),shape);refreshLibrary();message="Diseño guardado."}
     }
     fun selectDesign(item:LocalStore.Design){shape=item.shape;labTab=0;calculate()}
     fun duplicateDesign(item:LocalStore.Design){runCatching {store.saveDesign("${item.name} (copia)",item.shape)}
-        .onSuccess {designs=store.designs()}.onFailure {message="No se pudo duplicar: ${it.message}"}}
+        .onSuccess {refreshLibrary()}.onFailure {message="No se pudo duplicar: ${it.message}"}}
     fun deleteDesign(item:LocalStore.Design){runCatching {trash.put("design",item.id);refreshLibrary();undoEntry=UndoEntry("design",item.id)}
         .onFailure {message="No se pudo mover a la papelera: ${it.message}"}}
     fun deleteMeasurement(item:LocalStore.Measurement){runCatching {store.deleteMeasurement(item.id)}
-        .onSuccess {measurements=store.measurements()}.onFailure {message="No se pudo borrar: ${it.message}"}}
+        .onSuccess {refreshLibrary()}.onFailure {message="No se pudo borrar: ${it.message}"}}
     fun renameSession(item:RecordingStore.Session,name:String){
-        runCatching {recordingStore.rename(item.id,name)}.onSuccess {sessions=recordingStore.list()}
+        runCatching {recordingStore.rename(item.id,name)}.onSuccess {refreshLibrary()}
             .onFailure {message="No se pudo renombrar: ${it.message}"}
     }
     fun deleteSession(item:RecordingStore.Session){

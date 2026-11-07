@@ -27,6 +27,8 @@ private data class DiagnosticRule(val source: String, val resource: Int, val plu
 }
 
 private val diagnosticRules = listOf(
+    DiagnosticRule("Stored metadata is damaged; recordings have been preserved.", R.string.library_index_damaged),
+    DiagnosticRule("Metadata publication failed; durability is unknown.", R.string.library_metadata_write_failed),
     DiagnosticRule("Destino inválido", R.string.diagnostic_invalid_destination),
     DiagnosticRule("Archivo exportado.", R.string.diagnostic_file_exported),
     DiagnosticRule("No se pudo guardar: {1}", R.string.diagnostic_could_not_save),
