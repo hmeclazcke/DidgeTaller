@@ -3,9 +3,25 @@
 - Branch: refactor/uncle-bob-rebuild; draft PR: https://github.com/hmeclazcke/DidgeTaller/pull/1. Do not merge.
 - Worktree: C:/projects/DidgeTaller-uncle-bob. Original main checkout retained separately and clean.
 - Original main: 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67. Never commit/push to main or rewrite history.
-- Validated implementation/test/configuration HEAD: 6c6f00d (resolve the full SHA with git rev-parse 6c6f00d). Later evidence-only commits may advance this checkpoint with unchanged runtime/test inputs; use git rev-parse HEAD for its current revision.
+- Previous persistence implementation/test/configuration HEAD: 6c6f00d (resolve the full SHA with git rev-parse 6c6f00d). Later evidence-only commits may advance this checkpoint with unchanged runtime/test inputs; use git rev-parse HEAD for its current revision.
 - Official ub-mode SKILL.md/LICENSE unchanged, byte-verified against upstream 3da62bf3fcfd2034de41f30d920d2739e566171f.
 - No Samsung access, private recording access, format migration or metronome implementation. Never enable protected fixture arguments/environment variables without current authorization.
+
+## Capture/workflow/raster continuation ? IN PROGRESS
+
+Resumed at 9cd18f6; main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67. [Capture event design](CAPTURE_EVENT_OWNERSHIP.md) records the reproduced late-discard failure and ownership contracts. RecordingCapture now emits a single claimed terminal envelope, MicrophoneEngine delivers its identity on main, and pure CaptureHandoff/RecordingCoordinator own snapshots, phases, notification ownership, disposal and publication acknowledgement. TallerViewModel publishes one immutable Compose recording snapshot. Delayed permission callbacks cannot reopen disposed hardware. Existing formats and writer/cache/index protections remain unchanged.
+
+SessionWorkspace delegates power-to-ARGB conversion to pure, cancellable SpectrogramRaster. Known-power, reference, orientation, invalid-matrix and cancellation tests preserve pixels and measured data. Render MCC decreases 17 to 13 under the same Detekt rules; the coordinator's completion policy is MCC 8 and raster conversion MCC 7. PlotSurface MCC 139 and broader workspace/ViewModel responsibilities remain unfinished.
+
+Final local combined inputs: 618 JVM discovered / 602 passed / 16 protected skips / zero failures; 35.46% JVM lines and 32.67% branches; core 98.66%/80.09%. Ratchets pass: 393 measured / 90 unscored of 483 Detekt functions, 78 above-target JVM CRAP-L, CPD zero >=100-token groups. All 527 PSI declarations are accounted for: 393 measured, 40 nested, 23 bodyless, 13 anonymous-owner and 58 Compose-transformed. The fourteen additional unscored declarations are seven observer interface declarations and seven anonymous Android adapters, not lost mappings or hidden exclusions. Detekt 1,968 informational findings; Lint zero errors/52 warnings/8 hints. New scopes and host differences prevent treating percentage changes as equal-denominator coverage improvement.
+
+Focused Windows PIT: handoff/coordinator 94 mutants, 89 killed/5 surviving/zero uncovered; raster 31/31 killed after strengthening boundary tests. Five workflow survivors were reviewed: an unused Kotlin Unit bridge return and ownership/phase cleanup guards dependent on the remaining invariants; they remain reported, not counted as killed. Observer-delivery, unregistered-import and disposed-begin survivors were killed by meaningful test improvements. Capture remains host-specific: 54 mutants, 44 killed/9 surviving/1 uncovered on Windows; Linux evidence must be reported separately. Broad selected-scope CI mutation is pending publication.
+
+Local full build, both JVM variants, coverage, Detekt, CPD, Lint, Android APK compilation, 741 differential outputs, 21 Python tests, compiler inventory test and localization pass. The original API 37 red test actually executed (1 failure); the later verification process crashed before discovering tests after a slow boot/low-memory run. It is not an Android pass. No screenshots from that aborted run are accepted. Clean API 35 CI and final remote evidence are pending; do not mark this milestone framework-validated until they are observed.
+
+Next exact production task after the current CI gate: separate SessionWorkspace request loading/cache/raster publication behind a controlled loader, characterize session switching/open-render-cancel and late progress/completion with deterministic tests, and retain original tile coordinates while a replacement loads. Then separate PlotSurface's rendering decisions and TallerViewModel's remaining analysis/navigation jobs. Do not restart persistence or writer-generation investigations. Broader mutation survivors, acoustic hotspots, lifecycle/error/performance evidence and full application acceptance remain unresolved.
+
+The persistence section below is historical evidence for the prior milestone.
 
 ## Current persistence/library continuation ? IN PROGRESS
 

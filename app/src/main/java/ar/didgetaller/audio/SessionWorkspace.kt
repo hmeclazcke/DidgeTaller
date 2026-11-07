@@ -50,12 +50,7 @@ class SessionWorkspace(private val scope:CoroutineScope,private val recordings:R
                                 scope.launch {if(serial==version)state=state.copy(progress=percent)}
                             })}
                             ensureActive()
-                            val pixels=IntArray(tile.columns*tile.rows)
-                            val reference=request.reference.takeIf {it>1e-16} ?: tile.reference
-                            for(x in 0 until tile.columns)for(y in 0 until tile.rows){
-                                val db=if(reference>1e-16)10*kotlin.math.log10(kotlin.math.max(1e-30,tile.power[x*tile.rows+y].toDouble())/reference) else null
-                                pixels[(tile.rows-1-y)*tile.columns+x]=SpectralPalette.color(db,request.rangeDb)
-                            }
+                            val pixels=SpectrogramRaster.pixels(tile,request.rangeDb,request.reference,cancelled)
                             val bitmap=Bitmap.createBitmap(pixels,tile.columns,tile.rows,Bitmap.Config.ARGB_8888)
                             stateSnapshot(info,tile,bitmap)
                         }else info.copy(wave=oldWave ?: AudioVisuals.waveform(source,start,end,cancelled=cancelled),loading=false,error=null)

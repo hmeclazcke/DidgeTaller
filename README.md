@@ -101,6 +101,8 @@ Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/uncle
 
 The [persistence reconstruction](docs/engineering/PERSISTENCE_REBUILD.md) separates metadata validation, document publication and WAV ownership. A damaged index cannot authorize audio deletion or silently become an empty database. Last-good reads, explicit recovery with preserved damaged text, concurrent publication tests and a single library-state snapshot protect the existing session formats. Recovery controls remain bilingual; the broader ViewModel and renderer rebuild is still in progress.
 
+The [capture-event reconstruction](docs/engineering/CAPTURE_EVENT_OWNERSHIP.md) gives every worker a terminal-event identity and moves recording phases, immutable save requests and disposal policy into a pure Kotlin coordinator. One Compose snapshot publishes recording state. Delayed completion can save its own audio without stopping a replacement monitor. Spectrogram power-to-pixel conversion is separately tested and cancellable; broader workspace and renderer reconstruction remains in progress.
+
 - **First Make it Work:** model the domain, validate boundaries, establish state ownership and use TDD/red-green-refactor for verifiable changes.
 - **Then Make it Right:** preserve behavior while refactoring; use BDD-style acceptance scenarios, coverage, complexity and mutation evidence to investigate risk and duplicated knowledge (DRY).
 - **Practice:** focused investigation, reviewable commits, concise evidence and risk-based validation. BDD scenarios do not imply Cucumber.

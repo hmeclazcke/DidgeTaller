@@ -169,7 +169,7 @@ registerMutation("qualityMutation", "pit", "ar.didgetaller.core.PlotTouchKt", "a
 // The expanded domain report is informational until survivors have been individually reviewed.
 val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$Companion", "PitchTrace", "PitchTrace\$Builder",
     "Music", "LivePitch", "SessionAnalysis", "AxisDomain", "PlotProjection", "PlotTouchKt", "PlaybackController",
-    "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture")
+    "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture", "CaptureHandoff", "RecordingCoordinator", "SpectrogramRaster")
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}
     .files.sortedBy {it.name}.joinToString(",") {"ar.didgetaller.core."+it.nameWithoutExtension}
 val persistenceTargets = listOf("StoredDocument", "RecordingMetadata", "MeasurementMetadata", "SessionToolsMetadata",
@@ -179,6 +179,8 @@ val persistenceTests = listOf("StoredDocumentTest", "RecordingMetadataTest", "Au
 registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets,
     syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest," + persistenceTests, null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
+registerMutation("qualityMutationHandoff", "pit-handoff", "ar.didgetaller.core.CaptureHandoff,ar.didgetaller.core.RecordingCoordinator", "ar.didgetaller.core.CaptureHandoffTest,ar.didgetaller.core.RecordingCoordinatorTest", null)
+registerMutation("qualityMutationRaster", "pit-raster", "ar.didgetaller.core.SpectrogramRaster", "ar.didgetaller.core.SpectrogramRasterTest", null)
 registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
 registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
 
