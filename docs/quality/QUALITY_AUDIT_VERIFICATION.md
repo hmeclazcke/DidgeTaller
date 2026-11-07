@@ -126,3 +126,29 @@ Failed-run coverage (91.09% lines / 68.13% branches) is diagnostic only and must
 5. Repository merge protection is absent. Workflow failure semantics do not supply branch protection automatically.
 
 Publication requires observing fast, full emulator, and one manually selected mutation run against the final published commit. Their live [fast](https://github.com/hmeclazcke/DidgeTaller/actions/workflows/android.yml) and [deep](https://github.com/hmeclazcke/DidgeTaller/actions/workflows/quality-deep.yml) histories expose exact SHAs, statuses, timestamps and expiring artifacts; pending is not passed. The final delivery report records those outcomes. This audit performs no local emulator install, Samsung operation, private recording read, data deletion, acoustic change, or metronome implementation.
+
+## Final verified delivery
+
+All three jobs passed against code revision **90d71674717f7143924ad73018b42dc4ca43dd27**. Actual logs, JUnit XML, mutation XML, full per-test Android terminal statuses and coverage summaries were downloaded and inspected, not inferred from green badges.
+
+| Run | Event | Job start–end, 2026-11-07 UTC | Conclusion | Available artifacts |
+| --- | --- | --- | --- | --- |
+| [Fast 42361585974](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42361585974) | push | 09:53:05–09:59:58 | Success | Quality-Metrics-and-Test-Results; DidgeTaller-JVM-Coverage; DidgeTaller-Detekt |
+| [Full emulator 42361585985](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42361585985) | push | 09:53:05–10:06:02 | Success | Complete-Emulator-Results |
+| [PIT 42361596610](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42361596610) | workflow_dispatch, mutation | 09:53:15–09:55:29 | Success | Focused-Kotlin-Mutations |
+
+Final JVM: each variant 195 discovered / 187 executed and passed / 0 failed / 8 protected-fixture skips; total 390 / 374 / 0 / 16. The final fast artifact exactly reproduces local line/branch counters, eight reviewed CRAP-L scores, 337 measured functions, 329 unmapped functions, three historical high scores and zero CPD groups across 59 files. All eight Python tooling tests, localization, lint and build steps passed. PIT generated/killed 11/11, zero other outcomes; 100% denominator 11, one-second engine duration, 2m14s entire job.
+
+Full Android: API 35 x86_64 Pixel 2, coverage enabled, clean synthetic emulator; **127 discovered / 117 executed and passed / 0 failed / 10 skipped**, runner duration **447.959s**. `ScreenAwakeTest` explicitly ends with status 0. All seven protected cases skip before fixture access; the remaining three configuration-dependent skips are documented above. This audit did not rerun those alternate configurations locally. Missing success, incomplete discovery, failures or absent probes would fail the runner/report steps.
+
+| Final separate Android scope | Line coverage | Branch coverage |
+| --- | ---: | ---: |
+| Overall production | 91.09% (4,224/4,637) | 68.25% (3,865/5,663) |
+| Pure core | 95.25% | 69.19% |
+| Audio adapters | 95.22% | 68.56% |
+| Persistence | 94.37% | 58.60% |
+| UI | 90.21% | 70.59% |
+
+These supersede earlier Android snapshots for the new toolchain. Android execution-path percentages remain informational and separate from stable JVM coverage. No acoustic score or baseline was adjusted. Final API metadata, exact-SHA README/workflow blob verification and immutable job logs are saved under ignored `checkpoints/final-audit/verified-code-90d7167.json`; run-ID-prefixed archives are under `checkpoints/github-ci/`.
+
+The closing evidence commit changes documentation only. Production, tests, Gradle, tools, policy and workflow inputs remain byte-identical to the three successful runs above, verified by Git diff. Documentation-only pushes intentionally trigger no Android workflows; there is no newly pending required run and no claim that suites re-executed at the evidence-only SHA. This preserves valid exact-input evidence without another costly emulator run. Both public READMEs remain current, English/Spanish resources and galleries are preserved, and the official skill/license remain unchanged. No concrete failing gate blocks normal feature development; the explicitly listed measurement and compatibility debts remain.
