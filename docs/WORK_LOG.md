@@ -1,5 +1,15 @@
 # 2026-11-08 workspace continuation handoff
 
+Separate waveform/raster geometry from drawing. Pure factories retain source-time
+sample positions, min/max bin centers, amplitude, log coordinates and completed
+tile bounds. A native WaveDrawing adapter owns cached Path construction; Canvas
+retains clipping/ink. Eight contracts and selected real PIT defend the boundary.
+The first inline caching attempt raised PlotSurface MCC to 134; extracting native
+resource ownership restored 127 and lowered cognitive complexity to 279. This is
+not a claimed global-complexity or measured performance win. New measured functions
+score 4/6; the actual Compose adapter is explicitly classified unscored. Observe
+final native evidence before proceeding to ViewModel async operation ownership.
+
 The strengthened ES/150% assertion actually failed in run 42498662573; default
 139 native cases passed with ten protected skips. Failure node bounds y=10..161
 show the target outside the vertical content viewport. performScrollTo on the tab

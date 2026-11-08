@@ -1,5 +1,20 @@
 # Session workspace continuation - IN PROGRESS
 
+Waveform/raster follow-up: WaveGeometry and RasterPlacement now prepare tested
+plot-local geometry; rememberWaveDrawing owns native Path caching separately from
+PCM and Canvas. Eight pure tests cover frames/bins/zoom/pan/log/finite boundaries.
+Factories score MCC/CRAP-L 4/6 at 100% method-line coverage. PlotSurface remains
+MCC 127, cognitive 279 versus 302; its broader reconstruction is still unfinished.
+Latest local full JVM: 764 discovered/748 passed/16 protected skips/zero failures;
+JVM 39.11% lines/35.55% branches, core 98.85%/82.28%. Scored 430/unscored 94/
+above target 76; the extra unscored declaration is the real Compose resource
+adapter, explicitly reviewed rather than assigned invented coverage. All 568 PSI
+named declarations are classified. Detekt 1,967 informational, Lint 0/52/8,
+CPD zero >=100-token groups. Plot PIT 124: 121 killed/three spectrum survivors,
+no uncovered/tool errors. No performance gain is claimed without measurement.
+Push the validated geometry plus vertical-row test fix, observe actual native and
+broad mutation CI, then continue ViewModel simulation/analysis operation ownership.
+
 Latest published production f4b5954: fast 42498667808 and expanded mutation
 42498674509 passed (1,801 mutants/43 bytecode classes: 1,380 killed, 402 survived,
 17 uncovered, two timeouts; 76.74% detected). Native 42498662573 passed all 149

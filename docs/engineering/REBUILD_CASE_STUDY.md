@@ -1,5 +1,14 @@
 # Workspace operation ownership and plot preparation
 
+[WaveGeometry and RasterPlacement](../../app/src/main/java/ar/didgetaller/core/VisualGeometry.kt)
+now own source-frame and completed-tile projection calculations, while
+[WaveDrawing](../../app/src/main/java/ar/didgetaller/ui/WaveDrawing.kt) owns cached
+native paths. Eight independent geometry contracts and all 46 generated factory
+mutants defend that boundary. Factories score 4/6; PlotSurface remains MCC 127,
+with cognitive complexity 279 versus 302. The native Compose adapter is explicitly
+unscored by the current correlator. No performance or whole-renderer completion
+claim follows from this structural improvement.
+
 The follow-up [TraceDrawing](../../app/src/main/java/ar/didgetaller/core/TraceDrawing.kt)
 extracts ordered drawing instructions from Canvas while retaining original gaps,
 bridges, tones and uncertainty rings. Ordering is explicit because splitting dots

@@ -100,7 +100,9 @@ proyección inmutable en Compose. Las pruebas puras cubren resultados tardíos,
 cancelación y disposición; las regresiones Android verifican imágenes reales,
 reproducción y conservación de datos. Las reducciones visuales de RMS/espectro y
 la geometría ordenada de las trazas se separan de la proyección y el dibujo; los
-huecos y puentes tienen contratos de comportamiento puros. La reconstrucción restante de PlotSurface/ViewModel sigue en
+huecos y puentes tienen contratos de comportamiento puros. Los píxeles de onda y
+la ubicación del mosaico terminado se prueban por separado; un adaptador nativo
+posee el path de onda en caché. La reconstrucción restante de PlotSurface/ViewModel sigue en
 curso; el PR en borrador enlaza los resultados de CI y los límites del alcance.
 
 Hay una [reconstrucción de ingeniería](docs/engineering/REBUILD_CASE_STUDY.md), documentada en inglés, **en curso** en `refactor/uncle-bob-rebuild`. Conserva main como referencia de comportamiento. El estudio registra cambios en DSP y trazas, reproducción independiente de Android, grabación con propiedad por captura, publicación atómica independiente de caché, contratos diferenciales y evidencia real de CI. La [revisión por archivo](docs/engineering/REBUILD_REVIEW.md), en inglés, registra el trabajo arquitectónico pendiente; la reconstrucción completa de la aplicación sigue en curso.

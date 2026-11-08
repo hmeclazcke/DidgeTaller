@@ -117,6 +117,14 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     }
     val bridgeEffect=remember {PathEffect.dashPathEffect(floatArrayOf(5f,5f))}
     val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
+    val plotHeight=(dimensions.height-top-bottom).coerceAtLeast(0f)
+    val projection=remember(camera,plotWidth,plotHeight,log){
+        if(plotWidth>0 && plotHeight>0)PlotProjection(camera,plotWidth.toDouble(),plotHeight.toDouble(),logY=log) else null
+    }
+    val waveDrawing=rememberWaveDrawing(visual.wave.takeIf {state.plot==AcousticPlot.WAVE},projection)
+    val rasterPlacement=remember(visual.spectrogram,projection,state.plot){
+        if(state.plot==AcousticPlot.SPECTROGRAM && projection!=null)visual.spectrogram?.let {RasterPlacement.of(it,projection)} else null
+    }
     // Retain level reduction while only the playback cursor changes.
     val levelPixels=remember(level,camera.x,plotWidth){PlotReduction.levelPixels(level,camera.x,plotWidth)}
     val swipePaths=remember(swipe,camera,dimensions,left,right,top,bottom,state.plot){
@@ -193,13 +201,12 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         }
         translate(left,top){
             clipRect(0f,0f,w,h){
-                if(state.plot==AcousticPlot.SPECTROGRAM && bitmap!=null)visual.spectrogram?.let {tile ->
+                if(bitmap!=null)rasterPlacement?.let {placement ->
                     // Crop using the coordinates of the completed tile, never stretch old data to a new request.
-                    val a=tile.start*1000.0/tile.rate;val b=tile.end*1000.0/tile.rate
-                    if(tile.logarithmic==log){val x0=x(a);val x1=x(b);val y0=y(tile.highHz);val y1=y(tile.lowHz)
-                        if(x1>x0 && y1>y0)withTransform({translate(x0,y0);scale((x1-x0)/bitmap.width,(y1-y0)/bitmap.height,pivot=Offset.Zero)}){
-                            drawImage(bitmap,dstSize=IntSize(bitmap.width,bitmap.height),filterQuality=FilterQuality.None)
-                        }}
+                    withTransform({translate(placement.origin.x.toFloat(),placement.origin.y.toFloat())
+                        scale((placement.width/bitmap.width).toFloat(),(placement.height/bitmap.height).toFloat(),pivot=Offset.Zero)}){
+                        drawImage(bitmap,dstSize=IntSize(bitmap.width,bitmap.height),filterQuality=FilterQuality.None)
+                    }
                 }
                 xt.forEach {drawLine(grid,Offset(x(it),0f),Offset(x(it),h),.7f)}
                 yt.forEach {drawLine(grid,Offset(0f,y(it)),Offset(w,y(it)),.7f)}
@@ -225,10 +232,12 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                     drawPath(swipePaths.first,swipeColor,style=Stroke(2.3f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,5f))))
                     swipePaths.second.forEach {drawCircle(swipeColor,2.8f,it)}
                 }
-                if(state.plot==AcousticPlot.WAVE)visual.wave?.let {wave ->
-                    val a=wave.start*1000.0/wave.rate;val b=wave.end*1000.0/wave.rate
-                    if(wave.samples){val path=Path();wave.min.forEachIndexed {i,value ->val px=x(a+i*1000.0/wave.rate);val py=y(value.toDouble());if(i==0)path.moveTo(px,py)else path.lineTo(px,py)};drawPath(path,traceA,style=Stroke(1.8f))}
-                    else wave.min.indices.forEach {i ->val px=x(a+(i+.5)/wave.min.size*(b-a));drawLine(traceA,Offset(px,y(wave.max[i].toDouble())),Offset(px,y(wave.min[i].toDouble())),max(1f,(w*(b-a)/camera.x.span/wave.min.size).toFloat()))}
+                when(val drawing=waveDrawing){
+                    is WaveDrawing.Samples->drawPath(drawing.path,traceA,style=Stroke(1.8f))
+                    is WaveDrawing.Envelope->drawing.geometry.columns.forEach {column ->
+                        drawLine(traceA,Offset(column.x.toFloat(),column.top.toFloat()),Offset(column.x.toFloat(),column.bottom.toFloat()),drawing.geometry.strokeWidth.toFloat())
+                    }
+                    null->Unit
                 }
                 if(state.plot==AcousticPlot.SPECTRUM && analysis!=null && spectrumReference>1e-16){
                     analysis.harmonics.fundamentalHz?.let {f0->for(order in 1..min(128,(camera.x.high/f0).toInt())){val hz=f0*order;if(hz>=camera.x.low)drawLine(traceA.copy(alpha=.2f),Offset(x(hz),0f),Offset(x(hz),h),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(3f,5f)))}}

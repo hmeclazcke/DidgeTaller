@@ -181,6 +181,36 @@ the subtraction-to-addition mutant is killed without changing correct logic.
 Prepared marks are retained while only the cursor moves; bridge path effects are
 also retained. This is structural work, not a measured CPU/FPS improvement.
 
+### Waveform and completed-raster geometry
+
+WaveGeometry prepares source-frame samples or min/max bin centers in plot-local
+pixels. RasterPlacement maps the completed tile's own time/frequency bounds,
+including logarithmic frequency and offscreen edges; incompatible scale modes,
+zero-area and nonfinite placements are rejected. Finite positive differences
+imply finite endpoints, so a temporary list and redundant checks are unnecessary.
+Native clipping remains responsible for visibility; data is not clamped to the
+viewport or stretched to the pending request.
+
+Eight tests cover exclusive sample endpoints, fractional milliseconds, bin centers,
+pan/zoom, amplitude, degenerate/empty data, logarithmic placement and finite limits.
+The two factories have 100% method-line coverage and MCC/CRAP-L 4 and 6. A first
+test incorrectly compared 19.999999999999996 with exact 20.0; its numerical oracle
+now uses 1e-10 pixel tolerance. This is not claimed as a product bug correction.
+
+rememberWaveDrawing is the Android resource adapter: sample paths are prepared on
+wave/viewport changes, while envelope geometry remains immutable. It does not read
+playback or own analysis state. PlotSurface retains axes, clipping, ink and drawing;
+its MCC stays 127, while cognitive complexity falls from 302 to 279. The adapter
+has MCC 7, but its transformed Compose coverage remains explicitly unscored by the
+current correlator. This is not a claim that all Compose functions are impossible
+to map. No mock Android Path test or fabricated CRAP score bypasses that limit.
+
+Selected plot PIT now has 124 mutants: 121 killed, three known spectrum survivors,
+none uncovered or erroneous. All 46 new geometry-factory mutants are killed.
+Zero-area tests killed two real missing boundary cases; largest-finite tests pin
+the difference between finite values and infinity. These are selected-scope results,
+not whole-application mutation coverage. No FPS or allocation-rate gain is claimed.
+
 ```powershell
 .\gradlew.bat :app:testDebugUnitTest --tests 'ar.didgetaller.core.Workspace*Test' --tests ar.didgetaller.core.PlotReductionTest
 .\gradlew.bat :app:qualityMutationWorkspace :app:qualityMutationPlots

@@ -1225,16 +1225,16 @@
       "line": 68,
       "kind": "function",
       "name": "PlotSurface",
-      "semanticHash": "66c9b2226aec3ccb6004b9f7f286e51ffd86429c146949a07ff33110ddba19d7",
-      "reviewed_source": "4456ce9a4bc698ba33a0bb4473103f8b814c76f9",
+      "semanticHash": "70899f068c385ecdb7b924d56ac04b2615022581a25cfe30aa984bf4f9df8187",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
       "evidence": [
         "docs/engineering/WORKSPACE_REBUILD.md",
-        "app/src/test/java/ar/didgetaller/core/TraceDrawingTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/GraphIntelligenceUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
       ],
       "metric_status": "compose-transformation",
-      "reason": "Compose source spans generated entry and draw lambdas; their counters cannot be safely summed into one method. Ordered trace preparation is measured separately below target, without changing projection/style/order. PlotSurface still contains axes, gestures and other adapters and is explicitly unfinished; exact source reviewed with pure drawing contracts and actual emulator interaction tests."
+      "reason": "Current correlator explicitly refuses transformed Compose entry/lambda counters; no source-level coverage score is fabricated. Native waveform Path ownership/caching is separated from pure waveform and completed-raster geometry (measured below target). Existing axes, gestures and remaining adapters keep PlotSurface unfinished. Actual emulator gestures, sample-resolution and screenshot configuration assertions remain mandatory."
     },
     "5b2c7e2f1e08436065147b9b2ae78c4008a055bbfebf1e1765eccd8e919d3f6c": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
@@ -1294,6 +1294,112 @@
         "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
       ],
       "reason": "Immutable drawing instruction value carrier; named factory functions receive measured complexity/coverage. Characterization asserts complete ordered marks, coordinates, tone, uncertainty and bridge flags. No constructor CRAP is fabricated."
+    },
+    "856bcfcaa31ed82b4d4f0bdfb0b42f14bf96c8e5564f5f41827f98c2e282ab92": {
+      "file": "app/src/main/java/ar/didgetaller/core/VisualGeometry.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5aac07331bdba2ee1de3811433e82c5fcc226ebe31fe614e8663ec35afe1a13a",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reason": "Immutable plot-local geometry or native drawing resource carrier. Coordinate and finite-boundary behavior is tested through measured pure factories. Android Path construction is verified on the emulator, not with JVM mock no-ops. No independent constructor CRAP is claimed."
+    },
+    "d6f6a701514ed85580de4482025479ad9ff56e9799c48199b7265ea07aebefc2": {
+      "file": "app/src/main/java/ar/didgetaller/core/VisualGeometry.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "17d8b275eca1c2aeb4f1bb6494d5aab114e7f9193ff792d09e0801959c591396",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reason": "Immutable plot-local geometry or native drawing resource carrier. Coordinate and finite-boundary behavior is tested through measured pure factories. Android Path construction is verified on the emulator, not with JVM mock no-ops. No independent constructor CRAP is claimed."
+    },
+    "53c113ecb72ec30ae91e91f9d936f361ceccb100be1260afe68137baab0ee989": {
+      "file": "app/src/main/java/ar/didgetaller/core/VisualGeometry.kt",
+      "line": 9,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a9054d2bc838e8b0a28c6deead816f258614d3c05877de92fcdf6503423faf50",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reason": "Immutable plot-local geometry or native drawing resource carrier. Coordinate and finite-boundary behavior is tested through measured pure factories. Android Path construction is verified on the emulator, not with JVM mock no-ops. No independent constructor CRAP is claimed."
+    },
+    "d13408b736a7aa2da10b8b8274451d98deafb9f10980266f841072a3368e2854": {
+      "file": "app/src/main/java/ar/didgetaller/core/VisualGeometry.kt",
+      "line": 32,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "0cdc63403eb4ed744624a394d722f75c6e9efcaa864547a876378ec5e2024bec",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reason": "Immutable plot-local geometry or native drawing resource carrier. Coordinate and finite-boundary behavior is tested through measured pure factories. Android Path construction is verified on the emulator, not with JVM mock no-ops. No independent constructor CRAP is claimed."
+    },
+    "d5bd46ac4e9edaaceb11b25ddd548a36769cc78517d0067b2ae2f08f24a052bc": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WaveDrawing.kt",
+      "line": 12,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "13603f559dd2f716ba22ea60ab2d3e3beb9979ee3ce1490237f3b42a19b9f50e",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reason": "Immutable plot-local geometry or native drawing resource carrier. Coordinate and finite-boundary behavior is tested through measured pure factories. Android Path construction is verified on the emulator, not with JVM mock no-ops. No independent constructor CRAP is claimed."
+    },
+    "dee250602a68a433e1b8f2ee0f550775b9acdd29f46e97631152f56474ea8165": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WaveDrawing.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "20a7786de92a4b34080f6ddac9be95304fa11ab2a21de4c79eaee43a000a9fea",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reason": "Immutable plot-local geometry or native drawing resource carrier. Coordinate and finite-boundary behavior is tested through measured pure factories. Android Path construction is verified on the emulator, not with JVM mock no-ops. No independent constructor CRAP is claimed."
+    },
+    "0afa35ed8ad6dcbfef6b0be857be94652d0d8ad7dcf65c3bb68f95c97e2c9ac6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WaveDrawing.kt",
+      "line": 17,
+      "kind": "function",
+      "name": "rememberWaveDrawing",
+      "semanticHash": "373851003eb7b7f95aad3afe257602276d857fab4a752061189a59d52939a0bb",
+      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "metric_status": "compose-transformation",
+      "reason": "Current correlator explicitly refuses transformed Compose entry/lambda counters; no source-level coverage score is fabricated. Native waveform Path ownership/caching is separated from pure waveform and completed-raster geometry (measured below target). Existing axes, gestures and remaining adapters keep PlotSurface unfinished. Actual emulator gestures, sample-resolution and screenshot configuration assertions remain mandatory."
     }
   }
 }

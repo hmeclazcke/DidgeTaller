@@ -1,5 +1,14 @@
 # 2026-11-08 workspace ownership integration
 
+Wave/raster follow-up: full JVM 764 discovered/748 passed/16 protected skips/no
+failures, JVM line/branch 39.11%/35.55%, pure core 98.85%/82.28%. Geometry methods
+score 4/6 with 100% method-line coverage; inventory 430 scored/94 unscored, 76
+above target and no ratchet violation. Plot PIT 124 generated/121 killed/three
+survived/no uncovered or tool errors; all new geometry-factory mutants killed.
+Lint 0 errors/52 warnings/eight hints, Detekt 1,967 informational, CPD zero groups
+>=100 tokens. Differential probe remains byte-identical; actual native/CI outcomes
+for this new source must be observed after publication.
+
 TraceDrawing follow-up: full debug/release JVM 748 discovered, 732 passed, 16
 protected skips, no failures. JaCoCo JVM 38.99% lines/35.40% branches, core
 98.83%/82.08%; 428 reliable scores/93 unscored/76 above target, ratchet passes.
