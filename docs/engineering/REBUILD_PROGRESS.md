@@ -1,5 +1,51 @@
 # Session workspace continuation - IN PROGRESS
 
+## Current handoff: laboratory simulation ownership
+
+The laboratory version/executor pair is replaced by SimulationController's typed
+single-owner snapshots and a caller-scoped, serial CoroutineSimulationLoader.
+Late/duplicate results cannot publish after replacement/disposal; failure/retry
+and AndroidViewModelFactory's Application constructor are protected.
+Exact compiler metadata now maps Result's mangled JVM method, with class hashes
+and missing/stale-report rejection. Quality builds explicitly use
+-Pkotlin.incremental=false after observed generated-branch denominator variance;
+ordinary development stays incremental.
+
+Simulation milestone: canonical debug/release JVM 796 discovered/780 passed/
+16 protected skips/zero failures; engineering tools five and Python 45 passed.
+JVM line/branch coverage 39.69%/36.33%, pure core 98.92%/82.45%. Inventory: 436
+reliable CRAP-L scores, 96 independent Detekt-unscored, 75 above target; all 576
+PSI named declarations accounted for. Two new unscored declarations are abstract
+loader/task contracts. No baseline reset or eligible ordinary-function waiver.
+Simulation request/finish/close and loader submit score 5/2/2/4 with 100% method
+line coverage. PIT simulation 36 generated/31 killed/five survived; plots 124/
+121/three, zero uncovered/tool errors. Lint zero errors/52 warnings/eight hints,
+Detekt 1,970 informational, CPD zero groups >=100 tokens. Localization, debug APK/
+androidTest compilation and the 741-case original-main differential probe pass.
+
+Actual API 37 ViewModel RED: one pass/one failure after disposal; final GREEN four
+pass. Local full suite: 122 passed/21 failed/nine protected/configuration skips,
+with captured Pixel Launcher ANR stealing focus. All 21 affected cases passed one
+targeted retry after launcher-only recovery. Original failures remain preserved;
+no local Android coverage or clean single full-suite pass is claimed. Observe final
+branch API 35 CI, separate Android CRAP-L and broad PIT after publication.
+See [simulation ownership](SIMULATION_OWNERSHIP.md) for methods and limitations.
+
+Previous published geometry 6f84faf: fast 42502066054 and native 42502059665 passed;
+native 139 passed/ten skipped plus five configuration cases, Android-only coverage
+91.56%/68.53%. Inspected selected EN/ES/150%/landscape PNGs show the actual selected
+Dron after the vertical-row test correction.
+
+Next production cycle: replace TallerViewModel.analyzeRecording's analysisVersion/
+analysisExecutor/progressHandler publication with explicit operation ownership;
+reproduce disposal/replacement/progress races first. Association/comparison,
+PlotSurface axes/gesture adapters (MCC 127) and remaining DSP/UI hotspots are not
+complete. Fullscreen scientific text can truncate at 150% despite accessible
+controls; retain this precise UI follow-up. Main remains
+3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67; PR #1 stays draft.
+
+## Earlier milestone evidence (historical scopes follow)
+
 Waveform/raster follow-up: WaveGeometry and RasterPlacement now prepare tested
 plot-local geometry; rememberWaveDrawing owns native Path caching separately from
 PCM and Canvas. Eight pure tests cover frames/bins/zoom/pan/log/finite boundaries.

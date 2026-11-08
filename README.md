@@ -95,6 +95,12 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
+The [laboratory simulation owner](docs/engineering/SIMULATION_OWNERSHIP.md)
+prevents late or duplicate results from updating a disposed ViewModel. Controlled
+coroutine tests, native lifecycle tests and real mutations defend the boundary.
+Quality reports use canonical compilation and exact Kotlin metadata correspondence;
+unsupported source constructs remain visible rather than receiving invented scores.
+
 The [session workspace reconstruction](docs/engineering/WORKSPACE_REBUILD.md) gives
 asynchronous visualization requests explicit ownership, a controllable loader,
 resource-safe PCM preparation and one immutable Compose projection. Pure tests

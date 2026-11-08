@@ -3,17 +3,12 @@ package ar.didgetaller.core
 import ar.didgetaller.audio.CoroutineWorkspaceLoader
 import java.io.Closeable
 import java.io.FileNotFoundException
-import kotlin.coroutines.CoroutineContext
+import ar.didgetaller.testing.QueuedDispatcher
 import kotlinx.coroutines.*
 import org.junit.Assert.*
 import org.junit.Test
 
 class WorkspaceCoroutineLoaderTest {
-    private class Queue : CoroutineDispatcher() {
-        val pending = ArrayDeque<Runnable>()
-        override fun dispatch(context: CoroutineContext, block: Runnable) { pending += block }
-        fun drain() { while (pending.isNotEmpty()) pending.removeFirst().run() }
-    }
     private class Source(override val frameCount: Long, private val afterRead: () -> Unit) : MonoPcmSource, Closeable {
         override val sampleRate = 44100
         var reads = 0
@@ -25,7 +20,7 @@ class WorkspaceCoroutineLoaderTest {
         }
     }
     private class Harness {
-        val ui = Queue(); val worker = Queue(); val failures = mutableListOf<Throwable>()
+        val ui = QueuedDispatcher(); val worker = QueuedDispatcher(); val failures = mutableListOf<Throwable>()
         val scope = CoroutineScope(SupervisorJob() + ui + CoroutineExceptionHandler { _, error -> failures += error })
         val readers = mutableListOf<Source>()
         var missing = false

@@ -2,6 +2,22 @@
 
 ## Methodology and ownership
 
+The [simulation owner](../engineering/SIMULATION_OWNERSHIP.md) removes the lab's
+dedicated executor and rejects results after disposal through a typed operation
+controller. Focused real mutations: `:app:qualityMutationSimulation`; its scope
+also joins the expanded domain run. The new default evaluator and coroutine
+adapter have deterministic JVM tests plus real Android ViewModel factory tests.
+
+Canonical quality compilation explicitly requires `-Pkotlin.incremental=false`.
+The bytecode inventory rejects other modes; normal development builds may remain
+incremental. This prevents mode-dependent generated Compose branch denominators
+from being reported as a source coverage regression. `bytecodeInventory` reads
+exact Kotlin metadata names/descriptors, including Result/value-class mangling,
+without loading app classes. Class fingerprints, PSI ownership/locations and
+ambiguity rejection remain enforced. Missing/empty/stale metadata fails the gate.
+The native workflow produces its own `android-function-mapping.json`; those
+CRAP-L scores use Android-only method-line coverage and never merge with JVM.
+
 The [workspace milestone](../engineering/WORKSPACE_REBUILD.md) adds deterministic
 operation/scheduler/resource tests and typed time-only versus spectral requests.
 Focused commands: `:app:qualityMutationWorkspace` and `:app:qualityMutationPlots`.
@@ -44,9 +60,9 @@ Crapper, Dryer and Mutator currently document other languages, not this Kotlin/C
 Run from repository root with an installed JDK 21, Gradle wrapper 9.6.0, AGP 9.4.1, SDK Platform 35, Build Tools 36.0.0, NDK 27.0.12077973 and CMake 3.22.1. The daemon criteria accept any JDK 21 vendor and do not download a vendor runtime. Application Java/Kotlin bytecode still targets 17; Kotlin remains 2.2.21. Windows uses gradlew.bat; Linux uses sh ./gradlew. Python 3 uses only the standard library.
 
 ```powershell
-.\gradlew.bat :app:test
-.\gradlew.bat :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
-.\gradlew.bat '-Pkotlin.incremental=false' :app:jacocoDebugUnitTestReport detekt detektComplexity :engineering-tools:test :engineering-tools:sourceInventory
+.\gradlew.bat '-Pkotlin.incremental=false' :app:test
+.\gradlew.bat '-Pkotlin.incremental=false' :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
+.\gradlew.bat '-Pkotlin.incremental=false' :app:jacocoDebugUnitTestReport detekt detektComplexity :engineering-tools:test :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory
 python tools/detekt_summary.py
 python tools/coverage_summary.py
 .\gradlew.bat :app:qualityDuplication

@@ -1,5 +1,17 @@
 # Workspace operation ownership and plot preparation
 
+The subsequent [laboratory cycle](SIMULATION_OWNERSHIP.md) reproduces a real
+ViewModel disposal defect before correction: executor shutdown did not invalidate
+a queued result's version. A typed operation owner and scoped serial coroutine
+loader replace this mixed responsibility. Nine controller/seven scheduler JVM
+contracts and four native tests defend replacement, disposal, inline/duplicate
+callbacks, real factory wiring and failure/retry. Selected PIT executes 36 mutants
+(31 killed, five reported survivors); request/finish/close/submit score 5/2/2/4.
+No acoustic equation or stored format changes. Exact compiler metadata supplies
+Result JVM correspondence; missing/stale reports fail the gate. Canonical quality
+compilation standardizes observed generated-branch denominator variation, without
+masking a coverage regression or claiming a compiler root cause proven.
+
 [WaveGeometry and RasterPlacement](../../app/src/main/java/ar/didgetaller/core/VisualGeometry.kt)
 now own source-frame and completed-tile projection calculations, while
 [WaveDrawing](../../app/src/main/java/ar/didgetaller/ui/WaveDrawing.kt) owns cached

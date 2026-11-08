@@ -1400,6 +1400,231 @@
       ],
       "metric_status": "compose-transformation",
       "reason": "Current correlator explicitly refuses transformed Compose entry/lambda counters; no source-level coverage score is fabricated. Native waveform Path ownership/caching is separated from pure waveform and completed-raster geometry (measured below target). Existing axes, gestures and remaining adapters keep PlotSurface unfinished. Actual emulator gestures, sample-resolution and screenshot configuration assertions remain mandatory."
+    },
+    "ff7b18fede6ad5e6d768cb0d887c7cf9994ff10f272501a5dd613bd82b8e04b4": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "e56083530ed8c236fd8c3b61a89c9a68c0a013ff3443f0b49a8db4b626aa7173",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "3c72beffc8d8669e45d748381cb8150416daa1ede58fc6a179d4fa4ea15f503e": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 5,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2fe7a8c7564beef86bfc68263c7a93aeb0dc526d35c0626c57ab9c9a189cad5c",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "e74cd60306fa5ef5c1fd3423efff6931b30b4a9c26a9103c64e2a0be60812155": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "11a6992107ff0814b54d8f19471aea3cef519399e0b915dcc349afe0268680fc",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "873b6f0fbfc9e59bb26eff650a7950dbe8fe87dd4e38227dba0ed591dec8f455": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "68ecdf4585676db8ad751971e5a8bf94c4303c9494a41f19de5d37baf4e7d52b",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "8be6d994038506623ff0efdbe5a45f79927886e9f045de2e76d2505bc71637b1": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 12,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "25effbdbefcc33a39921088b4ef1ffddbb1d4c65513993af3d101932b1396e36",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "41e397a7b3d4cc625eca92417124fc0257dc7a31b4e51ff39f135c617b7be30e": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 13,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "86915eccc505415598a04b200d36e9b3aa9e85156224ee769f22bf92a910b593",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "cd3ccf68d452dc1f61bc54bb1cb43e1f9af19b2e470f157740bec3a869b9335f": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 13,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "6a3cad5cfb4cddc2d32be6d39cfab560d8df1e7a4c057607efb9ce7ed393f57d": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "39312962dbe4e273c46926a9441a2a5c89018cac41d7a95489cc5bfcc6567762",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "5d94c8b26830df4c7c42386f4aec14d80736546dc766dc2784baa1a24467c83d": {
+      "file": "app/src/main/java/ar/didgetaller/core/SimulationController.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Typed immutable simulation snapshot/operation carrier, initial Empty/null-operation state, or bodyless private setter enforcing one writer. Controller request/completion/close behavior is independently measured and challenged by mutation tests. No standalone constructor/initializer/accessor MCC is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "a431b8bd9caa3016b174b3726cc16e4f0f0b56ffe5f9acfd9c4b709fdc549e99": {
+      "file": "app/src/main/java/ar/didgetaller/lab/CoroutineSimulationLoader.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "9f4564dfeae4055bfa1a6696598499a70ddfd432848e283d59bb879d705da750",
+      "reason": "Immutable scope/serial-dispatcher/evaluator dependencies; no Window or Activity ownership. Actual coroutine scheduling/cancellation/default-evaluator tests cover the measured submit method. Constructor/default carriers are not independently assigned invented CRAP.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "0a6b87d4c2fe74bd64050a7226aaf4c1a8c5fbcb4c282a017040d72f5c92b9e1": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 72,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1e2a57c9a1fd35883b13014a55163d49f057703ffe84917ed910c36147628051",
+      "reason": "Android wiring or derived projection of the single SimulationController snapshot. The public Application constructor is preserved and exercised through AndroidViewModelFactory. Actual native red/green callbacks verify disposal, latest results, failure/retry and message ownership; no independent constructor/accessor MCC or JVM coverage is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "ec046d71eb7de6870506f3ccc801543b7d0192dd6fb7c5acd79b2201e54692b5": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 75,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "b9854483316926ff4d32faa4ea51fb6dca92a7dc1c5f8f73b40ddc68203b4679",
+      "reason": "Android wiring or derived projection of the single SimulationController snapshot. The public Application constructor is preserved and exercised through AndroidViewModelFactory. Actual native red/green callbacks verify disposal, latest results, failure/retry and message ownership; no independent constructor/accessor MCC or JVM coverage is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "a99f83f4baea76a041a2196246b43e47aff18d23defbafcae430a44a5a320fb0": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 337,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "b3e3a79f50da88bbd94065bb4456a793c21a5a738eb80e91b61626b1bf77767e",
+      "reason": "Android wiring or derived projection of the single SimulationController snapshot. The public Application constructor is preserved and exercised through AndroidViewModelFactory. Actual native red/green callbacks verify disposal, latest results, failure/retry and message ownership; no independent constructor/accessor MCC or JVM coverage is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "2900fca67d1b2e9197e8f795bd00fb83de86154d839861ffcc3fede0b1061aea": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 338,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "9a18e32f6f64b874a558c947f7065a5d9eb86992d4a7dfe77c6b45e5bd754593",
+      "reason": "Android wiring or derived projection of the single SimulationController snapshot. The public Application constructor is preserved and exercised through AndroidViewModelFactory. Actual native red/green callbacks verify disposal, latest results, failure/retry and message ownership; no independent constructor/accessor MCC or JVM coverage is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "d1e0954abacb64bf527e58c55bc5f3bc5248dbcaa22dc5937c983a9f477e6b3d": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 339,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "57a30f337774c4f34b41a4d2038b510056a256ffd0376f313fb19a0543a0801f",
+      "reason": "Android wiring or derived projection of the single SimulationController snapshot. The public Application constructor is preserved and exercised through AndroidViewModelFactory. Actual native red/green callbacks verify disposal, latest results, failure/retry and message ownership; no independent constructor/accessor MCC or JVM coverage is fabricated.",
+      "evidence": [
+        "docs/engineering/SIMULATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SimulationControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SimulationCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
+      ],
+      "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
     }
   }
 }

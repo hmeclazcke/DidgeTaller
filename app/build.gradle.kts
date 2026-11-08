@@ -186,7 +186,10 @@ val persistenceTests = listOf("StoredDocumentTest", "RecordingMetadataTest", "Au
 val workspaceTargets = listOf("WorkspaceController", "WorkspaceData", "WorkspaceSource", "WorkspaceState",
     "VisualRequest", "VisualRequest\$Companion", "VisualDataKey", "VisualFrames\$Companion").joinToString(",") { "ar.didgetaller.core.$it" } +
     ",ar.didgetaller.audio.CoroutineWorkspaceLoader*"
-registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets,
+val simulationTargets = listOf("SimulationController", "SimulationState", "SimulationState\$Working",
+    "SimulationState\$Ready", "SimulationState\$Failed").joinToString(",") { "ar.didgetaller.core.$it" } +
+    ",ar.didgetaller.lab.CoroutineSimulationLoader*"
+registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets + "," + simulationTargets,
     syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest," + persistenceTests, null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
 registerMutation("qualityMutationHandoff", "pit-handoff", "ar.didgetaller.core.CaptureHandoff,ar.didgetaller.core.RecordingCoordinator", "ar.didgetaller.core.CaptureHandoffTest,ar.didgetaller.core.RecordingCoordinatorTest", null)
@@ -196,6 +199,7 @@ registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.Atomi
 registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
 registerMutation("qualityMutationWorkspace", "pit-workspace", workspaceTargets, "ar.didgetaller.core.Workspace*Test", null)
 registerMutation("qualityMutationPlots", "pit-plots", "ar.didgetaller.core.PlotReduction,ar.didgetaller.core.TraceDrawing,ar.didgetaller.core.WaveGeometry\$Companion,ar.didgetaller.core.RasterPlacement\$Companion", "ar.didgetaller.core.PlotReductionTest,ar.didgetaller.core.TraceDrawingTest,ar.didgetaller.core.VisualGeometryTest", null)
+registerMutation("qualityMutationSimulation", "pit-simulation", simulationTargets, "ar.didgetaller.core.Simulation*Test", null)
 
 fun registerComparison(name: String, benchmark: Boolean) {
  tasks.register(name) {

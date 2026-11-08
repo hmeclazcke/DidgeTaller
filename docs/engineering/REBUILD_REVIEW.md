@@ -1,5 +1,12 @@
 # Production responsibility review — IN PROGRESS
 
+Follow-up review: SimulationController/SimulationLoader and
+lab/CoroutineSimulationLoader replace the laboratory executor/version lifecycle;
+TallerViewModel retains one derived projection. VisualGeometry, TraceDrawing and
+WaveDrawing separate portable preparation from native resources. Boundaries,
+tests and remaining exceptions are in [simulation ownership](SIMULATION_OWNERSHIP.md)
+and [workspace evidence](WORKSPACE_REBUILD.md).
+
 The initial responsibility review contained 63 project-owned Kotlin files: 32 core, 20 UI, 6 data, 3 audio and 2 entry/coordination files. The current compiler-PSI inventory records the expanded exact source set/hashes; the baseline inventory preserves original main. Every file below has been read during this rebuild. Reading a file is not a claim that every defect is fixed or that its tests are complete. Decisions are deliberately different from final acceptance.
 
 The [workspace continuation](WORKSPACE_REBUILD.md) reviews/rebuilds SessionWorkspace,

@@ -1,5 +1,25 @@
 # 2026-11-08 workspace ownership integration
 
+Simulation milestone: canonical debug/release JVM 796 discovered/780 passed/
+16 protected skips/zero failures; engineering tools five and Python 45 passed.
+JVM line/branch coverage 39.69%/36.33%, pure core 98.92%/82.45%. Inventory: 436
+reliable CRAP-L scores, 96 independent Detekt-unscored, 75 above target; all 576
+PSI named declarations accounted for. Two new unscored declarations are abstract
+loader/task contracts. No baseline reset or eligible ordinary-function waiver.
+Simulation request/finish/close and loader submit score 5/2/2/4 with 100% method
+line coverage. PIT simulation 36 generated/31 killed/five survived; plots 124/
+121/three, zero uncovered/tool errors. Lint zero errors/52 warnings/eight hints,
+Detekt 1,970 informational, CPD zero groups >=100 tokens. Localization, debug APK/
+androidTest compilation and the 741-case original-main differential probe pass.
+
+Actual API 37 ViewModel RED: one pass/one failure after disposal; final GREEN four
+pass. Local full suite: 122 passed/21 failed/nine protected/configuration skips,
+with captured Pixel Launcher ANR stealing focus. All 21 affected cases passed one
+targeted retry after launcher-only recovery. Original failures remain preserved;
+no local Android coverage or clean single full-suite pass is claimed. Observe final
+branch API 35 CI, separate Android CRAP-L and broad PIT after publication.
+See [simulation ownership](engineering/SIMULATION_OWNERSHIP.md) for methods and limitations.
+
 Wave/raster follow-up: full JVM 764 discovered/748 passed/16 protected skips/no
 failures, JVM line/branch 39.11%/35.55%, pure core 98.85%/82.28%. Geometry methods
 score 4/6 with 100% method-line coverage; inventory 430 scored/94 unscored, 76

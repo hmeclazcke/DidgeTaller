@@ -93,6 +93,13 @@ Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controle
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
+El [propietario de la simulación del laboratorio](docs/engineering/SIMULATION_OWNERSHIP.md),
+documentado en inglés, impide que resultados tardíos o duplicados modifiquen un
+ViewModel destruido. Lo protegen pruebas controladas de coroutines, de ciclo de
+vida Android y de mutaciones reales. Los reportes usan compilación canónica y
+correspondencia exacta de metadata Kotlin; los casos no soportados siguen visibles,
+sin puntajes inventados.
+
 La [reconstrucción del espacio de sesión](docs/engineering/WORKSPACE_REBUILD.md),
 documentada en inglés, asigna un propietario a cada solicitud de visualización,
 separa un cargador controlable, prepara PCM con cierre seguro y publica una sola

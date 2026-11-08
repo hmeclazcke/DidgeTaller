@@ -14,6 +14,10 @@ import ar.didgetaller.core.DroneComponentCurve
 import ar.didgetaller.core.MusicalTrace
 import ar.didgetaller.core.SavedYinReplay
 import ar.didgetaller.core.AxisWindow
+import ar.didgetaller.core.SimulationLoader
+import ar.didgetaller.core.SimulationController
+import ar.didgetaller.core.SimulationState
+import ar.didgetaller.lab.CoroutineSimulationLoader
 
 import android.app.Application
 import android.os.Handler
@@ -65,7 +69,10 @@ data class DroneComponentState(val sessionId:String?=null,val running:Boolean=fa
 data class SavedYinReplayState(val sessionId:String?=null,val running:Boolean=false,
     val result:SavedYinReplay.Result?=null,val failed:Boolean=false)
 
-class TallerViewModel(application: Application): AndroidViewModel(application) {
+class TallerViewModel internal constructor(
+    application: Application, simulationLoader: SimulationLoader?,
+): AndroidViewModel(application) {
+    constructor(application: Application) : this(application, null)
     private val store=LocalStore(application)
     private val recordingStore=RecordingStore(application)
     private val recoveredCount=recordingStore.recoverPending()
@@ -142,7 +149,6 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         for(id in trash.ids("design")){store.deleteDesign(id);tools.forgetDesign(id);trash.restore("design",id)}
     };refreshLibrary();undoEntry=null;message="Papelera vaciada."}catch(e:Exception){refreshLibrary();message="No se pudo completar el vaciado: ${e.message}"}}}
 
-    private val executor=Executors.newSingleThreadExecutor()
     private val sessionExecutor=Executors.newSingleThreadExecutor()
     private val analysisExecutor=Executors.newSingleThreadExecutor()
     private val analysisVersion=AtomicInteger(0)
@@ -295,7 +301,6 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     fun cancelSavedEvidence(){evidenceJob?.cancel();savedEvidence=SavedEvidenceState()}
     private var cleared=false
     private val main=Handler(Looper.getMainLooper())
-    private val simVersion=AtomicInteger(0)
     private val optimizerExecutor=Executors.newSingleThreadExecutor()
     var pendingExport:ByteArray?=null
     var pendingExportFile:File?=null
@@ -328,8 +333,11 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
     var minHz by mutableStateOf(instrument.minHz);private set
     var maxHz by mutableStateOf(instrument.initialMaxHz);private set
     var shape by mutableStateOf(AcousticModel.Shape());private set
-    var simulation by mutableStateOf<AcousticModel.Simulation?>(null);private set
-    var simBusy by mutableStateOf(true);private set
+    private var simulationState by mutableStateOf<SimulationState>(SimulationState.Empty)
+    val simulation get()=simulationState.result
+    val simBusy get()=simulationState is SimulationState.Working
+    private val simulationOwner=SimulationController(
+        simulationLoader ?: CoroutineSimulationLoader(viewModelScope),::onSimulationState)
     var optimizationActive by mutableStateOf(false); private set
     var optimizationGeneration by mutableStateOf(0); private set
     var optimizationBest by mutableStateOf<BoreOptimizer.Candidate?>(null); private set
@@ -503,15 +511,11 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         calculate()
     }
     private fun calculate() {
-        val serial=simVersion.incrementAndGet();val selected=shape
-        simBusy=true
-        executor.execute {
-            val result=runCatching { AcousticModel.evaluate(selected) }
-            main.post {if(serial==simVersion.get()){
-                simulation=result.getOrNull();simBusy=false
-                result.exceptionOrNull()?.let {message="Error de simulación: ${it.message}"}
-            }}
-        }
+        simulationOwner.request(shape)
+    }
+    private fun onSimulationState(state:SimulationState) {
+        simulationState=state
+        if(state is SimulationState.Failed)message="Error de simulación: ${state.cause.message}"
     }
     fun updateTarget(drone: Double?=null, second: Double?=null, third: Double?=null) {
         val old = optimizationTarget
@@ -566,7 +570,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
-        cleared=true;onAppStopped();executor.shutdownNow()
+        cleared=true;simulationOwner.close();onAppStopped()
         workspace.close()
         analysisVersion.incrementAndGet();analysisExecutor.shutdownNow()
         recording.dispose()

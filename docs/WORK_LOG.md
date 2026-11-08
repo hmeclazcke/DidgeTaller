@@ -1,5 +1,15 @@
 # 2026-11-08 workspace continuation handoff
 
+Replace laboratory version/executor orchestration after a deterministic native
+RED showed a disposed ViewModel accepting a late failure. Use a typed operation
+owner, scoped serial evaluation and one derived Compose snapshot. Preserve the
+public Android factory constructor. Resolve Result mangling through exact compiler
+metadata instead of guessing or waiving scoring. Require canonical quality builds
+after observed generated-denominator variance. Local final evidence and exact next
+analysis-orchestration task are in docs/engineering/REBUILD_PROGRESS.md. Publish
+only the feature branch and inspect actual CI; preserve the failed local launcher
+run separately from its bounded successful retry. Whole rebuild stays IN PROGRESS.
+
 Separate waveform/raster geometry from drawing. Pure factories retain source-time
 sample positions, min/max bin centers, amplitude, log coordinates and completed
 tile bounds. A native WaveDrawing adapter owns cached Path construction; Canvas
