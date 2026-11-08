@@ -1,5 +1,14 @@
 # 2026-11-08 workspace continuation handoff
 
+Continue into rendering: prepare ordered trace instructions in pure TraceDrawing,
+retaining original link/style/uncertainty order and source coordinates. Keep actual
+projection and ink in PlotSurface; retain prepared marks across cursor updates.
+Seven behavioral tests and selected PIT protect the seam. A surviving addition
+mutant exposed zero-origin-only test data; add timestamp translation invariance,
+not production special cases. New factories score 7/8; overall renderer remains
+MCC 127 and unfinished. Preserve exact source-bound Compose/constructor reviews;
+no new measured-function waiver or baseline reset. Final native CI must be checked.
+
 Observed source 9a7229f native CI: full 149-case suite passed with ten protected
 skips, but the separate EN/150% screenshot rejected its active window. Preserve
 that failed run. Synchronize the screenshot helper's lazy accessibility connection

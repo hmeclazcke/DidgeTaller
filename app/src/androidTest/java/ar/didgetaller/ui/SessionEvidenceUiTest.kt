@@ -70,7 +70,7 @@ class SessionEvidenceUiTest {
         val dir=File(app.getExternalFilesDir(null),"session-evidence").apply {mkdirs()}
         try {
             compose.waitUntil(5000) { automation.rootInActiveWindow?.packageName?.toString() == compose.activity.packageName }
-        } catch (failure:AssertionError) {
+        } catch (failure:ComposeTimeoutException) {
             val observed=automation.rootInActiveWindow?.packageName?.toString()
             val rejected=checkNotNull(automation.takeScreenshot())
             File(dir,"rejected-$name.png").outputStream().use { rejected.compress(Bitmap.CompressFormat.PNG,100,it) }
@@ -123,8 +123,12 @@ class SessionEvidenceUiTest {
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null || vm.workspace.state.error!=null}
         compose.runOnIdle {assertNull("Spectrogram calculation",vm.workspace.state.error)}
         compose.onNodeWithTag("time-chart").performScrollTo();screenshot("spectrogram")
-        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
-        compose.onNodeWithTag("expand-plot").performScrollTo().performClick();screenshot("wide-pitch")
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick().assertIsSelected()
+        compose.runOnIdle {assertEquals("Selected chart before fullscreen",AcousticPlot.PITCH,vm.preview(item.id).plot)}
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
+        compose.runOnIdle {assertEquals("Selected chart in fullscreen",AcousticPlot.PITCH,vm.explorer(item.id).plot)}
+        screenshot("wide-pitch")
         assertArrayEquals(original,store.file(item.id).readBytes())
         assertEquals(index,app.getSharedPreferences("local_data",0).all)
         assertEquals(item.timeline,store.list().first {session->session.id==item.id}.timeline)

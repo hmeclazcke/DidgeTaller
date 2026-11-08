@@ -1,5 +1,21 @@
 # 2026-11-08 workspace ownership integration
 
+TraceDrawing follow-up: full debug/release JVM 748 discovered, 732 passed, 16
+protected skips, no failures. JaCoCo JVM 38.99% lines/35.40% branches, core
+98.83%/82.08%; 428 reliable scores/93 unscored/76 above target, ratchet passes.
+Canonical/historical drawing MCC and CRAP-L are 7/8 with 100% method-line coverage.
+Selected plot PIT 78 generated, 75 killed, three survived, no uncovered/errors;
+the newly exposed timestamp-arithmetic mutant is killed by offset invariance.
+Detekt 1,963 informational; Lint zero errors/52 warnings/eight hints, CPD zero
+>=100-token groups, localization and 41 Python tests pass. Native execution for
+this subsequent renderer change must be inspected separately from 9a7229f.
+
+Follow-up 4456ce9 native run 42497366648 succeeded (139 passed/ten skipped,
+five additional configuration cases passed; separate Android 91.68%/68.42%).
+Visual inspection found mislabeled ES/landscape wide-pitch PNGs containing a
+spectrogram. Strengthen the capture test with actual selected-tab and fullscreen
+state assertions. A passing screenshot test alone does not prove its named state.
+
 Remote source 9a7229f: fast CI 42495943779 and expanded PIT 42495992318 succeeded.
 API 35 run 42495940601 passed the complete 149-case suite (139/0/10), producing
 separate Android coverage 91.70% lines/68.54% branches, then failed the additional

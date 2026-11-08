@@ -163,6 +163,24 @@ playback mutants. New workspace survivors are reviewed separately in final evide
 
 ## Reproduction and remaining acceptance
 
+### Ordered trace preparation follow-up
+
+TraceDrawing now owns canonical/legacy source-coordinate drawing decisions;
+PlotSurface retains projection, clipping, ink and Canvas operations. Its ordered
+Mark list preserves the original interleaving of segments, isolated dots and
+uncertainty rings. Separate lists would reorder overlapping marks, so that design
+was rejected. MusicalTrace links and bridge flags remain authoritative; no new
+measurement is generated or used for the 100 ms readout. Historical input must
+come through PitchTrace's non-null rendered-sample boundary.
+
+Seven independent contracts pin empty/isolated/gapped/bridged traces, tone,
+uncertainty visibility, malformed boundary input and the 1,200 ms link boundary.
+PIT exposed a timestamp-subtraction survivor because the initial cases used a
+zero-origin predecessor. Translation-invariance checks now include nonzero starts;
+the subtraction-to-addition mutant is killed without changing correct logic.
+Prepared marks are retained while only the cursor moves; bridge path effects are
+also retained. This is structural work, not a measured CPU/FPS improvement.
+
 ```powershell
 .\gradlew.bat :app:testDebugUnitTest --tests 'ar.didgetaller.core.Workspace*Test' --tests ar.didgetaller.core.PlotReductionTest
 .\gradlew.bat :app:qualityMutationWorkspace :app:qualityMutationPlots

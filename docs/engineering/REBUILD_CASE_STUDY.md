@@ -1,5 +1,14 @@
 # Workspace operation ownership and plot preparation
 
+The follow-up [TraceDrawing](../../app/src/main/java/ar/didgetaller/core/TraceDrawing.kt)
+extracts ordered drawing instructions from Canvas while retaining original gaps,
+bridges, tones and uncertainty rings. Ordering is explicit because splitting dots
+and segments into independently drawn lists would change overlaps. Its two methods
+measure MCC/CRAP-L 7 and 8, with seven behavioral contracts and no detector change.
+PIT found a timestamp-arithmetic survivor; nonzero-origin invariance kills it.
+PlotSurface changes from MCC 130 to 127, not an architectural completion claim;
+axes, gestures and other adapters remain coupled. No FPS improvement is claimed.
+
 The [workspace reconstruction](WORKSPACE_REBUILD.md) turns one mixed Android/IO/
 render owner into a testable operation protocol, task-owned scheduling/progress,
 reader-scoped preparation and a Compose projection. This is a genuine dependency

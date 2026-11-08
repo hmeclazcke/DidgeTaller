@@ -108,7 +108,14 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     var settledLeft by remember(state.plot,textSize){mutableFloatStateOf(requiredLeft)}
     SideEffect {if(!state.gestureActive)settledLeft=requiredLeft}
     val left=if(state.gestureActive)settledLeft else requiredLeft
-    val pitchTrace=remember(points,state.instrument){PitchTrace.build(points,state.instrument)}
+    val pitchTrace=remember(points,state.instrument,displayedTrace==null){
+        if(displayedTrace==null)PitchTrace.build(points,state.instrument) else emptyList()
+    }
+    val traceMarks=remember(displayedTrace,pitchTrace,state.showUncertain,state.plot){
+        if(state.plot!=AcousticPlot.PITCH)emptyList() else displayedTrace?.let(TraceDrawing::canonical)
+            ?: TraceDrawing.historical(pitchTrace,state.showUncertain)
+    }
+    val bridgeEffect=remember {PathEffect.dashPathEffect(floatArrayOf(5f,5f))}
     val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
     // Retain level reduction while only the playback cursor changes.
     val levelPixels=remember(level,camera.x,plotWidth){PlotReduction.levelPixels(level,camera.x,plotWidth)}
@@ -196,32 +203,22 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
                 }
                 xt.forEach {drawLine(grid,Offset(x(it),0f),Offset(x(it),h),.7f)}
                 yt.forEach {drawLine(grid,Offset(0f,y(it)),Offset(w,y(it)),.7f)}
-                if(state.plot==AcousticPlot.PITCH && displayedTrace!=null){
-                    val color=if(spectralTrace)Color(0xFF65C9D1) else Color(0xFF8FE0BD)
-                    displayedTrace.samples.forEachIndexed {index,sample ->
-                        val hz=sample.hz ?: return@forEachIndexed
-                        val prior=displayedTrace.samples.getOrNull(index-1)
-                        if(sample.linkedToPrevious && prior?.hz!=null)
-                            drawLine(color,Offset(x(prior.timeMs),y(prior.hz)),Offset(x(sample.timeMs),y(hz)),2.5f,
-                                pathEffect=if(sample.bridged)PathEffect.dashPathEffect(floatArrayOf(5f,5f)) else null)
-                        else if(displayedTrace.samples.getOrNull(index+1)?.linkedToPrevious!=true)
-                            drawCircle(color,3f,Offset(x(sample.timeMs),y(hz)))
+                if(state.plot==AcousticPlot.PITCH){
+                    val canonicalColor=if(spectralTrace)Color(0xFF65C9D1) else Color(0xFF8FE0BD)
+                    if(displayedTrace==null)analysis?.summary?.typicalHz?.let {hz->if(hz in camera.y.low..camera.y.high)drawLine(Color(0xFF93CDE7).copy(alpha=.5f),Offset(0f,y(hz)),Offset(w,y(hz)),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,6f)))}
+                    for(mark in traceMarks)when(mark){
+                        is TraceDrawing.Segment->drawLine(if(displayedTrace!=null)canonicalColor else pitchColor(mark.tone),
+                            Offset(x(mark.from.timeMs),y(mark.from.hz)),Offset(x(mark.to.timeMs),y(mark.to.hz)),
+                            if(displayedTrace!=null)2.5f else 2.3f,pathEffect=if(mark.bridged)bridgeEffect else null)
+                        is TraceDrawing.Dot->if(mark.uncertain)drawCircle(Color(0xFFEBA16E),3f,
+                            Offset(x(mark.at.timeMs),y(mark.at.hz)),style=Stroke(1.5f))
+                        else drawCircle(if(displayedTrace!=null)canonicalColor else pitchColor(mark.tone),
+                            if(displayedTrace!=null)3f else 2.5f,Offset(x(mark.at.timeMs),y(mark.at.hz)))
                     }
-                    displayedTrace.highRegisterCandidates.forEach {candidate ->
+                    displayedTrace?.highRegisterCandidates?.forEach {candidate ->
                         val px=x(candidate.timeMs.toDouble())
                         val marker=Path().apply {moveTo(px,4f);lineTo(px-5f,14f);lineTo(px+5f,14f);close()}
                         drawPath(marker,Color(0xFFE9BD87))
-                    }
-                }
-                if(state.plot==AcousticPlot.PITCH && displayedTrace==null){
-                    analysis?.summary?.typicalHz?.let {hz->if(hz in camera.y.low..camera.y.high)drawLine(Color(0xFF93CDE7).copy(alpha=.5f),Offset(0f,y(hz)),Offset(w,y(hz)),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,6f)))}
-                    for(sample in pitchTrace){val p=sample.point;val hz=p.hz!!
-                        if(sample.uncertain){if(state.showUncertain)drawCircle(Color(0xFFEBA16E),3f,Offset(x(p.timeMs.toDouble()),y(hz)),style=Stroke(1.5f));continue}
-                        val prior=sample.previous?.let {pitchTrace[it].point}
-                        val color=pitchColor(sample.tone)
-                        if(prior?.hz!=null && p.timeMs-prior.timeMs<=1200)drawLine(color,Offset(x(prior.timeMs.toDouble()),y(prior.hz)),Offset(x(p.timeMs.toDouble()),y(hz)),2.3f,
-                            pathEffect=if(sample.bridged)PathEffect.dashPathEffect(floatArrayOf(5f,5f)) else null)
-                        else drawCircle(color,2.5f,Offset(x(p.timeMs.toDouble()),y(hz)))
                     }
                 }
                 if(state.plot==AcousticPlot.PITCH && swipe!=null){

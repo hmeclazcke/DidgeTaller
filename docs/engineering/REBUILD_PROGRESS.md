@@ -1,5 +1,31 @@
 # Session workspace continuation - IN PROGRESS
 
+Trace preparation follow-up: TraceDrawing extracts ordered canonical/historical
+segments, isolated dots and uncertainty rings from Canvas. The seven new pure
+contracts retain gaps, bridge flags, tone, order and the 1,200 ms boundary; focused
+PIT killed the nonzero-timestamp subtraction survivor. Both methods are reliably
+mapped, 100% method-line covered, MCC/CRAP-L 7 and 8. PlotSurface MCC is 127 versus
+130 at 9a7229f (139 at the earlier checkpoint); this remains a complex unfinished
+renderer, not a completed reconstruction. No CPU/FPS gain is claimed.
+
+Latest local follow-up: both JVM variants 748 discovered/732 passed/16 protected
+skips/zero failures; JVM 38.99% lines/35.40% branches, core 98.83%/82.08%. Scored
+428/unscored 93/above target 76; 565 PSI named declarations are all classified.
+JVM branch percentage falls slightly with the changed generated/UI denominator;
+this is not reported as an improvement. All new eligible functions are below
+target; only constructor carriers and exact Compose source have technical reviews.
+Plots PIT now 78 total/75 killed/three survivors/no uncovered or tool errors.
+Detekt 1,963 informational; Lint zero errors/52 warnings/eight hints, CPD zero
+>=100-token groups; localization, 41 Python tests and Android-test build pass.
+Final trace-source native and broad mutation results must be observed after push.
+
+Follow-up native 4456ce9 passed run 42497366648, including the full 149-case suite
+and all five real locale/font/size checks. Its Android coverage is separately
+91.68%/68.42%. Inspected captures nevertheless reveal an evidence defect: the ES
+and landscape file named wide-pitch shows a spectrogram. Add explicit selected-tab
+and pre/post-fullscreen state assertions before accepting that screenshot. Do not
+claim this configuration verified until those assertions execute successfully.
+
 Published implementation: 9a7229f. Fast CI 42495943779 passed; expanded mutation
 CI 42495992318 passed (1,779 generated; 1,358 killed, 402 survived, 17 uncovered,
 two timeouts; 76.45% detected including timeouts). The full API 35 suite in

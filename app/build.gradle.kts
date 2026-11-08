@@ -176,7 +176,7 @@ registerMutation("qualityMutation", "pit", "ar.didgetaller.core.PlotTouchKt", "a
 // The expanded domain report is informational until survivors have been individually reviewed.
 val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$Companion", "PitchTrace", "PitchTrace\$Builder",
     "Music", "LivePitch", "SessionAnalysis", "AxisDomain", "PlotProjection", "PlotTouchKt", "PlaybackController",
-    "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture", "CaptureHandoff", "RecordingCoordinator", "SpectrogramRaster", "PlotReduction")
+    "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture", "CaptureHandoff", "RecordingCoordinator", "SpectrogramRaster", "PlotReduction", "TraceDrawing")
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}
     .files.sortedBy {it.name}.joinToString(",") {"ar.didgetaller.core."+it.nameWithoutExtension}
 val persistenceTargets = listOf("StoredDocument", "RecordingMetadata", "MeasurementMetadata", "SessionToolsMetadata",
@@ -195,7 +195,7 @@ registerMutation("qualityMutationPlayback", "pit-playback", "ar.didgetaller.core
 registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
 registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
 registerMutation("qualityMutationWorkspace", "pit-workspace", workspaceTargets, "ar.didgetaller.core.Workspace*Test", null)
-registerMutation("qualityMutationPlots", "pit-plots", "ar.didgetaller.core.PlotReduction", "ar.didgetaller.core.PlotReductionTest", null)
+registerMutation("qualityMutationPlots", "pit-plots", "ar.didgetaller.core.PlotReduction,ar.didgetaller.core.TraceDrawing", "ar.didgetaller.core.PlotReductionTest,ar.didgetaller.core.TraceDrawingTest", null)
 
 fun registerComparison(name: String, benchmark: Boolean) {
  tasks.register(name) {

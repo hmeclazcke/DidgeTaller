@@ -1225,18 +1225,16 @@
       "line": 68,
       "kind": "function",
       "name": "PlotSurface",
-      "semanticHash": "91ad2847caf1cf8d9a765812c0324e38a46c907c7c8d2db37d04c43ef7fd0e79",
-      "reason": "Compose source body spans 31 JVM methods (primary 71 lines, draw lambda 87); primary-method-only scoring is not reliable. Extracted RMS/PSD reduction has direct JVM tests/real scores; remaining MCC 130 drawing/axis/gesture ownership is explicitly unfinished and requires actual Android regression/screenshots.",
+      "semanticHash": "66c9b2226aec3ccb6004b9f7f286e51ffd86429c146949a07ff33110ddba19d7",
+      "reviewed_source": "4456ce9a4bc698ba33a0bb4473103f8b814c76f9",
       "evidence": [
         "docs/engineering/WORKSPACE_REBUILD.md",
-        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
-        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
-        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
-        "app/src/test/java/ar/didgetaller/core/PlotReductionTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+        "app/src/test/java/ar/didgetaller/core/TraceDrawingTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/GraphIntelligenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
       ],
-      "metric_status": "compose-transformation"
+      "metric_status": "compose-transformation",
+      "reason": "Compose source spans generated entry and draw lambdas; their counters cannot be safely summed into one method. Ordered trace preparation is measured separately below target, without changing projection/style/order. PlotSurface still contains axes, gestures and other adapters and is explicitly unfinished; exact source reviewed with pure drawing contracts and actual emulator interaction tests."
     },
     "5b2c7e2f1e08436065147b9b2ae78c4008a055bbfebf1e1765eccd8e919d3f6c": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
@@ -1251,6 +1249,51 @@
         "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
       ]
+    },
+    "2ed19e0389e9f920c57a427c0df277d5c3cc7013bea6cb29aa8f89b66ad028ba": {
+      "file": "app/src/main/java/ar/didgetaller/core/TraceDrawing.kt",
+      "line": 5,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "3e3d36e6066c345c0184c34b747433cc4d436f599384f2542a0b238671276690",
+      "reviewed_source": "4456ce9a4bc698ba33a0bb4473103f8b814c76f9",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/TraceDrawingTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/GraphIntelligenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ],
+      "reason": "Immutable drawing instruction value carrier; named factory functions receive measured complexity/coverage. Characterization asserts complete ordered marks, coordinates, tone, uncertainty and bridge flags. No constructor CRAP is fabricated."
+    },
+    "09b61a6a69eb7926cde5552d78dbf38c864ed7f31056719316dac5f8aabce3cd": {
+      "file": "app/src/main/java/ar/didgetaller/core/TraceDrawing.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "abb6b0ccbc66281f460fb94cdb2f7b5ad82e80c3823aa151bdf82c00c7bd076b",
+      "reviewed_source": "4456ce9a4bc698ba33a0bb4473103f8b814c76f9",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/TraceDrawingTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/GraphIntelligenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ],
+      "reason": "Immutable drawing instruction value carrier; named factory functions receive measured complexity/coverage. Characterization asserts complete ordered marks, coordinates, tone, uncertainty and bridge flags. No constructor CRAP is fabricated."
+    },
+    "ae5d9ea84ea2cc9f79e09829b1e1da622e2a4e3ab64297a02487a2c36096a62b": {
+      "file": "app/src/main/java/ar/didgetaller/core/TraceDrawing.kt",
+      "line": 9,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7b620cc2bf4b2af3a82975864dc0472afc6c4e7b644bf35ecc895ec403b373a8",
+      "reviewed_source": "4456ce9a4bc698ba33a0bb4473103f8b814c76f9",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/TraceDrawingTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/GraphIntelligenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ],
+      "reason": "Immutable drawing instruction value carrier; named factory functions receive measured complexity/coverage. Characterization asserts complete ordered marks, coordinates, tone, uncertainty and bridge flags. No constructor CRAP is fabricated."
     }
   }
 }

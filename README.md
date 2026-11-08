@@ -99,8 +99,9 @@ The [session workspace reconstruction](docs/engineering/WORKSPACE_REBUILD.md) gi
 asynchronous visualization requests explicit ownership, a controllable loader,
 resource-safe PCM preparation and one immutable Compose projection. Pure tests
 exercise late results, cancellation and disposal; Android regressions cover real
-images/playback and data preservation. Display-only RMS/spectrum reductions are
-separate from drawing. Remaining PlotSurface/ViewModel reconstruction is still
+images/playback and data preservation. Display-only RMS/spectrum reductions and
+ordered trace geometry are separate from projection/drawing; gap and bridge
+decisions have pure behavioral contracts. Remaining PlotSurface/ViewModel reconstruction is still
 in progress; CI results and scope limitations are linked from the draft PR.
 
 An isolated [engineering reconstruction](docs/engineering/REBUILD_CASE_STUDY.md) is **in progress** on `refactor/uncle-bob-rebuild`. It preserves main as the behavioral reference. The case study records DSP/trace responsibility changes, framework-independent playback, worker-owned recording, independent atomic cache publication, differential contracts and actual CI evidence. The [per-file review](docs/engineering/REBUILD_REVIEW.md) records remaining architectural work; this is not a completed application rebuild.
