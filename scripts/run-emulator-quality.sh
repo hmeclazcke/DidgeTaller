@@ -39,6 +39,7 @@ for language in en es; do
   timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
     -e class 'ar.didgetaller.ui.SessionEvidenceUiTest#captureAndPreserveOriginals' \
     -e evidenceLabel "$language-workspace150" \
+    -e evidenceExpectedLanguage "$language" \
     ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
     > "build/reports/quality/workspace-configuration-$language.txt"
   python3 tools/run_instrumentation.py --verify-log "build/reports/quality/workspace-configuration-$language.txt"
@@ -47,6 +48,7 @@ adb -s "$emulator_serial" shell wm size 1280x720
 timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
   -e class 'ar.didgetaller.ui.SessionEvidenceUiTest#captureAndPreserveOriginals' \
   -e evidenceLabel 'landscape-workspace150' \
+  -e evidenceExpectedLanguage 'es' \
   ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
   > build/reports/quality/workspace-configuration-landscape.txt
 python3 tools/run_instrumentation.py --verify-log build/reports/quality/workspace-configuration-landscape.txt

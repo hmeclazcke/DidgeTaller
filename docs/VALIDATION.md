@@ -1,5 +1,13 @@
 # 2026-11-08 workspace ownership integration
 
+Remote source 9a7229f: fast CI 42495943779 and expanded PIT 42495992318 succeeded.
+API 35 run 42495940601 passed the complete 149-case suite (139/0/10), producing
+separate Android coverage 91.70% lines/68.54% branches, then failed the additional
+EN/150% screenshot guard. This is a failed job, not a full native configuration
+pass. Screenshot readiness now awaits the accessibility window and records rejected
+evidence rather than accepting a system overlay. The guard remains mandatory;
+the follow-up actual run must be inspected. Focused Android-test build passed.
+
 Local canonical final build executes both JVM variants: 734 discovered/718 passed/
 16 protected skips/zero failures. Scope: all existing acoustic/state/persistence
 tests plus 33 workspace and six reduction contracts per variant. Coverage JVM

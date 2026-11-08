@@ -1,5 +1,14 @@
 # 2026-11-08 workspace continuation handoff
 
+Observed source 9a7229f native CI: full 149-case suite passed with ten protected
+skips, but the separate EN/150% screenshot rejected its active window. Preserve
+that failed run. Synchronize the screenshot helper's lazy accessibility connection
+and await the required app window rather than sleeping 250 ms; on failure retain
+the rejected PNG/package for diagnosis. Assert real configuration locale/font.
+Compile the test APK, then verify the actual follow-up CI without weakening the
+window check. Fast and expanded mutation runs already succeeded for unchanged
+production code and need not be repeated manually.
+
 Continue existing feature branch from 4d6dbea, protected main 3a16004 and draft
 PR #1. Rebuilt SessionWorkspace around one typed operation owner, a controllable
 coroutine loader and resource-scoped PCM preparation; the Compose facade publishes

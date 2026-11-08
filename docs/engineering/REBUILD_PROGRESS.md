@@ -1,5 +1,18 @@
 # Session workspace continuation - IN PROGRESS
 
+Published implementation: 9a7229f. Fast CI 42495943779 passed; expanded mutation
+CI 42495992318 passed (1,779 generated; 1,358 killed, 402 survived, 17 uncovered,
+two timeouts; 76.45% detected including timeouts). The full API 35 suite in
+42495940601 executed 149 cases: 139 passed, ten protected skips, zero failures;
+separate Android coverage is 91.70% lines/68.54% branches. The job nevertheless
+FAILED on the subsequent English/150% screenshot's active-window assertion.
+That visual configuration is not verified. The evidence helper now synchronizes
+the lazy accessibility connection, waits boundedly for the application's window,
+and preserves a rejected capture with its observed package if it still fails.
+The assertion remains mandatory. Configuration runs also assert locale/font.
+Android-test compilation passed; observe the follow-up branch CI before claiming
+the configuration fixed. Do not rerun unchanged mutation measurements.
+
 Resumed clean branch at 4d6dbea; main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67.
 The [workspace design/evidence](WORKSPACE_REBUILD.md) replaces mixed async rendering
 with a typed WorkspaceController, controlled CoroutineWorkspaceLoader, scoped PCM

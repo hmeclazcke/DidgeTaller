@@ -32,6 +32,10 @@ class SessionEvidenceUiTest {
     private val args get()=InstrumentationRegistry.getArguments()
     @Before fun setup(){
         assumeTrue("Emulator only",Build.HARDWARE in listOf("ranchu","goldfish"))
+        args.getString("evidenceExpectedLanguage")?.let { expected ->
+            assertEquals(expected, compose.activity.resources.configuration.locales[0].language)
+            assertEquals(1.5f, compose.activity.resources.configuration.fontScale, .01f)
+        }
         app=EvidenceApplication(InstrumentationRegistry.getInstrumentation().targetContext)
         val path=args.getString("evidenceWav")
         val bytes=if(path!=null)File(path).readBytes() else {
@@ -60,12 +64,20 @@ class SessionEvidenceUiTest {
     @After fun close(){if(::app.isInitialized){compose.runOnUiThread {owners.clear()};app.clean()}}
     private fun screenshot(name:String){
         compose.waitForIdle();InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        android.os.SystemClock.sleep(250)
-        check(InstrumentationRegistry.getInstrumentation().uiAutomation.rootInActiveWindow?.packageName?.toString() == compose.activity.packageName) {
-            "A system window obscures the application; visual evidence is invalid"
-        }
+        val automation=InstrumentationRegistry.getInstrumentation().uiAutomation
+        // The accessibility connection is lazy; UI-thread idleness does not await its first window.
+        automation.waitForIdle(100,5000)
         val dir=File(app.getExternalFilesDir(null),"session-evidence").apply {mkdirs()}
-        val bitmap=InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
+        try {
+            compose.waitUntil(5000) { automation.rootInActiveWindow?.packageName?.toString() == compose.activity.packageName }
+        } catch (failure:AssertionError) {
+            val observed=automation.rootInActiveWindow?.packageName?.toString()
+            val rejected=checkNotNull(automation.takeScreenshot())
+            File(dir,"rejected-$name.png").outputStream().use { rejected.compress(Bitmap.CompressFormat.PNG,100,it) }
+            rejected.recycle()
+            throw AssertionError("Invalid visual evidence: expected ${compose.activity.packageName}, observed $observed",failure)
+        }
+        val bitmap=checkNotNull(automation.takeScreenshot())
         File(dir,"${args.getString("evidenceLabel") ?: "synthetic"}-$name.png").outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}
         bitmap.recycle()
     }
