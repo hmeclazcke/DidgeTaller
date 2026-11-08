@@ -123,6 +123,8 @@ class SessionEvidenceUiTest {
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null || vm.workspace.state.error!=null}
         compose.runOnIdle {assertNull("Spectrogram calculation",vm.workspace.state.error)}
         compose.onNodeWithTag("time-chart").performScrollTo();screenshot("spectrogram")
+        // A tab's nearest scroll owner is horizontal; first reveal its row vertically.
+        compose.onNodeWithTag("expand-plot").performScrollTo()
         compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick().assertIsSelected()
         compose.runOnIdle {assertEquals("Selected chart before fullscreen",AcousticPlot.PITCH,vm.preview(item.id).plot)}
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()

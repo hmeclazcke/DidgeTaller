@@ -1,5 +1,13 @@
 # 2026-11-08 workspace continuation handoff
 
+The strengthened ES/150% assertion actually failed in run 42498662573; default
+139 native cases passed with ten protected skips. Failure node bounds y=10..161
+show the target outside the vertical content viewport. performScrollTo on the tab
+addresses its nearest horizontal scroll owner, not the vertical parent. Reveal the
+row first via the sibling expand control, then scroll/tap Dron and retain both
+selection/fullscreen assertions. This corrects evidence setup without bypassing
+real touch, weakening assertions or changing production navigation.
+
 Continue into rendering: prepare ordered trace instructions in pure TraceDrawing,
 retaining original link/style/uncertainty order and source coordinates. Keep actual
 projection and ink in PlotSurface; retain prepared marks across cursor updates.

@@ -1,5 +1,16 @@
 # Session workspace continuation - IN PROGRESS
 
+Latest published production f4b5954: fast 42498667808 and expanded mutation
+42498674509 passed (1,801 mutants/43 bytecode classes: 1,380 killed, 402 survived,
+17 uncovered, two timeouts; 76.74% detected). Native 42498662573 passed all 149
+default cases (139/0/10), then FAILED the strengthened Spanish/150% selected-tab
+assertion. The Dron node had y=10..161 px, behind the fixed header: performScrollTo
+used the tab's nearest horizontal owner without revealing its row vertically.
+The capture test now reveals the row through its expand control before scrolling
+and clicking the tab. This mirrors the existing spectrogram-selection precondition;
+both selected-tab and fullscreen assertions remain. Observe its follow-up native
+run; do not claim a passing configuration from a mislabeled PNG.
+
 Trace preparation follow-up: TraceDrawing extracts ordered canonical/historical
 segments, isolated dots and uncertainty rings from Canvas. The seven new pure
 contracts retain gaps, bridge flags, tone, order and the 1,200 ms boundary; focused
