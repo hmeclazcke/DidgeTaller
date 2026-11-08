@@ -61,6 +61,9 @@ class SessionEvidenceUiTest {
     private fun screenshot(name:String){
         compose.waitForIdle();InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         android.os.SystemClock.sleep(250)
+        check(InstrumentationRegistry.getInstrumentation().uiAutomation.rootInActiveWindow?.packageName?.toString() == compose.activity.packageName) {
+            "A system window obscures the application; visual evidence is invalid"
+        }
         val dir=File(app.getExternalFilesDir(null),"session-evidence").apply {mkdirs()}
         val bitmap=InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
         File(dir,"${args.getString("evidenceLabel") ?: "synthetic"}-$name.png").outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)}

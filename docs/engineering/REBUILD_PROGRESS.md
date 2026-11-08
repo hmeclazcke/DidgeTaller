@@ -1,3 +1,44 @@
+# Session workspace continuation - IN PROGRESS
+
+Resumed clean branch at 4d6dbea; main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67.
+The [workspace design/evidence](WORKSPACE_REBUILD.md) replaces mixed async rendering
+with a typed WorkspaceController, controlled CoroutineWorkspaceLoader, scoped PCM
+WorkspaceData and a read-only Compose projection. Open/render operation identities
+claim terminal publication once; cancellation/disposal invalidate before effects.
+Native tests add real Bitmap/playback-before-visual-readiness, missing-input retry,
+scope disposal/join and byte/index preservation. Their execution must be observed
+in the published branch CI; compiled androidTest is not a pass.
+
+PlotReduction extracts RMS/PSD preparation, rejects empty spectra and keys cached
+curves by actual plot width. A red regression prevents negative waveform-amplitude
+zoom being parsed as a spectral band: VisualKind/forView now own that decision.
+Existing tap/scrub/pinch/pan/back behavior and 80 ms pause tolerance are retained.
+The broader PlotSurface (MCC 130, previously 139) and ViewModel work is unfinished.
+
+Final local: both JVM variants 734 discovered/718 pass/16 protected skips/zero
+failures; JVM 38.64% lines/35.55% branches, core 98.81%/81.84%. New measured logic
+stays below target (controller render 9, loader 3, reductions 5/6). Mapping is
+426 scored/93 independent Detekt-unscored; three additional unscored contracts
+are abstract. No eligible ordinary function has a scoring waiver. 76 JVM methods
+remain above target in the whole project. Detekt 1,967 informational, CPD zero
+>=100-token groups; Lint/build/localization and 41 Python tests pass.
+
+Selected workspace PIT: 204 total, 186 killed/17 survived/1 uncovered, no tool
+errors/timeouts; plots 56, 53/3/0. Scope includes coroutine implementation classes,
+not the whole app. The seven prior survivors remain defensive/invariant-overlap
+cases, individually reasoned in WORKSPACE_REBUILD.md; no fake reflection test or
+production deletion forces them killed. Two Windows RUN_ERROR outcomes were
+rejected as evidence; interrupt testing now owns a joined worker. PIT infrastructure
+errors now fail all Gradle mutation tasks through the tested report validator.
+
+Next exact steps: observe new-source full API 35 and broadened mutation CI; inspect
+collected session PNGs in EN/ES compact fontScale 1.5 and landscape. Fix genuine
+failures first. Then extract remaining canonical/legacy trace drawing preparation
+from PlotSurface under geometric/pixel contracts, followed by ViewModel analysis/
+navigation job ownership. Do not restart the completed audit, persistence or capture
+handoff work. Retain explicit anonymous-MCC and multi-method Compose limitations.
+Keep PR #1 draft; no main/Samsung/private-WAV access or metronome work.
+
 # Focused forensic checkpoint — 2026-11-08
 
 Status: audit correction implemented; whole rebuild **IN PROGRESS**. Resume broader

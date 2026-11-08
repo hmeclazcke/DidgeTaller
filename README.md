@@ -95,6 +95,14 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
+The [session workspace reconstruction](docs/engineering/WORKSPACE_REBUILD.md) gives
+asynchronous visualization requests explicit ownership, a controllable loader,
+resource-safe PCM preparation and one immutable Compose projection. Pure tests
+exercise late results, cancellation and disposal; Android regressions cover real
+images/playback and data preservation. Display-only RMS/spectrum reductions are
+separate from drawing. Remaining PlotSurface/ViewModel reconstruction is still
+in progress; CI results and scope limitations are linked from the draft PR.
+
 An isolated [engineering reconstruction](docs/engineering/REBUILD_CASE_STUDY.md) is **in progress** on `refactor/uncle-bob-rebuild`. It preserves main as the behavioral reference. The case study records DSP/trace responsibility changes, framework-independent playback, worker-owned recording, independent atomic cache publication, differential contracts and actual CI evidence. The [per-file review](docs/engineering/REBUILD_REVIEW.md) records remaining architectural work; this is not a completed application rebuild.
 
 Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), copied verbatim with its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). Project safety and Kotlin-specific execution live separately in AGENTS.md and the [quality guide](docs/quality/QUALITY_GUIDE.md).

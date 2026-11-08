@@ -94,9 +94,10 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     val camera=s.camera(duration,visual.rate,scalePoints)
     LaunchedEffect(item.id){vm.openTools(item);vm.requestMusicalTrace(item);vm.analyzeSavedYin(item)}
     LaunchedEffect(camera,s.plot,s.logarithmic,s.rangeDb,s.gestureActive,visual.frames){
-        if(visual.frames>1 && !s.gestureActive && s.plot in listOf(AcousticPlot.SPECTROGRAM,AcousticPlot.WAVE)){
-            vm.workspace.render(item,VisualRequest(camera.x.low.toLong(),camera.x.high.toLong().coerceAtLeast(camera.x.low.toLong()+1),
-                camera.y.low.coerceAtLeast(0.0),camera.y.high,s.logarithmic,s.rangeDb,s.spectrumReference),s.plot==AcousticPlot.SPECTROGRAM)
+        if(!s.gestureActive && s.plot in listOf(AcousticPlot.SPECTROGRAM,AcousticPlot.WAVE)){
+            // The owner decides readiness. Wave amplitude is never a spectral frequency band.
+            val kind=if(s.plot==AcousticPlot.SPECTROGRAM)ar.didgetaller.core.VisualKind.SPECTROGRAM else ar.didgetaller.core.VisualKind.WAVE
+            vm.workspace.render(item,VisualRequest.forView(kind,camera,s.logarithmic,s.rangeDb,s.spectrumReference),kind)
         }
     }
     LaunchedEffect(visual.spectrogram?.reference){if(s.spectrumReference<=1e-16)s.spectrumReference=visual.spectrogram?.reference ?: 0.0}

@@ -478,6 +478,8 @@
     <string name="diagnostic_could_not_play_audio">"Could not play audio: %1$s"</string>
     <string name="diagnostic_audio">"Audio %1$s/%2$s"</string>
     <string name="diagnostic_visualization_canceled">"Visualization canceled."</string>
+    <string name="diagnostic_visualization_unavailable">"Visualization unavailable. Try opening the session again."</string>
+    <string name="diagnostic_visualization_source_changed">"The audio changed while loading. Open the session again."</string>
     <string name="diagnostic_length_out_of_range">"Length out of range"</string>
     <string name="diagnostic_no_resonances_found_in_the_range">"No resonances found in the range."</string>
     <string name="diagnostic_not_a_valid_riff_wav">"Not a valid RIFF WAV."</string>

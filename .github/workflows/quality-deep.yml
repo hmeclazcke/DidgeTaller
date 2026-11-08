@@ -93,6 +93,8 @@ jobs:
             build/reports/quality/instrumentation.*
             build/reports/quality/library-screenshots/
             build/reports/quality/library-configuration-*.txt
+            build/reports/quality/session-screenshots/
+            build/reports/quality/workspace-configuration-*.txt
             app/build/reports/jacoco/emulator/
           retention-days: 7
           if-no-files-found: error

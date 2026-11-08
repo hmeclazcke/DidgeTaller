@@ -30,5 +30,13 @@
   "ar/didgetaller/data/SessionToolsStore.save(Lorg/json/JSONObject;)V": {
     "replacement": "ar/didgetaller/data/JsonPreferenceDocument.update(Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;",
     "reason": "Replace separate load/save calls with one locked read-modify-publish operation; retain the original risk ceiling."
+  },
+  "ar/didgetaller/audio/SessionWorkspace.render(Lar/didgetaller/data/RecordingStore$Session;Lar/didgetaller/audio/VisualRequest;Z)V": {
+    "replacement": "ar/didgetaller/audio/SessionWorkspace.render(Lar/didgetaller/data/RecordingStore$Session;Lar/didgetaller/core/VisualRequest;Lar/didgetaller/core/VisualKind;)V",
+    "reason": "VisualRequest moves to the pure domain without changing fields/cache wire keys. Android render delegates to the fully JVM-tested operation owner; preserve explicit signature correspondence, not the old god-method risk."
+  },
+  "ar/didgetaller/audio/SessionWorkspace.stateSnapshot(Lar/didgetaller/audio/VisualState;Lar/didgetaller/core/AudioVisuals$Spectrogram;Landroid/graphics/Bitmap;)Lar/didgetaller/audio/VisualState;": {
+    "replacement": "ar/didgetaller/core/WorkspaceController.accept(Lar/didgetaller/core/WorkspaceController$Target;Lar/didgetaller/core/PreparedVisual;)V",
+    "reason": "Consolidate final tile snapshot/cache-key publication into the single typed controller. New acceptance is fully JVM tested and below target; no historical high-risk ceiling is raised."
   }
 }

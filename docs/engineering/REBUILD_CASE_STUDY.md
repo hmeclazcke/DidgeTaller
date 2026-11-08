@@ -1,3 +1,28 @@
+# Workspace operation ownership and plot preparation
+
+The [workspace reconstruction](WORKSPACE_REBUILD.md) turns one mixed Android/IO/
+render owner into a testable operation protocol, task-owned scheduling/progress,
+reader-scoped preparation and a Compose projection. This is a genuine dependency
+boundary: fake callbacks and actual coroutine queues can reproduce late delivery,
+duplicate completion, cancellation, missing data and disposal without hardware.
+It adds no database, global event bus or second player. Independent readers avoid
+shared mutable IO; typed opening/rendering operations avoid nullable mode fields.
+
+Rendering retains completed data coordinates while replacements load. Domain
+factories separate waveform amplitude from spectral frequency, and pure reductions
+pin real RMS maxima/PSD bin behavior. Existing algorithms are reused exactly;
+source-frame endpoints and waveform/power/palette comparisons are independent
+oracles. No CPU/FPS or physical accuracy improvement is claimed without measures.
+
+Before: workspace render MCC/JVM CRAP-L 13/182. After: Android facade 1/2, operation
+render 9/9, portable loader 3/3, PCM preparation <=3 and plot reductions 5/6, with
+direct JVM execution. PlotSurface itself falls 139 -> 130 but remains unfinished.
+New source counts and measured coverage have different denominators; exact tests,
+mutations, intentional differences and native/CI scope are linked in the design.
+The tests also exposed two new-protocol defects and an invalid wave-band mapping
+before acceptance. A PIT minion error led to owned test interruption and actual
+error-status enforcement, rather than accepting a misleading detection score.
+
 # Forensic control correction — 2026-11-08
 
 The [focused forensic audit](../quality/FORENSIC_COMPLIANCE_AUDIT.md) independently

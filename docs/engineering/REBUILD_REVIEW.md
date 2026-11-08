@@ -1,6 +1,12 @@
 # Production responsibility review — IN PROGRESS
 
-The runtime inventory currently contains 63 project-owned Kotlin files: 32 core, 20 UI, 6 data, 3 audio and 2 entry/coordination files. The compiler-PSI inventory records exact source hashes and declarations; the baseline inventory preserves original main. Every file below has been read during this rebuild. Reading a file is not a claim that every defect is fixed or that its tests are complete. Decisions are deliberately different from final acceptance.
+The initial responsibility review contained 63 project-owned Kotlin files: 32 core, 20 UI, 6 data, 3 audio and 2 entry/coordination files. The current compiler-PSI inventory records the expanded exact source set/hashes; the baseline inventory preserves original main. Every file below has been read during this rebuild. Reading a file is not a claim that every defect is fixed or that its tests are complete. Decisions are deliberately different from final acceptance.
+
+The [workspace continuation](WORKSPACE_REBUILD.md) reviews/rebuilds SessionWorkspace,
+CoroutineWorkspaceLoader, WorkspaceController, WorkspaceData, WorkspaceVisuals and
+PlotReduction. Their ownership, data/resource boundaries and tests are documented
+there. PlotSurface display reduction is extracted; remaining drawing/gesture/axis
+coupling and other ViewModel analysis/navigation responsibilities are not complete.
 
 ## Core
 

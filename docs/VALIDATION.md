@@ -1,3 +1,22 @@
+# 2026-11-08 workspace ownership integration
+
+Local canonical final build executes both JVM variants: 734 discovered/718 passed/
+16 protected skips/zero failures. Scope: all existing acoustic/state/persistence
+tests plus 33 workspace and six reduction contracts per variant. Coverage JVM
+38.64% lines/35.55% branches, core 98.81%/81.84%; source mapping 426/93 with 76
+above-target JVM scores, zero ratchet violations and zero CPD groups >=100 tokens.
+Detekt 1,967 informational; Lint/debug/androidTest compilation/localization pass.
+41 Python tools tests pass. No new Android execution is claimed by this local
+paragraph; fresh CI/emulator evidence and exact commit are recorded in PR #1.
+
+Focused PIT: workspace 204 (186 killed/17 survived/one uncovered), plots 56 (53/3/0),
+no remaining tool errors/timeouts. The two earlier RUN_ERROR outcomes were socket
+failures, not kills; thread interruption is isolated and reports now reject
+infrastructure/unexecuted states. Existing handoff/playback reruns retain 94/5 of
+99 and 125/22 of 147 respectively. Selected scopes are not whole-app measurements.
+Differential probe matches the pinned original production JAR byte-for-byte.
+Logs: checkpoints/workspace. Details: docs/engineering/WORKSPACE_REBUILD.md.
+
 # 2026-11-08 focused forensic quality verification
 
 Audited source interval 9cd18f6..672c9b2 without runtime/test/resource changes.

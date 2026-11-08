@@ -53,23 +53,6 @@
       "max_cc": 8,
       "max_crap_line": 72.0
     },
-    "d2f2de771eac680e4512dc077c3618d3f00625a803fc177ce345f0b54ac7c77a": {
-      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
-      "line": 34,
-      "kind": "function",
-      "name": "render",
-      "semanticHash": "25b703e60f62d9e14b179e9eaf54c5e2c127d53b604a49e087c796a040ca5c01",
-      "reason": "Existing asynchronous viewport/cache/render orchestration remains above target: MCC 17 -> 13, JVM CRAP-L 306 -> 182; Android method lines 100%, CRAP-L 13. Raster extraction is useful but does not complete workspace ownership redesign. Explicit unresolved architectural risk; further body edits expire this review.",
-      "evidence": [
-        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
-        "app/src/test/java/ar/didgetaller/core/SpectrogramRasterTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
-      ],
-      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
-      "metric_status": "measured",
-      "max_cc": 13,
-      "max_crap_line": 182.0
-    },
     "0c50fcc397e0e4a81581621947fbe6352abbad038aabd02c050327e6e3780185": {
       "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
       "line": 6,
@@ -576,6 +559,698 @@
       "metric_status": "measured",
       "max_cc": 3,
       "max_crap_line": 12.0
+    },
+    "3218d9e3b7099e133380393f75aff5a9d5857f72d8b1fba6e59783c7351bd1a0": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 20,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "803f8656f1813d381471ad9445209791877c02076f957fe82377de0e0bf045fd",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "3c55381cf5fb4cca4788f266ee5d43c9edf04d51070f96146908f135bc6a1147": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 22,
+      "kind": "initializer",
+      "name": "data",
+      "semanticHash": "737c4c30e5f1242386d71e8e80a7fe53ac8341eaee141733da57c20026f3aa9b",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "d2cf54347bb7b5e2f67dbf915795d1e4276ba3074739f0028f930cf03ce44a30": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "0443cfc3cbd9acbc76ca98c766ba0d9990db19e281c07f4126ce3c0a7a5ab837",
+      "reason": "Source-authored lambda defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "f48b5864f03f19cb64717b8cfae613537d7d91d2351044c3c392570664d6103e": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 23,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "458b9e068fdea7e981b8b854d489e9b1698a5ac5dd1cbff471447e231f9469e2",
+      "reason": "Source-authored lambda defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "c2e47984fb85c351a9a7f4e6b2839b319a1d0ed33eab105f6d3c783d23d141f7": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 24,
+      "kind": "initializer",
+      "name": "loader",
+      "semanticHash": "dff2a527cf309a406f1730333b078f87ded45dfc10f603cd43e0d7b7f4fedc0c",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "f7fb71f56bd9c79d2ead078534ed669aa7852d5b336ddfed939a3a88f1597916": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 24,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "ca549bd1adf4e7f4df017e36e12f856f7fa2604c00ac74683fb61ac1e02bd82b",
+      "reason": "Source-authored lambda defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "17e2d9940768f6272e35623d64fec24d6f0d842730680fdbd614a17969f28218": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 27,
+      "kind": "initializer",
+      "name": "owner",
+      "semanticHash": "ad62f0e0447f35443cbff48b22518437590df76fa36be421fd646c10d656376e",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "d4b6cfb7682867829e9dfaca935412df7a67f555254eceb1bdbc23fb94111799": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 27,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "1d8cb8392966171e1e8d057a677abe3458c56a9424ba19d724d40dc64b5471e0",
+      "reason": "Source-authored lambda defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "ccc4b751c833ac1fd6850209e0f5ffc88b7d3b351427dd678d231fa756dff7d5": {
+      "file": "app/src/main/java/ar/didgetaller/audio/WorkspaceLoader.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "e873c161d11fc9c8b277b4518c19f1bf4061a5c71621cf83d71bd1a470bccd6a",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "9be59436140653504b72cfaa023a712762a64e0ca8b9b176d3f929b885c129d6": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2d57fbc7f2cd48ceb392db4680e6e24f9cb87ab1a15a380143c31c165379db0e",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "58310fc605c6b6b395917abbc4d0186b5fb4a06dd42e8276935dc354267fa012": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 8,
+      "kind": "initializer",
+      "name": "state",
+      "semanticHash": "5d88a8b6f496f8d5fd08167140a52b870874eb1ed64f71f25318759372b43486",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "4425002d32820957946a3cd6d6df6edb6c88230f54fffd08f14bc16dd8d77781": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 8,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "894b29e8dff03cfe17c08755e886954acd5de98f78a2b5841063e616bd6ebc72": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 9,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "07181d1026d652b195603a287fe614df7231cda806053fc765e50eb4755365c0",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "a8e702724f25a33768ecc3e8970585090fe384088839cf84a74336350a286396": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "df87681eb1d96bd9be0b7c7fa3772d8a512d3faa97ce1d86aafb1e7848477db2",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "5d5d2d8b8292e76add16871e87875b16650c606b13bd2485f92c62fe51730f90": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 11,
+      "kind": "initializer",
+      "name": "task",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "2a8cc5593631d5447a34a118266f1ee8c23534e0b9cb1389abbd4724a119e47c": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 12,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bb4927efd65cd9c1bd7045e102728be51c295379a989e8796bb9efa5962b2053",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "cc772496cb8cda5adb77c21e974f707a553a6f30af1b39607c8ad7e4c6d784a3": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "23ac6b2d767f38e59088fc841ae9e353713122a06d418441f8ca8ee1052e90c8",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "23acb86856f76788b5605124ff635a143a786f6b3df26c75bdccd18993aeb338": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": "active",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "2ffbb8f00bd9cbcf186cbb1a26c8045da2206e1d18d807ffd2fbb4f03b47283e": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": "completed",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "737a255c905c5ae279da31268cda7650d014eb4b2f12984d3cd70aeaed1b0562": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 17,
+      "kind": "initializer",
+      "name": "waveKey",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "34ac1222f49b97595980fc50c8fe220c3d253928d7a5eb3539edb7ac337f2d0b": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 18,
+      "kind": "initializer",
+      "name": "tileKey",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "adab5917a07029567a70a441ed12e61655a2b5804198ef403e05a7818b209146": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceController.kt",
+      "line": 19,
+      "kind": "initializer",
+      "name": "closed",
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "98e9cb04bff145c5972bf6a742f1c5d90b6e4a62f5d47c267d2f40a54962f697": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceData.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "976d78eddbadec7948517ee0e1a55fb7a034f1b3b7a83e966982e22ed44c42c5",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "aa108e1cc377c33c1a1e09c7fdd48e5fc88af883e3efbc11528d2686536c4e7a": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceData.kt",
+      "line": 20,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bc639809919fb71c068c3fe36de3e818ac74581fbad6ead2d59ea015f5cda21d",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "19d5441b6b2082f0c2bc9526a05ff9ec211609706edfd23678e6baeacf6ed772": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceData.kt",
+      "line": 23,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c0cac8c81427d8ece849b8fe6415331c4feec450e325a008e4dbba3c82c24076",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "639638b1f40a3683a99ffa73c8d801cc22b06a5cb130c5f4ad9e8578746134b5": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 4,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a2564a52d733d8ea90c4bbd0f5cb88a494238165af6889549e638853aa4f1a19",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "69dcdf744fdac34303d65a9223a3b1f45bec42cef074518332dc5249e5ca9a6d": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "1b74bf1ad3d634e90627f333fe377e7262d114ebcf05b240e5ad686d73fb3efc",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "2cd832330d1da97b923caea0f9b025447b2af086b1ac03af02ed7605afcf30ca": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": "durationMs",
+      "semanticHash": "b441dee849bdd44b6e4f05e880562ebfaf2170bff66e8ff549675053e3dfea32",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "2d9a1112fa75f0d0ceae0e5762a54b67b3e0d0232fc452e4fc32b87e709b971e": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ca720af2064d4869a3413bf79244032adda738f3d9f2247c5688a1f73fa6cb4d",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "01c9c3c789f137ff6ee97cbbba73823e2fc1d00e63fdd43deea389290cfdb14f": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 13,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "dbd8fe3ec268df78f009887e5c5e1e9ee10d21882779f9b0b47eb93009aea753",
+      "reason": "Source-authored initializer defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "45d4705113ac3e951209dd7f61945d86e6106eb4f7bbe10ea1f9d12b93ed7f22": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 32,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "413a4afa4a9faefac05728a768238f2b2875026a35214c70b1e98cfd1a6394dd",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "f320827c84f7e095bc10f7de670f109f0c04b5271f3950ababa0bdb4f0490115": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 44,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7e8274b6b2ef7da8fb11b7e66351c4618de6b36c83948932887df4869645cb5e",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "ae37849429cef33bc5462b10ddfe1fb26d1bef0903228e7c9b7fbd0a58bd9b08": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 48,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "248a8d08224fbcc4041b3a8a2f4ab2c2afa1ab2d61a5467935d56d7a99ca81c4",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "bf2d72246f4b30352a64ca8e0aaca1b9144373eb2735cb987813e551ec8c9efc": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 51,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "985a99b4a26f44ffe92e17f7fe59f395c9ff1c3bd45aeb81c0b5ed2d1f403e7f",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "c26a6f7748e3eab02b98f0dcb044cf79b57cddfcba48ab1704515bf00c2c3923": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 52,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "584730bdea69f7eae6e616be74f170a2ea1213a7dec775627f5ae1e7b2ffdcc9",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "0c400a4b816e8ee112272ab813e000792a9a7ee17549003808a4bcbda00c381c": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 53,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "921fb341bd07da0cd614a93bb094e788f30d62ac2d0fdfd57c57ac3304d895c8",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "c0fb8b3c2489658c9646afff302c2fa804f5002f66ef3b26bb500f82b6297e4e": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 54,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "ab1ecf977d10669a1fbd9c8db673cdbac71b55d66ba0bf5438e5cac3e4f37c1e",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "86cbe552c7998a9c71b9f9c6d87d6f763e18281a26c4b58c6145a22efb95f2ad": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 55,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "82fc77b9db969d405641ef0bd4e2aa1e6aa796b3be8c21e579ec969efe1f617f",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "ee6b6f72e00b81cc5962de8a01684d57a5a121315893e2c07b584cbf5b1c34c2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 56,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "8ece2d05888bfca46c3419ab0bf66ecc9e16224c118d9224682598342f868970",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "d7d75206b77af0ff7d0a96d98d55504b326237e6d0c2aaa4996757977148cbed": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 57,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "43c33fb4222640e6ffdd555f35eac22497e29c244fbc0af9ed65e5c81b124968",
+      "reason": "Source-authored accessor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "326482b3092fa1b0faf8658ac8d40626c1e6a10233ebfa79fc86cc7821c024a3": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 65,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "6d2b973c9f8f1a9e1c414badde254096fbe01c1232642ea35ca3bb6a18f71f0e",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "a7b3880465b86b61972c4ddac477fea0148a805e9cd96a97626d7c20e0ddc012": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 66,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "cef874a2e67870ad312b477f635baaaed82603858e45c8a9caf5fd7823f63344",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "620884a3ac5a674ea26f61c7fef4a3695b29c5f7270b70c5771e52ce3c8b2a78": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkspaceVisuals.kt",
+      "line": 69,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "eaefc908fe899cac9298bfdbc1da08fe5d73b5523a096621245b9be4b36940e8",
+      "reason": "Source-authored constructor defines validated immutable request/source/status facts, single-owner operation fields or Android wiring; Detekt named-function inventory has no standalone constructor/accessor/initializer metric. Boundary, derived-state and lifecycle behavior is directly tested; eligible ordinary functions remain scored, none waived.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "9d0b712350e87eba6c49101e59e253ed444d17f2549c8cca12ce86b63c096735": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DiagnosticText.kt",
+      "line": 29,
+      "kind": "initializer",
+      "name": "diagnosticRules",
+      "semanticHash": "a1aecceacfa5951e011d776fac59874f2aefa3b6de2c5e9c68313773178f07a5",
+      "reason": "Localized diagnostic rule-table initializer adds stable English cancellation/unavailable/source-changed mappings to existing ES/EN resources; not a standalone Detekt named-function MCC. Preserve the legacy Spanish cancellation key.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "c90b7239e908a6b392c71a4e20e549f01b17bef0a9d4ac2c881391bc06a156a7": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
+      "line": 68,
+      "kind": "function",
+      "name": "PlotSurface",
+      "semanticHash": "91ad2847caf1cf8d9a765812c0324e38a46c907c7c8d2db37d04c43ef7fd0e79",
+      "reason": "Compose source body spans 31 JVM methods (primary 71 lines, draw lambda 87); primary-method-only scoring is not reliable. Extracted RMS/PSD reduction has direct JVM tests/real scores; remaining MCC 130 drawing/axis/gesture ownership is explicitly unfinished and requires actual Android regression/screenshots.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceCoroutineLoaderTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/test/java/ar/didgetaller/core/PlotReductionTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "5b2c7e2f1e08436065147b9b2ae78c4008a055bbfebf1e1765eccd8e919d3f6c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "line": 72,
+      "kind": "function",
+      "name": "SessionPlot",
+      "semanticHash": "126ae2e074223cd745825b898edfaed9016df12592566866d712f037a300fb23",
+      "metric_status": "compose-transformation",
+      "reason": "Compose session orchestration remains a transformed multi-method source callable. Route typed wave requests by time only and spectral requests by Hz; move readiness to the single controller owner. Negative amplitude viewport regression is tested in the pure request factory and real long-WAV UI case. No guessed primary-method-only CRAP score.",
+      "evidence": [
+        "docs/engineering/WORKSPACE_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/WorkspaceDataTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
     }
   }
 }

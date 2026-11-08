@@ -1,3 +1,22 @@
+# 2026-11-08 workspace continuation handoff
+
+Continue existing feature branch from 4d6dbea, protected main 3a16004 and draft
+PR #1. Rebuilt SessionWorkspace around one typed operation owner, a controllable
+coroutine loader and resource-scoped PCM preparation; the Compose facade publishes
+the same immutable snapshot and owns no competing transitions. Added actual
+coroutine cancellation/reader tests, native lifecycle/playback/data tests and
+typed time-only versus spectral requests. Extracted display RMS/PSD reduction and
+fixed empty-spectrum failure plus negative-amplitude request incompatibility.
+
+The final source passes local JVM/build/static/coverage/ratchet/selected-PIT gates;
+new-source Android and broad mutation CI must be inspected after publication.
+No original numerical baseline is reset; constructor/accessor/Compose limitations
+are exact-content reviews with executable test references. Source retirement is
+explicit for the request relocation and consolidated tile publication. Run-error
+reports now fail mutation tasks; shared-runner interruption was isolated.
+WORKSPACE_REBUILD.md and the top of REBUILD_PROGRESS.md contain exact evidence and
+next work. Whole reconstruction remains IN PROGRESS; do not merge or touch Samsung.
+
 # 2026-11-08 forensic audit handoff
 
 Continue feature branch refactor/uncle-bob-rebuild, protected main 3a16004 and draft

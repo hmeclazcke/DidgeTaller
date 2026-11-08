@@ -2,6 +2,19 @@
 
 ## Methodology and ownership
 
+The [workspace milestone](../engineering/WORKSPACE_REBUILD.md) adds deterministic
+operation/scheduler/resource tests and typed time-only versus spectral requests.
+Focused commands: `:app:qualityMutationWorkspace` and `:app:qualityMutationPlots`.
+The same scopes join `qualityMutationDomain`, including coroutine implementation
+classes explicitly. Scores remain scope-specific/informational. Every mutation
+task now rejects PIT RUN_ERROR/MEMORY_ERROR/unfinished outcomes using
+`tools/mutation_report.py`; PIT exit zero alone is insufficient. Timeouts and
+nonviable operators remain distinct reported outcomes, never called killed tests.
+The emulator script also executes real EN/ES compact 150% session configurations
+and a landscape session case, retaining `session-screenshots/` and
+`workspace-configuration-*.txt` separately from full-suite coverage. Inspect the
+actual collected PNGs and run results before making a visual/Android pass claim.
+
 The [2026-11-08 forensic audit](FORENSIC_COMPLIANCE_AUDIT.md) reconciles every changed
 callable and all unscored declarations. Installation/invocation, architectural
 practice and executable enforcement are distinct claims. Historical runtime

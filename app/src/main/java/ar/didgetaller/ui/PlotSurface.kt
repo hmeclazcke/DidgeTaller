@@ -111,21 +111,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     val pitchTrace=remember(points,state.instrument){PitchTrace.build(points,state.instrument)}
     val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
     // Retain level reduction while only the playback cursor changes.
-    val levelPixels=remember(level,camera.x,plotWidth){
-        val audio=level
-        if(audio==null || plotWidth<=0)floatArrayOf() else {
-            val pixels=FloatArray(ceil(plotWidth).toInt().coerceAtLeast(1))
-            val first=floor(camera.x.low*audio.rate/1000/audio.hop).toInt().coerceIn(0,audio.rms.size)
-            val end=ceil(camera.x.high*audio.rate/1000/audio.hop).toInt().coerceIn(first,audio.rms.size)
-            fun pixel(ms:Double)=camera.x.fraction(ms)*plotWidth
-            for(i in first until end){
-                val a=pixel(i.toDouble()*audio.hop*1000/audio.rate).toInt().coerceIn(0,pixels.lastIndex)
-                val b=ceil(pixel(min(audio.frames,(i+1L)*audio.hop)*1000.0/audio.rate)).toInt().coerceIn(a,pixels.lastIndex)
-                for(column in a..b)pixels[column]=max(pixels[column],audio.rms[i])
-            }
-            pixels
-        }
-    }
+    val levelPixels=remember(level,camera.x,plotWidth){PlotReduction.levelPixels(level,camera.x,plotWidth)}
     val swipePaths=remember(swipe,camera,dimensions,left,right,top,bottom,state.plot){
         val path=Path();val dots=mutableListOf<Offset>()
         if(swipe!=null && state.plot==AcousticPlot.PITCH){
@@ -163,19 +149,7 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     // Reduction is retained while the native playback cursor advances.
     val spectrum=analysis?.spectrum
     val spectrumReference=remember(spectrum){spectrum?.density?.maxOrNull() ?: 0.0}
-    val curve=remember(spectrum,camera.x,dimensions.width){
-        if(spectrum==null || dimensions.width==0)emptyList() else {
-            val bin=spectrum.sampleRate.toDouble()/spectrum.fftSize
-            val first=ceil(camera.x.low/bin).toInt().coerceIn(0,spectrum.density.lastIndex)
-            val last=floor(camera.x.high/bin).toInt().coerceIn(first,spectrum.density.lastIndex)
-            val count=(dimensions.width-left-right).toInt().coerceAtLeast(2)
-            if(last-first<count)(first..last).map {it*bin to spectrum.density[it]}
-            else {
-                val peaks=DoubleArray(count);for(i in first..last){val cell=((i*bin-camera.x.low)/camera.x.span*(count-1)).toInt().coerceIn(0,count-1);peaks[cell]=max(peaks[cell],spectrum.density[i])}
-                peaks.mapIndexed {i,value->camera.x.value(i.toDouble()/(count-1)) to value}
-            }
-        }
-    }
+    val curve=remember(spectrum,camera.x,plotWidth){PlotReduction.spectrum(spectrum,camera.x,plotWidth.toInt())}
     Canvas(modifier.background(palette).then(gesture).testTag(if(diagnostic)"diagnostic-time-chart" else if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
         .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(diagnostic)context.getString(R.string.diagnostic_chart_accessibility) else if(state.plot.temporal)context.getString(R.string.graph_timeline_hint) else context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect))}
         .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera

@@ -156,7 +156,14 @@ fun registerMutation(name: String, directory: String, targets: String, testTarge
         mainClass.set("org.pitest.mutationtest.commandline.MutationCoverageReport")
         val mutationXml=layout.buildDirectory.file("reports/quality/$directory/mutations.xml")
         doFirst {mutationXml.get().asFile.delete()}
-        doLast {check(mutationXml.get().asFile.let {it.isFile && it.readText().contains("<mutation ")}) {"PIT did not produce mutations; inspect tool output."}}
+        doLast {
+            val python = if (System.getProperty("os.name").startsWith("Windows")) "python" else "python3"
+            val validation = ProcessBuilder(python, rootProject.file("tools/mutation_report.py").absolutePath,
+                mutationXml.get().asFile.absolutePath).directory(rootDir).redirectErrorStream(true).start()
+            val report = validation.inputStream.bufferedReader().use { it.readText() }
+            check(validation.waitFor() == 0) { "PIT report verification failed: $report" }
+            logger.lifecycle(report.trim())
+        }
         args("--reportDir",layout.buildDirectory.dir("reports/quality/$directory").get().asFile.absolutePath,
             "--targetClasses",targets,"--targetTests",testTargets,
             "--sourceDirs","src/main/java","--outputFormats","XML,HTML","--timestampedReports","false",
@@ -169,14 +176,17 @@ registerMutation("qualityMutation", "pit", "ar.didgetaller.core.PlotTouchKt", "a
 // The expanded domain report is informational until survivors have been individually reviewed.
 val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$Companion", "PitchTrace", "PitchTrace\$Builder",
     "Music", "LivePitch", "SessionAnalysis", "AxisDomain", "PlotProjection", "PlotTouchKt", "PlaybackController",
-    "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture", "CaptureHandoff", "RecordingCoordinator", "SpectrogramRaster")
+    "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture", "CaptureHandoff", "RecordingCoordinator", "SpectrogramRaster", "PlotReduction")
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}
     .files.sortedBy {it.name}.joinToString(",") {"ar.didgetaller.core."+it.nameWithoutExtension}
 val persistenceTargets = listOf("StoredDocument", "RecordingMetadata", "MeasurementMetadata", "SessionToolsMetadata",
     "JsonPreferenceDocument", "JsonPreferenceDocument\$Companion", "LibrarySnapshot\$Companion").joinToString(",") { "ar.didgetaller.data.$it" }
 val persistenceTests = listOf("StoredDocumentTest", "RecordingMetadataTest", "AuxiliaryMetadataTest", "JsonPreferenceDocumentTest", "LibrarySnapshotTest")
     .joinToString(",") { "ar.didgetaller.data.$it" }
-registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets,
+val workspaceTargets = listOf("WorkspaceController", "WorkspaceData", "WorkspaceSource", "WorkspaceState",
+    "VisualRequest", "VisualRequest\$Companion", "VisualDataKey", "VisualFrames\$Companion").joinToString(",") { "ar.didgetaller.core.$it" } +
+    ",ar.didgetaller.audio.CoroutineWorkspaceLoader*"
+registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets,
     syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest," + persistenceTests, null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
 registerMutation("qualityMutationHandoff", "pit-handoff", "ar.didgetaller.core.CaptureHandoff,ar.didgetaller.core.RecordingCoordinator", "ar.didgetaller.core.CaptureHandoffTest,ar.didgetaller.core.RecordingCoordinatorTest", null)
@@ -184,6 +194,8 @@ registerMutation("qualityMutationRaster", "pit-raster", "ar.didgetaller.core.Spe
 registerMutation("qualityMutationPlayback", "pit-playback", "ar.didgetaller.core.PlaybackController,ar.didgetaller.core.PlaybackController\$events\$1", "ar.didgetaller.core.PlaybackControllerTest", null)
 registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
 registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
+registerMutation("qualityMutationWorkspace", "pit-workspace", workspaceTargets, "ar.didgetaller.core.Workspace*Test", null)
+registerMutation("qualityMutationPlots", "pit-plots", "ar.didgetaller.core.PlotReduction", "ar.didgetaller.core.PlotReductionTest", null)
 
 fun registerComparison(name: String, benchmark: Boolean) {
  tasks.register(name) {

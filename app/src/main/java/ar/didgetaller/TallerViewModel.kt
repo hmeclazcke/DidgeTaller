@@ -567,6 +567,7 @@ class TallerViewModel(application: Application): AndroidViewModel(application) {
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
         cleared=true;onAppStopped();executor.shutdownNow()
+        workspace.close()
         analysisVersion.incrementAndGet();analysisExecutor.shutdownNow()
         recording.dispose()
         optimizationVersion.incrementAndGet();optimizerExecutor.shutdownNow();super.onCleared()
