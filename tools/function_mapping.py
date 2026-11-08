@@ -21,7 +21,36 @@ def argument_count(descriptor):
     return count
 
 
-def correlate(function, methods, complexity):
+def metadata_aliases(path, classes_root=None):
+    root = ET.parse(path).getroot()
+    if (root.tag != 'jvmMethods' or root.get('schema') != '1' or int(root.get('classesScanned', '0')) < 1
+            or root.get('compilation') != 'non-incremental'):
+        raise ValueError('Nonempty Kotlin metadata method inventory required')
+    if classes_root is not None and Path(root.get('classesRoot', '')).resolve() != classes_root.resolve():
+        raise ValueError('Unexpected Kotlin metadata class root')
+    aliases, hashes = {}, {}
+    for row in root.findall('function'):
+        key = tuple(row.get(field, '') for field in ('owner', 'name', 'descriptor'))
+        source_name, fingerprint = row.get('sourceName', ''), row.get('classSha256', '')
+        if not all(key) or not source_name or len(fingerprint) != 64 or any(c not in '0123456789abcdef' for c in fingerprint):
+            raise ValueError('Incomplete Kotlin metadata correspondence')
+        argument_count(key[2])
+        if key in aliases or (key[0] in hashes and hashes[key[0]] != fingerprint):
+            raise ValueError('Ambiguous Kotlin metadata correspondence')
+        if classes_root is not None and key[0] not in hashes:
+            relative = Path(key[0] + '.class')
+            if relative.is_absolute() or '..' in relative.parts:
+                raise ValueError('Invalid metadata class owner')
+            if hashlib.sha256((classes_root / relative).read_bytes()).hexdigest() != fingerprint:
+                raise ValueError('Stale Kotlin metadata class: ' + key[0])
+        hashes[key[0]] = fingerprint
+        aliases[key] = source_name
+    if not aliases:
+        raise ValueError('Empty Kotlin metadata correspondence')
+    return aliases
+
+
+def correlate(function, methods, complexity, aliases=None):
     if '<anonymous>' in function['owner'] or not function['name']:
         return dict(status='anonymous-owner')
     for flag, reason in [('local', 'nested-metric-in-parent'), ('compose', 'compose-transformation'),
@@ -35,7 +64,9 @@ def correlate(function, methods, complexity):
     if complexity < 1:
         return dict(status='invalid-complexity')
     parameters = int(function['parameters']) + (function['receiver'] == 'true')
-    candidates = [m for m in methods if m['owner'] == function['owner'] and m['name'] == function['name']
+    aliases = aliases or {}
+    candidates = [m for m in methods if m['owner'] == function['owner']
+                  and aliases.get((m['owner'], m['name'], m['descriptor']), m['name']) == function['name']
                   and int(function['start']) <= m['line'] <= int(function['end'])
                   and argument_count(m['descriptor']) == parameters]
     if len(candidates) != 1:
@@ -49,7 +80,8 @@ def correlate(function, methods, complexity):
                 crap_line=complexity ** 2 * (1 - coverage) ** 3 + complexity)
 
 
-def inventory_report(inventory_path, complexity_path, coverage_path):
+def inventory_report(inventory_path, complexity_path, coverage_path, metadata_path=None):
+    aliases = metadata_aliases(metadata_path, Path('app/build/tmp/kotlin-classes/debug')) if metadata_path is not None else {}
     metrics = json.loads(complexity_path.read_text(encoding='utf-8'))['functions_by_cyclomatic']
     by_location = {}
     for metric in metrics:
@@ -80,12 +112,13 @@ def inventory_report(inventory_path, complexity_path, coverage_path):
         for function in source.findall('function'):
             row = dict(function.attrib, file=path)
             key = (path, int(function.get('line')), function.get('name'))
-            row.update(correlate(row, candidates, by_location.get(key)))
+            row.update(correlate(row, candidates, by_location.get(key), aliases))
             functions.append(row)
     if not sources or not functions:
         raise ValueError('Empty production inventory')
     # Even nested/abstract/framework declarations remain in this denominator.
     return dict(parser='Kotlin PSI 2.2.21', coverage_metric='method-specific JaCoCo LINE fraction',
+                coverage_input=coverage_path.as_posix(),
                 sources=sources, functions=functions,
                 counts=dict(Counter(f['status'] for f in functions)), total_functions=len(functions))
 
@@ -95,9 +128,10 @@ def main():
     parser.add_argument('--inventory', type=Path, default=Path('build/reports/quality/source-inventory.xml'))
     parser.add_argument('--complexity', type=Path, default=Path('build/reports/detekt/summary.json'))
     parser.add_argument('--coverage', type=Path, default=Path('app/build/reports/jacoco/debug/coverage.xml'))
+    parser.add_argument('--metadata', type=Path, default=Path('build/reports/quality/jvm-method-inventory.xml'))
     parser.add_argument('--output', type=Path, default=Path('build/reports/quality/function-mapping.json'))
     args = parser.parse_args()
-    report = inventory_report(args.inventory, args.complexity, args.coverage)
+    report = inventory_report(args.inventory, args.complexity, args.coverage, args.metadata)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(dict(total=report['total_functions'], counts=report['counts'])))

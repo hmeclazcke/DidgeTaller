@@ -1,7 +1,9 @@
 """Reject plausible-looking but ambiguous source/bytecode correspondences."""
 import unittest
+import tempfile
+from pathlib import Path
 import xml.etree.ElementTree as ET
-from function_mapping import correlate
+from function_mapping import correlate, metadata_aliases
 
 
 class FunctionMappingTest(unittest.TestCase):
@@ -55,6 +57,42 @@ class FunctionMappingTest(unittest.TestCase):
     def test_anonymous_members_are_not_assumed_to_contribute_to_enclosing_metric(self):
         f=self.function();f['owner']='test/Example$<anonymous>';f['local']='true'
         self.assertEqual(correlate(f, [self.method()], None)['status'], 'anonymous-owner')
+
+    def test_mangled_names_require_exact_metadata_owner_name_and_descriptor(self):
+        method = self.method(name='read-gIAlu-s', desc='(I)Ljava/lang/Object;')
+        key = method['owner'], method['name'], method['descriptor']
+        self.assertEqual('no-bytecode-match', correlate(self.function(), [method], 3)['status'])
+        measured = correlate(self.function(), [method], 3, {key: 'read'})
+        self.assertEqual('measured', measured['status'])
+        self.assertEqual(3.0 ** 2 * .5 ** 3 + 3, measured['crap_line'])
+        for bad in [('other/Owner', key[1], key[2]), (key[0], key[1], '(J)Ljava/lang/Object;')]:
+            self.assertEqual('no-bytecode-match', correlate(self.function(), [method], 3, {bad: 'read'})['status'])
+        self.assertEqual('no-bytecode-match', correlate(self.function(), [method], 3, {key: 'other'})['status'])
+
+    def test_metadata_never_overrides_source_location_or_resolves_ambiguous_overloads_by_guessing(self):
+        methods = [self.method(name='read-x', desc='(I)I'), self.method(name='read-y', desc='(J)I')]
+        aliases = {(m['owner'], m['name'], m['descriptor']): 'read' for m in methods}
+        self.assertEqual('ambiguous-bytecode', correlate(self.function(), methods, 3, aliases)['status'])
+        methods[0]['line'] = 100
+        self.assertEqual('measured', correlate(self.function(), methods, 3, aliases)['status'])
+        self.assertEqual('(J)I', correlate(self.function(), methods, 3, aliases)['method']['descriptor'])
+
+    def test_metadata_input_rejects_missing_empty_duplicate_and_stale_class_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / 'methods.xml'
+            with self.assertRaises(FileNotFoundError):
+                metadata_aliases(report)
+            report.write_text('<jvmMethods schema="1" classesScanned="1" compilation="non-incremental"/>')
+            with self.assertRaises(ValueError):
+                metadata_aliases(report)
+            row = '<function owner="Example" name="read-x" sourceName="read" descriptor="(I)I" classSha256="' + 'a' * 64 + '"/>'
+            report.write_text('<jvmMethods schema="1" classesScanned="1" compilation="non-incremental">' + row * 2 + '</jvmMethods>')
+            with self.assertRaises(ValueError):
+                metadata_aliases(report)
+            report.write_text('<jvmMethods schema="1" classesScanned="1" compilation="non-incremental" classesRoot="' + directory.replace('\\', '/') + '">' + row + '</jvmMethods>')
+            Path(directory, 'Example.class').write_bytes(b'not-the-reported-class')
+            with self.assertRaisesRegex(ValueError, 'Stale Kotlin metadata'):
+                metadata_aliases(report, Path(directory))
 
 
 if __name__ == '__main__':

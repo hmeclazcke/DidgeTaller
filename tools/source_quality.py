@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from function_mapping import metadata_aliases
 
 
 def identity(row):
@@ -101,6 +102,7 @@ def check_changes(rows, mapping, baseline, reviews, target):
 
 
 def measure_source_changes(coverage, detekt, target):
+    aliases = metadata_aliases(Path('build/reports/quality/jvm-method-inventory.xml'), Path('app/build/tmp/kotlin-classes/debug'))
     raw = ET.parse('app/build/reports/jacoco/debug/coverage.xml').getroot()
     raw_methods = {(owner.get('name'), method.get('name'), method.get('desc')):
                    {c.get('type'): {k: int(c.get(k)) for k in ('covered', 'missed')}
@@ -126,6 +128,9 @@ def measure_source_changes(coverage, detekt, target):
         if complexity.get((row['file'], int(row['line']), row['name'])) != row['cc'] or row['cc'] < 1:
             raise ValueError('Missing/invalid matched complexity')
         method = row['method']
+        key = method['owner'], method['name'], method['descriptor']
+        if aliases.get(key, method['name']) != row['name']:
+            raise ValueError('Kotlin metadata disagrees with source callable')
         counters = raw_methods.get((method['owner'], method['name'], method['descriptor']), {})
         if any(counters.get(kind) != value for kind, value in method['coverage'].items()):
             raise ValueError('Raw JaCoCo method counters disagree with mapping')

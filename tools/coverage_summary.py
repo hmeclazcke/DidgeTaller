@@ -133,7 +133,7 @@ def main():
     args = parser.parse_args()
     summary = summarize(args.xml, args.detekt, args.matches)
     inventory = Path('build/reports/quality/source-inventory.xml')
-    mapped = inventory_report(inventory, args.detekt, args.xml)
+    mapped = inventory_report(inventory, args.detekt, args.xml, Path('build/reports/quality/jvm-method-inventory.xml'))
     (Path('build/reports/quality') / 'function-mapping.json').write_text(json.dumps(mapped, indent=2) + '\n', encoding='utf-8')
     summary['source_function_inventory'] = dict(total=mapped['total_functions'], counts=mapped['counts'])
     summary['source_method_matches'] = [dict(source=f['file'], owner=f['method']['owner'], name=f['method']['name'],

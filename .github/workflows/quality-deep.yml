@@ -38,7 +38,7 @@ jobs:
       - run: sdkmanager 'platforms;android-35' 'build-tools;36.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: chmod +x gradlew
       - name: Enforced focused mutations and informational expanded domain analysis
-        run: ./gradlew --no-daemon :app:qualityMutation :app:qualityMutationDomain
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false :app:qualityMutation :app:qualityMutationDomain
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -67,7 +67,7 @@ jobs:
       - uses: android-actions/setup-android@v4
       - run: sdkmanager 'platforms;android-35' 'build-tools;36.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: chmod +x gradlew
-      - run: ./gradlew --no-daemon -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
+      - run: ./gradlew --no-daemon -Pkotlin.incremental=false -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -83,8 +83,10 @@ jobs:
       - name: Separate emulator coverage report
         if: always()
         run: |
-          ./gradlew --no-daemon -PandroidCoverage=true :app:jacocoEmulatorReport
+          ./gradlew --no-daemon -Pkotlin.incremental=false -PandroidCoverage=true :app:jacocoEmulatorReport detekt detektComplexity :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory
           python3 tools/emulator_coverage_summary.py
+          python3 tools/detekt_summary.py > build/reports/quality/android-detekt-summary.log
+          python3 tools/function_mapping.py --coverage app/build/reports/jacoco/emulator/coverage.xml --output build/reports/quality/android-function-mapping.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -95,6 +97,9 @@ jobs:
             build/reports/quality/library-configuration-*.txt
             build/reports/quality/session-screenshots/
             build/reports/quality/workspace-configuration-*.txt
+            build/reports/quality/android-function-mapping.json
+            build/reports/quality/source-inventory.xml
+            build/reports/quality/jvm-method-inventory.xml
             app/build/reports/jacoco/emulator/
           retention-days: 7
           if-no-files-found: error

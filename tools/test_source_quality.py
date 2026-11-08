@@ -56,6 +56,15 @@ class SourceQualityCliTest(unittest.TestCase):
                 method = ET.SubElement(owner, 'method', name=f['name'], desc='()I')
                 ET.SubElement(method, 'counter', type='LINE', covered='1', missed='0')
             write('app/build/reports/jacoco/debug/coverage.xml', ET.tostring(raw, encoding='unicode'))
+            class_root = 'app/build/tmp/kotlin-classes/debug'
+            class_file = class_root + '/test/ExampleKt.class'
+            write(class_file, 'Synthetic class bytes; actual compiler decoding is tested in engineering-tools.')
+            fingerprint = hashlib.sha256((root / class_file).read_bytes()).hexdigest()
+            metadata = ET.Element('jvmMethods', schema='1', classesScanned='1', classesRoot=class_root, compilation='non-incremental')
+            for function in functions:
+                ET.SubElement(metadata, 'function', owner='test/ExampleKt', name=function['name'],
+                    descriptor='()I', sourceName=function['name'], classSha256=fingerprint)
+            write('build/reports/quality/jvm-method-inventory.xml', ET.tostring(metadata, encoding='unicode'))
             write('build/reports/detekt/summary.json', dict(functions_by_cyclomatic=[] if empty else
                 [dict(file=file, line=int(f['line']), function=f['name'], cyclomatic=f['cc']) for f in functions]))
             write('app/build/reports/quality/cpd.xml', '<pmd-cpd><file path="Example.kt"/></pmd-cpd>')
@@ -92,6 +101,11 @@ class SourceQualityCliTest(unittest.TestCase):
             elif defect == 'stale-mapping':
                 functions[1]['semanticHash'] = '0' * 64
                 write('build/reports/quality/function-mapping.json', dict(total_functions=2, functions=functions))
+            elif defect == 'stale-metadata-class':
+                write(class_file, 'Different synthetic class bytes')
+            elif defect == 'metadata-name-mismatch':
+                metadata[0].set('sourceName', 'notTheAuthoredName')
+                write('build/reports/quality/jvm-method-inventory.xml', ET.tostring(metadata, encoding='unicode'))
             return subprocess.run([sys.executable, str(TOOLS / 'quality_gate.py')], cwd=root,
                                   capture_output=True, text=True).returncode
 
@@ -113,7 +127,7 @@ class SourceQualityCliTest(unittest.TestCase):
     def test_missing_required_reports_fail(self):
         for path in ('app/build/reports/jacoco/debug/summary.json', 'build/reports/detekt/summary.json',
                      'app/build/reports/jacoco/debug/coverage.xml', 'build/reports/quality/function-mapping.json',
-                     'build/reports/quality/source-inventory.xml'):
+                     'build/reports/quality/source-inventory.xml', 'build/reports/quality/jvm-method-inventory.xml'):
             with self.subTest(path=path):
                 self.assertNotEqual(0, self.probe(missing=path))
 
@@ -131,7 +145,8 @@ class SourceQualityCliTest(unittest.TestCase):
         self.assertNotEqual(0, self.probe(status='anonymous-owner', review=True, defect='expired-review'))
 
     def test_empty_stale_incomplete_or_scope_omitting_reports_fail(self):
-        for defect in ('omitted-source-root', 'stale-source', 'empty-inventory', 'incomplete-mapping', 'stale-mapping'):
+        for defect in ('omitted-source-root', 'stale-source', 'empty-inventory', 'incomplete-mapping', 'stale-mapping',
+                       'stale-metadata-class', 'metadata-name-mismatch'):
             with self.subTest(defect=defect):
                 self.assertNotEqual(0, self.probe(defect=defect))
 
