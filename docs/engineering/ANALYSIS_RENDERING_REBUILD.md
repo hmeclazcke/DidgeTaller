@@ -1,8 +1,15 @@
 # Recording analysis ownership and plot boundaries
 
 Status: local implementation milestone; remote verification pending. The complete
-application rebuild remains IN PROGRESS. Source baseline: 806db72; original main
+application rebuild remains IN PROGRESS. Implementation a4dd88a plus the bounded axis-readability follow-up; source baseline
+806db72. Original main
 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67 remains untouched.
+
+Implementation entry points: [operation owner](../../app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt),
+[scoped adapter](../../app/src/main/java/ar/didgetaller/audio/RecordingAnalysisLoader.kt),
+[ready frame](../../app/src/main/java/ar/didgetaller/ui/PlotFrame.kt),
+[paint pipeline](../../app/src/main/java/ar/didgetaller/ui/PlotContent.kt) and
+[label preparation](../../app/src/main/java/ar/didgetaller/core/AxisDrawing.kt).
 
 ## Analysis protocol
 
@@ -87,6 +94,14 @@ are not disguised as scored methods. No hidden giant helper replaces the facade.
 
 ## Scientific text accessibility
 
+Inspection of the final 150% landscape PNG also exposed colliding numeric Y-axis
+glyphs in a short plot. A pure deterministic RED produced three glyphs where only
+two rows fit. AxisDrawing now omits only crowded glyph groups, preserving exact
+tick/grid positions, numeric values, projection and all seek coordinates. Musical
+frequency/note pairs remain together; no font scaling is disabled. Three boundary
+contracts cover numeric and two-line musical labels. This is an intentional
+readability correction to the original clamped-baseline behavior.
+
 The fullscreen explanation had maxLines=2. After one independently captured System
 UI ANR obstructed the fresh emulator, a bounded retry reached the intended failing
 GetTextLayoutResult.hasVisualOverflow assertion at 150% font. Removing that cap
@@ -117,12 +132,12 @@ not a file read or FileNotFound error. Default synthetic evidence remains enable
 
 | Measure | Prior source ec19b18 | This source, before publication |
 | --- | ---: | ---: |
-| JVM discovered / passed / skipped, both variants | 796 / 780 / 16 | 890 / 874 / 16 |
-| JVM lines / branches | 39.71% / 36.43% | 42.53% / 38.68% |
-| Pure core lines / branches | 98.98% / 82.70% | 98.99% / 83.24% |
+| JVM discovered / passed / skipped, both variants | 796 / 780 / 16 | 896 / 880 / 16 |
+| JVM lines / branches | 39.71% / 36.43% | 42.57% / 38.74% |
+| Pure core lines / branches | 98.98% / 82.70% | 98.99% / 83.28% |
 | CRAP-L measured / independent unscored | 436 / 96 | 470 / 111 |
 | JVM above-target scores | 75 | 73 |
-| Detekt informational findings | 1,970 | 1,987 |
+| Detekt informational findings | 1,970 | 1,989 |
 | Lint errors / warnings / hints | 0 / 52 / 8 | 0 / 52 / 8 |
 | CPD groups >=100 tokens | 0 | 0 |
 | Original-main synthetic differential results | 741 identical | 741 identical |
@@ -138,16 +153,16 @@ Compose technical reviews do not assert unavailable source-level coverage.
 
 The explicit comparable renderer/preparation file set (including WaveDrawing)
 changes from eight named functions, MCC sum 171 / 163 decisions / maximum 127,
-to 48 functions, sum 212 / 164 decisions / maximum nine. PlotSurface itself goes
-127 -> eight and cognitive 279 -> seven. Thus one additional decision remains,
+to 48 functions, sum 215 / 167 decisions / maximum nine. PlotSurface itself goes
+127 -> eight and cognitive 279 -> seven. Thus four additional decisions remain,
 while responsibilities and worst-function complexity improve substantially.
 This is not a claim that moving branches reduced their total. Analysis entry goes
 MCC eight -> one; owner request/cancel/finish/close and adapter submit score
 CRAP-L 5 / 5 / 3 / 2 / 4, all with 100% method-line coverage.
 
-Focused real PIT: analysis 65 = 52 killed + 13 surviving; plots 418 = 336 killed +
-80 surviving + two uncovered. Detection denominators are 65 and 418 (80.00% and
-80.38%); zero timeouts/tool errors. Wider scope differs from the earlier plots
+Focused real PIT: analysis 65 = 52 killed + 13 surviving; plots 426 = 345 killed +
+79 surviving + two uncovered. Detection denominators are 65 and 426 (80.00% and
+80.99%); zero timeouts/tool errors. Wider scope differs from the earlier plots
 124-mutant selection. Tests added after actual reports protect gain-invariant
 spectrum normalization, measured label widths, raster coordinates/context
 restoration, colors and region bounds. Two uncovered paths are Kotlin stdlib
@@ -162,3 +177,18 @@ builds, source/bytecode inventory, JaCoCo, CPD, differential and focused PIT.
 only after exact supported reviews; numerical baselines and gate logic unchanged.
 Full current-source API 35 CI, separate Android coverage and broad domain PIT
 must be observed before replacing the pending remote status above.
+
+The axis follow-up's PIT report exposed the exact-fit spacing boundary and a
+previously unasserted note-row X offset. Explicit fit/offset assertions kill both
+mutants without changing correct production behavior. All AxisDrawing mutants
+are now killed in the selected report; this does not imply whole-renderer or
+whole-app mutation completeness. The initial compact-axis RED, native text RED,
+hidden-scrub RED and failed infrastructure probes remain available in ignored
+checkpoints/workspace rather than being overwritten with passing evidence.
+
+Final axis native check: explicit emulator-5580 (API 37, synthetic-only AVD),
+720x1280, 150% system font, EN landscape and ES portrait both execute and pass.
+The inspected landscape PNG shows separated 140/35 Hz labels while the middle
+grid line retains its true position; the scientific sentence remains complete.
+The emulator was restored to normal font/size/EN and stopped. These focused cases
+are not substituted for the pending full clean API 35 suite or Android coverage.
