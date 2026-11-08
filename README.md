@@ -103,6 +103,8 @@ The [persistence reconstruction](docs/engineering/PERSISTENCE_REBUILD.md) separa
 
 The [capture-event reconstruction](docs/engineering/CAPTURE_EVENT_OWNERSHIP.md) gives every worker a terminal-event identity and moves recording phases, immutable save requests and disposal policy into a pure Kotlin coordinator. One Compose snapshot publishes recording state. Delayed completion can save its own audio without stopping a replacement monitor. Spectrogram power-to-pixel conversion is separately tested and cancellable; broader workspace and renderer reconstruction remains in progress.
 
+The [playback intent reconstruction](docs/engineering/PLAYBACK_INTENT_OWNERSHIP.md) separates user commands from delayed player observations: pausing prevents late callbacks from restarting a loop, and a selected starting position is acknowledged before audio starts. Deterministic state contracts and focused mutation tests challenge these asynchronous boundaries; emulator results are recorded separately.
+
 - **First Make it Work:** model the domain, validate boundaries, establish state ownership and use TDD/red-green-refactor for verifiable changes.
 - **Then Make it Right:** preserve behavior while refactoring; use BDD-style acceptance scenarios, coverage, complexity and mutation evidence to investigate risk and duplicated knowledge (DRY).
 - **Practice:** focused investigation, reviewable commits, concise evidence and risk-based validation. BDD scenarios do not imply Cucumber.

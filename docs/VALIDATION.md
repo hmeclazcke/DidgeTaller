@@ -2042,3 +2042,10 @@ The owned API 37 pre-fix regression actually ran and failed (Discard A must not 
 
 
 Capture lifecycle correction after initial CI: de8df92 fast quality and broad PIT passed, but API 35 run 42419882993 correctly failed (147 discovered, 136 passed, 1 failed, 10 skipped). The failure exposed a legacy disposed-notice expectation, not an import/integrity failure. Keep the failed evidence. Strengthened live/disposed assertions and late device-error injection accompany a pure lifecycle boundary for microphone errors and a failed-start listening regression. Updated local verification: 622 JVM discovered/606 passed/16 protected skips; JVM 35.53%/32.73%, core 98.66%/80.13%; 395 mapped/90 unscored/78 high scores, no ratchet violations; focused ownership PIT 94 killed/5 survived of 99. New remote emulator/mutation evidence remains pending; no failed or compilation-only run counts as an Android pass.
+
+
+### Playback intent local validation
+
+Resume at a7d2514: CI fast 42421708587 and PIT 42421707813 passed (1,502 total: 1,098 killed/386 survived/16 uncovered/2 timeouts; selected scope, 116 seconds). Android 42421703832 correctly failed a pause-position assertion: 147 discovered/136 pass/1 failure/10 skips; capture/disposal cases passed. Four deterministic playback tests then failed before production correction.
+
+Corrected local inputs execute both JVM variants: 656 discovered/640 passed/16 protected skips/zero failures. JVM line/branch 35.67%/33.04%; core 98.67%/80.49%; 397 mapped/90 unscored/78 JVM high scores; ratchets and CPD pass. Detekt 1,970 informational; Lint 0 errors/52 warnings/8 hints; debug/androidTest build, localization, 21 Python tests and 741 differential outputs pass. Playback PIT: 125 killed/22 survivors/zero uncovered of 147. Full clean API 35 and broad CI mutation checks must be observed for the new source revision; previous failures/compilation do not count as a pass. Source/test changes preserve WAV/index assertions and the original 80 ms pause bound.

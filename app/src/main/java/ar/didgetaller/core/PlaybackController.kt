@@ -36,7 +36,8 @@ class PlaybackController(
     private sealed interface State {
         data object Stopped : State
         data class Preparing(val id: String, val target: Long, val play: Boolean) : State
-        data class Ready(val id: String, val paused: Boolean) : State
+        // Intent and platform legality are separate: an initial seek can precede the first start.
+        data class Ready(val id: String, val paused: Boolean, val hasStarted: Boolean = false) : State
     }
     private data class Seeking(val sent: Long, val latest: Long = sent)
     private var state: State = State.Stopped
@@ -72,7 +73,7 @@ class PlaybackController(
         val pending = state as? State.Preparing ?: return
         state = State.Ready(pending.id, !pending.play)
         if (pending.target > 0) requestSeek(bounded(pending.target, candidate.durationMs))
-        if (pending.play) candidate.start()
+        else if (pending.play) start(candidate)
         changed(id, paused)
         if (backend === candidate) scheduler.schedule(::poll)
     }
@@ -90,12 +91,26 @@ class PlaybackController(
         val pending = seeking ?: return
         seeking = null
         if (pending.latest != pending.sent) requestSeek(bounded(pending.latest, candidate.durationMs))
+        else resumeAfterSeek(candidate)
+    }
+
+    private fun resumeAfterSeek(candidate: PlaybackBackend) {
+        if (paused || candidate.playing) return
+        if (candidate.positionMs >= candidate.durationMs) completed(candidate) else start(candidate)
+    }
+
+    private fun start(candidate: PlaybackBackend) {
+        val current = state as? State.Ready ?: return
+        state = current.copy(hasStarted = true)
+        candidate.start()
     }
 
     private fun completed(candidate: PlaybackBackend) {
         val current = state as? State.Ready ?: return
+        // A completion from before a pause/seek has no authority over the newer transport intent.
+        if (current.paused || seeking != null || candidate.playing) return
         val region = loop
-        if (region != null) { requestSeek(region.first); candidate.start() }
+        if (region != null) requestSeek(region.first)
         else { state = current.copy(paused = true); changed(id, true) }
     }
 
@@ -104,7 +119,7 @@ class PlaybackController(
         if (!ready) return
         current(candidate) {
             val region = loop
-            if (seeking == null && region != null && candidate.playing && candidate.positionMs >= region.last)
+            if (seeking == null && region != null && !paused && candidate.playing && candidate.positionMs >= region.last)
                 requestSeek(region.first)
             if (backend === candidate) scheduler.schedule(::poll)
         }
@@ -116,15 +131,17 @@ class PlaybackController(
         val candidate = backend
         if (id != sessionId || !ready || candidate == null) { open(sessionId, file, true); return }
         current(candidate) {
-            if (candidate.playing) { candidate.pause(); state = State.Ready(sessionId, true) }
-            else { resume(candidate); state = State.Ready(sessionId, false) }
+            val previous = state as State.Ready
+            state = previous.copy(paused = !previous.paused)
+            if (previous.paused) resume(candidate) else if (previous.hasStarted) candidate.pause()
             changed(id, paused)
         }
     }
 
     private fun resume(candidate: PlaybackBackend) {
+        if (seeking != null) return
         if (candidate.positionMs >= candidate.durationMs - 20) requestSeek(loop?.first ?: 0L)
-        candidate.start()
+        else start(candidate)
     }
 
     fun seek(sessionId: String, file: File, position: Long) {

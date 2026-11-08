@@ -18,9 +18,10 @@ class PlaybackControllerTest {
         var releaseFails = false
         var startFails = false
         var starts = 0
+        var pauses = 0
         override fun prepare(file: File, events: PlaybackEvents) { this.events = events; check(!prepareFails) }
         override fun start() { check(!startFails); starts++; playing = true }
-        override fun pause() { playing = false }
+        override fun pause() { pauses++; playing = false }
         override fun seek(positionMs: Long) { seeks += positionMs }
         override fun release() { released = true; playing = false; check(!releaseFails) }
         fun completeSeek() { positionMs = seeks.last().toInt(); events.seekCompleted() }
@@ -29,6 +30,7 @@ class PlaybackControllerTest {
         var pending: (() -> Unit)? = null
         override fun schedule(task: () -> Unit) { pending = task }
         override fun cancel() { pending = null }
+        fun tick() { val task = checkNotNull(pending); pending = null; task() }
     }
     private class Harness {
         val backends = mutableListOf<Backend>()
@@ -76,7 +78,8 @@ class PlaybackControllerTest {
         old.events.prepared(); old.events.failed(IllegalStateException("obsolete"))
         old.events.completed(); old.events.seekCompleted()
         assertFalse(current.released); assertFalse(h.controller.ready); assertTrue(h.errors.isEmpty())
-        current.events.prepared(); assertEquals("second", h.controller.id); assertTrue(current.playing)
+        current.events.prepared(); assertEquals("second", h.controller.id); assertFalse(current.playing)
+        current.completeSeek(); assertTrue(current.playing)
     }
     @Test fun stopIsIdempotentAndCancelsPolling() {
         val h = Harness(); h.open(true); h.backend.events.prepared()
@@ -94,7 +97,164 @@ class PlaybackControllerTest {
         val h = Harness(); h.open(true); h.backend.events.prepared(); h.controller.loop(10000L..20000L)
         assertEquals(10000L..20000L,h.controller.loop)
         h.backend.completeSeek(); h.backend.playing=false;h.backend.events.completed()
-        assertEquals(2,h.backend.seeks.size);assertEquals(10000L, h.backend.seeks.last()); assertTrue(h.backend.playing)
+        assertEquals(2,h.backend.seeks.size);assertEquals(10000L, h.backend.seeks.last()); assertFalse(h.backend.playing)
+        h.backend.completeSeek(); assertTrue(h.backend.playing)
+    }
+    @Test fun aCompletionQueuedBeforePauseCannotRestartTheLoop() {
+        val h = Harness(); h.open(true); h.backend.events.prepared(); h.controller.loop(10000L..20000L)
+        h.backend.completeSeek(); h.backend.positionMs = 15000
+        h.controller.toggle("first", h.file)
+        h.backend.events.completed()
+        assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+        assertEquals(15000, h.controller.position()); assertEquals(1, h.backend.starts)
+        assertEquals(listOf(10000L), h.backend.seeks)
+    }
+
+    @Test fun pauseUsesPlaybackIntentWhileTheBackendIsTemporarilyNotPlaying() {
+        val h = Harness(); h.open(true); h.backend.events.prepared()
+        h.controller.seek("first", h.file, 15000)
+        h.backend.playing = false
+        h.controller.toggle("first", h.file)
+        assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+        h.backend.completeSeek()
+        assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+        assertEquals(15000, h.controller.position()); assertEquals(1, h.backend.starts)
+    }
+
+    @Test fun completionDuringASeekCannotReplaceTheNewestTargetWithTheLoopStart() {
+        val h = Harness(); h.open(true); h.backend.events.prepared(); h.controller.loop(10000L..20000L)
+        h.backend.completeSeek()
+        h.controller.seek("first", h.file, 15000); h.controller.seek("first", h.file, 17000)
+        h.backend.playing = false; h.backend.events.completed()
+        assertEquals(17000, h.controller.position()); assertFalse(h.controller.paused)
+        h.backend.completeSeek(); assertEquals(listOf(10000L, 15000L, 17000L), h.backend.seeks)
+        h.backend.completeSeek()
+        assertEquals(17000, h.controller.position()); assertTrue(h.backend.playing)
+    }
+
+    @Test fun completionDuringANonloopSeekPreservesTheRequestedPlaybackState() {
+        val h = Harness(); h.open(true); h.backend.events.prepared()
+        h.controller.seek("first", h.file, 15000)
+        h.backend.playing = false; h.backend.events.completed(); h.backend.completeSeek()
+        assertFalse(h.controller.paused); assertTrue(h.backend.playing)
+        assertEquals(15000, h.controller.position())
+    }
+
+    @Test fun initialSeekCompletesBeforePlaybackAndCanBePausedBeforeTheFirstStart() {
+        val h = Harness(); h.open(true, 15000); h.backend.events.prepared()
+        assertEquals(0, h.backend.starts); assertEquals(15000, h.controller.position())
+        h.controller.toggle("first", h.file)
+        assertEquals(0, h.backend.pauses); assertTrue(h.controller.paused)
+        h.backend.completeSeek(); assertFalse(h.backend.playing)
+        h.controller.toggle("first", h.file); assertTrue(h.backend.playing)
+        assertEquals(1, h.backend.starts)
+    }
+
+    @Test fun aLateCompletionAfterTheSeekSettledCannotRewindPlayingAudio() {
+        val h = Harness(); h.open(true); h.backend.events.prepared(); h.controller.loop(10000L..20000L)
+        h.backend.completeSeek(); h.controller.seek("first", h.file, 17000); h.backend.completeSeek()
+        h.backend.events.completed()
+        assertFalse(h.controller.paused); assertTrue(h.backend.playing)
+        assertEquals(17000, h.controller.position()); assertEquals(listOf(10000L, 17000L), h.backend.seeks)
+    }
+
+    @Test fun seekingToTheEndSettlesAsCompletedWithoutRestartingAtZero() {
+        val h = Harness(); h.open(true); h.backend.events.prepared()
+        h.controller.seek("first", h.file, h.backend.durationMs.toLong())
+        h.backend.playing = false; h.backend.events.completed(); h.backend.completeSeek()
+        assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+        assertEquals(117000, h.controller.position()); assertEquals(1, h.backend.starts)
+    }
+
+    @Test fun resumingAtAnOldEndPositionCannotReplaceThePendingUserSeekWithZero() {
+        val h = Harness(); h.open(); h.backend.events.prepared(); h.backend.positionMs = h.backend.durationMs
+        h.controller.seek("first", h.file, 15000); h.controller.toggle("first", h.file)
+        assertEquals(15000, h.controller.position()); assertEquals(listOf(15000L), h.backend.seeks)
+        h.backend.completeSeek(); assertTrue(h.backend.playing); assertEquals(15000, h.controller.position())
+    }
+
+    @Test fun pausingDoesNotLetBackendLagTriggerANewLoopSeek() {
+        val h = Harness(); h.open(true); h.backend.events.prepared(); h.controller.loop(10000L..20000L)
+        h.backend.completeSeek(); h.controller.toggle("first", h.file)
+        h.backend.playing = true // Platform pause acknowledgement can lag behind the UI command.
+        h.backend.positionMs = 20000
+        h.scheduler.pending!!()
+        assertTrue(h.controller.paused); assertEquals(20000, h.controller.position())
+        assertEquals(listOf(10000L), h.backend.seeks)
+    }
+
+    @Test fun pausingAfterCompletionPreventsThePendingLoopRestart() {
+        val h = Harness(); h.open(true); h.backend.events.prepared(); h.controller.loop(10000L..20000L)
+        h.backend.completeSeek(); h.backend.playing = false; h.backend.events.completed()
+        h.controller.toggle("first", h.file); h.backend.completeSeek()
+        assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+        assertEquals(10000, h.controller.position()); assertEquals(1, h.backend.starts)
+    }
+
+    @Test fun preparationAtASelectedPositionStartsExactlyOnceAfterTheSeekCompletes() {
+        val h = Harness(); h.open(true, 15000); h.backend.events.prepared()
+        assertEquals(0, h.backend.starts)
+        h.backend.completeSeek(); h.backend.events.seekCompleted()
+        assertTrue(h.backend.playing); assertEquals(15000, h.controller.position())
+        assertEquals(1, h.backend.starts)
+    }
+
+    @Test fun aCompletionBeforePreparationCannotDiscardTheSelectedStartingPosition() {
+        val h = Harness(); h.open(true, 15000); h.backend.events.completed()
+        assertFalse(h.controller.ready); assertEquals(15000, h.controller.position())
+        assertFalse(h.backend.released); assertTrue(h.errors.isEmpty())
+        h.backend.events.prepared(); h.backend.completeSeek()
+        assertTrue(h.controller.ready); assertTrue(h.backend.playing); assertEquals(15000, h.controller.position())
+    }
+
+    @Test fun aRetiredPollCannotScheduleTheReplacementBeforePreparation() {
+        val h = Harness(); h.open(true); h.backend.events.prepared()
+        val retired = checkNotNull(h.scheduler.pending)
+        h.controller.open("second", h.file, false, 15000); retired()
+        assertNull(h.scheduler.pending); assertFalse(h.backend.released)
+        h.backend.events.prepared(); assertNotNull(h.scheduler.pending)
+        h.backend.completeSeek(); assertEquals(15000, h.controller.position())
+    }
+
+    @Test fun seekingANewSessionCannotInheritThePreviousLoopEvenWhilePreparing() {
+        for (prepared in listOf(false, true)) {
+            val h = Harness(); h.open(true)
+            if (prepared) h.backend.events.prepared()
+            h.controller.loop(10000L..20000L)
+            val old = h.backend
+            h.controller.seek("second", h.file, 80000)
+            assertTrue(old.released); assertEquals(2, h.backends.size)
+            assertEquals(80000, h.controller.position()); assertNull(h.controller.loop)
+            old.events.completed(); old.events.seekCompleted()
+            h.backend.events.prepared(); assertEquals(listOf(80000L), h.backend.seeks)
+            h.backend.completeSeek()
+            assertEquals("second", h.controller.id); assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+        }
+    }
+
+    @Test fun explicitResumeAtTheEndRestartsInsideTheSelectedLoopAfterAcknowledgement() {
+        val h = Harness(); h.open(); h.backend.events.prepared()
+        h.controller.loop(10000L..117000L); h.backend.completeSeek()
+        h.controller.seek("first", h.file, 117000); h.backend.completeSeek()
+        h.controller.toggle("first", h.file)
+        assertEquals(10000L, h.backend.seeks.last()); assertEquals(0, h.backend.starts)
+        h.backend.completeSeek(); assertTrue(h.backend.playing); assertEquals(10000, h.controller.position())
+    }
+
+    @Test fun aLoopCanStartAtZeroAndStillClampBothSeekBoundaries() {
+        val h = Harness(); h.open(); h.backend.events.prepared(); h.controller.loop(0L..20000L)
+        assertEquals(0L..20000L, h.controller.loop)
+        h.controller.seek("first", h.file, -1); assertEquals(0, h.controller.position())
+        h.controller.seek("first", h.file, 30000); assertEquals(20000, h.controller.position())
+        h.backend.completeSeek(); h.backend.completeSeek()
+        assertTrue(h.controller.paused); assertFalse(h.backend.playing)
+    }
+
+    @Test fun resumingBeforeTheInitialSeekAcknowledgementCannotStartAtZero() {
+        val h = Harness(); h.open(false, 15000); h.backend.events.prepared()
+        h.controller.toggle("first", h.file)
+        assertFalse(h.controller.paused); assertEquals(0, h.backend.starts)
+        h.backend.completeSeek(); assertTrue(h.backend.playing); assertEquals(15000, h.controller.position())
     }
     @Test fun pendingToggleAndRestartPreserveTheRequestedConvention() {
         val h = Harness(); h.open(); h.controller.toggle("first", h.file); h.backend.events.prepared()
@@ -115,9 +275,10 @@ class PlaybackControllerTest {
     @Test fun pollingChecksTheLoopAndPreservesPausedState() {
         val h=Harness();h.open(true);h.backend.events.prepared();h.controller.loop(10000L..20000L)
         h.backend.completeSeek();h.backend.positionMs=20000
-        h.scheduler.pending!!();assertEquals(2,h.backend.seeks.size);assertEquals(10000L,h.backend.seeks.last())
+        h.scheduler.tick();assertEquals(2,h.backend.seeks.size);assertEquals(10000L,h.backend.seeks.last())
+        assertNotNull("The next loop boundary must still be monitored",h.scheduler.pending)
         h.backend.completeSeek();h.controller.toggle("first",h.file);h.backend.positionMs=20000
-        h.scheduler.pending!!();assertEquals(2,h.backend.seeks.size);assertTrue(h.controller.paused)
+        h.scheduler.tick();assertEquals(2,h.backend.seeks.size);assertTrue(h.controller.paused)
     }
     @Test fun stalePollAndDuplicateSeekCompletionAreHarmless() {
         val h=Harness();h.open(true);h.backend.events.prepared();val poll=h.scheduler.pending!!
@@ -128,6 +289,7 @@ class PlaybackControllerTest {
     @Test fun duplicatePreparationDoesNotRestartPlayback() {
         val h=Harness();h.open(true);h.backend.events.prepared();h.backend.events.prepared()
         assertEquals(1,h.backend.starts)
+        assertTrue(h.controller.ready);assertFalse(h.backend.released);assertTrue(h.errors.isEmpty())
     }
     @Test fun positionAndStartFailuresStopOwnershipAndSurfaceTheActualError() {
         val h=Harness();h.open();h.backend.events.prepared();h.backend.positionFails=true
@@ -157,8 +319,10 @@ class PlaybackControllerTest {
     @Test fun resumeOnlyRestartsInsideTheExistingEndTolerance() {
         for(delta in listOf(20,21)) {
             val h=Harness();h.open();h.backend.events.prepared();h.backend.positionMs=h.backend.durationMs-delta
-            h.controller.toggle("first",h.file);assertTrue(h.backend.playing)
+            h.controller.toggle("first",h.file);assertFalse(h.controller.paused)
             assertEquals(if(delta==20)listOf(0L) else emptyList<Long>(),h.backend.seeks)
+            if(delta==20){assertFalse(h.backend.playing);h.backend.completeSeek()}
+            assertTrue(h.backend.playing)
         }
     }
     @Test fun preparedListenerCanDisposeWithoutLeavingAPollScheduled() {

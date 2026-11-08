@@ -457,7 +457,9 @@ class SessionNavigationTest {
         compose.waitUntil(5000){vm.playbackPositionMs().toLong() in explorer.region!!}
         playAction(uiText(R.string.ui_pause))
         compose.waitUntil {vm.playbackPaused};val position=vm.playbackPositionMs();Thread.sleep(180)
-        assertTrue(kotlin.math.abs(position-vm.playbackPositionMs())<=80)
+        val afterPause=vm.playbackPositionMs()
+        assertTrue("Paused position moved $position -> $afterPause; loop=${explorer.region}, paused=${vm.playbackPaused}",
+            kotlin.math.abs(position-afterPause)<=80)
         choosePlot(uiText(R.string.ui_harmonics))
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()

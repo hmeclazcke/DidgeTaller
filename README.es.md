@@ -101,6 +101,8 @@ La [reconstrucción de persistencia](docs/engineering/PERSISTENCE_REBUILD.md), d
 
 La [reconstrucción de eventos de captura](docs/engineering/CAPTURE_EVENT_OWNERSHIP.md), documentada en inglés, identifica los eventos terminales de cada trabajador y lleva las fases de grabación, las solicitudes inmutables de guardado y la finalización del ciclo de vida a un coordinador Kotlin puro. Una sola instantánea de Compose publica el estado de grabación. Una finalización tardía puede guardar su propio audio sin detener al monitor que la reemplaza. La conversión de potencia espectral a píxeles tiene pruebas independientes y admite cancelación; la reconstrucción general del espacio de sesión y los renderizadores continúa en curso.
 
+La [reconstrucción de la intención de reproducción](docs/engineering/PLAYBACK_INTENT_OWNERSHIP.md), documentada en inglés, separa las órdenes del usuario de las observaciones tardías del reproductor: pausar impide que un callback anterior reinicie el bucle, y la posición inicial seleccionada se confirma antes de reproducir audio. Las pruebas deterministas de estado y las mutaciones focalizadas verifican esos límites asíncronos; los resultados del emulador se registran por separado.
+
 - **First Make it Work:** modelar el dominio, validar entradas, definir quién controla el estado y aplicar TDD/rojo-verde-refactorización a cambios verificables.
 - **Then Make it Right:** conservar el comportamiento al refactorizar; usar escenarios de aceptación BDD, cobertura, complejidad y mutaciones para investigar riesgo y conocimiento duplicado (DRY).
 - **Practice:** investigar con foco, crear commits revisables, registrar evidencia concisa y validar según el riesgo. Los escenarios BDD no implican Cucumber.

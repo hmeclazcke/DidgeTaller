@@ -181,6 +181,7 @@ registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToStri
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
 registerMutation("qualityMutationHandoff", "pit-handoff", "ar.didgetaller.core.CaptureHandoff,ar.didgetaller.core.RecordingCoordinator", "ar.didgetaller.core.CaptureHandoffTest,ar.didgetaller.core.RecordingCoordinatorTest", null)
 registerMutation("qualityMutationRaster", "pit-raster", "ar.didgetaller.core.SpectrogramRaster", "ar.didgetaller.core.SpectrogramRasterTest", null)
+registerMutation("qualityMutationPlayback", "pit-playback", "ar.didgetaller.core.PlaybackController,ar.didgetaller.core.PlaybackController\$events\$1", "ar.didgetaller.core.PlaybackControllerTest", null)
 registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
 registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
 

@@ -821,3 +821,8 @@ Resumed rebuild 9cd18f6 on the existing isolated branch. A real-Handler emulator
 
 
 Initial API 35 CI correctly rejected a legacy post-disposal error equality (136 pass/1 failure/10 skips of 147). Strengthen the contract instead of preserving callbacks into a destroyed UI: live owners require nonblank failure, disposed owners require silence, and original WAV/index assertions remain. Route raw device errors through the pure coordinator and independently reset failed-start listening; deterministic regressions and focused PIT pass. Remote rerun is required. The Spanish README paragraph also restores accents lost during shell text transport; original localized resources remain intact.
+
+
+### Playback intent continuation after a7d2514
+
+Verified actual branch/remote and main. Retrieved completed CI evidence: fast/PIT success, Android 136 pass/1 failure/10 skips (147), now failing pause stability in a loop. Four deterministic controller regressions reproduced stale completion and observation/intent confusion before correction. Preserve desired pause, defer first/loop starts until seek acknowledgement, and reject obsolete completion. PIT exposed an inaccurate scheduler fake; consuming callbacks and resource/boundary assertions now protect recurring monitoring. Local 656 JVM cases/640 pass/16 protected skips, ratchets and builds pass; new full remote framework evidence is pending. No tolerance increase, acoustic change, private fixture access or main modification.

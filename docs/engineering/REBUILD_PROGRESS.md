@@ -7,6 +7,20 @@
 - Official ub-mode SKILL.md/LICENSE unchanged, byte-verified against upstream 3da62bf3fcfd2034de41f30d920d2739e566171f.
 - No Samsung access, private recording access, format migration or metronome implementation. Never enable protected fixture arguments/environment variables without current authorization.
 
+## Playback intent continuation - IN PROGRESS
+
+Resumed a7d2514 with a clean worktree and unchanged main. Its fast/PIT checks passed, but clean API 35 run 42421703832 failed SessionNavigationTest.explorerRendersRealGraphsSeeksPausesLoopsAndCompares (147 discovered, 136 passed, 1 failed, 10 skipped). The recording/disposal correction passed; do not repeat it or describe that Android run as green. Existing source evidence is preserved.
+
+Four deterministic JVM regressions first failed against the controller: stale completion restarted a paused loop, delayed playing observation inverted Toggle, completion overwrote the newest 17-second seek with the 10-second loop start, and a pending nonloop seek lost playback intent. PlaybackController now owns desired pause independently of backend observations, records first-start legality, ignores obsolete completion and resumes loop/initial seeks only after acknowledgement. A pending user selection wins over an old end position. The 80 ms Android pause assertion remains and now records actual positions/region on failure. See [decisions and contracts](PLAYBACK_INTENT_OWNERSHIP.md).
+
+PIT exposed a scheduler fake that did not consume executed callbacks; fixed that model and assertions for recurring monitoring, preparation, zero-start loops and session changes. Local selected playback mutations: 147 generated, 125 killed/22 survived/zero uncovered; the previous same-class scope was 130 with 104 killed/26 survived. Kotlin bridges and invariant-guard survivors remain visible; do not call the whole application mutation-tested.
+
+Local final source inputs: both JVM variants 656 discovered/640 passed/16 protected skips; JVM line/branch 35.67%/33.04%, core 98.67%/80.49%; 397 mapped/90 unscored, 78 above-target JVM CRAP-L, no ratchet violations. All 531 PSI declarations are accounted for (397 measured/40 nested/23 bodyless/13 anonymous/58 Compose). CPD zero >=100-token clones; Detekt 1,970 informational; Lint 0 errors/52 warnings/8 hints; localization/21 Python tests/builds and 741 differential outputs pass. Controller completion MCC 6, poll 9 and Toggle 7 have fully covered method lines and below-target CRAP-L; necessary guards are retained rather than optimized out for a score.
+
+New clean API 35 and broad selected-scope PIT evidence is required after publication. Do not count either previous failed Android run as a pass. Next production task after resolving this current gate remains SessionWorkspace's controlled loading/cancellation/publication contracts, then PlotSurface and remaining ViewModel analysis/navigation ownership. Main, Samsung, private WAVs and original ub-mode remain untouched.
+
+The capture section below records the preceding cycle and its lifecycle correction.
+
 ## Capture/workflow/raster continuation - IN PROGRESS
 
 Resumed at 9cd18f6; main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67. [Capture event design](CAPTURE_EVENT_OWNERSHIP.md) records the reproduced late-discard failure and ownership contracts. RecordingCapture now emits a single claimed terminal envelope, MicrophoneEngine delivers its identity on main, and pure CaptureHandoff/RecordingCoordinator own snapshots, phases, notification ownership, disposal and publication acknowledgement. TallerViewModel publishes one immutable Compose recording snapshot. Delayed permission callbacks cannot reopen disposed hardware. Existing formats and writer/cache/index protections remain unchanged.
