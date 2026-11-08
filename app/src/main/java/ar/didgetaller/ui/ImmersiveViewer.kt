@@ -280,8 +280,8 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
             SwipeLegend()
         }
         if(state.plot==AcousticPlot.PITCH && item.instrument==InstrumentProfile.DIDGERIDOO && !vm.swipeComparison.enabled)
-            Text(stringResource(R.string.musical_drone_description),Modifier.padding(horizontal=12.dp),
-                style=MaterialTheme.typography.labelSmall,maxLines=2)
+            Text(stringResource(R.string.musical_drone_description),Modifier.fillMaxWidth().padding(horizontal=12.dp).testTag("viewer-scientific-description"),
+                style=MaterialTheme.typography.labelSmall)
         if(!singleBar)Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-transport"),verticalAlignment=Alignment.CenterVertically){
             transport()
             if(landscape)TextButton(onClick={tools=true},modifier=Modifier.weight(1f).testTag("open-reading")){

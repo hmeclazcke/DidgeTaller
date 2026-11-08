@@ -17,6 +17,11 @@ import ar.didgetaller.core.AxisWindow
 import ar.didgetaller.core.SimulationLoader
 import ar.didgetaller.core.SimulationController
 import ar.didgetaller.core.SimulationState
+import ar.didgetaller.core.RecordingAnalysisLoader
+import ar.didgetaller.core.RecordingAnalysisRequest
+import ar.didgetaller.core.RecordingAnalysisController
+import ar.didgetaller.core.RecordingAnalysisStatus
+import ar.didgetaller.audio.CoroutineRecordingAnalysisLoader
 import ar.didgetaller.lab.CoroutineSimulationLoader
 
 import android.app.Application
@@ -55,8 +60,7 @@ import kotlin.math.ln
 
 typealias SessionPhase = RecordingPhase
 private const val MIC_PERMISSION_NOTICE="Para medir hace falta permiso de micrófono. Podés concederlo desde Ajustes."
-data class RecordingAnalysisState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
-                                  val result:WavAnalysis.Result?=null,val error:String?=null, val startMs:Long=0,val endMs:Long?=null)
+
 data class UndoEntry(val kind:String,val id:String)
 data class ComparisonState(val running:Boolean=false,val progress:Int=0,val a:WavAnalysis.Result?=null,val b:WavAnalysis.Result?=null,val error:String?=null)
 data class SavedEvidenceState(val sessionId:String?=null,val running:Boolean=false,
@@ -71,6 +75,7 @@ data class SavedYinReplayState(val sessionId:String?=null,val running:Boolean=fa
 
 class TallerViewModel internal constructor(
     application: Application, simulationLoader: SimulationLoader?,
+    analysisLoader: RecordingAnalysisLoader? = null,
 ): AndroidViewModel(application) {
     constructor(application: Application) : this(application, null)
     private val store=LocalStore(application)
@@ -150,9 +155,13 @@ class TallerViewModel internal constructor(
     };refreshLibrary();undoEntry=null;message="Papelera vaciada."}catch(e:Exception){refreshLibrary();message="No se pudo completar el vaciado: ${e.message}"}}}
 
     private val sessionExecutor=Executors.newSingleThreadExecutor()
-    private val analysisExecutor=Executors.newSingleThreadExecutor()
-    private val analysisVersion=AtomicInteger(0)
-    var recordingAnalysis by mutableStateOf(RecordingAnalysisState());private set
+    private var analysisState by mutableStateOf<RecordingAnalysisStatus>(RecordingAnalysisStatus.Idle)
+    val recordingAnalysis get()=RecordingAnalysisState(analysisState)
+    private val analysisOwner=RecordingAnalysisController(analysisLoader ?: CoroutineRecordingAnalysisLoader(
+        viewModelScope, { request,cancelled,progress ->
+            cache.analyze(request.sessionId,recordingStore.file(request.sessionId),request.startMs,request.endMs,
+                cancelled=cancelled,progress=progress,force=request.force,instrument=request.instrument)
+        }), { analysisState=it })
     var savedEvidence by mutableStateOf(SavedEvidenceState());private set
     private var evidenceJob:Job?=null
     var swipeComparison by mutableStateOf(SwipeComparisonState());private set
@@ -299,7 +308,6 @@ class TallerViewModel internal constructor(
         }
     }
     fun cancelSavedEvidence(){evidenceJob?.cancel();savedEvidence=SavedEvidenceState()}
-    private var cleared=false
     private val main=Handler(Looper.getMainLooper())
     private val optimizerExecutor=Executors.newSingleThreadExecutor()
     var pendingExport:ByteArray?=null
@@ -403,22 +411,10 @@ class TallerViewModel internal constructor(
         activeDetail=sessionId
     }
     fun analyzeRecording(item:RecordingStore.Session,startMs:Long=0,endMs:Long?=null,force:Boolean=false) {
-        val serial=analysisVersion.incrementAndGet()
-        recordingAnalysis=RecordingAnalysisState(item.id,running=true,startMs=startMs,endMs=endMs)
-        analysisExecutor.execute {
-            val result=runCatching {cache.analyze(item.id,recordingStore.file(item.id),startMs,endMs,
-                cancelled={serial!=analysisVersion.get() || Thread.currentThread().isInterrupted},force=force,instrument=item.instrument,progress={percent ->
-                    main.post {if(serial==analysisVersion.get())recordingAnalysis=recordingAnalysis.copy(progress=percent)}
-                })}
-            main.post {if(serial==analysisVersion.get() && !cleared) {
-                recordingAnalysis=RecordingAnalysisState(item.id,result=result.getOrNull(),
-                    progress=if(result.isSuccess)100 else 0,error=result.exceptionOrNull()?.let {it.message ?: "Error al leer el WAV."},startMs=startMs,endMs=endMs)
-            }}
-        }
+        analysisOwner.request(RecordingAnalysisRequest(item.id,item.instrument,startMs,endMs,force))
     }
     fun cancelRecordingAnalysis(clear:Boolean=false) {
-        analysisVersion.incrementAndGet()
-        recordingAnalysis=if(clear)RecordingAnalysisState() else recordingAnalysis.copy(running=false,error="Análisis cancelado.")
+        analysisOwner.cancel(clear)
     }
     fun onPermissionRequest(){requestingPermission=true;permissionDenied=false}
     fun onPermissionResult(granted:Boolean,forSession:Boolean){requestingPermission=false;permissionDenied=!granted
@@ -570,9 +566,8 @@ class TallerViewModel internal constructor(
         microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
-        cleared=true;simulationOwner.close();onAppStopped()
+        analysisOwner.close();simulationOwner.close();onAppStopped()
         workspace.close()
-        analysisVersion.incrementAndGet();analysisExecutor.shutdownNow()
         recording.dispose()
         optimizationVersion.incrementAndGet();optimizerExecutor.shutdownNow();super.onCleared()
     }

@@ -95,6 +95,13 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
+The [analysis and rendering reconstruction](docs/engineering/ANALYSIS_RENDERING_REBUILD.md)
+gives saved-recording analysis explicit progress/terminal ownership and separates
+plot geometry, gestures, accessibility and native painting. Controlled JVM and
+Android regressions protect late callbacks, measurement gaps and large-font
+scientific text. The case study reports complexity distribution and limitations,
+including scopes where total decision count has not decreased.
+
 The [laboratory simulation owner](docs/engineering/SIMULATION_OWNERSHIP.md)
 prevents late or duplicate results from updating a disposed ViewModel. Controlled
 coroutine tests, native lifecycle tests and real mutations defend the boundary.

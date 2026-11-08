@@ -1,5 +1,13 @@
 # 2026-11-08 workspace continuation handoff
 
+## 2026-11-08 analysis and rendering decisions
+
+The [current source-scoped milestone](engineering/ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis
+ownership, the ready-frame plot pipeline, actual native RED/GREEN, full scientific
+text at 150%, comparable complexity and focused mutation evidence. Whole rebuild
+remains IN PROGRESS; current remote full-suite/broad-mutation verification is pending.
+
+
 Source ec19b18 now has observed successful fast, actual API 35 emulator and
 expanded mutation CI. The [source-scoped verification](engineering/WORKSPACE_VERIFICATION_ec19b18.md)
 records numerical results, report scopes, visual limits and exact next work.

@@ -189,8 +189,12 @@ val workspaceTargets = listOf("WorkspaceController", "WorkspaceData", "Workspace
 val simulationTargets = listOf("SimulationController", "SimulationState", "SimulationState\$Working",
     "SimulationState\$Ready", "SimulationState\$Failed").joinToString(",") { "ar.didgetaller.core.$it" } +
     ",ar.didgetaller.lab.CoroutineSimulationLoader*"
-registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets + "," + simulationTargets,
-    syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest," + persistenceTests, null)
+val analysisTargets = listOf("RecordingAnalysisController", "RecordingAnalysisStatus",
+    "RecordingAnalysisStatus\$Running", "RecordingAnalysisStatus\$Ready", "RecordingAnalysisStatus\$Failed",
+    "RecordingAnalysisStatus\$Cancelled").joinToString(",") { "ar.didgetaller.core.$it" } +
+    ",ar.didgetaller.audio.CoroutineRecordingAnalysisLoader*"
+registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets + "," + simulationTargets + "," + analysisTargets + ",ar.didgetaller.core.SpectrumGeometry\$Companion,ar.didgetaller.core.AxisDrawing,ar.didgetaller.core.PlotGestureCoordinates,ar.didgetaller.core.TraceEvidence\$Companion,ar.didgetaller.ui.PlotInkKt,ar.didgetaller.ui.PlotContentKt,ar.didgetaller.ui.PlotFramePolicyKt",
+    syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest,ar.didgetaller.ui.PlotInkTest,ar.didgetaller.ui.PlotFramePolicyTest," + persistenceTests, null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
 registerMutation("qualityMutationHandoff", "pit-handoff", "ar.didgetaller.core.CaptureHandoff,ar.didgetaller.core.RecordingCoordinator", "ar.didgetaller.core.CaptureHandoffTest,ar.didgetaller.core.RecordingCoordinatorTest", null)
 registerMutation("qualityMutationRaster", "pit-raster", "ar.didgetaller.core.SpectrogramRaster", "ar.didgetaller.core.SpectrogramRasterTest", null)
@@ -198,8 +202,9 @@ registerMutation("qualityMutationPlayback", "pit-playback", "ar.didgetaller.core
 registerMutation("qualityMutationCache", "pit-cache", "ar.didgetaller.data.AtomicCacheFile", "ar.didgetaller.data.AtomicCacheFileTest", null)
 registerMutation("qualityMutationPersistence", "pit-persistence", persistenceTargets, persistenceTests, null)
 registerMutation("qualityMutationWorkspace", "pit-workspace", workspaceTargets, "ar.didgetaller.core.Workspace*Test", null)
-registerMutation("qualityMutationPlots", "pit-plots", "ar.didgetaller.core.PlotReduction,ar.didgetaller.core.TraceDrawing,ar.didgetaller.core.WaveGeometry\$Companion,ar.didgetaller.core.RasterPlacement\$Companion", "ar.didgetaller.core.PlotReductionTest,ar.didgetaller.core.TraceDrawingTest,ar.didgetaller.core.VisualGeometryTest", null)
+registerMutation("qualityMutationPlots", "pit-plots", "ar.didgetaller.core.PlotReduction,ar.didgetaller.core.TraceDrawing,ar.didgetaller.core.WaveGeometry\$Companion,ar.didgetaller.core.RasterPlacement\$Companion,ar.didgetaller.core.SpectrumGeometry\$Companion,ar.didgetaller.core.AxisDrawing,ar.didgetaller.core.PlotGestureCoordinates,ar.didgetaller.core.TraceEvidence\$Companion,ar.didgetaller.ui.PlotInkKt,ar.didgetaller.ui.PlotContentKt,ar.didgetaller.ui.PlotFramePolicyKt", "ar.didgetaller.core.PlotReductionTest,ar.didgetaller.core.TraceDrawingTest,ar.didgetaller.core.VisualGeometryTest,ar.didgetaller.core.SpectrumGeometryTest,ar.didgetaller.ui.PlotInkTest,ar.didgetaller.ui.PlotFramePolicyTest,ar.didgetaller.core.AxisDrawingTest,ar.didgetaller.core.PlotGestureCoordinatesTest,ar.didgetaller.core.TraceEvidenceTest,ar.didgetaller.core.ComparisonDrawingTest,ar.didgetaller.core.TracePreparationTest", null)
 registerMutation("qualityMutationSimulation", "pit-simulation", simulationTargets, "ar.didgetaller.core.Simulation*Test", null)
+registerMutation("qualityMutationAnalysis", "pit-analysis", analysisTargets, "ar.didgetaller.core.RecordingAnalysis*Test", null)
 
 fun registerComparison(name: String, benchmark: Boolean) {
  tasks.register(name) {

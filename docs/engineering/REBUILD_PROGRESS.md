@@ -1,3 +1,34 @@
+# Analysis ownership and rendering continuation - IN PROGRESS
+
+This milestone replaces recording-analysis executor/version/flag orchestration
+with a typed operation owner, caller-scoped serial evaluation and one read-only
+presentation. Stale progress and terminal delivery are rejected after replacement,
+terminal claim or disposal. Native regression evidence includes actual RED/GREEN.
+
+PlotSurface now coordinates a validated ready frame, pure geometry/presentation
+and cached native drawing resources. Maximum named-function MCC in its explicit
+replacement scope is nine (old facade 127); total decisions are 164 versus 163,
+not an aggregate-complexity reduction claim. Losing a drawable frame cancels its
+pointer owner and preview without a seek. Fullscreen explanation wraps fully at
+150% EN/ES without shrinking text. Optional external evidence inputs require the
+existing private-fixture authorization before reads.
+
+[Current implementation evidence](ANALYSIS_RENDERING_REBUILD.md) records exact
+local metrics, mutation limitations, source inventory and actual visual evidence.
+Local JVM: 890 discovered, 874 passed, 16 protected skips. Coverage 42.53% lines /
+38.68% branches, core 98.99% / 83.24%. CRAP-L 470 measured / 111 independent
+unscored / 73 above target. Focused PIT analysis 52/65 killed; plots 336/418,
+two uncovered. Detekt 1,987 informational; Lint 0/52/8; CPD zero >=100 tokens;
+differential 741 identical. Remote final verification is pending publication.
+
+Next concrete production cycle: characterize `setSwipeComparison` replacement,
+disposal and progress ownership before replacing its separate executor/version
+publication; then review association/optimization orchestration and remaining
+DSP/UI hotspots. This milestone does not complete those subsystems. Keep PR #1
+draft; no merge. Original main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67.
+
+## Prior verified checkpoint (historical)
+
 # Session workspace continuation - IN PROGRESS
 
 Published source ec19b18 is remotely verified: fast

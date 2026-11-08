@@ -1,26 +1,16 @@
 package ar.didgetaller.ui
 
-import ar.didgetaller.R
-import androidx.compose.ui.res.stringResource
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.*
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.semantics.*
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ar.didgetaller.audio.VisualState
 import ar.didgetaller.core.*
 import java.util.Locale
@@ -73,208 +63,46 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     onScrub:(Long,Boolean)->Unit={_,_->},
     onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
     onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
-    val context = androidx.compose.ui.platform.LocalContext.current
     val density=LocalDensity.current
-    val textSize=with(density){11.sp.toPx()}
-    val right=with(density){12.dp.toPx()}
-    val level=visual.level.takeIf {state.plot==AcousticPlot.PITCH}
-    val levelHeight=if(level!=null)with(density){16.dp.toPx()} else 0f
-    val top=max(with(density){(if(state.plot==AcousticPlot.SPECTROGRAM)16.dp else 10.dp).toPx()},textSize*(if(state.plot==AcousticPlot.SPECTROGRAM)1.6f else 1f))+levelHeight
-    val bottom=textSize*1.8f
     var dimensions by remember {mutableStateOf(androidx.compose.ui.unit.IntSize.Zero)}
-    val bitmap=remember(visual.bitmap){visual.bitmap?.asImageBitmap()}
-    val log=state.plot==AcousticPlot.SPECTROGRAM && state.logarithmic
-    val camera=viewport
-    // A deliberate advanced comparison may show raw estimators; ordinary views show one quantity.
     val displayedTrace=musicianTrace
     val spectralTrace=displayedTrace?.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT
-    val point by rememberUpdatedState(onPoint);val transform by rememberUpdatedState(onTransform)
-    val palette=Color(0xFF101D25);val grid=Color(0xFF29414B)
-    val paint=remember(textSize){android.graphics.Paint().apply {isAntiAlias=true;color=android.graphics.Color.rgb(185,208,211);this.textSize=textSize}}
-    val pitchTicks=remember(camera.y,dimensions.height,textSize,top,bottom,state.plot,spectralTrace){
-        if(state.plot==AcousticPlot.PITCH && !spectralTrace)PitchAxis.ticks(camera.y,((dimensions.height-top-bottom)/(textSize*2.8f)).toInt()) else emptyList()
-    }
-    val labelGap=with(density){4.dp.toPx()}
-    val yTicks=if(state.plot==AcousticPlot.PITCH && !spectralTrace)pitchTicks.map {it.hz} else
-        PlotScales.ticks(camera.y,if((dimensions.height-top-bottom)/textSize<12)3 else 5,log)
-    // Measure the exact strings with the same native Paint that renders them, including notes.
-    val labelLocale=androidx.compose.ui.platform.LocalConfiguration.current.locales.toLanguageTags()
-    val requiredLeft=if(state.plot in listOf(AcousticPlot.PITCH,AcousticPlot.SPECTROGRAM))remember(pitchTicks,yTicks,camera.y.span,textSize,labelGap,labelLocale){
-        val hzWidth=yTicks.maxOfOrNull {paint.measureText(axisLabel(it,camera.y.span))} ?: 0f
-        val noteWidth=pitchTicks.maxOfOrNull {paint.measureText((if(it.approximate)"≈ " else "")+it.note.orEmpty())*.85f} ?: 0f
-        max(hzWidth,noteWidth)+labelGap*2
-    } else max(with(density){(if(state.plot==AcousticPlot.SPECTRUM)58.dp else 56.dp).toPx()},textSize*3.2f)
-    // Keep the projection's origin fixed for the entire gesture; measure again when released.
-    var settledLeft by remember(state.plot,textSize){mutableFloatStateOf(requiredLeft)}
-    SideEffect {if(!state.gestureActive)settledLeft=requiredLeft}
-    val left=if(state.gestureActive)settledLeft else requiredLeft
-    val pitchTrace=remember(points,state.instrument,displayedTrace==null){
-        if(displayedTrace==null)PitchTrace.build(points,state.instrument) else emptyList()
-    }
-    val traceMarks=remember(displayedTrace,pitchTrace,state.showUncertain,state.plot){
-        if(state.plot!=AcousticPlot.PITCH)emptyList() else displayedTrace?.let(TraceDrawing::canonical)
-            ?: TraceDrawing.historical(pitchTrace,state.showUncertain)
-    }
-    val bridgeEffect=remember {PathEffect.dashPathEffect(floatArrayOf(5f,5f))}
-    val plotWidth=(dimensions.width-left-right).coerceAtLeast(0f)
-    val plotHeight=(dimensions.height-top-bottom).coerceAtLeast(0f)
-    val projection=remember(camera,plotWidth,plotHeight,log){
-        if(plotWidth>0 && plotHeight>0)PlotProjection(camera,plotWidth.toDouble(),plotHeight.toDouble(),logY=log) else null
-    }
-    val waveDrawing=rememberWaveDrawing(visual.wave.takeIf {state.plot==AcousticPlot.WAVE},projection)
-    val rasterPlacement=remember(visual.spectrogram,projection,state.plot){
-        if(state.plot==AcousticPlot.SPECTROGRAM && projection!=null)visual.spectrogram?.let {RasterPlacement.of(it,projection)} else null
-    }
-    // Retain level reduction while only the playback cursor changes.
-    val levelPixels=remember(level,camera.x,plotWidth){PlotReduction.levelPixels(level,camera.x,plotWidth)}
-    val swipePaths=remember(swipe,camera,dimensions,left,right,top,bottom,state.plot){
-        val path=Path();val dots=mutableListOf<Offset>()
-        if(swipe!=null && state.plot==AcousticPlot.PITCH){
-            val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
-            fun position(sample:SwipeCurve.Sample)=Offset((camera.x.fraction(sample.timeMs)*plotWidth).toFloat(),((1-camera.y.fraction(sample.hz!!))*h).toFloat())
-            for(i in swipe.samples.indices){
-                val sample=swipe.samples[i]
-                if(sample.hz==null || sample.timeMs<camera.x.low-swipe.hopMs || sample.timeMs>camera.x.high+swipe.hopMs)continue
-                val p=position(sample)
-                if(swipe.linked(i)){
-                    val previous=position(swipe.samples[i-1]);path.moveTo(previous.x,previous.y);path.lineTo(p.x,p.y)
-                }else if(!swipe.linked(i+1))dots+=p
-            }
+    val level=visual.level.takeIf {state.plot==AcousticPlot.PITCH}
+    val frame=rememberPlotFrame(state.plot,viewport,dimensions,state.gestureActive,level!=null,spectralTrace,state.logarithmic)
+    val palette=Color(0xFF101D25)
+    val measuredModifier=modifier.background(palette).testTag(plotSurfaceTag(state.plot,immersive,diagnostic))
+        .onSizeChanged {dimensions=it}
+    // Unmount pointer ownership as soon as no drawable coordinate frame exists.
+    if(frame==null){Canvas(measuredModifier) {};return}
+    with(frame){
+        val preparedTrace=remember(points,state.instrument,displayedTrace,state.showUncertain,state.plot){
+            TraceDrawing.prepare(displayedTrace,points,state.instrument,state.plot==AcousticPlot.PITCH,state.showUncertain)
         }
-        path to dots
-    }
-    val xTicks=PlotScales.ticks(camera.x,if(plotWidth/textSize<30)3 else 5)
-    val xLabels=placeAxisLabels(xTicks,camera.x,plotWidth,labelGap*2,
-        {if(state.plot.temporal)seconds(it.toLong()) else axisLabel(it,camera.x.span)+" Hz"},paint::measureText)
-
-    fun data(position:Offset):Pair<Double,Double>{
-        val w=(dimensions.width-left-right).coerceAtLeast(1f);val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
-        val mapped=PlotProjection(camera,w.toDouble(),h.toDouble(),left.toDouble(),top.toDouble(),log).data(position.x.toDouble(),position.y.toDouble())
-        return mapped.x to mapped.y
-    }
-    val scrub by rememberUpdatedState(onScrub)
-    val gesture=Modifier.immersiveGestures(
-        onScrubStart={p ->state.plot.temporal && p.x in left..(dimensions.width-right) && p.y in top..(dimensions.height-bottom)},
-        onScrub={p,commit ->scrub(data(p).first.toLong(),commit)},
-        onTap={p->val d=data(p);point(d.first,d.second,false)},onInspect={p->val d=data(p);point(d.first,d.second,true)},
-        onReset=onReset,onActive={state.gestureActive=it;if(!it)state.selection.scrubMs=null},onTransform={center,pan,zx,zy ->
-            val w=(dimensions.width-left-right).coerceAtLeast(1f);val h=(dimensions.height-top-bottom).coerceAtLeast(1f)
-            transform(((center.x-left)/w).toDouble().coerceIn(0.0,1.0),((center.y-top)/h).toDouble().coerceIn(0.0,1.0),zx.toDouble(),zy.toDouble(),(pan.x/w).toDouble(),(pan.y/h).toDouble())
-        })
-    // Reduction is retained while the native playback cursor advances.
-    val spectrum=analysis?.spectrum
-    val spectrumReference=remember(spectrum){spectrum?.density?.maxOrNull() ?: 0.0}
-    val curve=remember(spectrum,camera.x,plotWidth){PlotReduction.spectrum(spectrum,camera.x,plotWidth.toInt())}
-    Canvas(modifier.background(palette).then(gesture).testTag(if(diagnostic)"diagnostic-time-chart" else if(immersive)"immersive-plot" else if(state.plot==AcousticPlot.SPECTRUM)"spectrum-chart" else "time-chart")
-        .semantics {contentDescription=context.getString(R.string.ui_to_4e5d93, context.plotLabel(state.plot,state.instrument), if(state.plot.temporal)context.getString(R.string.ui_time) else context.getString(R.string.ui_frequency), axisLabel(camera.x.low,camera.x.span), axisLabel(camera.x.high,camera.x.span), if(spectralTrace)context.getString(R.string.musical_drone_axis_range,axisLabel(camera.y.low,camera.y.span),axisLabel(camera.y.high,camera.y.span)) else if(state.plot==AcousticPlot.PITCH)context.getString(R.string.ui_hz_axis_and_base_note)+pitchTicks.joinToString {"${axisLabel(it.hz,camera.y.span)} Hz ${if(it.approximate)context.getString(R.string.ui_approximately) else ""} ${it.note.orEmpty()}"} else "", if(diagnostic)context.getString(R.string.diagnostic_chart_accessibility) else if(state.plot.temporal)context.getString(R.string.graph_timeline_hint) else context.getString(R.string.ui_drag_and_zoom_along_both_axes_hold_to_inspect))}
-        .semantics {this[PlotDataArea]=androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom);this[PlotWindow]=camera
-            this[PlotSwipeCount]=if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0
-            if(state.plot.temporal){
-                progressBarRangeInfo=ProgressBarRangeInfo(cursor.coerceAtLeast(0).toFloat(),0f..durationMs.coerceAtLeast(1).toFloat())
-                setProgress(context.getString(R.string.playback_seek_label)){target ->
-                    scrub(target.toLong().coerceIn(0,durationMs.coerceAtLeast(1)),true);true
-                }
-            }
-            this[PlotPlaybackMs]=cursor
-            this[PlotAudioLevelCount]=level?.rms?.size ?: 0
-            this[PlotDroneComponentCount]=if(spectralTrace)displayedTrace?.samples?.count {it.hz!=null} ?: 0 else 0
-            this[PlotYinCount]=if(displayedTrace?.meaning==MusicalTrace.Meaning.ESTIMATED_PITCH)displayedTrace.samples.count {it.hz!=null} else if(displayedTrace==null)
-                pitchTrace.count {!it.uncertain} else 0
-            this[PlotHighRegisterCount]=displayedTrace?.highRegisterCandidates?.size ?: 0
-            this[PlotXLabels]=xLabels.map {it.text};this[PlotXLabelBounds]=xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())}}
-        .onSizeChanged {dimensions=it}) {
-        // Navigation/configuration transitions can measure a temporarily collapsed surface.
-        if(size.width<=left+right+textSize || size.height<=top+bottom+textSize*2)return@Canvas
-        val w=(size.width-left-right).coerceAtLeast(1f);val h=(size.height-top-bottom).coerceAtLeast(1f)
-        fun x(value:Double)=(camera.x.fraction(value)*w).toFloat()
-        fun y(value:Double)=((1-camera.y.fraction(value,log))*h).toFloat()
-        val xt=xTicks
-        val yt=yTicks
-        // An independent source-time RMS strip explains audible gaps without supplying pitch.
-        // Aggregate maxima per pixel so rendering stays bounded and brief sound remains visible.
-        level?.let {
-            for(i in levelPixels.indices){
-                val db=20*log10(max(1e-9f,levelPixels[i]))
-                val height=((db+70)/70).coerceIn(0f,1f)*(levelHeight-2)
-                drawLine(Color(0xFF93CDE7),Offset(left+i,top-2),Offset(left+i,top-2-height),1f)
-            }
+        val traceMarks=preparedTrace.marks
+        val waveDrawing=rememberWaveDrawing(visual.wave.takeIf {state.plot==AcousticPlot.WAVE},projection)
+        val rasterInk=rememberRasterInk(state.plot==AcousticPlot.SPECTROGRAM,visual.spectrogram,visual.bitmap,projection)
+        // Retain level reduction while only the playback cursor changes.
+        val levelPixels=remember(level,camera.x,plotWidth){PlotReduction.levelPixels(level,camera.x,plotWidth)}
+        val comparisonInk=rememberComparisonInk(swipe,projection,state.plot==AcousticPlot.PITCH)
+        val coordinates=remember(camera,dimensions,left,right,top,bottom,log){
+            PlotGestureCoordinates(camera,(dimensions.width-left-right).toDouble(),(dimensions.height-top-bottom).toDouble(),
+                left.toDouble(),top.toDouble(),log)
         }
-        translate(left,top){
-            clipRect(0f,0f,w,h){
-                if(bitmap!=null)rasterPlacement?.let {placement ->
-                    // Crop using the coordinates of the completed tile, never stretch old data to a new request.
-                    withTransform({translate(placement.origin.x.toFloat(),placement.origin.y.toFloat())
-                        scale((placement.width/bitmap.width).toFloat(),(placement.height/bitmap.height).toFloat(),pivot=Offset.Zero)}){
-                        drawImage(bitmap,dstSize=IntSize(bitmap.width,bitmap.height),filterQuality=FilterQuality.None)
-                    }
-                }
-                xt.forEach {drawLine(grid,Offset(x(it),0f),Offset(x(it),h),.7f)}
-                yt.forEach {drawLine(grid,Offset(0f,y(it)),Offset(w,y(it)),.7f)}
-                if(state.plot==AcousticPlot.PITCH){
-                    val canonicalColor=if(spectralTrace)Color(0xFF65C9D1) else Color(0xFF8FE0BD)
-                    if(displayedTrace==null)analysis?.summary?.typicalHz?.let {hz->if(hz in camera.y.low..camera.y.high)drawLine(Color(0xFF93CDE7).copy(alpha=.5f),Offset(0f,y(hz)),Offset(w,y(hz)),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,6f)))}
-                    for(mark in traceMarks)when(mark){
-                        is TraceDrawing.Segment->drawLine(if(displayedTrace!=null)canonicalColor else pitchColor(mark.tone),
-                            Offset(x(mark.from.timeMs),y(mark.from.hz)),Offset(x(mark.to.timeMs),y(mark.to.hz)),
-                            if(displayedTrace!=null)2.5f else 2.3f,pathEffect=if(mark.bridged)bridgeEffect else null)
-                        is TraceDrawing.Dot->if(mark.uncertain)drawCircle(Color(0xFFEBA16E),3f,
-                            Offset(x(mark.at.timeMs),y(mark.at.hz)),style=Stroke(1.5f))
-                        else drawCircle(if(displayedTrace!=null)canonicalColor else pitchColor(mark.tone),
-                            if(displayedTrace!=null)3f else 2.5f,Offset(x(mark.at.timeMs),y(mark.at.hz)))
-                    }
-                    displayedTrace?.highRegisterCandidates?.forEach {candidate ->
-                        val px=x(candidate.timeMs.toDouble())
-                        val marker=Path().apply {moveTo(px,4f);lineTo(px-5f,14f);lineTo(px+5f,14f);close()}
-                        drawPath(marker,Color(0xFFE9BD87))
-                    }
-                }
-                if(state.plot==AcousticPlot.PITCH && swipe!=null){
-                    drawPath(swipePaths.first,swipeColor,style=Stroke(2.3f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(8f,5f))))
-                    swipePaths.second.forEach {drawCircle(swipeColor,2.8f,it)}
-                }
-                when(val drawing=waveDrawing){
-                    is WaveDrawing.Samples->drawPath(drawing.path,traceA,style=Stroke(1.8f))
-                    is WaveDrawing.Envelope->drawing.geometry.columns.forEach {column ->
-                        drawLine(traceA,Offset(column.x.toFloat(),column.top.toFloat()),Offset(column.x.toFloat(),column.bottom.toFloat()),drawing.geometry.strokeWidth.toFloat())
-                    }
-                    null->Unit
-                }
-                if(state.plot==AcousticPlot.SPECTRUM && analysis!=null && spectrumReference>1e-16){
-                    analysis.harmonics.fundamentalHz?.let {f0->for(order in 1..min(128,(camera.x.high/f0).toInt())){val hz=f0*order;if(hz>=camera.x.low)drawLine(traceA.copy(alpha=.2f),Offset(x(hz),0f),Offset(x(hz),h),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(3f,5f)))}}
-                    val path=Path();curve.forEachIndexed {i,p ->val py=y(10*log10(max(1e-30,p.second)/spectrumReference));if(i==0)path.moveTo(x(p.first),py)else path.lineTo(x(p.first),py)};drawPath(path,traceA,style=Stroke(2f))
-                    var labelRight=-1000f
-                    analysis.harmonics.peaks.filter {it.hz in camera.x.low..camera.x.high}.forEach {peak ->val px=x(peak.hz);val py=y(peak.relativeDb);drawCircle(if(peak.order!=null)traceA else traceB,3.5f,Offset(px,py))
-                        if(peak.order!=null && px>labelRight && py in 0f..h){val label="H${peak.order}?";drawContext.canvas.nativeCanvas.drawText(label,px+4,py.coerceAtLeast(textSize+2)-3,paint);labelRight=px+paint.measureText(label)+12}
-                    }
-                }
-                if(state.plot.temporal){
-                    state.region?.let {region ->val a=x(region.first.toDouble());val b=x(region.last.toDouble());drawRect(Color(0xFF8CCFF3).copy(alpha=.13f),Offset(a,0f),Size(max(0f,b-a),h))}
-                    if(cursor<0 && state.selectedMs.toDouble() in camera.x.low..camera.x.high)drawLine(Color.White.copy(alpha=.7f),Offset(x(state.selectedMs.toDouble()),0f),Offset(x(state.selectedMs.toDouble()),h),1f,pathEffect=PathEffect.dashPathEffect(floatArrayOf(3f,5f)))
-                    if(cursor>=0 && cursor.toDouble() in camera.x.low..camera.x.high){
-                        drawLine(Color(0xFF9AD9FF),Offset(x(cursor.toDouble()),0f),Offset(x(cursor.toDouble()),h),2.5f)
-                        drawCircle(Color(0xFF9AD9FF),with(density){8.dp.toPx()},Offset(x(cursor.toDouble()),h-10f))
-                    }
-                }
-            }
-            yt.forEach {tick ->
-                paint.textAlign=android.graphics.Paint.Align.RIGHT
-                val label=axisLabel(tick,camera.y.span)
-                val musical=pitchTicks.firstOrNull {it.hz==tick}
-                val baseline=y(tick).coerceIn(textSize,if(musical?.note!=null)max(textSize,h-textSize*1.15f) else h-textSize/4)
-                drawContext.canvas.nativeCanvas.drawText(label,-labelGap,baseline,paint)
-                musical?.note?.let {note->
-                    paint.textSize=textSize*.85f;paint.alpha=195
-                    drawContext.canvas.nativeCanvas.drawText((if(musical.approximate)"≈ " else "")+note,-labelGap,baseline+textSize,paint)
-                    paint.textSize=textSize;paint.alpha=255
-                }
-            }
-            xLabels.forEach {label ->paint.textAlign=android.graphics.Paint.Align.CENTER
-                drawContext.canvas.nativeCanvas.drawText(label.text,label.center,h+textSize*1.5f,paint)}
-        }
-        paint.textAlign=android.graphics.Paint.Align.LEFT
-        // Hz is already identified by the detail legend / fullscreen range readout.
-        if(state.plot==AcousticPlot.WAVE || state.plot==AcousticPlot.SPECTRUM)
-            drawContext.canvas.nativeCanvas.drawText(if(state.plot==AcousticPlot.WAVE)context.getString(R.string.ui_amplitude) else "dB rel",6f,textSize,paint)
+        val gesture=Modifier.plotInteraction(state,coordinates,onScrub,onPoint,onReset,onTransform)
+        // Reduction is retained while the native playback cursor advances.
+        val pitchInk=rememberPitchInk(state.plot==AcousticPlot.PITCH,traceMarks,displayedTrace,analysis?.summary?.typicalHz,projection)
+        val spectrumInk=rememberSpectrumInk(state.plot==AcousticPlot.SPECTRUM,analysis,projection,plotWidth.toInt())
+        val effects=remember {PlotEffects(PathEffect.dashPathEffect(floatArrayOf(5f,5f)),PathEffect.dashPathEffect(floatArrayOf(8f,6f)),
+            PathEffect.dashPathEffect(floatArrayOf(8f,5f)),PathEffect.dashPathEffect(floatArrayOf(3f,5f)),PathEffect.dashPathEffect(floatArrayOf(3f,5f)))}
+        val traceEvidence=preparedTrace.evidence
+        val accessibility=PlotAccessibility(androidx.compose.ui.geometry.Rect(left,top,dimensions.width-right,dimensions.height-bottom),camera,
+            state.plot.temporal,cursor,durationMs,traceEvidence,if(state.plot==AcousticPlot.PITCH)swipe?.samples?.count {it.hz!=null} ?: 0 else 0,
+            level?.rms?.size ?: 0,xLabels.map {it.text},xLabels.map {androidx.compose.ui.geometry.Rect(left+it.center-it.width/2,
+                dimensions.height-bottom,left+it.center+it.width/2,dimensions.height.toFloat())})
+        val timeline=if(state.plot.temporal)TimelineInk(state.region,state.selectedMs,cursor,with(density){8.dp.toPx()}) else null
+        val content=PlotContent(rasterInk,pitchInk,comparisonInk,waveDrawing,spectrumInk,timeline)
+        PlotCanvas(frame,content,effects,levelPixels,plotUnitLabel(state.plot),
+            measuredModifier.then(gesture)
+            .plotAccessibility(accessibility,plotDescription(state.plot,state.instrument,camera,pitchTicks,spectralTrace,diagnostic),onScrub))
     }
 }
-

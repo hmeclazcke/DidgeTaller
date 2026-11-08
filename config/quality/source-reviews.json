@@ -1222,19 +1222,23 @@
     },
     "c90b7239e908a6b392c71a4e20e549f01b17bef0a9d4ac2c881391bc06a156a7": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
-      "line": 68,
       "kind": "function",
+      "semanticHash": "9303c210bbc4fadd8893e611d4a62a1e7dac92d826576fba6567bb468d43eafe",
+      "line": 58,
       "name": "PlotSurface",
-      "semanticHash": "70899f068c385ecdb7b924d56ac04b2615022581a25cfe30aa984bf4f9df8187",
-      "reviewed_source": "7e0002afce0f61565149e25ffc09ce73f7cabe72",
+      "reason": "Compose orchestration shares one measured frame, existing gesture engine and authoritative seek callback. Rendering/job ownership is absent from this facade. MCC 127 to 8, cognitive 279 to 7; the remaining small declarative graph/tag cases are not split into arbitrary wrappers just to change the number. All eligible preparation/painter functions are measured; actual native gestures/screenshots remain mandatory. Compose method counters are not conflated into a fake source CRAP.",
       "evidence": [
-        "docs/engineering/WORKSPACE_REBUILD.md",
-        "app/src/test/java/ar/didgetaller/core/VisualGeometryTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
       ],
-      "metric_status": "compose-transformation",
-      "reason": "Current correlator explicitly refuses transformed Compose entry/lambda counters; no source-level coverage score is fabricated. Native waveform Path ownership/caching is separated from pure waveform and completed-raster geometry (measured below target). Existing axes, gestures and remaining adapters keep PlotSurface unfinished. Actual emulator gestures, sample-resolution and screenshot configuration assertions remain mandatory."
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
     },
     "5b2c7e2f1e08436065147b9b2ae78c4008a055bbfebf1e1765eccd8e919d3f6c": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
@@ -1625,6 +1629,1340 @@
         "app/src/androidTest/java/ar/didgetaller/SimulationOwnershipTest.kt"
       ],
       "reviewed_source": "6f84faf54376d9025ff231831dff57160deef96c"
+    },
+    "49cebd7ebb840b53b3fe8329a254d3609c89154eacd94624ce77f203e067268c": {
+      "file": "app/src/main/java/ar/didgetaller/audio/RecordingAnalysisLoader.kt",
+      "kind": "constructor",
+      "semanticHash": "a9b9ded4d15b54f960b977faa6ed188dfef93be6d00f3af71ff3f99f89df4c66",
+      "line": 11,
+      "name": null,
+      "reason": "Immutable request or supplied scope/serial-dispatcher/compute dependencies. The scoped adapter owns scheduling/cancellation; the unchanged cache owns reader closure/publication. Two bodyless contracts are classified non-executable separately. Named submit is reliably measured; constructor/default wiring has no standalone MCC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "9b7e8b5176a99f6f7d995b8c35ca7d16857c512655eeae0ce7e9ae29ae02dcd4": {
+      "file": "app/src/main/java/ar/didgetaller/core/AxisDrawing.kt",
+      "kind": "constructor",
+      "semanticHash": "4eefda4eca0f8fd8341ce79541522c902335f39ce12c09ca0dcc6458ca3511c0",
+      "line": 7,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "5c53a9b20299985da11294c9f5930be71e926418fa2d1216189d2e2c87072d94": {
+      "file": "app/src/main/java/ar/didgetaller/core/PlotGestureCoordinates.kt",
+      "kind": "constructor",
+      "semanticHash": "2af22a0bdd0f9f7c995a36ae822e033e89fe33a577cc6de0afb1be2a2962245a",
+      "line": 4,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "dafce76d9fb2fb9a4edda134fc4ea8ebd8db15c9436722a0c82aed8fb49061e7": {
+      "file": "app/src/main/java/ar/didgetaller/core/PlotGestureCoordinates.kt",
+      "kind": "initializer",
+      "semanticHash": "1e300c8f8d80cd66920f1e9a17eb6a0e9e66414bf5525dc4b34191732a84ccad",
+      "line": 6,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "cef1d91751d8dc6b6734d5e75e4aeb99812aa3bb78212a25c5237fab3a850707": {
+      "file": "app/src/main/java/ar/didgetaller/core/PlotGestureCoordinates.kt",
+      "kind": "constructor",
+      "semanticHash": "f821f3996f2b20ebd8ca1c250429a66a20db9c707a599b9a61fa50bd2dd3e9a6",
+      "line": 7,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "7e520c1da9b79f3002934690fa4ad27a9bdec8579abc1eaa0d333feeee0c404e": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "6528ed92f492b72084b8f7cca760558d19fe525de0176faf145f1d1207191144",
+      "line": 5,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "b9bdeadc41147e69e4590e6088542486f504d6cdd6c616eab42a1060b91d5960": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "23c402cf862308973f913a93b7faa37e13430273a571021543a4e2dd9f212339",
+      "line": 9,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "f89839e3bc33d1557decdb869242f98f71ec1279c773674fc9744992f30d3c72": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "95c5669a58eb2d4674f7a25eb186df7e3ca481fbfd7bf86b30e7a6eb507ff6df",
+      "line": 11,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "a80701b44e13218c16f12b4cf0f351e443c5f5c192a85e4b5f929d33822dfd2a": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "a940f0fb9eb96a56c74f37570df46ebc33fb51b366e25a57c3cacf3d4970f7d2",
+      "line": 13,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "35ed74de4c869d8cfb7b182bae60af8559f3f24f0ef48a984d2c2f05a2413260": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "23c402cf862308973f913a93b7faa37e13430273a571021543a4e2dd9f212339",
+      "line": 15,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "61135416466748bb3e2f7d84357dd685068d3992ca422c79452770eae67f54f1": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "5710cddb2fe676be9131eb96ca7ac28588f05eeaa8b8f1987eb0f4981862dd3b",
+      "line": 21,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "9bd7754cef642907393927f4b7318eedf4ff05aafc73bdd6d5bb5d4745764be7": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "constructor",
+      "semanticHash": "fa0039dec81dd1838e4421e4efe6f9906e42e90978527676782f0e4fdc09f7a3",
+      "line": 23,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "5dfb4654fe043e12fe7cf0286776d302fd2960874d6ba521002eaedbf4a46cfd": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "initializer",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "line": 24,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "e4ec66b3b5838c38edd011124ccc28b6770482b1c444ae58303e01099305b240": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "initializer",
+      "semanticHash": "9a5fccef8e5ebf36138864c9651a62880b53edf563eeeed53276000bd9522cf3",
+      "line": 25,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "acd92ec386832e0fee7191c39f9fffb6303b5eca18908fbc02c8956fed6b1590": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisController.kt",
+      "kind": "accessor",
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "line": 25,
+      "name": null,
+      "reason": "Typed state and operation carriers; immutable request/progress/result combinations and a private setter preserve a single writer. Actual named request/progress/finish/cancel/close methods are independently scored. Eleven behavioral owner contracts, cleanup/error tests and real PIT protect their behavior; no standalone constructor/accessor MCC is invented.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "01d4473a7f22101442f3733dd56d567833927ca096f37246cda3e788140a81cd": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingAnalysisLoader.kt",
+      "kind": "constructor",
+      "semanticHash": "1a9c31bbeef688917b9c68581f1f52e23a7e9303ee940fecb9a0ad17d96463bb",
+      "line": 3,
+      "name": null,
+      "reason": "Immutable request or supplied scope/serial-dispatcher/compute dependencies. The scoped adapter owns scheduling/cancellation; the unchanged cache owns reader closure/publication. Two bodyless contracts are classified non-executable separately. Named submit is reliably measured; constructor/default wiring has no standalone MCC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "c63c69cb33fa9baa1e249f2892f48923a2f5e84ab6a82d7df4774204a786e575": {
+      "file": "app/src/main/java/ar/didgetaller/core/SpectrumGeometry.kt",
+      "kind": "constructor",
+      "semanticHash": "5667c22957591197f8b6d12262d2f994d98763318d7c0e263a79378af34da559",
+      "line": 8,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "28334b79d929c855a5731e156c286f5459044527bb0e1ff2227c6a00ec6c1f32": {
+      "file": "app/src/main/java/ar/didgetaller/core/SpectrumGeometry.kt",
+      "kind": "constructor",
+      "semanticHash": "1fea7b89d48e202e0de25f14558b80177f6bf248d111712f49c6351c29eca0e4",
+      "line": 9,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "6dc71775f722db9f847914fec6415ecad5a4dca6e96afb2cf0e251c545d7a262": {
+      "file": "app/src/main/java/ar/didgetaller/core/TraceDrawing.kt",
+      "kind": "constructor",
+      "semanticHash": "debb141d52f138a32bb66f48a7900d34e73a62e5cd6bce99dc582d998fed8ac6",
+      "line": 12,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "84ba14c7544fcef5581d04c09ae750aec643e419ebb01a3a251c8bd5f4a2865a": {
+      "file": "app/src/main/java/ar/didgetaller/core/TraceEvidence.kt",
+      "kind": "constructor",
+      "semanticHash": "931b07f8140e46c9589231d2d7c778e2b082a7819dc05c1a5b47b82feb81decf",
+      "line": 4,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "416c87cce7ff0fe82b98ba540f7c2587d3a23f94d534356d5d473e52e4390304": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "constructor",
+      "semanticHash": "d18f3adee9468e9d2fdfc254af9246fa450fec4d44c919eece0e17c8aa8eea9b",
+      "line": 6,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "5ae37347f49e507aa224c14a9ce012895a704fbdbab1596e13668b74cc9486d5": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "9755313fb85091092c6e34d4fe371ca8c082f298163732a0f6efc9884e9207d4",
+      "line": 7,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "066c58e2f46d80321a70822b23d87d900096d4a0dfc9a253ebc845deb615ef9a": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "a9caff96c7495013a4300343ddceca02c58842906918ce50eda794350150e04f",
+      "line": 8,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "17109ca042b5c3f93fb39c2248b4f8b1ac780faac758197e2ad0724fe83c83eb": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "c4ac6619ea00da2726ca607afa56a9d847d66770a6e90a29b181e03d6267731f",
+      "line": 9,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "4bc19f54b1c81361dca9f5a3b60f2093a0920cf410a075e268d4a3eebe1b5bfa": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "8c2827b31cfac9fafb3196d516551fce1a2188dd81bd9755cfaf304ba35fa740",
+      "line": 10,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "61cea2a22b366f882448a75701eeeac4e9b53c30ef853ce4f41d058f87ee5336": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "e3e6f52ee9a833416631a5b4581330800264e8ca938b070cd55c80ecae904216",
+      "line": 11,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "553a5b7dfec61ae596e8aff8dfa914ce95e5fa58e92b51d90e38a76e44fdfa1c": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "lambda",
+      "semanticHash": "18f8e0809b0695d22ee2dbd3152c8ab7993cfdb427ea0b8daa9d352de43ed7f3",
+      "line": 11,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "357ea7700d8187c62e60f4221c0a13ba3175935f85e59f0539bba08f372e7882": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "c4f0ab0d9b7e3ab8d87613d9525ec4d4cec01673864861f1229f7f7d48f90eaf",
+      "line": 13,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "5fe871cd676ccd8bd19bb2f2b5be4614829bc5e8cc6a4b1f4ed3b5fe6802ad51": {
+      "file": "app/src/main/java/ar/didgetaller/RecordingAnalysisState.kt",
+      "kind": "initializer",
+      "semanticHash": "bdbc9dd415166b84bed2058d86439d35ba9954e131208fa0c98adac3eaf623b0",
+      "line": 14,
+      "name": null,
+      "reason": "Read-only projection of a typed status; no independent operation state or writer. Initializers preserve legacy diagnostic strings used by existing localization. JVM presentation tests cover fallback/explicit errors, cancellation and request facts; native tests cover results, replacement/disposal and range propagation. Constructor/initializer lambdas are not assigned fabricated function CC.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "77e4ffc1115da3076d3da0dc1f0bac2ea469e64d527546fcd8f21ee346a124bd": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "constructor",
+      "semanticHash": "ecde9b431b375ef243aec4228b716fe09d8f9813438d168e06d5d2ab1af7c708",
+      "line": 76,
+      "name": null,
+      "reason": "Application constructor and analysis-owner wiring only. The public Android factory constructor remains. The cache lambda forwards immutable ID/range/profile/force and the worker cancellation/progress ports without changing analysis or persistence. State is a derived Compose projection. Named analyzeRecording/cancel/onCleared remain independently measured, with real ViewModel lifecycle tests.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "ed5875e5e180376e4a961da5ff8f47fb868549467f5039bdc3a8c4e914a79003": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "accessor",
+      "semanticHash": "b0acb89a5aee861a40e01071fa3024a2da50545c031e468ddfd575dfee048143",
+      "line": 159,
+      "name": null,
+      "reason": "Application constructor and analysis-owner wiring only. The public Android factory constructor remains. The cache lambda forwards immutable ID/range/profile/force and the worker cancellation/progress ports without changing analysis or persistence. State is a derived Compose projection. Named analyzeRecording/cancel/onCleared remain independently measured, with real ViewModel lifecycle tests.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "2f7b47b9be9a8d27927062a49bc61b647d40abbc089e4d4a46ea4406db651a42": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "initializer",
+      "semanticHash": "0289850fa950af938def1bacddb936e5ea3d8d16a70e610a1c2a88066d78a95b",
+      "line": 160,
+      "name": null,
+      "reason": "Application constructor and analysis-owner wiring only. The public Android factory constructor remains. The cache lambda forwards immutable ID/range/profile/force and the worker cancellation/progress ports without changing analysis or persistence. State is a derived Compose projection. Named analyzeRecording/cancel/onCleared remain independently measured, with real ViewModel lifecycle tests.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "de7aa0d2db6942cf7a598a5b12d713deae1feceb1277b94ac7fb538fc2a47b98": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "lambda",
+      "semanticHash": "9fe64bb3733ddc5f2febdb2e361535552e5db565b17771dd559472736914f63b",
+      "line": 161,
+      "name": null,
+      "reason": "Application constructor and analysis-owner wiring only. The public Android factory constructor remains. The cache lambda forwards immutable ID/range/profile/force and the worker cancellation/progress ports without changing analysis or persistence. State is a derived Compose projection. Named analyzeRecording/cancel/onCleared remain independently measured, with real ViewModel lifecycle tests.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "42bccdc5a1f80908db83165cb31ea919c9c718d1023aa48b8cc3ac3084b24aa0": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "lambda",
+      "semanticHash": "07ccbc94d6059f9e75d25725964d175243caa4b584e6817e6af4402a3535fb5a",
+      "line": 164,
+      "name": null,
+      "reason": "Application constructor and analysis-owner wiring only. The public Android factory constructor remains. The cache lambda forwards immutable ID/range/profile/force and the worker cancellation/progress ports without changing analysis or persistence. State is a derived Compose projection. Named analyzeRecording/cancel/onCleared remain independently measured, with real ViewModel lifecycle tests.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "3f43431ca53f0fafff1c4569d48ae8290a8a3f7a6d128dc673fef19d83865bb1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "kind": "function",
+      "semanticHash": "a15c79fad48be71a077806cf3cf0c8a8442c7ca687d75d79436920b86a7af17f",
+      "line": 180,
+      "name": "ImmersiveViewer",
+      "reason": "The existing correlator refuses transformed Compose entry/lambda method coverage. A real large-font GetTextLayoutResult regression reproduces the fixed two-line cap; complete explanation wraps in EN/ES portrait and landscape without smaller type. Native UI proof remains mandatory, not substituted JVM coverage.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "b35e86ee4c049ddc605517fc473b87bcfbf62a82713669047db7f5817654d48e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
+      "kind": "constructor",
+      "semanticHash": "ec55241d7900baaf7f2ee81f13cea40ec8b64ecf1f57c7ce219ed4699b6e4b97",
+      "line": 14,
+      "name": null,
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "38d11b7c95bd9a2d9f2479e8ad7a0edce7faffdbdf74bd55f9a06a2d8c72d7d8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
+      "kind": "function",
+      "semanticHash": "ce647c36d0e613a910ab0a129102591333b39b94b487f3bd918e6758c91a2271",
+      "line": 20,
+      "name": "plotAccessibility",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "9d064ea8ca4613580a24366ee57467766e125fe0cf204301679a93d680c3a26b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
+      "kind": "function",
+      "semanticHash": "395b80bec64360aa17c6172468803b9786194cc35f30bf5bad7b16d793baa064",
+      "line": 39,
+      "name": "plotDescription",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "9b9932b1645dc46fdaa62d9e24274f55a76958521e2e935973e19d63c27a9908": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotCanvas.kt",
+      "kind": "function",
+      "semanticHash": "d49f4d57078c72fddc0b76c71fc8f240d5d0a24f94bdc6d9244faf6a336c5100",
+      "line": 12,
+      "name": "plotUnitLabel",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "28eb3adc588ce99b07eebf6202594e27efc61a5dec65b5da51874944b01e08f1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotCanvas.kt",
+      "kind": "function",
+      "semanticHash": "a6fa57af380a18549221626c5f32ffca621b7904a46d55075430e293974788c0",
+      "line": 20,
+      "name": "PlotCanvas",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "29ca622f8211733953bac7b29ae9c357a3e98dfd96dd12bd2faffba7f9d8ad2f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotContent.kt",
+      "kind": "constructor",
+      "semanticHash": "b93fc3a12120d0e79ffe80c3d63e9680566d90105375f9b1cae9e3d149d8c631",
+      "line": 11,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "40213b7216456bee3e2165cd0bf5e186f440a7400d169eaf60d016754fe38ebf": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotContent.kt",
+      "kind": "constructor",
+      "semanticHash": "748101c6fd70f6cb365fefc3c122cbed7305b6932eae1fac4fccbb5db2a8dd79",
+      "line": 12,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "7f103b06dea9e2d2f6d64b9a76aad9a511e020d3a55104e868d170db479007cc": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotContent.kt",
+      "kind": "constructor",
+      "semanticHash": "cf41dfbae022b07d97bf2667d9017a4e5a7b092450d09ae15f39679a9503d4b6",
+      "line": 14,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "d018cc2842ff693cbd409b29d630234e8188e79bdd316195b92d08db91ebff59": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "constructor",
+      "semanticHash": "c340300332f19df04cc88be1f36a42b93bf6c34c8d5c3047f4748669681d63ac",
+      "line": 14,
+      "name": null,
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "608b574a21cae78cba8ed08d3d101ff1577f818d773d69c63684288ee7cf4dc8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "constructor",
+      "semanticHash": "e6472acaca67e8f8d2941616b1e2239709854f694baee30ddf6d86b428393055",
+      "line": 20,
+      "name": null,
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "35841c9f2517bf7b178bc16959ff6e0d5afe1b015dadbf0d0940870636fb2440": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "function",
+      "semanticHash": "78f868d6f0e47019e9aeb313e5ad078cc5a337a08afe53935526b63fdb3550f4",
+      "line": 23,
+      "name": "verticalInsets",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "2611e75bf0d41f7edccc5f7fcd949a58a751d6540c8eb0c459bb2e053537037d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "function",
+      "semanticHash": "1cc8d28a9772592556f4b4aa07df56783211e8693254fd9b162806c3307a9453",
+      "line": 32,
+      "name": "settledPlotLeft",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "868341a10767e93d4c5034cbea66998e130644c5194a88bc9c461dfb7313f334": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "function",
+      "semanticHash": "be39e76e40b432c9ac3bc1c0f4c85708f5568103d5fc3a6f2c7d0a5a5dfb9b9d",
+      "line": 40,
+      "name": "rememberPlotFrame",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "58915c7323ecfbe18af56464bd70af101297e1161ba2530c789bc44d15eb523e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "function",
+      "semanticHash": "724a52c432fc29c04f7421725f40508b593305f1a27a051f3eabfb1a47ad87e3",
+      "line": 64,
+      "name": "rememberFrameLabels",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "581153ebae3799175dea7ce4ad1d9fde5db2104745a8162607b81d588c2514f0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFramePolicy.kt",
+      "kind": "constructor",
+      "semanticHash": "6b43843028ebba24dd8ec16bc9f0c0542da70773e5835f748c456604d99a89d3",
+      "line": 6,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "ba72c5eea0cdb9e29b6a877502a31991517c0f685b2a98c32d3fa9c15a158dd0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotInk.kt",
+      "kind": "constructor",
+      "semanticHash": "2659ddc1773532aad3c910def7de1bf89803b4bcbd4b9e8814d84ae754c936f4",
+      "line": 14,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "8c6f11aabfa7757a079b898f26ccea331e8abbe39b2b86588e5bdd20a0d09c6f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotInk.kt",
+      "kind": "constructor",
+      "semanticHash": "0d3843cd65b9af365e1d4f0a370c2ac8e79c04db429fb2b4a787d938ea86db70",
+      "line": 55,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "6e2e186d80bbde0910c5d96b3c69312f075e5d7fa4e1ea74d61d5221e277c646": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotInk.kt",
+      "kind": "constructor",
+      "semanticHash": "da1d4b52808b32029f40ab4c9045c81d707b2a1c833d85aa17c4bf0658d42af5",
+      "line": 57,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "fd3a562f2551b2a7d2b5ad1fcfac20dd986024f6659220650623e6b10d684cb8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotInk.kt",
+      "kind": "constructor",
+      "semanticHash": "06c199c7b4f3eca546182893810285f06b5e642f285fc16dd23a6ef7b44bec91",
+      "line": 83,
+      "name": null,
+      "reason": "Immutable drawing/coordinate/evidence carrier or validated projection initialization; no Activity/Window/recording ownership. Its named geometry/policy/paint functions are independently measured and behavior-tested, including actual DrawScope call capture and raster context restoration. Constructor/initializer/accessor metrics are not fabricated. No persisted fields or source measurements change.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "3f8d3c42fd47ec688f63775997f7d91fccb18524ac9706511097c15d0c06cbf3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotInteraction.kt",
+      "kind": "function",
+      "semanticHash": "37a877ed02b90f6a83fe3a4c970b9523c899af4075e047dac8a59a1a0d431080",
+      "line": 13,
+      "name": "plotInteraction",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "731db625e2c0790d4a748631d22649ab2e1bc033cb590538d97ee6a7ddb563c0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "704b282a5c1690c0588f117d1ededb29bf99fad68c44b3de1594bc5721456573",
+      "line": 12,
+      "name": "rememberRasterInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "90e4dd03ef700ac9816e8bfb40b49b222d3bb92c7a6e892b6bfc31f5f4e1f387": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "012bfdab383b8bba8a8bc8b58eca872ba8ae2b1acb0b603222b3920079d5898a",
+      "line": 21,
+      "name": "rememberPitchInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "06e554084f1d0926c7c32073b350adfa24bc43de45f01026c43b131837ec82ff": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "3cf053b41139103cfb60f8b45a91bb6295a498245347e36246965429135332cc",
+      "line": 35,
+      "name": "rememberComparisonInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "300f8564c2a3965a272a5b4c1c230829c34df95ddc4ae3e1f424f5e0d5bae3cf": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "5bef98ce3bda7024e2c7ec86711ca66a1f465141a57633bbec210ea4fcaf4783",
+      "line": 53,
+      "name": "rememberSpectrumInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "d499975058b2fc2dc68b1997b204fdf00c1d3258342931d0db1f2187a63808cd": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
+      "kind": "function",
+      "semanticHash": "b80b270719a18cc8e5399b96e08be9af121682a0c5381d14bc989a5b418c10f9",
+      "line": 20,
+      "name": "plotAccessibility",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "89d01847dcb1d1bb86c94931e92e5bd7059530173b305293b1fee6a09e71ead7": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "constructor",
+      "semanticHash": "9cb75f05b251126f989e70407b74b43cdcdb24f2311abe7e25dd443698f769ef",
+      "line": 14,
+      "name": null,
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b"
+    },
+    "4837ef1f39935ab78ff92cd2398e7fc57b4dd9d058850df327036a53b1f31068": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "function",
+      "semanticHash": "4db8e104d48c0fe77745c1486bf21313b3fb1383cbae20250aaf94f6d2c45726",
+      "line": 40,
+      "name": "rememberPlotFrame",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "fa2515dc22a6fd1449939cae01a1de24c61c1e472a1482dad4fc2b801f8e7389": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotFrame.kt",
+      "kind": "function",
+      "semanticHash": "5bf456adf0e65f5d8d0350ee15f744e2a496b6869462881200d312f230e7af4c",
+      "line": 64,
+      "name": "rememberFrameLabels",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "294a5849558f935781e9e6fa989636f098664d488607e4a347c768223d9f4801": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotInteraction.kt",
+      "kind": "function",
+      "semanticHash": "c5b8f695c732963495425fd10f339fd42c323e7fd9aea76d2f174bcf346497a4",
+      "line": 13,
+      "name": "plotInteraction",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "39119852369d3161738408cd4a986dd39a259ec7d82aee876c9394754f90977e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "95ba4caa0430132373d382da6427f1802fcf3ba41776c57a2bf472c64924f07c",
+      "line": 12,
+      "name": "rememberRasterInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "baaba104f8b0387b4db0b5119994c5a5722c3e540de5232fdd0164e2a59ff51f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "219dd1f1d0cfc8456f8e29a0bd9dd4ac182a24cabcd89a9287e6ad389ef93244",
+      "line": 21,
+      "name": "rememberPitchInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "dd9b68f3e727f5680f22d75a7dee857663b841cf70e6497c4f9b4794fc2585f1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "a3f70d1fd5ac4a53414e34b1e1b0c60f39d0d459e5b7ec8c100471ced8172415",
+      "line": 35,
+      "name": "rememberComparisonInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "6f4aa0cf874bd957bc36b1d3aca2cf0d06aac1fba8c1ef810a77701c90ff0e29": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
+      "kind": "function",
+      "semanticHash": "f32eca8487daf5ac36ccbe26beafa3f47c4ebafeae1d9c04f3b284055e0dc166",
+      "line": 53,
+      "name": "rememberSpectrumInk",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
+    },
+    "178a877e1e0132e9d5ec59f3b5827b7432bea8c582b23bbe1ea2cd4626f56837": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WaveDrawing.kt",
+      "kind": "function",
+      "semanticHash": "7b455d0dbd82583e8b61e10b98e2b6acadbad145953b4cccfffd2418c09dfad5",
+      "line": 17,
+      "name": "rememberWaveDrawing",
+      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "evidence": [
+        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
+      "metric_status": "compose-transformation"
     }
   }
 }

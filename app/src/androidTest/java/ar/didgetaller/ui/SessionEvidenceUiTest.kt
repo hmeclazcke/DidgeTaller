@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.test.platform.app.InstrumentationRegistry
 import ar.didgetaller.R
 import ar.didgetaller.TallerViewModel
+import ar.didgetaller.requirePrivateFixtures
 import ar.didgetaller.core.*
 import ar.didgetaller.data.RecordingStore
 import org.junit.*
@@ -38,12 +39,14 @@ class SessionEvidenceUiTest {
         }
         app=EvidenceApplication(InstrumentationRegistry.getInstrumentation().targetContext)
         val path=args.getString("evidenceWav")
+        val externalPoints=args.getString("evidencePoints")
+        if(path!=null || externalPoints!=null)requirePrivateFixtures()
         val bytes=if(path!=null)File(path).readBytes() else {
             val pcm=ShortArray(44100*8){i->if(i in 88200..132300)0 else (6000*sin(2*PI*70*i/44100)).toInt().toShort()}
             WavCodec.encode(pcm,pcm.size,44100)
         }
         val local=File(app.filesDir,"input.wav").apply {writeBytes(bytes)}
-        val points=args.getString("evidencePoints")?.let {input ->
+        val points=externalPoints?.let {input ->
             File(input).readLines().drop(1).filter {it.isNotBlank()}.map {line->
                 val f=line.split(',');SessionAnalysis.Point((f[2].toDouble()*1000).toLong(),f[4].toDoubleOrNull(),f[5].toDouble())
             }
@@ -130,6 +133,20 @@ class SessionEvidenceUiTest {
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
         compose.runOnIdle {assertEquals("Selected chart in fullscreen",AcousticPlot.PITCH,vm.explorer(item.id).plot)}
+        val scientificText = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+        val explanationNode = compose.onNodeWithTag("viewer-scientific-description").assertTextEquals(uiText(R.string.musical_drone_description))
+        explanationNode
+            .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(scientificText) }
+        assertTrue("Scientific explanation exposes its rendered layout", scientificText.isNotEmpty())
+        val explanationLayout = scientificText.single()
+        val descriptionDir = File(app.getExternalFilesDir(null), "session-evidence").apply { mkdirs() }
+        File(descriptionDir, "${args.getString("evidenceLabel") ?: "synthetic"}-text-layout.txt").writeText(
+            "text=${explanationLayout.layoutInput.text.text}\nsize=${explanationLayout.size}\nbounds=${explanationNode.fetchSemanticsNode().boundsInRoot}\nlines=${explanationLayout.lineCount}\nlastLineBottom=${explanationLayout.getLineBottom(explanationLayout.lineCount-1)}\nlastLineEnd=${explanationLayout.getLineEnd(explanationLayout.lineCount-1,true)}\ncharacters=${explanationLayout.layoutInput.text.length}\nmaxLines=${explanationLayout.layoutInput.maxLines}\n")
+        if (explanationLayout.hasVisualOverflow) screenshot("wide-text-overflow")
+        assertFalse("Scientific explanation must wrap without truncation: width=${explanationLayout.didOverflowWidth}, height=${explanationLayout.didOverflowHeight}, size=${explanationLayout.size}, lines=${explanationLayout.lineCount}, maxLines=${explanationLayout.layoutInput.maxLines}", explanationLayout.hasVisualOverflow)
+        assertEquals("The last scientific word must be laid out", explanationLayout.layoutInput.text.length,
+            explanationLayout.getLineEnd(explanationLayout.lineCount-1,true))
+        assertTrue("Parent clipping must not hide a scientific line", explanationNode.fetchSemanticsNode().boundsInRoot.height + .5f >= explanationLayout.size.height)
         screenshot("wide-pitch")
         assertArrayEquals(original,store.file(item.id).readBytes())
         assertEquals(index,app.getSharedPreferences("local_data",0).all)

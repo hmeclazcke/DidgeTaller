@@ -1,5 +1,13 @@
 # 2026-11-08 workspace ownership integration
 
+## 2026-11-08 analysis and rendering verification
+
+The [current source-scoped milestone](engineering/ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis
+ownership, the ready-frame plot pipeline, actual native RED/GREEN, full scientific
+text at 150%, comparable complexity and focused mutation evidence. Whole rebuild
+remains IN PROGRESS; current remote full-suite/broad-mutation verification is pending.
+
+
 Published source ec19b18 is remotely verified: fast
 [42508379814](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508379814),
 native [42508375240](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508375240)

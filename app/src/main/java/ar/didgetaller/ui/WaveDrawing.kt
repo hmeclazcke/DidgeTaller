@@ -14,9 +14,9 @@ internal sealed interface WaveDrawing {
 }
 
 @Composable
-internal fun rememberWaveDrawing(wave: AudioVisuals.Wave?, projection: PlotProjection?): WaveDrawing? =
+internal fun rememberWaveDrawing(wave: AudioVisuals.Wave?, projection: PlotProjection): WaveDrawing? =
     remember(wave, projection) {
-        if (wave == null || projection == null) return@remember null
+        if (wave == null) return@remember null
         when (val geometry = WaveGeometry.prepare(wave, projection)) {
             is WaveGeometry.Samples -> WaveDrawing.Samples(Path().apply {
                 geometry.points.forEachIndexed { index, point ->

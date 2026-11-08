@@ -93,6 +93,13 @@ Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controle
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
+La [reconstrucción del análisis y renderizado](docs/engineering/ANALYSIS_RENDERING_REBUILD.md),
+documentada en inglés, asigna un propietario al progreso y los resultados del
+análisis y separa geometría, gestos, accesibilidad y dibujo nativo. Las regresiones
+JVM y Android protegen callbacks tardíos, intervalos sin medición y texto científico
+con fuente ampliada. El estudio informa la distribución de complejidad y sus
+límites, incluidos los ámbitos donde el total de decisiones todavía no disminuyó.
+
 El [propietario de la simulación del laboratorio](docs/engineering/SIMULATION_OWNERSHIP.md),
 documentado en inglés, impide que resultados tardíos o duplicados modifiquen un
 ViewModel destruido. Lo protegen pruebas controladas de coroutines, de ciclo de
