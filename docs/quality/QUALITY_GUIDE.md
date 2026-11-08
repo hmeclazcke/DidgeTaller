@@ -2,6 +2,26 @@
 
 ## Methodology and ownership
 
+The [2026-11-08 forensic audit](FORENSIC_COMPLIANCE_AUDIT.md) reconciles every changed
+callable and all unscored declarations. Installation/invocation, architectural
+practice and executable enforcement are distinct claims. Historical runtime
+invocation cannot independently be proved from repository configuration.
+
+`tools/quality_gate.py` now also validates complete schema-2 PSI source scope,
+same-source hashes, paired normalized/raw method metrics and changed authored
+callables. Both `main/java` and `main/kotlin` are scanned. Eligible missing or
+ambiguous scores fail; nonpositive source MCC cannot become a score. New/modified
+measurable functions must stay below CRAP-L target or have an exact content-bound
+risk review. Unsupported transformations/auxiliary declarations need narrow
+technical reviews; abstract contracts and nested bodies are accounted without
+inventing standalone execution metrics. See `config/quality/source-baseline.json`
+(historical `9cd18f6` fingerprints, separate from numerical baseline) and
+`source-reviews.json` (explicit reasons, evidence and exact score ceilings).
+Reviews expire after body/signature edits and are never renewed automatically.
+`build/reports/quality/changed-callables.json` exposes accepted/rejected changes.
+Do not update a baseline or exception merely to pass a failure. These checks do
+not prove every assertion, architectural decision or hardware failure path.
+
 The project-local SKILL.md is the original MIT-licensed Robert C. Martin ub-mode, pinned in UPSTREAM.md. Do not edit it. Verify the official repository and fetch SKILL.md/LICENSE from one exact revision when updating; compare UTF-8 Git blobs and SHA-256. AGENTS.md owns Android/data/Git safety and risk-based selection. The previous adaptation remains recoverable in Git at 989bfb2.
 
 Crapper, Dryer and Mutator currently document other languages, not this Kotlin/Compose/AGP combination. They were reviewed, not installed. Kotlin equivalents here are Detekt/JaCoCo reviewed CRAP-L, PMD CPD and standalone free PIT. No paid Arcmutate dependency. The Android PIT plugin was not adopted: standalone CLI avoids unverified AGP/plugin coupling. Gradle resolves pinned Maven Central dependencies (CPD 7.19.0, BSD-style PMD license; PIT 1.20.0, Apache-2.0); no upstream scripts execute. The CLI's generic JVM operators were checked against source-level Kotlin branches, not assumed valid for all Kotlin constructs.

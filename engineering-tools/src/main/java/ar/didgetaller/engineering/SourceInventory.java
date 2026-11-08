@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -22,6 +23,8 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiElement;
 import org.jetbrains.kotlin.com.intellij.psi.PsiErrorElement;
 import org.jetbrains.kotlin.com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.kotlin.lexer.KtTokens;
+import org.jetbrains.kotlin.lexer.KotlinLexer;
+import org.jetbrains.kotlin.com.intellij.psi.TokenType;
 import org.jetbrains.kotlin.psi.*;
 
 /** Compiler PSI supplies declaration boundaries and owners; no source-regex signatures. */
@@ -71,12 +74,15 @@ public final class SourceInventory {
                 entry.setAttribute("signature", (function.getReceiverTypeReference() == null ? "" : function.getReceiverTypeReference().getText() + ".")
                         + function.getName() + (function.getValueParameterList() == null ? "" : function.getValueParameterList().getText())
                         + (function.getTypeReference() == null ? "" : ": " + function.getTypeReference().getText()));
+                describe(entry, function, file, normalized, "function", entry.getAttribute("signature"));
+                entry.setAttribute("bodyHash", fingerprint(function.getBodyExpression() == null ? "" : function.getBodyExpression().getText()));
                 result.appendChild(entry);
                 super.visitNamedFunction(function);
             }
             @Override public void visitLambdaExpression(KtLambdaExpression lambda) {
                 Element entry = document.createElement("lambda");
                 entry.setAttribute("line", Integer.toString(line(normalized, lambda.getTextOffset())));
+                describe(entry, lambda, file, normalized, "lambda", "lambda");
                 result.appendChild(entry);
                 super.visitLambdaExpression(lambda);
             }
@@ -84,11 +90,90 @@ public final class SourceInventory {
                 Element entry = document.createElement("accessor");
                 entry.setAttribute("line", Integer.toString(line(normalized, accessor.getTextOffset())));
                 entry.setAttribute("body", Boolean.toString(accessor.hasBody()));
+                describe(entry, accessor, file, normalized, "accessor", accessor.isGetter() ? "get" : "set");
                 result.appendChild(entry);
                 super.visitPropertyAccessor(accessor);
             }
+            @Override public void visitPrimaryConstructor(KtPrimaryConstructor constructor) {
+                add(constructor, "constructor", "primary" + (constructor.getValueParameterList() == null ? "" : constructor.getValueParameterList().getText()));
+                super.visitPrimaryConstructor(constructor);
+            }
+            @Override public void visitSecondaryConstructor(KtSecondaryConstructor constructor) {
+                add(constructor, "constructor", "secondary" + constructor.getValueParameterList().getText());
+                super.visitSecondaryConstructor(constructor);
+            }
+            @Override public void visitClassInitializer(KtClassInitializer initializer) {
+                add(initializer, "initializer", "init");
+                super.visitClassInitializer(initializer);
+            }
+            @Override public void visitProperty(KtProperty property) {
+                if (!property.isLocal() && property.getInitializer() != null) {
+                    Element entry = add(property.getInitializer(), "initializer", property.getName());
+                    entry.setAttribute("property", property.getName());
+                }
+                super.visitProperty(property);
+            }
+            private Element add(PsiElement node, String kind, String label) {
+                Element entry = document.createElement(kind);
+                describe(entry, node, file, normalized, kind, label);
+                result.appendChild(entry);
+                return entry;
+            }
         });
+        var occurrences = new HashMap<String, Integer>();
+        for (var node = result.getFirstChild(); node != null; node = node.getNextSibling()) {
+            Element entry = (Element) node;
+            String identity = entry.getAttribute("identity");
+            int occurrence = occurrences.merge(identity, 1, Integer::sum);
+            entry.setAttribute("identity", identity + "|occurrence:" + occurrence);
+        }
         return result;
+    }
+
+    private static void describe(Element entry, PsiElement node, KtFile file, String source, String kind, String label) {
+        List<String> scope = new ArrayList<>();
+        for (PsiElement parent = node.getParent(); parent != file; parent = parent.getParent()) {
+            if (parent instanceof KtClassOrObject owner) scope.add(owner.getName() == null ? "<anonymous>" : owner.getName());
+            else if (parent instanceof KtNamedFunction function) scope.add("fun:" + function.getName());
+            else if (parent instanceof KtProperty property) scope.add("property:" + property.getName());
+            else if (parent instanceof KtLambdaExpression) scope.add("<lambda>");
+        }
+        Collections.reverse(scope);
+        String owner = file.getPackageFqName() + "/" + String.join("/", scope);
+        String identity = owner + "|" + kind + "|" + tokens(label);
+        entry.setAttribute("kind", kind);
+        entry.setAttribute("scope", owner);
+        entry.setAttribute("identity", identity);
+        entry.setAttribute("semanticHash", fingerprint(node.getText()));
+        entry.setAttribute("start", Integer.toString(line(source, node.getTextOffset())));
+        entry.setAttribute("end", Integer.toString(line(source, node.getTextRange().getEndOffset() - 1)));
+        if (!entry.hasAttribute("line")) entry.setAttribute("line", entry.getAttribute("start"));
+        entry.setAttribute("offset", Integer.toString(node.getTextOffset()));
+        entry.setAttribute("endOffset", Integer.toString(node.getTextRange().getEndOffset()));
+    }
+
+    private static String tokens(String text) {
+        var lexer = new KotlinLexer();
+        lexer.start(text);
+        var result = new StringBuilder();
+        while (lexer.getTokenType() != null) {
+            var type = lexer.getTokenType();
+            if (type == TokenType.WHITE_SPACE || KtTokens.COMMENTS.contains(type)) {
+                // Kotlin line breaks can change return/statement semantics. Keep them
+                // conservatively even when a wrapping-only edit also triggers review.
+                if (text.substring(lexer.getTokenStart(), lexer.getTokenEnd()).contains("\n")) result.append("LINE_BREAK|");
+            } else {
+                result.append(type).append(':').append(text, lexer.getTokenStart(), lexer.getTokenEnd()).append('|');
+            }
+            lexer.advance();
+        }
+        return result.toString();
+    }
+
+    private static String fingerprint(String text) {
+        try {
+            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(tokens(text).getBytes(StandardCharsets.UTF_8)));
+        } catch (java.security.NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
     }
 
     private static int line(String source, int offset) {
@@ -104,6 +189,7 @@ public final class SourceInventory {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element root = document.createElement("kotlin-inventory");
             root.setAttribute("parser", "Kotlin compiler PSI 2.2.21");
+            root.setAttribute("schema", "2");
             document.appendChild(root);
             try (var paths = Files.walk(Path.of(arguments[0]))) {
                 for (Path path : paths.filter(p -> p.toString().endsWith(".kt")).sorted().toList()) {

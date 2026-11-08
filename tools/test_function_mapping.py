@@ -41,6 +41,13 @@ class FunctionMappingTest(unittest.TestCase):
         m = self.method(); m['coverage']['LINE'] = {'covered': 0, 'missed': 0}
         self.assertEqual(correlate(self.function(), [m], 3)['status'], 'no-method-line-denominator')
 
+    def test_zero_coverage_is_measured_but_zero_complexity_is_invalid(self):
+        m = self.method(); m['coverage']['LINE'] = {'covered': 0, 'missed': 2}
+        measured = correlate(self.function(), [m], 3)
+        self.assertEqual('measured', measured['status'])
+        self.assertEqual(12, measured['crap_line'])
+        self.assertEqual('invalid-complexity', correlate(self.function(), [m], 0)['status'])
+
     def test_descriptor_handles_arrays_and_objects_as_one_argument(self):
         f = self.function(); f['parameters'] = '3'
         self.assertEqual(correlate(f, [self.method(desc='([[D[SLjava/util/List;)V')], 3)['status'], 'measured')

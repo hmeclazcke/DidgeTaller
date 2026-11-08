@@ -1,3 +1,15 @@
+# Forensic control correction — 2026-11-08
+
+The [focused forensic audit](../quality/FORENSIC_COMPLIANCE_AUDIT.md) independently
+reconciles the 361/76 to 397/90 measurement change and exposes a real control gap:
+global metric ratchets did not enforce changed-source measurement completeness.
+Synthetic red/green CLI probes now defend source scope, missing/ambiguous metrics,
+expired reviews and empty reports. Source-bound reviews preserve existing risk
+transparently instead of resetting the numerical baseline or inventing scores.
+This is quality-tool reconstruction, not additional production/UI improvement.
+The linked JSON accounts for all changed named functions and auxiliary constructs;
+historical skill invocation and universal architecture compliance remain unproved.
+
 # Didge Taller engineering rebuild — IN PROGRESS
 
 This is an isolated reconstruction on `refactor/uncle-bob-rebuild`, starting at main `3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67`. It is not a completed whole-application rebuild, a certification, or a replacement for main. The original worktree and user data remain untouched. The original MIT-licensed ub-mode is unchanged; project-specific Kotlin execution remains separate.

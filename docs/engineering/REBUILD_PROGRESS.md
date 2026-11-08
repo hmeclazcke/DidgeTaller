@@ -1,3 +1,32 @@
+# Focused forensic checkpoint — 2026-11-08
+
+Status: audit correction implemented; whole rebuild **IN PROGRESS**. Resume broader
+reconstruction only after reviewing [forensic findings](../quality/FORENSIC_COMPLIANCE_AUDIT.md).
+Source interval 9cd18f6..672c9b2 is completely reconciled: 50 new named declarations,
+16 modified; 36 new scores, seven abstract contracts and seven anonymous adapters
+with invalid Detekt MCC=0 account for the 14 extra unscored entries. No old named
+function was removed/reclassified. Complete JSON includes every changed callable
+and all 90 independent Detekt-unscored functions plus 44 extra PSI declarations.
+
+Corrected the demonstrated gate gap using red/green isolated CLI probes. New
+eligible unscored/ambiguous functions, omitted source roots, stale/incomplete/empty
+reports now fail. A source-fingerprint policy pinned to 9cd18f6 and 35 narrow
+historical-source reviews preserves debt honestly; no app code/config/resources
+or numerical baselines changed in this audit. Four existing modified JVM methods
+are explicitly above target; workspace render remains MCC/Android CRAP-L 13.
+Changed named methods have 190 direct executed mutants: 183 killed/7 survived;
+do not confuse this subset with the historical 1,519-mutant domain report.
+
+Focused validation: 36 Python tests, 2 PSI JUnit tests, same-source report refresh
+and source/metric ratchets pass locally. No emulator/full PIT rerun is warranted
+for unchanged runtime inputs. Final audit publication/CI evidence is recorded in
+the forensic report and WORK_LOG; no broad reconstruction was resumed here.
+Next concrete measurement task: validate anonymous standalone Detekt MCC and
+Compose descriptor boundaries, retaining zero-vs-unavailable distinctions. Next
+production cycle after this audit: SessionWorkspace orchestration plus the seven
+named survivor contracts, not another persistence/DSP restart. PR #1 stays draft;
+main and all private/device data remain untouched.
+
 # Uncle Bob rebuild — IN PROGRESS
 
 - Branch: refactor/uncle-bob-rebuild; draft PR: https://github.com/hmeclazcke/DidgeTaller/pull/1. Do not merge.

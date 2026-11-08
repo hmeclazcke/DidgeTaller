@@ -1,0 +1,581 @@
+{
+  "schema": 1,
+  "policy": "Narrow technical/risk reviews; source changes expire these acknowledgements. Never generated or renewed by CI.",
+  "reviews": {
+    "779b77704ebbb2a1ad754520c8978b7f678517ff03fdbab89c8dee1f8a681fac": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "line": 20,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "b2c810553f7bb65ddf570abe0d5791f945b45d496782c801dad8fe7acce22734",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "87a223108e1a9db32914c59e125cf18b3e253f8e9bcd3da8714e6304c59d0bf2": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "line": 31,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "af52311436aeb8cab0ad95f5ed77a942ef2710751359e17656552ad15944649f",
+      "reason": "Source-authored derived state getter or bodyless private setter; no independent Detekt function MCC. Getter delegates to the single capture/coordinator snapshot; setter restricts ownership. Historical implicit compiler accessors are not counted as newly invented behavior.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "e3c62f573758f5693b1d41b5e59a3a8a15aba998a5ab2f3d1087174daa5ab942": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "line": 37,
+      "kind": "function",
+      "name": "start",
+      "semanticHash": "4f146037c9a880f07cfd7dcf988f6b4c62d93b656b6889548dcec853a9fce191",
+      "reason": "Existing device initialization/error boundary, unchanged MCC 8 and JVM CRAP-L 72. Separate Android method lines 86.67%, CRAP-L 8.152. Hardware failure paths remain incomplete; no new complexity regression; keep device-port extraction as targeted rebuild work.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "measured",
+      "max_cc": 8,
+      "max_crap_line": 72.0
+    },
+    "d2f2de771eac680e4512dc077c3618d3f00625a803fc177ce345f0b54ac7c77a": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SessionWorkspace.kt",
+      "line": 34,
+      "kind": "function",
+      "name": "render",
+      "semanticHash": "25b703e60f62d9e14b179e9eaf54c5e2c127d53b604a49e087c796a040ca5c01",
+      "reason": "Existing asynchronous viewport/cache/render orchestration remains above target: MCC 17 -> 13, JVM CRAP-L 306 -> 182; Android method lines 100%, CRAP-L 13. Raster extraction is useful but does not complete workspace ownership redesign. Explicit unresolved architectural risk; further body edits expire this review.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/SpectrogramRasterTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "measured",
+      "max_cc": 13,
+      "max_crap_line": 182.0
+    },
+    "0c50fcc397e0e4a81581621947fbe6352abbad038aabd02c050327e6e3780185": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "8b3e0c3fe8f623ea25409e37585032619e48c5eb2983af0c168c1c4db8fb51ec",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "e27cbc7fc5667b7d3cd99a26a99a9ff89c3f8ba6c1d2cdfd14a376e6c88f98c6": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 12,
+      "kind": "initializer",
+      "name": "microphone",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "49688e18f08adeff4eddfdc55d8881f79e1f2fa152bd90c825d374cea15ba2f8": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 13,
+      "kind": "initializer",
+      "name": "latestMicrophone",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "f145ea7922fa1c1e7f6a44c80c71117e0835d93c345bf684ebb362b364610395": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 14,
+      "kind": "initializer",
+      "name": "recording",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "310f6972f9bd1272c2c7906aa4930cad52eda31ac54573a330c289a37b4acbe8": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": "pending",
+      "semanticHash": "c2e1f3a87be3927d14a9d9a584c9841fd2def312e12554c7997226254474786b",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "a20c9a8a3d871432d246170c51e74f34994951cbded02ed0ae30e0bf1e06acbb": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": "publishing",
+      "semanticHash": "96614525cd0fd50aca3193fbae1867d06286e4e9d271385bfe6f31c61ecd10d7",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "35f115d4b2c424c4d074ec547ef23d4db9f9e0b0ea8424d765f4d1f3c7369300": {
+      "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
+      "line": 18,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "363ef8873acfd92b7122d27dde82f508ee8cde4e19e58df8b7d1609a6e3e01fd",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "49cc121f88f1d187aee6136d62e01e1fb2ac65c21b93b723457baf17a2940220": {
+      "file": "app/src/main/java/ar/didgetaller/core/PlaybackController.kt",
+      "line": 40,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "25824df5fcce59ff00e5f12ed69316c0630e7bd97c92117aa063d000cd965c53",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/PlaybackControllerTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "7be7cfe1e502515f8ad363c379a93fcecac3185b8fd7af59d333c06b7a5c54ed": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCapture.kt",
+      "line": 10,
+      "kind": "initializer",
+      "name": "id",
+      "semanticHash": "05ac06a4a91302fbe55fd2cb03c4f2ef6d4578945e49920ea9f03d1f6161cb93",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "658ceb26b669320b0de052b30eaca1715f1a9da9356cdce446f51f2a79d720eb": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "b80433c8e145803ca6ed354346306b639447d39e69c1e8298539a0874ddf0a3d",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "446eac503cbfdbfea7dc26bde471ecded47e110dc362768184f304ea2cf2a363": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 11,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a9be75037672ddfd48d84a80460690b9b72c67083c3bb22fd7545466356ce9c9",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "d0761bb373588f0d216f8afb2b4846ee0f3b2e30e2761c1319036766d97c4dc4": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 15,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7a159f53b748e4b9f12682f30be2730f2bb7e89606912738752598f87d781147",
+      "reason": "Explicit constructor/default/value carrier, not a standalone named function in the Detekt/JaCoCo source correlator. Reviewed capture identity, immutable state and callback dependencies; behavior exercised via owner tests. No synthetic constructor CRAP is claimed.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "006b9bcc1f5353f67795b543a05a9cfea002a70ed8c892f065fd59d09a3f43b3": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 27,
+      "kind": "initializer",
+      "name": "handoff",
+      "semanticHash": "26b67cb6cb956aa49cb8f9809b06ac5531bfbd43f05938c0c813cc4ec8ab7ccc",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "bc57ef45c99b985264dbca45f630c664480fa68d2dae7d8f086cbc87a243def4": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 28,
+      "kind": "initializer",
+      "name": "state",
+      "semanticHash": "7e2e15d5cdfc7e69202097926bfa0ce57f7944b872016f4ab27f09a0cca837c9",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "b6b71621a9cd04713581d049bbfc15cb98be0fd351651167e23488a65baa765a": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 28,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Source-authored derived state getter or bodyless private setter; no independent Detekt function MCC. Getter delegates to the single capture/coordinator snapshot; setter restricts ownership. Historical implicit compiler accessors are not counted as newly invented behavior.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "e12c8d6438938d0b11246faca7d3e8da23be9ada2cc831ce7e56faacdb2c486a": {
+      "file": "app/src/main/java/ar/didgetaller/core/RecordingCoordinator.kt",
+      "line": 29,
+      "kind": "initializer",
+      "name": "disposed",
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "5d288e521f7765002cde2a03bbb34c6f4b9056dbfedef07ed9b216319e3efe00": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 317,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "43dfef4a05407b2fd52c677d7bfec5d3392ff6351ee4abf883497f71903e410d",
+      "reason": "Source-authored derived state getter or bodyless private setter; no independent Detekt function MCC. Getter delegates to the single capture/coordinator snapshot; setter restricts ownership. Historical implicit compiler accessors are not counted as newly invented behavior.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "66256303659e53317c2bb08698e080de5cf72295f269fab67b76c85709b83047": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 318,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "aaa7791308554eb14fe2cea97236436cba4482ef6530fc68acd7a4e33906aa41",
+      "reason": "Source-authored derived state getter or bodyless private setter; no independent Detekt function MCC. Getter delegates to the single capture/coordinator snapshot; setter restricts ownership. Historical implicit compiler accessors are not counted as newly invented behavior.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "a6b9aecfc8ec876cec418f28fa1098576660231c8da12e912ab195f7ce2825c2": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 319,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "60e1c2745234070a9e904fb8816681eb450e176a028636a8c9b90047e667dbc9",
+      "reason": "Source-authored derived state getter or bodyless private setter; no independent Detekt function MCC. Getter delegates to the single capture/coordinator snapshot; setter restricts ownership. Historical implicit compiler accessors are not counted as newly invented behavior.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "35407f1a242bb6e6262021b9cd694a826cf0316a7375543f7076e4f51d73e687": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 320,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "0c320290713887745f4172050d5deeb4ec23c43f5efc66a15168453e1ec1f7d1",
+      "reason": "Source-authored derived state getter or bodyless private setter; no independent Detekt function MCC. Getter delegates to the single capture/coordinator snapshot; setter restricts ownership. Historical implicit compiler accessors are not counted as newly invented behavior.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "1276048d32762fe1a2214aad40da201c0f920af8295e21cfaf551d7216d88a43": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 348,
+      "kind": "initializer",
+      "name": "recording",
+      "semanticHash": "70bd4f26bc9ebdaddcbc1c458e5645f64383c7e4280b6759316b401389a9b722",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "00d7b2ef0c1f46cd92b7bb7860e1e3531da2a2a47eaaac7afb82e493b9bd64eb": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 349,
+      "kind": "function",
+      "name": "changed",
+      "semanticHash": "9ebd4999f01a26507df9beb9ee76e85b77cf1698aa74bb349adef15f466a1df3",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "c5f470e600f70847aae9a38bfe75b874d6ce04daafe46a31b83ab49aff00cbcd": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 352,
+      "kind": "function",
+      "name": "saved",
+      "semanticHash": "b4f67afc211b50f871f2b9a258a7cccafa2979fac025452382232017c76499a4",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "ea54abeb28e9b790c9cd453b4a7d4e84ee1140e5915a741bda538aead89dc45e": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 353,
+      "kind": "function",
+      "name": "saveFailed",
+      "semanticHash": "9fff88f23538159937d9e692da07517d1a27d3dca051b614ea1030342dd2c70f",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "e860df8b87a21282c9bf2a124e477830e2aec524ccca72cf60ac136cfdc2c19f": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 354,
+      "kind": "function",
+      "name": "discarded",
+      "semanticHash": "12651801ac7f9dffc791538e21859d82249bda53f68a3f24ff6ebd1fb82a4e46",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "0df3cdc2fa3e05dce5371fc59e0f5ce71fb95c834ecab19a0028d9d60f6e1e78": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 358,
+      "kind": "function",
+      "name": "finalizationFailed",
+      "semanticHash": "ac79502ac4a8a46d6e3e1fffde3f5330ed7510debff15094de827e06a188633f",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "200eb13c71a9ddc48ae6b7d461bb377ff268f136f90b445f1d4170b6cd6aef8a": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 362,
+      "kind": "function",
+      "name": "libraryChanged",
+      "semanticHash": "435aa4b84e9801e627f52276ae5ccae1315ce2612b1ca02c019dfc7eb20bfbe8",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "4bd841ffeb8b6141ec2c460f1dc27b0e27fe9fe75345902be6205d58f7508546": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 363,
+      "kind": "function",
+      "name": "idleAfterDisposal",
+      "semanticHash": "8b0addb4a24dcabfacd01a491e8c1e9480af8d5e46725744e2260cf75bf61260",
+      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "anonymous-owner"
+    },
+    "c382f81d2eb4df53599e8827869a3eea97692636d223acf33d2edb39011bb375": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 369,
+      "kind": "initializer",
+      "name": "mic",
+      "semanticHash": "8c46b7119d4f9f08afa7eaa892e622ac03ae88b3169ddd98d6bd1e9b5fa7ebce",
+      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+    },
+    "0a3935ad54e90a5033d1e3d3ac3f870819a1b220f19a7d40cb9c55416c81a69d": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 425,
+      "kind": "function",
+      "name": "startSession",
+      "semanticHash": "8d6482fa05db80bc353b52c82ef7d925e1527d11caec237fd91a076a1cfa2473",
+      "reason": "Existing recording-start orchestration, unchanged MCC 5 and JVM CRAP-L 30; separate Android method lines 87.5%, CRAP-L 5.049. Synthetic handoff tests cover permission/lifecycle ownership; hardware/full-storage failure branches remain incomplete.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "measured",
+      "max_cc": 5,
+      "max_crap_line": 30.0
+    },
+    "4239cdf5a53742f8096436002f010d0773fdbeb4e9eba95f820d36d6b463c5dd": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 443,
+      "kind": "function",
+      "name": "discardSession",
+      "semanticHash": "6844d23ce5a6d4aa2bb6b9b961bad30d359c9a7c6f5d2af7db3162046efa3c11",
+      "reason": "Existing discard/save fallback, unchanged MCC 3 and JVM CRAP-L 12; Android method lines 75%, CRAP-L 3.141. Preserve too-late discard safety and byte/index integration assertions; not proof of every hardware error path.",
+      "evidence": [
+        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
+        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+      ],
+      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
+      "metric_status": "measured",
+      "max_cc": 3,
+      "max_crap_line": 12.0
+    }
+  }
+}

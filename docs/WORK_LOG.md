@@ -1,3 +1,19 @@
+# 2026-11-08 forensic audit handoff
+
+Continue feature branch refactor/uncle-bob-rebuild, protected main 3a16004 and draft
+PR #1. Confirmed 50 source-added named declarations and 16 modified declarations
+between 9cd18f6 and 672c9b2. The 14 extra unscored entries are seven abstract
+observer methods plus seven anonymous adapters with invalid standalone MCC=0;
+they were not old code newly discovered by an inventory change. Do not conflate
+the Detekt denominator (487) with all PSI named declarations (531).
+
+Implemented focused source-fingerprint/complete-input gate correction, including
+explicit historical-source technical/risk reviews rather than hidden exclusions.
+No application source/test/resource or acoustic changes. Full forensic inventory,
+method mutation evidence, limitations and continuation actions are linked from
+docs/quality/FORENSIC_COMPLIANCE_AUDIT.md. Audit validation is tool-only; reuse
+unchanged runtime evidence. Whole-application rebuild remains IN PROGRESS.
+
 ## Application-wide UX/UI audit — 2026-10-24
 
 Historical entries retain their original language and version-specific scope. See [Language policy](LANGUAGE_POLICY.md); current English entries appear with their delivery dates.

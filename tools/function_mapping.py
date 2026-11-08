@@ -32,6 +32,8 @@ def correlate(function, methods, complexity):
         return dict(status='declaration-without-body')
     if complexity is None:
         return dict(status='missing-complexity')
+    if complexity < 1:
+        return dict(status='invalid-complexity')
     parameters = int(function['parameters']) + (function['receiver'] == 'true')
     candidates = [m for m in methods if m['owner'] == function['owner'] and m['name'] == function['name']
                   and int(function['start']) <= m['line'] <= int(function['end'])
@@ -74,7 +76,7 @@ def inventory_report(inventory_path, complexity_path, coverage_path):
             raise ValueError(f'Stale PSI inventory: {path}')
         sources.append(dict(source.attrib, functions=len(source.findall('function')),
                             lambdas=len(source.findall('lambda')), accessors=len(source.findall('accessor'))))
-        candidates = methods_by_file.get(path.split('/java/', 1)[-1], [])
+        candidates = methods_by_file.get(path.split('/main/', 1)[-1].split('/', 1)[-1], [])
         for function in source.findall('function'):
             row = dict(function.attrib, file=path)
             key = (path, int(function.get('line')), function.get('name'))

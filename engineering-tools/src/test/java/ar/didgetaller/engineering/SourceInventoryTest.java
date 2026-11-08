@@ -10,6 +10,39 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SourceInventoryTest {
+    @Test public void fingerprintsAuthoredCallablesWithoutTreatingFormattingAsNewLogic() throws Exception {
+        var disposable = Disposer.newDisposable();
+        try {
+            var environment = KotlinCoreEnvironment.createForProduction(disposable,
+                    new CompilerConfiguration(), EnvironmentConfigFiles.JVM_CONFIG_FILES);
+            var factory = new KtPsiFactory(environment.getProject(), false);
+            var document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            var first = SourceInventory.inspect(document, factory, "test/Example.kt",
+                    "package test\nclass Example(val count: Int = 1) { val next get() = count + 1; val task = { count + 2 }; fun read() = count + 1 }");
+            var formatted = SourceInventory.inspect(document, factory, "test/Example.kt",
+                    "package test\nclass Example(val count: Int = 1) { val next get() = count + 1; val task = { count + 2 }; fun read() = /* reason */ count   + 1 }");
+            var changed = SourceInventory.inspect(document, factory, "test/Example.kt",
+                    "package test\nclass Example(val count: Int = 1) { val next get() = count + 1; val task = { count + 2 }; fun read() = count + 3 }");
+            var a = (org.w3c.dom.Element) first.getElementsByTagName("function").item(0);
+            var b = (org.w3c.dom.Element) formatted.getElementsByTagName("function").item(0);
+            var c = (org.w3c.dom.Element) changed.getElementsByTagName("function").item(0);
+            assertFalse(a.getAttribute("semanticHash").isEmpty());
+            assertEquals(a.getAttribute("semanticHash"), b.getAttribute("semanticHash"));
+            assertNotEquals(a.getAttribute("semanticHash"), c.getAttribute("semanticHash"));
+            var lineBreak = SourceInventory.inspect(document, factory, "test/Example.kt",
+                    "package test\nfun read() { return\n 1 }");
+            var sameLine = SourceInventory.inspect(document, factory, "test/Example.kt",
+                    "package test\nfun read() { return 1 }");
+            assertNotEquals(((org.w3c.dom.Element) lineBreak.getElementsByTagName("function").item(0)).getAttribute("semanticHash"),
+                    ((org.w3c.dom.Element) sameLine.getElementsByTagName("function").item(0)).getAttribute("semanticHash"));
+            for (String tag : new String[]{"lambda", "accessor", "constructor", "initializer"}) {
+                var entry = (org.w3c.dom.Element) first.getElementsByTagName(tag).item(0);
+                assertNotNull(tag, entry);
+                assertFalse(tag, entry.getAttribute("semanticHash").isEmpty());
+                assertFalse(tag, entry.getAttribute("identity").isEmpty());
+            }
+        } finally { Disposer.dispose(disposable); }
+    }
     @Test public void preservesNestedOwnersOverloadsAndLocalFunctions() throws Exception {
         var disposable = Disposer.newDisposable();
         try {

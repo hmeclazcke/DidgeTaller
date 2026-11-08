@@ -1,3 +1,16 @@
+# 2026-11-08 focused forensic quality verification
+
+Audited source interval 9cd18f6..672c9b2 without runtime/test/resource changes.
+Reused verified CI 42469282408 (JVM/static/coverage), 42469279440 (real emulator),
+42469281768 (actual PIT); authenticated API confirms exact heads and success.
+No emulator or mutation rerun is counted as new evidence. Pinned official skill
+and MIT license compare byte-for-byte with upstream. New local validation:
+36 Python tests / 2 PSI JUnit tests passed, zero failures/skips; source inventory,
+same-source coverage summaries and corrected gate pass. Isolated red probes first
+reproduced acceptance of unscored/ambiguous/empty metrics; final synthetic fixtures
+verify rejection plus intentional abstract/technical-review cases. No Samsung or
+private WAV access. Details and exact report paths: docs/quality/FORENSIC_COMPLIANCE_AUDIT.md.
+
 ## Musical Experience 4.0 — 2026-10-26
 
 Historical entries retain their original language and version-specific scope. See [Language policy](LANGUAGE_POLICY.md); current English entries appear with their delivery dates.

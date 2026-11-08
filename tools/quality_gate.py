@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from source_quality import measure_source_changes
 
 BASELINE = Path('config/quality/baseline.json')
 OUT = Path('build/reports/quality')
@@ -29,6 +30,7 @@ def measure():
     cov = json.loads(Path('app/build/reports/jacoco/debug/summary.json').read_text())
     detekt = json.loads(Path('build/reports/detekt/summary.json').read_text())
     functions = detekt['functions_by_cyclomatic']
+    source_changes = measure_source_changes(cov, detekt, float(POLICY['crapTarget']))
     counts = Counter((r['file'], r['function']) for r in functions)
     complexity = {r['file'] + ':' + r['function']: r['cyclomatic'] for r in functions
                   if counts[r['file'], r['function']] == 1}
@@ -57,7 +59,7 @@ def measure():
                 complexity=complexity, methods=methods, duplicates=duplicates,
                 measured_functions=len(functions),
                 unmapped_functions=len(functions)-len(methods),
-                unmatched_specs=cov['unmatched_method_specs'])
+                unmatched_specs=cov['unmatched_method_specs'], source_changes=source_changes)
 
 
 def violations(current, baseline):
@@ -105,7 +107,9 @@ def main():
     if args.record:
         BASELINE.parent.mkdir(parents=True, exist_ok=True)
         BASELINE.write_text(json.dumps(current, indent=2)+'\n')
-    errors = violations(current, json.loads(BASELINE.read_text()))
+    source_changes = current['source_changes']
+    (OUT/'changed-callables.json').write_text(json.dumps(source_changes, indent=2)+'\n')
+    errors = violations(current, json.loads(BASELINE.read_text())) + source_changes['violations']
     print(json.dumps(dict(mapped=len(current['methods']), unmapped=current['unmapped_functions'],
                           high_risk=sum(r['risk']=='above-target' for r in current['methods']),
                           cpd_groups=len(current['duplicates']), violations=errors)))

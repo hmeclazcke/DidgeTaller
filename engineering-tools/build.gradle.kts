@@ -12,5 +12,6 @@ tasks.register<JavaExec>("sourceInventory") {
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass.set("ar.didgetaller.engineering.SourceInventory")
     workingDir(rootDir)
-    args("app/src/main/java", "build/reports/quality/source-inventory.xml")
+    args(providers.gradleProperty("inventorySource").getOrElse("app/src/main"),
+         providers.gradleProperty("inventoryOutput").getOrElse("build/reports/quality/source-inventory.xml"))
 }
