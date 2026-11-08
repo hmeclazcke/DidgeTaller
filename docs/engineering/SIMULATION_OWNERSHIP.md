@@ -1,7 +1,9 @@
 # Laboratory simulation operation ownership
 
-Status: implemented and locally verified; observe the final branch CI before
-accepting its remote validation. Whole-application reconstruction remains IN PROGRESS.
+Status: implemented and verified locally and in branch CI at ec19b18. The
+[source-scoped verification](WORKSPACE_VERIFICATION_ec19b18.md) records actual runs,
+separate native coverage and surviving mutants. Whole-application reconstruction
+remains IN PROGRESS.
 Main, persisted formats and AcousticModel.evaluate are unchanged.
 
 ## Reproduced defect

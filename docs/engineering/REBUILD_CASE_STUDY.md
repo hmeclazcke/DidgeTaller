@@ -1,5 +1,10 @@
 # Workspace operation ownership and plot preparation
 
+Source ec19b18 now has observed successful fast, actual API 35 emulator and
+expanded mutation CI. The [source-scoped verification](WORKSPACE_VERIFICATION_ec19b18.md)
+records numerical results, report scopes, visual limits and exact next work.
+The whole rebuild remains IN PROGRESS; PR #1 stays draft.
+
 The subsequent [laboratory cycle](SIMULATION_OWNERSHIP.md) reproduces a real
 ViewModel disposal defect before correction: executor shutdown did not invalidate
 a queued result's version. A typed operation owner and scoped serial coroutine

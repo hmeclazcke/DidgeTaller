@@ -1,5 +1,10 @@
 # Quality guide
 
+Source ec19b18 now has observed successful fast, actual API 35 emulator and
+expanded mutation CI. The [source-scoped verification](../engineering/WORKSPACE_VERIFICATION_ec19b18.md)
+records numerical results, report scopes, visual limits and exact next work.
+The whole rebuild remains IN PROGRESS; PR #1 stays draft.
+
 ## Methodology and ownership
 
 The [simulation owner](../engineering/SIMULATION_OWNERSHIP.md) removes the lab's

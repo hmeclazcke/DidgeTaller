@@ -1,5 +1,10 @@
 # 2026-11-08 workspace continuation handoff
 
+Source ec19b18 now has observed successful fast, actual API 35 emulator and
+expanded mutation CI. The [source-scoped verification](engineering/WORKSPACE_VERIFICATION_ec19b18.md)
+records numerical results, report scopes, visual limits and exact next work.
+The whole rebuild remains IN PROGRESS; PR #1 stays draft.
+
 Replace laboratory version/executor orchestration after a deterministic native
 RED showed a disposed ViewModel accepting a late failure. Use a typed operation
 owner, scoped serial evaluation and one derived Compose snapshot. Preserve the

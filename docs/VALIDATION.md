@@ -1,5 +1,21 @@
 # 2026-11-08 workspace ownership integration
 
+Published source ec19b18 is remotely verified: fast
+[42508379814](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508379814),
+native [42508375240](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508375240)
+and mutation [42508377125](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508377125)
+all passed. Native 153 discovered/143 passed/ten protected or configuration skips,
+plus five configuration cases passed. Separate Android coverage 91.63%/68.66%;
+436 Android CRAP-L scores, 29 above target. Linux JVM 780 passed/16 protected skips,
+coverage 39.71%/36.43%, core 98.98%/82.70%. Broad PIT: 1,883 mutants across 51
+bytecode classes; 1,462 killed/405 survived/14 uncovered/two timeouts/no errors,
+77.75% detected including timeouts; PIT duration 137 s. Seven of 36 synthetic PNGs
+visually inspected; scientific-text truncation at 150% remains explicit.
+See [source-scoped verification](engineering/WORKSPACE_VERIFICATION_ec19b18.md) for denominators,
+the local failed launcher run/retry, report paths and exact next production task.
+Documentation-only descendants reuse unchanged executable inputs, not a fictitious
+new execution. The whole reconstruction remains IN PROGRESS; keep PR #1 draft.
+
 Simulation milestone: canonical debug/release JVM 796 discovered/780 passed/
 16 protected skips/zero failures; engineering tools five and Python 45 passed.
 JVM line/branch coverage 39.69%/36.33%, pure core 98.92%/82.45%. Inventory: 436
