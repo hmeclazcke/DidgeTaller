@@ -117,3 +117,6 @@ The [capture design](../engineering/CAPTURE_EVENT_OWNERSHIP.md) describes the pu
 ## Playback intent selection
 
 `./gradlew :app:qualityMutationPlayback` executes the controller and its event adapter with the deterministic PlaybackControllerTest contracts. It generates `app/build/reports/quality/pit-playback/` and was executed locally. The same two bytecode classes/tests are already selected in `qualityMutationDomain`, including manual CI. No separate duplicate CI job is added. The score is informational; execution/nonempty reports are mandatory. [Playback intent](../engineering/PLAYBACK_INTENT_OWNERSHIP.md) explains preparation, pause, seek acknowledgement, loop completion and remaining mutation limitations. Validate actual MediaPlayer behavior using the complete clean-emulator workflow; mocked effects alone are insufficient.
+
+
+Accepted source-scoped results and before/after limits are recorded in [REBUILD_VERIFICATION_7aa7fcb.md](../engineering/REBUILD_VERIFICATION_7aa7fcb.md). Documentation-only descendants reuse this evidence while production, tests, build and quality inputs are unchanged. Do not combine JVM and instrumentation coverage XMLs or substitute the informational broad mutation score for the enforced original gesture threshold.

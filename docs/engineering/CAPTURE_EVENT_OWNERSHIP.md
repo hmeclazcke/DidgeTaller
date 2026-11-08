@@ -32,3 +32,6 @@ The old callbacks are deliberately corrected, so equality with the old race is n
 
 
 The first API 35 CI execution at de8df92 exercised 147 cases and failed one disposed-notice expectation (136 passed/10 skipped). The corrected contract keeps all data-integrity checks, requires nonblank failure feedback for live owners, and requires no feedback after clearing, including an explicitly injected queued device error. Microphone errors now enter RecordingCoordinator's lifecycle boundary; a failed start clears stale listening independently of error-callback side effects. These corrected inputs require a new full emulator run; the failed run is not claimed as a pass.
+
+
+Final framework evidence is accepted at 7aa7fcb: all 147 clean API 35 suite cases were discovered, 137 passed and 10 skipped with zero failures; capture handoff/disposal checks passed. Fast checks and broad selected-scope PIT also passed. [Versioned verification](REBUILD_VERIFICATION_7aa7fcb.md) records both earlier failing attempts and current results. Old failed runs remain diagnostic evidence, not passes.
