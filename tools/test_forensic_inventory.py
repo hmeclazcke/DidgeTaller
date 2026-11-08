@@ -4,6 +4,13 @@ from forensic_inventory import change_inventory
 
 
 class ForensicInventoryTest(unittest.TestCase):
+    def test_unambiguous_constructor_evolution_is_not_new_plus_removed(self):
+        old = dict(kind='constructor', file='Example.kt', scope='test/Example', semanticHash='before')
+        new = dict(old, semanticHash='after')
+        result = change_inventory({'old-signature': old}, {'new-signature': new})
+        self.assertEqual(['modified-signature'], [r['change'] for r in result])
+        self.assertEqual('old-signature', result[0]['previous_identity'])
+
     def test_unchanged_declarations_are_not_newly_written(self):
         row = dict(kind='function', semanticHash='same')
         self.assertEqual([], change_inventory({'id': row}, {'id': row}))

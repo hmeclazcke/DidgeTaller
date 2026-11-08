@@ -97,6 +97,10 @@ all 134 PSI declarations with `in_detekt_denominator` identifying exactly the 90
 individual diagnostic candidates and specific explanations/recommendations.
 Constructors, accessors, initializers and lambdas are separately inventoried; they
 are not presented as compiler-generated methods or independent CRAP measurements.
+Two existing constructors (MicrophoneEngine and PlaybackController.State.Ready)
+changed signature; unique source-scope correspondence classifies them as modified,
+not as two new constructors plus two removals. The seven added constructor
+identities therefore represent five new constructors and those two evolutions.
 Token relocation matches require unique correspondence in both directions;
 ambiguous similar lambdas remain additions/removals. Token hashes retain line
 breaks conservatively, ignore horizontal formatting/comments, and do not prove
@@ -230,7 +234,7 @@ python -m unittest discover -s tools -p 'test_*.py'
 ```
 
 The coverage refresh/gate require proven same-source JaCoCo/Detekt/CPD reports;
-they do not generate test execution. Audit results: **36 Python tests and 2
+they do not generate test execution. Audit results: **37 Python tests and 2
 engineering-tool JUnit tests passed**, zero failures/skips. Synthetic CLI probes
 cover below/above target, eligible unscored, ambiguity, explicit technical review,
 expired review, abstract contract, absent/raw/empty/malformed reports, incomplete

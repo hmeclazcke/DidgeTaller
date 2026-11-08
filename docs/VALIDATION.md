@@ -5,7 +5,7 @@ Reused verified CI 42469282408 (JVM/static/coverage), 42469279440 (real emulator
 42469281768 (actual PIT); authenticated API confirms exact heads and success.
 No emulator or mutation rerun is counted as new evidence. Pinned official skill
 and MIT license compare byte-for-byte with upstream. New local validation:
-36 Python tests / 2 PSI JUnit tests passed, zero failures/skips; source inventory,
+37 Python tests / 2 PSI JUnit tests passed, zero failures/skips; source inventory,
 same-source coverage summaries and corrected gate pass. Isolated red probes first
 reproduced acceptance of unscored/ambiguous/empty metrics; final synthetic fixtures
 verify rejection plus intentional abstract/technical-review cases. No Samsung or

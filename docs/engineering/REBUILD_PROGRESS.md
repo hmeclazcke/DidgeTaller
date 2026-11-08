@@ -17,7 +17,7 @@ are explicitly above target; workspace render remains MCC/Android CRAP-L 13.
 Changed named methods have 190 direct executed mutants: 183 killed/7 survived;
 do not confuse this subset with the historical 1,519-mutant domain report.
 
-Focused validation: 36 Python tests, 2 PSI JUnit tests, same-source report refresh
+Focused validation: 37 Python tests, 2 PSI JUnit tests, same-source report refresh
 and source/metric ratchets pass locally. No emulator/full PIT rerun is warranted
 for unchanged runtime inputs. Final audit publication/CI evidence is recorded in
 the forensic report and WORK_LOG; no broad reconstruction was resumed here.

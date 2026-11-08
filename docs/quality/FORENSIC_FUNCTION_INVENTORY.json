@@ -29,6 +29,7 @@
     "removed": 0,
     "reclassified": 0,
     "authored_changes": {
+      "constructor:modified-signature": 2,
       "lambda:moved": 7,
       "initializer:modified": 1,
       "function:modified": 16,
@@ -37,16 +38,47 @@
       "accessor:added": 6,
       "function:added": 50,
       "initializer:added": 10,
-      "constructor:added": 7,
+      "constructor:added": 5,
       "initializer:removed": 3,
       "accessor:removed": 4,
-      "lambda:removed": 15,
-      "constructor:removed": 2
+      "lambda:removed": 15
     },
     "current_unscored_psi": 134,
     "current_unscored_detekt": 90
   },
   "changes": [
+    {
+      "end": "24",
+      "endOffset": "849",
+      "identity": "ar.didgetaller.audio/MicrophoneEngine|constructor|IDENTIFIER:primary|LPAR:(|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onReading|COLON::|LPAR:(|IDENTIFIER:PitchDetector|DOT:.|IDENTIFIER:Reading|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onError|COLON::|LPAR:(|IDENTIFIER:String|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onTerminal|COLON::|LPAR:(|IDENTIFIER:CaptureTerminal|RPAR:)|ARROW:->|IDENTIFIER:Unit|LINE_BREAK|RPAR:)||occurrence:1",
+      "kind": "constructor",
+      "line": "20",
+      "offset": "695",
+      "scope": "ar.didgetaller.audio/MicrophoneEngine",
+      "semanticHash": "b2c810553f7bb65ddf570abe0d5791f945b45d496782c801dad8fe7acce22734",
+      "start": "20",
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "change": "modified-signature",
+      "previous_identity": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt::ar.didgetaller.audio/MicrophoneEngine|constructor|IDENTIFIER:primary|LPAR:(|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onReading|COLON::|LPAR:(|IDENTIFIER:PitchDetector|DOT:.|IDENTIFIER:Reading|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingStopped|COLON::|LPAR:(|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingReady|COLON::|LPAR:(|IDENTIFIER:File|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onError|COLON::|LPAR:(|IDENTIFIER:String|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingFailed|COLON::|LPAR:(|IDENTIFIER:String|RPAR:)|ARROW:->|IDENTIFIER:Unit|EQ:=|IDENTIFIER:onError|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingDiscarded|COLON::|LPAR:(|IDENTIFIER:Boolean|RPAR:)|ARROW:->|IDENTIFIER:Unit|EQ:=|LBRACE:{|RBRACE:}|LINE_BREAK|RPAR:)||occurrence:1",
+      "first_relevant_commit": "12dc104131a3505d585461fa1e01a5a46b5678fe",
+      "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
+    },
+    {
+      "end": "40",
+      "endOffset": "1263",
+      "identity": "ar.didgetaller.core/PlaybackController/State/Ready|constructor|IDENTIFIER:primary|LPAR:(|val:val|IDENTIFIER:id|COLON::|IDENTIFIER:String|COMMA:,|val:val|IDENTIFIER:paused|COLON::|IDENTIFIER:Boolean|COMMA:,|val:val|IDENTIFIER:hasStarted|COLON::|IDENTIFIER:Boolean|EQ:=|false:false|RPAR:)||occurrence:1",
+      "kind": "constructor",
+      "line": "40",
+      "offset": "1193",
+      "scope": "ar.didgetaller.core/PlaybackController/State/Ready",
+      "semanticHash": "25824df5fcce59ff00e5f12ed69316c0630e7bd97c92117aa063d000cd965c53",
+      "start": "40",
+      "file": "app/src/main/java/ar/didgetaller/core/PlaybackController.kt",
+      "change": "modified-signature",
+      "previous_identity": "app/src/main/java/ar/didgetaller/core/PlaybackController.kt::ar.didgetaller.core/PlaybackController/State/Ready|constructor|IDENTIFIER:primary|LPAR:(|val:val|IDENTIFIER:id|COLON::|IDENTIFIER:String|COMMA:,|val:val|IDENTIFIER:paused|COLON::|IDENTIFIER:Boolean|RPAR:)||occurrence:1",
+      "first_relevant_commit": "7aa7fcb82a64e316f1dc21a6e84c7b4c42532d7d",
+      "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
+    },
     {
       "end": "343",
       "endOffset": "20652",
@@ -2222,21 +2254,6 @@
       "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
     },
     {
-      "end": "24",
-      "endOffset": "849",
-      "identity": "ar.didgetaller.audio/MicrophoneEngine|constructor|IDENTIFIER:primary|LPAR:(|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onReading|COLON::|LPAR:(|IDENTIFIER:PitchDetector|DOT:.|IDENTIFIER:Reading|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onError|COLON::|LPAR:(|IDENTIFIER:String|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onTerminal|COLON::|LPAR:(|IDENTIFIER:CaptureTerminal|RPAR:)|ARROW:->|IDENTIFIER:Unit|LINE_BREAK|RPAR:)||occurrence:1",
-      "kind": "constructor",
-      "line": "20",
-      "offset": "695",
-      "scope": "ar.didgetaller.audio/MicrophoneEngine",
-      "semanticHash": "b2c810553f7bb65ddf570abe0d5791f945b45d496782c801dad8fe7acce22734",
-      "start": "20",
-      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
-      "change": "added",
-      "first_relevant_commit": "12dc104131a3505d585461fa1e01a5a46b5678fe",
-      "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
-    },
-    {
       "body": "true",
       "bodyHash": "f2c6d9a172f6dd84a235955a9d58d8713889ac75b3d31ce595fb2d2e4a73014d",
       "compose": "false",
@@ -3081,21 +3098,6 @@
       "file": "app/src/main/java/ar/didgetaller/core/CaptureHandoff.kt",
       "change": "added",
       "first_relevant_commit": "12dc104131a3505d585461fa1e01a5a46b5678fe",
-      "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
-    },
-    {
-      "end": "40",
-      "endOffset": "1263",
-      "identity": "ar.didgetaller.core/PlaybackController/State/Ready|constructor|IDENTIFIER:primary|LPAR:(|val:val|IDENTIFIER:id|COLON::|IDENTIFIER:String|COMMA:,|val:val|IDENTIFIER:paused|COLON::|IDENTIFIER:Boolean|COMMA:,|val:val|IDENTIFIER:hasStarted|COLON::|IDENTIFIER:Boolean|EQ:=|false:false|RPAR:)||occurrence:1",
-      "kind": "constructor",
-      "line": "40",
-      "offset": "1193",
-      "scope": "ar.didgetaller.core/PlaybackController/State/Ready",
-      "semanticHash": "25824df5fcce59ff00e5f12ed69316c0630e7bd97c92117aa063d000cd965c53",
-      "start": "40",
-      "file": "app/src/main/java/ar/didgetaller/core/PlaybackController.kt",
-      "change": "added",
-      "first_relevant_commit": "7aa7fcb82a64e316f1dc21a6e84c7b4c42532d7d",
       "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
     },
     {
@@ -5383,36 +5385,6 @@
       "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
       "change": "removed",
       "first_relevant_commit": "12dc104131a3505d585461fa1e01a5a46b5678fe",
-      "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
-    },
-    {
-      "end": "26",
-      "endOffset": "968",
-      "identity": "ar.didgetaller.audio/MicrophoneEngine|constructor|IDENTIFIER:primary|LPAR:(|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onReading|COLON::|LPAR:(|IDENTIFIER:PitchDetector|DOT:.|IDENTIFIER:Reading|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingStopped|COLON::|LPAR:(|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingReady|COLON::|LPAR:(|IDENTIFIER:File|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onError|COLON::|LPAR:(|IDENTIFIER:String|RPAR:)|ARROW:->|IDENTIFIER:Unit|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingFailed|COLON::|LPAR:(|IDENTIFIER:String|RPAR:)|ARROW:->|IDENTIFIER:Unit|EQ:=|IDENTIFIER:onError|COMMA:,|LINE_BREAK|IDENTIFIER:private|val:val|IDENTIFIER:onRecordingDiscarded|COLON::|LPAR:(|IDENTIFIER:Boolean|RPAR:)|ARROW:->|IDENTIFIER:Unit|EQ:=|LBRACE:{|RBRACE:}|LINE_BREAK|RPAR:)||occurrence:1",
-      "kind": "constructor",
-      "line": "19",
-      "offset": "652",
-      "scope": "ar.didgetaller.audio/MicrophoneEngine",
-      "semanticHash": "36d4bb06c9b28ef7953d3d5112d08dde9d6d15f16136ae1d355088a43606fd35",
-      "start": "19",
-      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
-      "change": "removed",
-      "first_relevant_commit": "12dc104131a3505d585461fa1e01a5a46b5678fe",
-      "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
-    },
-    {
-      "end": "39",
-      "endOffset": "1131",
-      "identity": "ar.didgetaller.core/PlaybackController/State/Ready|constructor|IDENTIFIER:primary|LPAR:(|val:val|IDENTIFIER:id|COLON::|IDENTIFIER:String|COMMA:,|val:val|IDENTIFIER:paused|COLON::|IDENTIFIER:Boolean|RPAR:)||occurrence:1",
-      "kind": "constructor",
-      "line": "39",
-      "offset": "1094",
-      "scope": "ar.didgetaller.core/PlaybackController/State/Ready",
-      "semanticHash": "40524151d72b0bbe3e7c5e52538506ea76f7e3a9a90ee5e04f4679c41dbac7e4",
-      "start": "39",
-      "file": "app/src/main/java/ar/didgetaller/core/PlaybackController.kt",
-      "change": "removed",
-      "first_relevant_commit": "7aa7fcb82a64e316f1dc21a6e84c7b4c42532d7d",
       "measurement_status": "authored auxiliary construct; not independently scored by existing pipeline"
     },
     {

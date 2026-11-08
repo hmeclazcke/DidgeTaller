@@ -40,6 +40,21 @@ def metric_key(row):
 def change_inventory(before, after):
     changes = []
     added, removed = set(after) - set(before), set(before) - set(after)
+    # Constructor parameter evolution changes identity, but does not introduce
+    # another constructor when both source scopes have one unambiguous candidate.
+    for key in sorted(added.copy()):
+        row = after[key]
+        if row['kind'] != 'constructor':
+            continue
+        candidates = [old for old in removed if before[old]['kind'] == 'constructor'
+                      and (before[old]['file'], before[old]['scope']) == (row['file'], row['scope'])]
+        inverse = [new for new in added if after[new]['kind'] == 'constructor'
+                   and (after[new]['file'], after[new]['scope']) == (row['file'], row['scope'])]
+        if len(candidates) == len(inverse) == 1:
+            old = candidates[0]
+            changes.append(dict(row, change='modified-signature', previous_identity=old))
+            added.remove(key)
+            removed.remove(old)
     # Exact token-body and unique signature pairs identify relocation without
     # guessing from names alone. Ambiguous similarities remain added/removed.
     for key in sorted(added.copy()):
