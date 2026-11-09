@@ -12,6 +12,9 @@ import ar.didgetaller.SessionPhase
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.core.InstrumentProfile
 import ar.didgetaller.core.ProgressiveWavWriter
+import ar.didgetaller.core.RecordingCapture
+import ar.didgetaller.core.RecordingCoordinator
+import ar.didgetaller.core.CaptureId
 import ar.didgetaller.core.WavCodec
 import ar.didgetaller.data.RecordingStore
 import ar.didgetaller.data.SessionToolsStore
@@ -45,17 +48,173 @@ class RecordingHandoffTest {
 
     // Test-only access keeps fault injection out of the production API. Names are debug fields.
     private fun field(target: Any, name: String) = target.javaClass.getDeclaredField(name).apply { isAccessible = true }
-    private fun attach(engine: MicrophoneEngine, writer: ProgressiveWavWriter) {
-        field(engine, "writer").set(engine, writer)
-        field(engine, "recording").setBoolean(engine, true)
+    private fun microphone(onReading: (ar.didgetaller.core.PitchDetector.Reading) -> Unit,
+                           onStopped: () -> Unit, onReady: (File) -> Unit, onError: (String) -> Unit,
+                           onRecordingDiscarded: (Boolean) -> Unit = {}) =
+        MicrophoneEngine(onReading, onError) { event ->
+            when (val outcome = event.outcome) {
+                is RecordingCapture.Outcome.Ready -> { onStopped(); onReady(outcome.file) }
+                is RecordingCapture.Outcome.Failed -> { onStopped(); onError(outcome.error.message.orEmpty()) }
+                is RecordingCapture.Outcome.Discarded -> onRecordingDiscarded(outcome.success)
+                null -> Unit
+            }
+        }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun monitor(vm: TallerViewModel, engine: MicrophoneEngine) {
+        (field(vm, "recording").get(vm) as RecordingCoordinator).monitorStarted(checkNotNull(engine.captureId))
     }
-    private fun finish(engine: MicrophoneEngine) {
-        engine.javaClass.getDeclaredMethod("finishRecording", Boolean::class.javaPrimitiveType)
-            .apply { isAccessible = true }.invoke(engine, true)
+
+    private fun bindRecording(vm: TallerViewModel, engine: MicrophoneEngine) {
+        monitor(vm, engine)
+        vm.javaClass.getDeclaredMethod("registerCapture", CaptureId::class.java)
+            .apply { isAccessible = true }.invoke(vm, checkNotNull(engine.captureId))
+    }
+
+    private fun attach(engine: MicrophoneEngine, writer: ProgressiveWavWriter) {
+        val capture = RecordingCapture { _, _ -> writer }
+        assertTrue(capture.start(writer.file, writer.sampleRate, MicrophoneEngine.MAX_RECORD_SECONDS))
+        field(engine, "capture").set(engine, capture)
+    }
+    private fun finish(engine: MicrophoneEngine, released: Boolean = true) {
+        finishOwned(engine, field(engine, "capture").get(engine) as RecordingCapture, released)
+    }
+    private fun finishOwned(engine: MicrophoneEngine, capture: RecordingCapture, released: Boolean) {
+        engine.javaClass.getDeclaredMethod("finishRecording", RecordingCapture::class.java, Boolean::class.javaPrimitiveType)
+            .apply { isAccessible = true }.invoke(engine, capture, released)
+    }
+    private fun pendingWorkerFinalization(engine: MicrophoneEngine): () -> Unit {
+        val owned = (field(engine, "capture").get(engine) as RecordingCapture?) ?: RecordingCapture()
+        return { finishOwned(engine, owned, true) }
+    }
+
+    @Test fun retiringMonitorCannotFinalizeTheNextRecording() {
+        val engine = microphone({}, {}, {}, {})
+        // Capture the worker's finalization responsibility before its replacement is attached.
+        // No microphone is opened: the delayed worker boundary is controlled by the test.
+        val retiringWorker = pendingWorkerFinalization(engine)
+        val partial = RecordingStore(app).newCapture()
+        val writer = ProgressiveWavWriter(partial)
+        writer.append(shortArrayOf(10), 1)
+        attach(engine, writer)
+        try {
+            retiringWorker()
+            writer.append(shortArrayOf(20), 1)
+            finish(engine)
+            assertArrayEquals(WavCodec.encode(shortArrayOf(10, 20), 2, 44100), partial.readBytes())
+        } finally {
+            writer.close()
+        }
     }
     private fun breakOwnedHandle(writer: ProgressiveWavWriter) {
         // Real IOException on finalization, without mocking close or changing file bytes.
         (field(writer, "output").get(writer) as RandomAccessFile).close()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test fun delayedDiscardCannotStopAReplacementMonitor() {
+        val owner = ViewModelStore()
+        lateinit var vm: TallerViewModel
+        instrumentation.runOnMainSync { vm = TallerViewModel(app); owner.put("capture", vm) }
+        try {
+            val partial = RecordingStore(app).newCapture()
+            val writer = ProgressiveWavWriter(partial)
+            writer.append(shortArrayOf(10, 20), 2)
+            val engine = field(vm, "mic").get(vm) as MicrophoneEngine
+            attach(engine, writer)
+            val retiringWorker = pendingWorkerFinalization(engine)
+            instrumentation.runOnMainSync {
+                bindRecording(vm, engine)
+                vm.discardSession()
+                // Replace the transport before the old worker posts its terminal event.
+                field(engine, "capture").set(engine, RecordingCapture())
+                monitor(vm, engine)
+            }
+            retiringWorker()
+            instrumentation.waitForIdleSync()
+            assertTrue("Discard A must not stop monitor B", vm.listening)
+            assertEquals(SessionPhase.IDLE, vm.sessionPhase)
+            assertFalse(partial.exists())
+        } finally {
+            instrumentation.runOnMainSync { owner.clear() }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test fun delayedFailureCannotOverwriteAReplacementMonitorsStatus() {
+        val owner = ViewModelStore()
+        lateinit var vm: TallerViewModel
+        instrumentation.runOnMainSync { vm = TallerViewModel(app); owner.put("capture", vm) }
+        try {
+            val partial = RecordingStore(app).newCapture()
+            val writer = ProgressiveWavWriter(partial)
+            writer.append(shortArrayOf(10, 20), 2)
+            val original = partial.readBytes()
+            val engine = field(vm, "mic").get(vm) as MicrophoneEngine
+            attach(engine, writer)
+            val retiringWorker = pendingWorkerFinalization(engine)
+            instrumentation.runOnMainSync {
+                bindRecording(vm, engine); vm.finishSession()
+                field(engine, "capture").set(engine, RecordingCapture())
+                monitor(vm, engine)
+                vm.notify("Replacement monitor status")
+            }
+            breakOwnedHandle(writer)
+            repeat(2) { retiringWorker() }
+            instrumentation.waitForIdleSync()
+            assertTrue(vm.listening)
+            assertNull(vm.microphoneError)
+            assertEquals("Replacement monitor status", vm.message)
+            assertEquals(SessionPhase.IDLE, vm.sessionPhase)
+            assertArrayEquals(original, partial.readBytes())
+            assertTrue(RecordingStore(app).list().isEmpty())
+        } finally {
+            instrumentation.runOnMainSync { owner.clear() }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test fun delayedSuccessStillSavesExactlyOnceWithoutStoppingTheReplacement() {
+        val owner = ViewModelStore()
+        lateinit var vm: TallerViewModel
+        instrumentation.runOnMainSync { vm = TallerViewModel(app); owner.put("capture", vm) }
+        try {
+            val store = RecordingStore(app)
+            val partial = store.newCapture()
+            val pcm = ShortArray(4410) { (it % 300).toShort() }
+            val writer = ProgressiveWavWriter(partial)
+            writer.append(pcm, pcm.size)
+            val engine = field(vm, "mic").get(vm) as MicrophoneEngine
+            attach(engine, writer)
+            val retiringWorker = pendingWorkerFinalization(engine)
+            lateinit var points: List<ar.didgetaller.core.SessionAnalysis.Point>
+            instrumentation.runOnMainSync {
+                vm.selectInstrument(InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+                bindRecording(vm, engine)
+                val reading = field(engine, "onReading").get(engine) as (ar.didgetaller.core.PitchDetector.Reading) -> Unit
+                reading(ar.didgetaller.core.PitchDetector.Reading(hz = 440.0, confidence = 0.95))
+                points = vm.sessionTimeline
+                assertEquals(1, points.size)
+                vm.finishSession()
+                field(engine, "capture").set(engine, RecordingCapture())
+                monitor(vm, engine)
+                vm.notify("Replacement monitor status")
+            }
+            repeat(2) { retiringWorker() }
+            instrumentation.waitForIdleSync()
+            (field(vm, "sessionExecutor").get(vm) as ExecutorService).submit {}.get(10, TimeUnit.SECONDS)
+            instrumentation.waitForIdleSync()
+            assertTrue(vm.listening)
+            assertEquals(SessionPhase.IDLE, vm.sessionPhase)
+            assertEquals("Replacement monitor status", vm.message)
+            val saved = store.list().single()
+            assertEquals(InstrumentProfile.NATIVE_AMERICAN_FLUTE, saved.instrument)
+            assertEquals(points, saved.timeline)
+            assertEquals(store.list(), vm.sessions)
+            assertArrayEquals(WavCodec.encode(pcm, pcm.size, 44100), store.file(saved.id).readBytes())
+        } finally {
+            instrumentation.runOnMainSync { owner.clear() }
+        }
     }
 
     @Test fun closeFailureDoesNotHandOffAnUnfinalizedCapture() = assertFailedHandoff(8)
@@ -72,7 +231,7 @@ class RecordingHandoffTest {
         val ready = AtomicInteger()
         val stopped = AtomicInteger()
         val errors = AtomicInteger()
-        val engine = MicrophoneEngine({}, { stopped.incrementAndGet() }, { ready.incrementAndGet() }, { errors.incrementAndGet() })
+        val engine = microphone({}, { stopped.incrementAndGet() }, { ready.incrementAndGet() }, { errors.incrementAndGet() })
         attach(engine, writer)
         breakOwnedHandle(writer)
 
@@ -98,7 +257,7 @@ class RecordingHandoffTest {
         val ready = AtomicInteger()
         val stopped = AtomicInteger()
         val errors = AtomicInteger()
-        val engine = MicrophoneEngine({}, { stopped.incrementAndGet() }, { file ->
+        val engine = microphone({}, { stopped.incrementAndGet() }, { file ->
             assertEquals(partial, file)
             assertArrayEquals(WavCodec.encode(pcm, pcm.size, 44100), file.readBytes())
             ready.incrementAndGet()
@@ -127,7 +286,7 @@ class RecordingHandoffTest {
             val engine = field(vm, "mic").get(vm) as MicrophoneEngine
             attach(engine, writer)
             instrumentation.runOnMainSync {
-                (field(vm, "sessionPhase\$delegate").get(vm) as MutableState<SessionPhase>).value = SessionPhase.CAPTURING
+                bindRecording(vm, engine)
                 vm.discardSession()
                 vm.discardSession()
             }
@@ -151,7 +310,7 @@ class RecordingHandoffTest {
             val ready = AtomicInteger()
             val discarded = AtomicInteger()
             val errors = AtomicInteger()
-            val engine = MicrophoneEngine({}, {}, { ready.incrementAndGet() }, { errors.incrementAndGet() },
+            val engine = microphone({}, {}, { ready.incrementAndGet() }, { errors.incrementAndGet() },
                 onRecordingDiscarded = { success -> if (success) discarded.incrementAndGet() else errors.incrementAndGet() })
             attach(engine, writer)
             val start = java.util.concurrent.CountDownLatch(1)
@@ -171,7 +330,7 @@ class RecordingHandoffTest {
         val partial = store.newCapture()
         val writer = ProgressiveWavWriter(partial)
         writer.append(shortArrayOf(1, 2, 3), 3)
-        val engine = MicrophoneEngine({}, {}, {}, {})
+        val engine = microphone({}, {}, {}, {})
         attach(engine, writer)
         assertTrue(engine.discardRecording())
         val discarded = File(partial.parentFile, "${partial.nameWithoutExtension}.discard")
@@ -193,7 +352,7 @@ class RecordingHandoffTest {
         val ready = AtomicInteger()
         val discarded = AtomicInteger()
         val failures = AtomicInteger()
-        val engine = MicrophoneEngine({}, {}, { ready.incrementAndGet() }, {},
+        val engine = microphone({}, {}, { ready.incrementAndGet() }, {},
             onRecordingDiscarded = { if (it) discarded.incrementAndGet() else failures.incrementAndGet() })
         attach(engine, writer)
         assertTrue(engine.discardRecording())
@@ -213,12 +372,11 @@ class RecordingHandoffTest {
         writer.append(shortArrayOf(1, 2, 3), 3)
         val failures = AtomicInteger()
         val successes = AtomicInteger()
-        val engine = MicrophoneEngine({}, {}, {}, {},
+        val engine = microphone({}, {}, {}, {},
             onRecordingDiscarded = { if (it) successes.incrementAndGet() else failures.incrementAndGet() })
         attach(engine, writer)
         assertTrue(engine.discardRecording())
-        engine.javaClass.getDeclaredMethod("finishRecording", Boolean::class.javaPrimitiveType)
-            .apply { isAccessible = true }.invoke(engine, false)
+        finish(engine, false)
         instrumentation.waitForIdleSync()
         assertEquals(0, successes.get())
         assertEquals(1, failures.get())
@@ -242,7 +400,7 @@ class RecordingHandoffTest {
             val engine = field(vm, "mic").get(vm) as MicrophoneEngine
             attach(engine, writer)
             instrumentation.runOnMainSync {
-                (field(vm, "sessionPhase\$delegate").get(vm) as MutableState<SessionPhase>).value = SessionPhase.CAPTURING
+                bindRecording(vm, engine)
                 vm.discardSession()
             }
             finish(engine)
@@ -268,7 +426,7 @@ class RecordingHandoffTest {
             val ready = AtomicInteger()
             val discarded = AtomicInteger()
             val errors = AtomicInteger()
-            val engine = MicrophoneEngine({}, {}, { ready.incrementAndGet(); done.countDown() },
+            val engine = microphone({}, {}, { ready.incrementAndGet(); done.countDown() },
                 { errors.incrementAndGet(); done.countDown() },
                 onRecordingDiscarded = { success ->
                     if (success) discarded.incrementAndGet() else errors.incrementAndGet()
@@ -316,10 +474,15 @@ class RecordingHandoffTest {
                 val engine = field(vm, "mic").get(vm) as MicrophoneEngine
                 attach(engine, writer)
                 instrumentation.runOnMainSync {
-                    (field(vm, "sessionPhase\$delegate").get(vm) as MutableState<SessionPhase>).value = phase
+                    bindRecording(vm, engine)
+                    if (phase == SessionPhase.SAVING) vm.finishSession()
                 }
                 breakOwnedHandle(writer)
-                if (cleared) instrumentation.runOnMainSync { owner.clear() }
+                if (cleared) instrumentation.runOnMainSync {
+                    owner.clear()
+                    val error = field(engine, "onError").get(engine) as (String) -> Unit
+                    error("Queued synthetic device failure after disposal")
+                }
                 repeat(2) { finish(engine) }
                 instrumentation.waitForIdleSync()
                 // Also drain any erroneously queued persistence before checking observable state.
@@ -335,7 +498,14 @@ class RecordingHandoffTest {
                 assertEquals(existingSessions, store.list())
                 assertEquals(existingSessions, vm.sessions)
                 assertArrayEquals(existingAudio, store.file(existing.id).readBytes())
-                assertEquals(vm.microphoneError, vm.message)
+                if (cleared) {
+                    assertNull("Disposed UI must not receive a late failure notice", vm.microphoneError)
+                    assertEquals("", vm.message)
+                } else {
+                    assertNotNull("A live owner must report finalization failure", vm.microphoneError)
+                    assertTrue(vm.message.isNotBlank())
+                    assertEquals(vm.microphoneError, vm.message)
+                }
                 assertFalse(store.file(id).exists())
                 assertEquals(design, tools.designId(id))
                 assertEquals(extras, app.getSharedPreferences("session_tools", 0).getString("extras", null))

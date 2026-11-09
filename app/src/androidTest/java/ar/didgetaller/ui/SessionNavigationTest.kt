@@ -16,6 +16,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -37,6 +38,9 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.UUID
 import kotlin.math.sin
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 
 /** Real NavHost and MediaPlayer, with app data isolated from the user's library. Emulator only. */
 @RunWith(AndroidJUnit4::class)
@@ -457,7 +461,9 @@ class SessionNavigationTest {
         compose.waitUntil(5000){vm.playbackPositionMs().toLong() in explorer.region!!}
         playAction(uiText(R.string.ui_pause))
         compose.waitUntil {vm.playbackPaused};val position=vm.playbackPositionMs();Thread.sleep(180)
-        assertTrue(kotlin.math.abs(position-vm.playbackPositionMs())<=80)
+        val afterPause=vm.playbackPositionMs()
+        assertTrue("Paused position moved $position -> $afterPause; loop=${explorer.region}, paused=${vm.playbackPaused}",
+            kotlin.math.abs(position-afterPause)<=80)
         choosePlot(uiText(R.string.ui_harmonics))
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
@@ -528,8 +534,11 @@ class SessionNavigationTest {
         }
         val cancellationClicked=compose.onAllNodesWithText(cancelLabel).fetchSemanticsNodes().isNotEmpty() &&
             runCatching {compose.onNodeWithText(cancelLabel).performScrollTo().performClick()}.isSuccess
-        if(cancellationClicked && vm.workspace.state.error=="Visualización cancelada."){
-            compose.runOnIdle {assertFalse(vm.workspace.state.loading)}
+        if(cancellationClicked && vm.workspace.state.status==ar.didgetaller.core.WorkspaceStatus.Cancelled){
+            compose.runOnIdle {
+                assertFalse(vm.workspace.state.loading)
+                assertEquals(uiText(R.string.diagnostic_visualization_canceled), compose.activity.localizedDiagnostic(vm.workspace.state.error.orEmpty()))
+            }
         }else{
             compose.waitUntil(30000){!vm.workspace.state.loading}
             compose.runOnIdle {assertNull(vm.workspace.state.error);assertNotNull(vm.workspace.state.spectrogram)}
@@ -538,12 +547,67 @@ class SessionNavigationTest {
         choosePlot(uiText(R.string.ui_waveform))
         compose.waitUntil(30000){vm.workspace.state.wave!=null}
         val overviewMs=android.os.SystemClock.elapsedRealtime()-start
-        compose.runOnIdle {vm.explorer(recoveredId).cameras[AcousticPlot.WAVE]=ar.didgetaller.core.PlotViewport(ar.didgetaller.core.AxisWindow(600000.0,600010.0),ar.didgetaller.core.AxisWindow(-1.0,1.0))}
+        compose.runOnIdle {vm.explorer(recoveredId).cameras[AcousticPlot.WAVE]=ar.didgetaller.core.PlotViewport(ar.didgetaller.core.AxisWindow(600000.0,600010.0),ar.didgetaller.core.AxisWindow(-.8,-.3))}
         compose.waitUntil(10000){vm.workspace.state.wave?.samples==true}
         assertEquals(900_000L,vm.workspace.state.durationMs)
         assertTrue(vm.workspace.state.wave!!.min.size<=1024)
         assertEquals(44L+dataSize,file.length())
         println("V31_LONG_WAV overview_and_cancel_ms=$overviewMs waveform_points=${vm.workspace.state.wave!!.min.size}")
+    }
+
+    @Test fun workspaceSwitchCancelAndDisposalPreserveAudioAndIndexWhilePlaybackPrepares() {
+        val store = RecordingStore(application)
+        val other = store.list().first { it.id != session.id }
+        val originals = listOf(session, other).associate { it.id to store.file(it.id).readBytes() }
+        val index = application.getSharedPreferences("local_data", 0).all.toMap()
+        compose.runOnIdle { vm.workspace.open(other); vm.workspace.open(session) }
+        compose.waitUntil(20000) { !vm.workspace.state.loading }
+        compose.runOnIdle {
+            assertEquals(session.id, vm.workspace.state.source!!.sessionId); assertNull(vm.workspace.state.error)
+            vm.workspace.render(session, ar.didgetaller.audio.VisualRequest(0, 2000), ar.didgetaller.core.VisualKind.SPECTROGRAM)
+            vm.workspace.clear(); vm.workspace.open(session)
+            assertEquals(ar.didgetaller.core.WorkspaceStatus.Opening, vm.workspace.state.status)
+            vm.togglePlayback(session)
+        }
+        compose.waitUntil(20000) { vm.playingId == session.id && !vm.playbackPaused && !vm.workspace.state.loading }
+        compose.runOnIdle {
+            assertEquals(session.id, vm.workspace.state.source!!.sessionId)
+            vm.workspace.render(session, ar.didgetaller.audio.VisualRequest(1000, 3000), ar.didgetaller.core.VisualKind.SPECTROGRAM)
+        }
+        compose.waitUntil(20000) { !vm.workspace.state.loading }
+        compose.runOnIdle {
+            assertNull(vm.workspace.state.error); assertNotNull(vm.workspace.state.bitmap)
+            assertEquals(44100L, vm.workspace.state.spectrogram!!.start)
+            assertEquals(132300L, vm.workspace.state.spectrogram!!.end)
+        }
+        val scopeJob = vm.viewModelScope.coroutineContext[Job]!!
+        compose.runOnUiThread {
+            vm.workspace.render(session, ar.didgetaller.audio.VisualRequest(0, 19000), ar.didgetaller.core.VisualKind.SPECTROGRAM)
+            viewModels.clear()
+            vm.workspace.open(other)
+        }
+        runBlocking { withTimeout(10000) { scopeJob.join() } }
+        compose.runOnIdle { assertNull(vm.workspace.state.sessionId); assertNull(vm.playingId) }
+        originals.forEach { (id, bytes) -> assertArrayEquals(bytes, store.file(id).readBytes()) }
+        assertEquals(index, application.getSharedPreferences("local_data", 0).all)
+    }
+
+    @Test fun missingWorkspaceInputCanRetryWithoutCreatingOrRewritingARecording() {
+        val store = RecordingStore(application)
+        val original = store.file(session.id).readBytes()
+        val index = application.getSharedPreferences("local_data", 0).all.toMap()
+        val missing = session.copy(id = UUID.randomUUID().toString())
+        compose.runOnIdle { vm.workspace.open(missing) }
+        compose.waitUntil(20000) { !vm.workspace.state.loading }
+        compose.runOnIdle {
+            assertNotNull(vm.workspace.state.error); assertNull(vm.workspace.state.source)
+            vm.workspace.open(session)
+        }
+        compose.waitUntil(20000) { !vm.workspace.state.loading }
+        compose.runOnIdle { assertEquals(session.id, vm.workspace.state.source!!.sessionId); assertNull(vm.workspace.state.error) }
+        assertFalse(store.file(missing.id).exists())
+        assertArrayEquals(original, store.file(session.id).readBytes())
+        assertEquals(index, application.getSharedPreferences("local_data", 0).all)
     }
 
     @Test fun androidEdgeGesturePopsViewerThenDetailAndReleasesAudio(){

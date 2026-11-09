@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DidgeTaller"
 include(":app")
+include(":engineering-tools")

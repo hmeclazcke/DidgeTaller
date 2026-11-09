@@ -478,6 +478,8 @@
     <string name="diagnostic_could_not_play_audio">"Could not play audio: %1$s"</string>
     <string name="diagnostic_audio">"Audio %1$s/%2$s"</string>
     <string name="diagnostic_visualization_canceled">"Visualization canceled."</string>
+    <string name="diagnostic_visualization_unavailable">"Visualization unavailable. Try opening the session again."</string>
+    <string name="diagnostic_visualization_source_changed">"The audio changed while loading. Open the session again."</string>
     <string name="diagnostic_length_out_of_range">"Length out of range"</string>
     <string name="diagnostic_no_resonances_found_in_the_range">"No resonances found in the range."</string>
     <string name="diagnostic_not_a_valid_riff_wav">"Not a valid RIFF WAV."</string>
@@ -586,4 +588,14 @@
     <string name="recording_discard_too_late">The recording was already finishing and will be saved.</string>
     <string name="recording_release_failed">Could not release the microphone.</string>
     <string name="graph_timeline_hint">Tap or drag to seek. Two fingers to zoom or pan.</string>
+    <string name="library_index_damaged">The session index is damaged. Audio is preserved; metadata changes are blocked until recovery.</string>
+    <string name="library_index_recover">Recover session index</string>
+    <string name="library_index_recovery_confirmation">Restore the last readable index? The damaged text will be preserved. Audio files will not be deleted.</string>
+    <string name="library_index_restored">Session index recovered. Audio preserved.</string>
+    <string name="library_index_recovery_failed">No readable backup could be restored. Audio and original metadata remain preserved.</string>
+    <string name="library_metadata_write_failed">Metadata could not be saved reliably. Audio has been preserved.</string>
+    <string name="recording_finalize_failed">Could not finalize the WAV: %1$s. The capture remains pending recovery.</string>
+    <string name="recording_empty">No audio was captured. Try again.</string>
+    <string name="recording_saved">Session saved to Library.</string>
+    <string name="recording_save_failed">Could not save the session: %1$s</string>
 </resources>

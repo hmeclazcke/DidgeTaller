@@ -9,6 +9,7 @@ object LivePitch {
         val storedHz:Double?=null)
 
     fun next(previous:State,incoming:PitchDetector.Reading,profile:InstrumentProfile):State {
+        if(!incoming.hz.isFinite())return State(lastMeasuredHz=previous.lastMeasuredHz)
         val usable=if(profile==InstrumentProfile.DIDGERIDOO)incoming.hz>0 else
             incoming.hz in profile.validMinHz..profile.validMaxHz && incoming.confidence>=.80
         if(!usable)return State(lastMeasuredHz=previous.lastMeasuredHz)

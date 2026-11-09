@@ -1,0 +1,203 @@
+{
+  "scope": "Final local implementation inputs; CI evidence is separately linked from draft PR1",
+  "source_inventory_sha256": "c6f2ccb1e0751e5e870062c22f7c47f26189b63ba70611afdc79b17bc246f2e4",
+  "source_files": 116,
+  "jvm": {
+    "testDebugUnitTest": {
+      "tests": 527,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    },
+    "testReleaseUnitTest": {
+      "tests": 527,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    }
+  },
+  "coverage": {
+    "Overall production": {
+      "LINE": {
+        "covered": 2759,
+        "missed": 3158
+      },
+      "INSTRUCTION": {
+        "covered": 31984,
+        "missed": 69062
+      },
+      "BRANCH": {
+        "covered": 2884,
+        "missed": 3676
+      },
+      "METHOD": {
+        "covered": 1233,
+        "missed": 1408
+      }
+    },
+    "Pure core": {
+      "LINE": {
+        "covered": 2201,
+        "missed": 21
+      },
+      "INSTRUCTION": {
+        "covered": 25198,
+        "missed": 1221
+      },
+      "BRANCH": {
+        "covered": 2339,
+        "missed": 417
+      },
+      "METHOD": {
+        "covered": 955,
+        "missed": 79
+      }
+    }
+  },
+  "android": {
+    "scope": "Android instrumentation only; not merged with JVM",
+    "test_run": {
+      "passed": 160,
+      "failed": 0,
+      "skipped": 10,
+      "discovered": 170,
+      "failures": [],
+      "scope": "complete suite"
+    },
+    "overall": {
+      "BRANCH": {
+        "covered": 4515,
+        "missed": 2045,
+        "fraction": 0.6882621951219512
+      },
+      "LINE": {
+        "covered": 5448,
+        "missed": 469,
+        "fraction": 0.9207368598952171
+      }
+    },
+    "packages": {
+      "ar/didgetaller/core": {
+        "BRANCH": {
+          "covered": 1900,
+          "missed": 856,
+          "fraction": 0.6894049346879536
+        },
+        "LINE": {
+          "covered": 2114,
+          "missed": 108,
+          "fraction": 0.9513951395139514
+        }
+      },
+      "ar/didgetaller": {
+        "BRANCH": {
+          "covered": 162,
+          "missed": 119,
+          "fraction": 0.5765124555160143
+        },
+        "LINE": {
+          "covered": 382,
+          "missed": 76,
+          "fraction": 0.834061135371179
+        }
+      },
+      "ar/didgetaller/data": {
+        "BRANCH": {
+          "covered": 349,
+          "missed": 189,
+          "fraction": 0.6486988847583643
+        },
+        "LINE": {
+          "covered": 430,
+          "missed": 23,
+          "fraction": 0.9492273730684326
+        }
+      },
+      "ar/didgetaller/lab": {
+        "LINE": {
+          "covered": 14,
+          "missed": 1,
+          "fraction": 0.9333333333333333
+        }
+      },
+      "ar/didgetaller/ui": {
+        "BRANCH": {
+          "covered": 2050,
+          "missed": 851,
+          "fraction": 0.7066528783178214
+        },
+        "LINE": {
+          "covered": 2347,
+          "missed": 247,
+          "fraction": 0.9047802621434079
+        }
+      },
+      "ar/didgetaller/audio": {
+        "BRANCH": {
+          "covered": 54,
+          "missed": 30,
+          "fraction": 0.6428571428571429
+        },
+        "LINE": {
+          "covered": 161,
+          "missed": 14,
+          "fraction": 0.92
+        }
+      }
+    }
+  },
+  "function_inventory": {
+    "named": 698,
+    "counts": {
+      "measured": 545,
+      "nested-metric-in-parent": 32,
+      "declaration-without-body": 35,
+      "anonymous-owner": 13,
+      "compose-transformation": 73
+    },
+    "independent_unscored": 117,
+    "jvm_above_target": 64,
+    "android_above_target": 30
+  },
+  "detekt_findings": 2000,
+  "lint_local": {
+    "errors": 0,
+    "warnings": 52,
+    "hints": 7
+  },
+  "cpd_groups_100_tokens": 0,
+  "focused_mutation": {
+    "production_classes": 31,
+    "total": 612,
+    "killed": 471,
+    "survived": 121,
+    "uncovered": 19,
+    "timeouts": 1,
+    "denominator": 612
+  },
+  "differential_identical": 757,
+  "quality_tool_tests": 46,
+  "localization": {
+    "strings": 576,
+    "plurals": 5,
+    "arrays": 2
+  },
+  "previous_remote_integration": {
+    "revision": "f72136ca010853ab4034cb673bb3915a683b3a48",
+    "superseded_for_fractional_inspection_fix": true,
+    "fast_run": 42702489875,
+    "native_run": 42702483758,
+    "mutation_run": 42702487499,
+    "all_three_conclusions": "success",
+    "mutation": {
+      "classes": 101,
+      "generated": 2937,
+      "killed": 2284,
+      "survived": 615,
+      "uncovered": 34,
+      "timeouts": 4,
+      "engine_seconds": 127
+    },
+    "current_exact_source_results": "See the current evidence table in draft PR1; do not substitute these previous runs for changed inputs."
+  }
+}

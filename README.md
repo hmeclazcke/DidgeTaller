@@ -95,19 +95,28 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
-Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), copied verbatim with its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). Project safety and Kotlin-specific execution live separately in AGENTS.md and the [quality guide](docs/quality/QUALITY_GUIDE.md).
+Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), unchanged under its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). It supplies engineering instructions; project safety and Kotlin execution rules live separately in [AGENTS.md](AGENTS.md) and the [quality guide](docs/quality/QUALITY_GUIDE.md).
 
-- **First Make it Work:** model the domain, validate boundaries, establish state ownership and use TDD/red-green-refactor for verifiable changes.
-- **Then Make it Right:** preserve behavior while refactoring; use BDD-style acceptance scenarios, coverage, complexity and mutation evidence to investigate risk and duplicated knowledge (DRY).
-- **Practice:** focused investigation, reviewable commits, concise evidence and risk-based validation. BDD scenarios do not imply Cucumber.
+- **First Make it Work:** model the domain, validate boundaries, establish operation ownership and use TDD/red-green-refactor for demonstrated defects.
+- **Then Make it Right:** refactor under behavioral characterization, reduce duplicated knowledge (DRY), and investigate complexity, coverage, CRAP-L and surviving mutations. BDD-style acceptance scenarios do not imply a Cucumber integration.
+- **Practice:** focused investigation, small reviewable commits, reproducible evidence and risk-based validation; reuse unchanged evidence without concealing missing checks.
 
-Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD and free PIT. Relevant-code CI checks both JVM variants, lint, localization, builds, coverage and measured ratchets. CPD detects token clones; PIT mutates a small verified pure-Kotlin gesture scope. Full emulator tests run for relevant main pushes and manual dispatch; focused mutation runs on manual dispatch. README-only changes avoid those costs.
+The [rebuild case study](docs/engineering/REBUILD_CASE_STUDY.md) and [finite acceptance report](docs/engineering/REBUILD_ACCEPTANCE.md) explain the production reconstruction on `refactor/uncle-bob-rebuild`. Main remains the behavioral reference; [PR #1](https://github.com/hmeclazcke/DidgeTaller/pull/1) stays draft for owner review. Its current evidence table links exact source-scoped CI jobs and artifacts; a failed or pending required check prevents integration readiness.
 
-Reviewed method-level Detekt/JaCoCo correspondences produce **CRAP-L**, using line coverage explicitly; unmapped functions remain visible. This is not official Crapper basis-path coverage. Coverage, unique-function complexity, mapped CRAP-L and duplication have measured regression baselines. Thresholds, scope, reports and verified commands are in the quality guide.
+Pure Kotlin owns DSP, recording phases, playback intent, session/analysis requests, timeline geometry and scientific readouts. Android adapters own devices, files and scheduling; Compose owns presentation. Revocable operation grants prevent obsolete progress/results from publishing after replacement or disposal. Canonical traces retain independent bounded session lifetimes. Guarded metadata publication preserves corrupt originals and historical sessions. The renderer separates prepared geometry/painters from viewport and gestures; direct graph seeking and the strict 80 ms pause contract remain protected.
 
-**Measurement limits:** JVM and emulator coverage are separate measurements. CRAP-L is enforced only for reviewed function mappings; other functions remain visibly unmapped. Mutation strength applies to its selected Kotlin scope. Historical complexity debt and uncovered paths remain in the [baseline and backlog](docs/quality/QUALITY_BASELINE.md); acoustic algorithms were not changed to improve metrics. Check the linked execution records for actual CI outcomes.
+| Check | Actual integration and enforcement |
+| --- | --- |
+| Behavioral tests | Gradle/JUnit debug and release; deterministic ownership/error tests; synthetic acoustic and differential contracts against pinned main |
+| Android | Actual emulator instrumentation, separate JaCoCo reports, EN/ES compact 150% font and landscape checks |
+| Complexity and coverage | Detekt and JaCoCo; compiler PSI plus exact Kotlin/JVM metadata produces method-line **CRAP-L**, with measured regression ratchets |
+| Changed code | Missing/ambiguous eligible metrics and required reports fail; unsupported constructs and reviewed above-target bridges remain explicit, content-bound exceptions |
+| DRY | Kotlin PMD CPD token-clone regression detection, alongside review of duplicated domain knowledge |
+| Mutation strength | Free PIT executes real production bytecode mutants; the original gesture threshold is mandatory, expanded domain results are informational with execution/report validity mandatory |
 
-The [verification audit](docs/quality/QUALITY_AUDIT_VERIFICATION.md) reconciles numerical reports, executed CI jobs and failure probes. Job gates fail on regressions; repository branch protection is a separate setting. Download-only caches and bounded concurrency avoid restoring stale compilation/coverage outputs.
+These Kotlin integrations pursue the official Crapper/Dryer/Mutator objectives without claiming those original executables are installed. CRAP-L uses method-specific **line** coverage, not official Crapper basis-path coverage. Compose/compiler limitations, abstract contracts and anonymous declarations remain inventoried; no score is fabricated. JVM and Android coverage are never merged, and a selected mutation score is not whole-application strength.
+
+Relevant pushes/PRs run fast compilation, both JVM variants, localization, lint, Detekt and measured gates. Relevant main/rebuild pushes and manual dispatch execute the full emulator workflow; broader mutations use manual dispatch. Path filters avoid unrelated work, though an open PR's accumulated source diff can still trigger fast checks on a documentation commit. See the [quality guide](docs/quality/QUALITY_GUIDE.md) for verified commands, reports, cadence and remaining technical limitations. Existing screenshots and acoustic beta limitations remain applicable.
 
 ## License and contributions
 

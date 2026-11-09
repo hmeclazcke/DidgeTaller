@@ -5,10 +5,12 @@ import hashlib
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from source_quality import measure_source_changes
 
 BASELINE = Path('config/quality/baseline.json')
 OUT = Path('build/reports/quality')
 POLICY = dict(line.split('=', 1) for line in Path('config/quality/policy.properties').read_text().splitlines() if line and not line.startswith('#'))
+RETIRED = json.loads(Path('config/quality/retired-methods.json').read_text())
 
 
 def ratio(counter):
@@ -28,11 +30,12 @@ def measure():
     cov = json.loads(Path('app/build/reports/jacoco/debug/summary.json').read_text())
     detekt = json.loads(Path('build/reports/detekt/summary.json').read_text())
     functions = detekt['functions_by_cyclomatic']
+    source_changes = measure_source_changes(cov, detekt, float(POLICY['crapTarget']))
     counts = Counter((r['file'], r['function']) for r in functions)
     complexity = {r['file'] + ':' + r['function']: r['cyclomatic'] for r in functions
                   if counts[r['file'], r['function']] == 1}
     methods = []
-    for r in cov['reviewed_method_matches']:
+    for r in cov.get('source_method_matches', cov['reviewed_method_matches']):
         coverage = ratio(r['coverage']['LINE'])
         methods.append(dict(identity=r['owner'] + '.' + r['name'] + r['descriptor'],
                             file=r['source'], cc=r['cyclomatic'], line_coverage=coverage,
@@ -56,7 +59,7 @@ def measure():
                 complexity=complexity, methods=methods, duplicates=duplicates,
                 measured_functions=len(functions),
                 unmapped_functions=len(functions)-len(methods),
-                unmatched_specs=cov['unmatched_method_specs'])
+                unmatched_specs=cov['unmatched_method_specs'], source_changes=source_changes)
 
 
 def violations(current, baseline):
@@ -72,12 +75,21 @@ def violations(current, baseline):
     now = {r['identity']: r for r in current['methods']}
     for key, row in previous.items():
         if key not in now:
-            errors.append(f'Reviewed mapping lost: {key}')
+            replacement = RETIRED.get(key, {}).get('replacement')
+            if replacement not in now:
+                errors.append(f'Reviewed mapping lost: {key}')
         elif now[key]['crap_line'] >= float(POLICY['crapTarget']) and now[key]['crap_line'] > row['crap_line'] + 1e-9:
             errors.append(f'CRAP-L regression: {key}')
     for key, row in now.items():
         if key not in previous and row['crap_line'] >= float(POLICY['crapTarget']):
-            errors.append(f'New high CRAP-L: {key}')
+            # An explicitly reviewed signature evolution keeps its measured predecessor's
+            # ceiling. It must not reset debt, allow ambiguous lineage, or hide an increase.
+            predecessors = [old for identity, old in previous.items()
+                            if identity not in now and RETIRED.get(identity, {}).get('replacement') == key]
+            if len(predecessors) != 1:
+                errors.append(f'New high CRAP-L: {key}')
+            elif row['crap_line'] > predecessors[0]['crap_line'] + 1e-9:
+                errors.append(f'CRAP-L replacement regression: {key}')
     allowed = Counter(r['hash'] for r in baseline['duplicates'])
     for key, count in Counter(r['hash'] for r in current['duplicates']).items():
         if count > allowed[key]:
@@ -95,7 +107,9 @@ def main():
     if args.record:
         BASELINE.parent.mkdir(parents=True, exist_ok=True)
         BASELINE.write_text(json.dumps(current, indent=2)+'\n')
-    errors = violations(current, json.loads(BASELINE.read_text()))
+    source_changes = current['source_changes']
+    (OUT/'changed-callables.json').write_text(json.dumps(source_changes, indent=2)+'\n')
+    errors = violations(current, json.loads(BASELINE.read_text())) + source_changes['violations']
     print(json.dumps(dict(mapped=len(current['methods']), unmapped=current['unmapped_functions'],
                           high_risk=sum(r['risk']=='above-target' for r in current['methods']),
                           cpd_groups=len(current['duplicates']), violations=errors)))

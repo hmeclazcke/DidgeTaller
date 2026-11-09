@@ -838,6 +838,7 @@ private fun MeasurementsLibrary(vm:TallerViewModel,export:(String,String,ByteArr
 @Composable
 private fun SessionsLibrary(vm:TallerViewModel,onOpen:(RecordingStore.Session)->Unit) {
     val context = androidx.compose.ui.platform.LocalContext.current
+    LibraryRecoveryNotice(damaged=vm.sessionIndexDamaged,onRecover=vm::recoverSessionIndex)
     Text(stringResource(R.string.ui_audio_and_analysis_stored_on_this_phone),color=muted,fontSize=13.sp)
     if(vm.sessions.isEmpty())Panel(context.getString(R.string.ui_no_sessions_yet)) {
         Text(stringResource(R.string.ui_open_measure_and_tap_start_measurement_when_you_stop_the_session_will_appear_h),color=muted)

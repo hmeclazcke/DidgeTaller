@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from function_mapping import inventory_report
 
 
 KINDS = ("LINE", "INSTRUCTION", "BRANCH", "METHOD")
@@ -108,7 +109,7 @@ def markdown(summary):
     for name, measured in summary["components"].items():
         lines.append("| " + name + " | " + " | ".join(percent(measured, k) for k in KINDS) + " |")
     lines += ["", "Only JVM test execution is included. Android-dependent zeros are retained.", "",
-              "## Reviewed pure-method CRAP approximations", "",
+              "## Legacy pinned correspondence checks", "",
               "| Method | Detekt MCC | Method lines | Method branches | CRAP-L | CRAP-I |",
               "| --- | ---: | ---: | ---: | ---: | ---: |"]
     for row in summary["reviewed_method_matches"]:
@@ -116,7 +117,9 @@ def markdown(summary):
         lines.append(f"| {name} | {row['cyclomatic']} | {percent(row['coverage'], 'LINE')} | "
                      f"{percent(row['coverage'], 'BRANCH')} | {row['crap_line_approximation']:.3f} | "
                      f"{row['crap_instruction_approximation']:.3f} |")
-    lines += ["", summary["crap_limit"], "No project-wide CRAP score. Separate regression enforcement: tools/quality_gate.py.", ""]
+    lines += ["", "The authoritative current source-level inventory and CRAP-L scores are in build/reports/quality/function-mapping.json.",
+              "Legacy source-hash checks below are retained for provenance; the PSI correspondence supersedes this small allowlist.",
+              "No project-wide aggregate CRAP score. Separate regression enforcement: tools/quality_gate.py.", ""]
     for row in summary["unmatched_method_specs"]:
         lines.append(f"Score omitted for {row['owner']}.{row['name']}: {row['reason']}")
     return "\n".join(lines)
@@ -129,6 +132,14 @@ def main():
     parser.add_argument("--matches", type=Path, default=Path("config/jacoco/method-matches.json"))
     args = parser.parse_args()
     summary = summarize(args.xml, args.detekt, args.matches)
+    inventory = Path('build/reports/quality/source-inventory.xml')
+    mapped = inventory_report(inventory, args.detekt, args.xml, Path('build/reports/quality/jvm-method-inventory.xml'))
+    (Path('build/reports/quality') / 'function-mapping.json').write_text(json.dumps(mapped, indent=2) + '\n', encoding='utf-8')
+    summary['source_function_inventory'] = dict(total=mapped['total_functions'], counts=mapped['counts'])
+    summary['source_method_matches'] = [dict(source=f['file'], owner=f['method']['owner'], name=f['method']['name'],
+        descriptor=f['method']['descriptor'], declaration_line=int(f['line']), bytecode_line=f['method']['line'],
+        cyclomatic=f['cc'], coverage=f['method']['coverage'], correspondence='PSI owner/signature/body and JVM descriptor')
+        for f in mapped['functions'] if f['status'] == 'measured']
     output = args.xml.parent
     (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     rendered = markdown(summary)

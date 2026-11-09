@@ -93,6 +93,24 @@ class RecoveryUiTest {
         compose.runOnIdle {assertEquals(raw,RecordingStore(app).list().single().timeline)}
     }
 
+    private fun endSyntheticCapture(mic:MicrophoneEngine) {
+        val recording=TallerViewModel::class.java.getDeclaredField("recording").apply {isAccessible=true}.get(vm) as RecordingCoordinator
+        mic.captureId?.let {recording.terminal(CaptureTerminal(it,null))}
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun registerSyntheticCapture(mic:MicrophoneEngine) {
+        // Register a worker identity, without opening hardware or creating a recording file.
+        val previous=mic.captureId
+        val recording=TallerViewModel::class.java.getDeclaredField("recording").apply {isAccessible=true}.get(vm) as RecordingCoordinator
+        previous?.let {recording.terminal(CaptureTerminal(it,null))}
+        val capture=RecordingCapture()
+        MicrophoneEngine::class.java.getDeclaredField("capture").apply {isAccessible=true}.set(mic,capture)
+        recording.monitorStarted(capture.id)
+        TallerViewModel::class.java.getDeclaredMethod("registerCapture",CaptureId::class.java)
+            .apply {isAccessible=true}.invoke(vm,capture.id)
+    }
+
     @Suppress("UNCHECKED_CAST")
     @Test fun controlledPcmReachesLiveMeterAndProfilesResetWithoutGraphFiltering(){
         show()
@@ -102,12 +120,8 @@ class RecoveryUiTest {
             val mic=f.get(vm) as MicrophoneEngine
             val callback=MicrophoneEngine::class.java.getDeclaredField("onReading").apply {isAccessible=true}.get(mic) as (PitchDetector.Reading)->Unit
             // The transport is not used: deterministic PCM enters the production reading callback.
-            val listening=TallerViewModel::class.java.getDeclaredField("listening\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<Boolean>
-            val phase=TallerViewModel::class.java.getDeclaredField("sessionPhase\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<SessionPhase>
-            val started=TallerViewModel::class.java.getDeclaredField("sessionStartedAtMs\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<Long>
-            val timeline=TallerViewModel::class.java.getDeclaredField("sessionTimeline\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<List<SessionAnalysis.Point>>
             // A capture UI fixture with no writer or AudioRecord: never claims physical recording.
-            compose.runOnIdle {listening.value=true;started.value=android.os.SystemClock.elapsedRealtime();timeline.value=emptyList();phase.value=SessionPhase.CAPTURING}
+            compose.runOnIdle {registerSyntheticCapture(mic)}
             val stream=PitchStream(profile,includeVisuals=false)
             val pcm=ShortArray(66150){i->(weights.mapIndexed {h,w->w*sin(2*PI*hz*(h+1)*i/44100)}.sum()/weights.sum()*12000).toInt().toShort()}
             val readings=pcm.asList().chunked(4096).mapNotNull {stream.append(it.toShortArray())}
@@ -139,7 +153,7 @@ class RecoveryUiTest {
             assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableDiscard,compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot)
             capture("$name-uncertain")
-            compose.runOnIdle {phase.value=SessionPhase.IDLE;vm.microphoneStop()}
+            compose.runOnIdle {endSyntheticCapture(mic);vm.microphoneStop()}
         }
         meter(InstrumentProfile.DIDGERIDOO,70.0,listOf(1.0,.4,.2),"measure-drone")
         meter(InstrumentProfile.NATIVE_AMERICAN_FLUTE,440.0,listOf(.15,1.0,.2),"measure-flute")
@@ -158,11 +172,8 @@ class RecoveryUiTest {
         show()
         val mic=TallerViewModel::class.java.getDeclaredField("mic").apply {isAccessible=true}.get(vm)
         val callback=MicrophoneEngine::class.java.getDeclaredField("onReading").apply {isAccessible=true}.get(mic) as (PitchDetector.Reading)->Unit
-        fun <T> state(name:String)=TallerViewModel::class.java.getDeclaredField(name+"\$delegate").apply {isAccessible=true}.get(vm) as androidx.compose.runtime.MutableState<T>
         compose.runOnIdle {
-            state<Boolean>("listening").value=true
-            state<Long>("sessionStartedAtMs").value=android.os.SystemClock.elapsedRealtime()
-            state<SessionPhase>("sessionPhase").value=SessionPhase.CAPTURING
+            registerSyntheticCapture(mic as MicrophoneEngine)
         }
         fun deliver(samples:ShortArray) {
             val stream=PitchStream(InstrumentProfile.DIDGERIDOO,includeVisuals=false)
@@ -201,7 +212,7 @@ class RecoveryUiTest {
         }
         deliver(noise)
         compose.runOnIdle {
-            state<SessionPhase>("sessionPhase").value=SessionPhase.IDLE
+            endSyntheticCapture(mic as MicrophoneEngine)
             vm.microphoneStop()
             assertEquals(4,vm.recentAcousticDiagnostics.size)
             assertNotNull(vm.acousticSample)

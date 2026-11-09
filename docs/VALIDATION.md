@@ -1,3 +1,155 @@
+# 2026-11-08 workspace ownership integration
+
+## Verified comparison/rendering delivery - 2026-11-09
+
+[Executable source11fa244 verification](engineering/SWIPE_VERIFICATION_11fa244.md) records passed fast42650147321,
+full API35 emulator42650133214, five actual EN/ES/large-font configuration cases,
+and valid unchanged-scope mutation42614248589. JVM936/920/16; Android163/153/10,
+zero failures. JVM43.39/39.70%, core99.07/83.78%; separate Android92.02/68.62%.
+CRAP-L484/114 (72 JVM/28 Android high), Detekt1987, Linux Lint0/53/8 (one
+version-metadata advisory beyond local52), CPD0. The earlier failed ES150 run
+is preserved along with the actual layout correction; no gate/test weakening.
+Whole application remains IN PROGRESS; exact next owner-admission regression
+and remaining work are in the continuation checkpoint. Reuse executable source
+for documentation-only descendants, not as proof of a newly executed suite.
+
+## 2026-11-09 CI layout correction
+
+Source c9b3ab3 fast42614250039 and real mutation42614248589 pass. Full native
+42614242780 passes152 tests/ten skips, then correctly fails the Spanish/150%
+extra layout. The [focused correction](engineering/PLOT_NOTICE_OWNERSHIP.md)
+reproduces that failure and the subsequent landscape missing-frame defect.
+Ten final affected native cases pass on the owned synthetic API37 emulator,
+including EN/ES, three-button navigation,150% font, actual fullscreen gestures
+and80ms paused seeking. Fresh debug JVM460 passed/eight skips, JaCoCo43.38/39.61%,
+core99.02/83.55%, gate0 (484/114,72 high), Detekt1987, Lint0/52/8 and CPD0.
+Final corrected-source CI is still required. No historical
+or partial Android result is represented as that final pass.
+
+## 2026-11-09 comparison operation integration
+
+[Source and evidence](engineering/SWIPE_OPERATION_OWNERSHIP.md) record native
+post-disposal RED/GREEN, cached/camera ownership, the shared coroutine scheduler,
+stronger cancellation observations, selected PIT, final local JVM936/920/16 and
+separately retained launcher/test-driver failures. Source/CRAP-L gate passes with
+484 scored/114 independent unscored and no ordinary risk waiver. Final remote
+emulator coverage and broad mutations await the single combined publication.
+
+## 2026-11-09 bounded plot annotation
+
+The [annotation ownership cycle](engineering/PLOT_NOTICE_OWNERSHIP.md) records the actual native bounds RED,
+final four-case GREEN plus ES/landscape150 validation, passive seek/scrub proof,
+focused current-source metrics and the next independent comparison lifecycle RED.
+No DSP, persistence, measurement threshold or public/private data changes.
+
+## 2026-11-08 analysis and rendering verification
+
+The [current source-scoped milestone](engineering/ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis
+ownership, the ready-frame plot pipeline, actual native RED/GREEN, full scientific
+text at 150%, comparable complexity and focused mutation evidence. Whole rebuild
+remains IN PROGRESS; [actual current source verification](engineering/ANALYSIS_RENDERING_VERIFICATION_8b73c21.md)
+records all three passing remote jobs, metrics, screenshots and precise residual work.
+
+
+Published source ec19b18 is remotely verified: fast
+[42508379814](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508379814),
+native [42508375240](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508375240)
+and mutation [42508377125](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42508377125)
+all passed. Native 153 discovered/143 passed/ten protected or configuration skips,
+plus five configuration cases passed. Separate Android coverage 91.63%/68.66%;
+436 Android CRAP-L scores, 29 above target. Linux JVM 780 passed/16 protected skips,
+coverage 39.71%/36.43%, core 98.98%/82.70%. Broad PIT: 1,883 mutants across 51
+bytecode classes; 1,462 killed/405 survived/14 uncovered/two timeouts/no errors,
+77.75% detected including timeouts; PIT duration 137 s. Seven of 36 synthetic PNGs
+visually inspected; scientific-text truncation at 150% remains explicit.
+See [source-scoped verification](engineering/WORKSPACE_VERIFICATION_ec19b18.md) for denominators,
+the local failed launcher run/retry, report paths and exact next production task.
+Documentation-only descendants reuse unchanged executable inputs, not a fictitious
+new execution. The whole reconstruction remains IN PROGRESS; keep PR #1 draft.
+
+Simulation milestone: canonical debug/release JVM 796 discovered/780 passed/
+16 protected skips/zero failures; engineering tools five and Python 45 passed.
+JVM line/branch coverage 39.69%/36.33%, pure core 98.92%/82.45%. Inventory: 436
+reliable CRAP-L scores, 96 independent Detekt-unscored, 75 above target; all 576
+PSI named declarations accounted for. Two new unscored declarations are abstract
+loader/task contracts. No baseline reset or eligible ordinary-function waiver.
+Simulation request/finish/close and loader submit score 5/2/2/4 with 100% method
+line coverage. PIT simulation 36 generated/31 killed/five survived; plots 124/
+121/three, zero uncovered/tool errors. Lint zero errors/52 warnings/eight hints,
+Detekt 1,970 informational, CPD zero groups >=100 tokens. Localization, debug APK/
+androidTest compilation and the 741-case original-main differential probe pass.
+
+Actual API 37 ViewModel RED: one pass/one failure after disposal; final GREEN four
+pass. Local full suite: 122 passed/21 failed/nine protected/configuration skips,
+with captured Pixel Launcher ANR stealing focus. All 21 affected cases passed one
+targeted retry after launcher-only recovery. Original failures remain preserved;
+no local Android coverage or clean single full-suite pass is claimed. Observe final
+branch API 35 CI, separate Android CRAP-L and broad PIT after publication.
+See [simulation ownership](engineering/SIMULATION_OWNERSHIP.md) for methods and limitations.
+
+Wave/raster follow-up: full JVM 764 discovered/748 passed/16 protected skips/no
+failures, JVM line/branch 39.11%/35.55%, pure core 98.85%/82.28%. Geometry methods
+score 4/6 with 100% method-line coverage; inventory 430 scored/94 unscored, 76
+above target and no ratchet violation. Plot PIT 124 generated/121 killed/three
+survived/no uncovered or tool errors; all new geometry-factory mutants killed.
+Lint 0 errors/52 warnings/eight hints, Detekt 1,967 informational, CPD zero groups
+>=100 tokens. Differential probe remains byte-identical; actual native/CI outcomes
+for this new source must be observed after publication.
+
+TraceDrawing follow-up: full debug/release JVM 748 discovered, 732 passed, 16
+protected skips, no failures. JaCoCo JVM 38.99% lines/35.40% branches, core
+98.83%/82.08%; 428 reliable scores/93 unscored/76 above target, ratchet passes.
+Canonical/historical drawing MCC and CRAP-L are 7/8 with 100% method-line coverage.
+Selected plot PIT 78 generated, 75 killed, three survived, no uncovered/errors;
+the newly exposed timestamp-arithmetic mutant is killed by offset invariance.
+Detekt 1,963 informational; Lint zero errors/52 warnings/eight hints, CPD zero
+>=100-token groups, localization and 41 Python tests pass. Native execution for
+this subsequent renderer change must be inspected separately from 9a7229f.
+
+Follow-up 4456ce9 native run 42497366648 succeeded (139 passed/ten skipped,
+five additional configuration cases passed; separate Android 91.68%/68.42%).
+Visual inspection found mislabeled ES/landscape wide-pitch PNGs containing a
+spectrogram. Strengthen the capture test with actual selected-tab and fullscreen
+state assertions. A passing screenshot test alone does not prove its named state.
+
+Remote source 9a7229f: fast CI 42495943779 and expanded PIT 42495992318 succeeded.
+API 35 run 42495940601 passed the complete 149-case suite (139/0/10), producing
+separate Android coverage 91.70% lines/68.54% branches, then failed the additional
+EN/150% screenshot guard. This is a failed job, not a full native configuration
+pass. Screenshot readiness now awaits the accessibility window and records rejected
+evidence rather than accepting a system overlay. The guard remains mandatory;
+the follow-up actual run must be inspected. Focused Android-test build passed.
+
+Local canonical final build executes both JVM variants: 734 discovered/718 passed/
+16 protected skips/zero failures. Scope: all existing acoustic/state/persistence
+tests plus 33 workspace and six reduction contracts per variant. Coverage JVM
+38.64% lines/35.55% branches, core 98.81%/81.84%; source mapping 426/93 with 76
+above-target JVM scores, zero ratchet violations and zero CPD groups >=100 tokens.
+Detekt 1,967 informational; Lint/debug/androidTest compilation/localization pass.
+41 Python tools tests pass. No new Android execution is claimed by this local
+paragraph; fresh CI/emulator evidence and exact commit are recorded in PR #1.
+
+Focused PIT: workspace 204 (186 killed/17 survived/one uncovered), plots 56 (53/3/0),
+no remaining tool errors/timeouts. The two earlier RUN_ERROR outcomes were socket
+failures, not kills; thread interruption is isolated and reports now reject
+infrastructure/unexecuted states. Existing handoff/playback reruns retain 94/5 of
+99 and 125/22 of 147 respectively. Selected scopes are not whole-app measurements.
+Differential probe matches the pinned original production JAR byte-for-byte.
+Logs: checkpoints/workspace. Details: docs/engineering/WORKSPACE_REBUILD.md.
+
+# 2026-11-08 focused forensic quality verification
+
+Audited source interval 9cd18f6..672c9b2 without runtime/test/resource changes.
+Reused verified CI 42469282408 (JVM/static/coverage), 42469279440 (real emulator),
+42469281768 (actual PIT); authenticated API confirms exact heads and success.
+No emulator or mutation rerun is counted as new evidence. Pinned official skill
+and MIT license compare byte-for-byte with upstream. New local validation:
+37 Python tests / 2 PSI JUnit tests passed, zero failures/skips; source inventory,
+same-source coverage summaries and corrected gate pass. Isolated red probes first
+reproduced acceptance of unscored/ambiguous/empty metrics; final synthetic fixtures
+verify rejection plus intentional abstract/technical-review cases. No Samsung or
+private WAV access. Details and exact report paths: docs/quality/FORENSIC_COMPLIANCE_AUDIT.md.
+
 ## Musical Experience 4.0 — 2026-10-26
 
 Historical entries retain their original language and version-specific scope. See [Language policy](LANGUAGE_POLICY.md); current English entries appear with their delivery dates.
@@ -1986,3 +2138,92 @@ See docs/quality/QUALITY_AUDIT_VERIFICATION.md for metrics, original upstream by
 Code 9e7b316: fast run https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301032905 and full emulator run https://github.com/hmeclazcke/DidgeTaller/actions/runs/42301033022 passed. Full clean API 35 emulator: 127 discovered / 117 passed / 10 explicit skips / 0 failed, 450.824 s. Seven skips are protected-fixture opt-in guards; the three configuration-dependent cases passed on the new clean API 37 AVD. Two JVM variants each: 195 discovered / 187 passed / 8 protected skips / 0 failed. JVM coverage 28.19% lines / 25.69% branches; core 98.47% / 77.25%. Separate Android coverage 91.14% / 67.17% (audio lines 95.22%, persistence 94.37%). All exact test counts and coverage data were read from retained CI artifacts.
 
 Real PIT run 42297582476 passed 11/11 killed; its relevant inputs are unchanged. CPD zero 100-token groups; reviewed CRAP-L eight mapped / 329 unmapped, three historical high scores retained. See QUALITY_BASELINE for full scope, actual links, privacy correction and remaining debt. The final evidence commit is documentation-only and reuses unchanged validated inputs; no redundant Android run or Samsung operation.
+
+### Isolated Uncle Bob rebuild milestone — 2026-11-07
+
+Branch refactor/uncle-bob-rebuild, separate C:/projects/DidgeTaller-uncle-bob worktree, baseline main 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67 unchanged. IN PROGRESS: this is not complete application acceptance. Original skill/license byte equality verified. Compiler PSI and source/descriptor/body correspondence expose 324 current measured functions; every one of 439 named declarations is classified. Original expanded baseline was 276 mapped/97 high, rather than eight allowlisted functions. Current high scores: 85; no coverage floor was relaxed.
+
+DSP period search and trace assembly were reconstructed with 741 synthetic output lines byte-identical to original compiled bytecode. Complexity 43/33/15 becomes 9/entry-point 1/7, with actual extracted work <=9. Framework-independent PlaybackController owns session/seek state behind Android ports; 22 behavioral tests include stale callbacks, pause/loop/preparation and a red/green disposal scheduling defect. A separate red/green test prevents nonfinite live display state. Both JVM variants: 223 discovered/215 passed/8 protected skips/0 failures each. Debug and Android-test APKs build. JVM coverage 30.66% lines/27.84% branches, core 98.50%/78.36%, changed denominators disclosed. Lint 0 errors/59 warnings/10 hints; an invalid local SDK property and stale lint cache were corrected before this pass. Eighteen Python tests, parser test, localization and ratchets pass. Original static rules remain.
+
+Expanded free PIT: 17 concrete classes, initial 1,143 mutants (753 killed, 364 survived, 24 uncovered, 2 timeouts); strengthened 1,146 (767 killed, 354 survived, 23 uncovered, 2 timeouts), 67.10% detected including timeouts. Domain score remains informational; focused 11/11 threshold still enforced. Controlled JVM timing/allocation samples and scope limitations are in docs/engineering/REBUILD_CASE_STUDY.md. Full branch emulator/CI evidence must be observed separately. No physical device/private audio operation, persisted-format change or metronome implementation. Next exact work is in REBUILD_PROGRESS.md; capture/persistence/ViewModel/UI reconstruction and remaining survivors are unfinished.
+
+### Worker-owned capture and verified branch CI - 2026-11-07
+
+IN PROGRESS on refactor/uncle-bob-rebuild. Source 07c756c has actual passing fast/differential CI 42368989332, full clean emulator CI 42368900284 (117 passed/10 skipped/0 failed of 127), and manual mutation CI 42368987707. Downloaded artifacts confirm 17-class PIT counts and separate Android coverage 91.08% lines/68.12% branches. The duplicate fast push was cancelled in favor of the identical PR run; not counted as passing.
+
+A new controlled emulator regression demonstrated an old worker finalizing a replacement's writer. RecordingCapture now owns per-worker file/state, sample limits, discard claims and terminal outcomes. Twelve recording handoff integration tests pass, including the new regression, actual emulator timeout/discard, historical synthetic bytes/index/recovery and ViewModel disposal. Fifteen new JVM cases pass; full debug/release suites each 238 discovered/230 passed/8 protected skips/0 failures. Twenty-one Python tests, compiler parser, localization, builds, Detekt, Lint, CPD, JaCoCo and differential pass. Current mapping 329/400 with all 444 declarations accounted; 84 high scores remain visible. JVM 31.38% lines/28.62% branches, core 98.47%/78.58%, changed denominators. Original coverage floors retained; exact signature lineage keeps predecessor risk ceilings and fails regressions.
+
+Expanded 18-class PIT executed 1,197 mutants: 806 killed, 365 survived, 24 uncovered, 2 timeouts. Focused survivor review added two-second limit and empty-chunk assertions; capture is now 40 killed/10 survived/1 uncovered of 51. The broad earlier run is not relabeled as a final run after those assertions. Windows open-file rename limitations remain explicit; Linux and Android evidence are separate. No optional paid plugin or operator exclusions.
+
+A brand-new API 37 AVD used only synthetic data. Eight ES/EN UI audit methods passed, including compact portrait/landscape at 150% font; actual screenshots inspected, including unavailable trace and real spectrogram/harmonics. No physical Samsung/private WAV access, main changes, merge, or metronome. Remaining architecture, persistence/cache, mapping and survivor work is listed in REBUILD_PROGRESS.md. New capture CI results remain to be observed after publication.
+
+### Independent cache publication and native Back differential - 2026-11-07
+
+A controlled concurrent cache test failed on the old shared temporary path with a mixed integer value. Unique same-directory temporary ownership and atomic replacement now pass six JVM contracts plus all 27 selected emulator persistence/capture cases. No cache format/key or original recording changed. Free PIT's cache scope produced one cleanup mutant, killed; this is explicitly narrow. The domain selection now contains 19 classes for the next actual CI run.
+
+Full local debug/release suites each 245 discovered/237 passed/8 protected skips/0 failed after adding the locale-independent canonical frequency text contract. JVM 31.49% lines/28.73% branches, core 98.54%/78.88%; 330 mapped/71 unscored of 401 Detekt functions, all 445 named declarations accounted, 83 high. Same-config Detekt 1,970; Lint 0 errors/59 warnings/10 hints; CPD zero >=100-token groups. Parser/Python/localization, debug/application-test APKs, quality ratchets and 741 differential outputs pass. Windows/Linux mutation paths are reported separately, never merged.
+
+All 63 runtime Kotlin files and owned native wrapper received an initial direct responsibility review; REBUILD_REVIEW.md records retained/rebuilt/unresolved decisions. That reading milestone is not architectural completion. Eight focused ES/EN UI cases pass, with actual compact/landscape 150%-font screenshots inspected. API 37 native edge-Back fails. Readiness/gesture-distance/animation diagnostics did not resolve it; experimental test edits were removed. The exact original main APK/test at 3a16004 also fails on the same fresh AVD, establishing the limitation predates this rebuild. No skipped assertion or KEYCODE_BACK fallback was introduced. Original-main UI oracle lives in a detached ignored worktree; rebuilt emulator APKs were restored afterward. Native MainActivity versus Compose test-clock diagnosis remains unfinished.
+
+Main and Samsung were untouched. Only the explicitly selected fresh emulator received synthetic fixtures and APKs. Continue from REBUILD_PROGRESS.md; full reconstruction remains IN PROGRESS and the PR must remain draft. New feature-branch CI must be inspected after publishing these source commits.
+
+### Verified rebuild checkpoint d90926c - 2026-11-07
+
+IN PROGRESS, draft PR https://github.com/hmeclazcke/DidgeTaller/pull/1. Source/test/config d90926c passed fast/differential CI 42386035464, full API 35 emulator 42386030241 and manual 19-class PIT 42386032298. Downloaded reports confirm JVM 492 discovered/476 passed/16 protected skips and Android 129 discovered/119 passed/10 explicit skips, zero failures. Linux JVM 31.51% lines/28.84% branches, core 98.61%/79.18%; separate Android 91.15%/68.10%. Final PIT: 1,198 total, 825 killed, 355 survived, 16 uncovered, 2 timed out; detected 827/1,198=69.03%, 109 seconds. Capture improves 47/51 to 51/51 on the same Linux scope after independent filesystem-oracle and zero-append/full-disk assertions; production logic unchanged. PlotTouch's enforced 11/11 gate passes. Thirty-two Android-method CRAP-L scores and 83 JVM scores exceed target across the same 330 reliable mappings; the Android mapping was generated locally from exact CI XML and is informational, never merged coverage.
+
+The API 37 Back diagnosis is resolved: the hand-created AVD inherited hardware main keys, then suffered a cold-boot System UI ANR under host memory pressure. Set hw.mainKeys=no only in the new AVD, verified System UI's edge handler, stopped idle build daemons, and recovered the ANR. The unchanged original edge-Back test passed 1/1, preserving/releasing real playback correctly; native MainActivity wide/normal Back also passed without recording or key-Back fallback. Corrected software-navigation compact ES portrait/landscape 150% cases pass 2/2; their two images and three native screenshots were inspected, in addition to 26 initial screenshots. Earlier invalid-hardware images prove in-app layout rather than software-bar insets. No source navigation workaround, timeout increase, private fixture or physical device operation was introduced.
+
+The case study, per-file review and concise REBUILD_PROGRESS checkpoint contain remaining implementation work and exact commands. Both README languages updated consistently; original ub-mode/license and Android resources untouched. Main remains 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67, clean; only the feature branch was pushed. Significant persistence/ViewModel/UI/high-risk/mutation work remains, so this is not completed whole-application acceptance. Evidence-only documentation changes reuse the unchanged d90926c implementation inputs.
+
+
+### Persistence/library continuation ? local gate, remote verification pending
+
+Existing rebuild branch resumed from 5f93e23; c132642 commits the persistence redesign. Local final-source JVM: 548 discovered, 532 passed, 16 protected skips; 25 focused Android persistence cases pass. Original corruption/unknown-row/duplicate-ID cases failed 3/3 before the rewrite. Shared publication, preserved backups/quarantine, explicit recovery and one library snapshot replace the old owners. A further red test reproduced an uncaught corrupt-extras exception on the UI thread; the correction is compiled and under remote Android verification. Local API 37/System UI failures invalidate final screenshots and the aborted four-case run, rather than proving an app regression. CI collects synthetic library screenshots only from a fresh API 35 emulator after a successful complete run. Current metrics, pending gates and exact next actions are in docs/engineering/REBUILD_PROGRESS.md. Main, Samsung, private audio, serialized formats and the official skill remain untouched. Overall rebuild IN PROGRESS; PR #1 remains draft.
+
+
+### Verified persistence/library and locale milestone ? 6c6f00d
+
+Fast CI 42413957308 and full API 35 CI 42413952372 pass. Actual JVM totals: 548 discovered/532 passed/16 protected skips; Android: 144/134/10, plus two separate real compact en/es 150%-system-font recovery cases passed. Thirteen synthetic screenshots were inspected; the caller-locale mismatch found after the first green pipeline was fixed rather than ignored. JVM coverage 33.69% lines/31.33% branches; separate Android 91.41%/68.72%. Compiler/CI hashes match all 71 production Kotlin files. Ratchets pass with 361 mapped/76 unscored and 79 high JVM CRAP-L; separate Android mapping has 30 high. CPD zero; Detekt 1965; remote Lint 0/53/9. Python 21 CI cases and six separate local shell-failure probes pass. 741 differential outputs remain identical. Manual PIT 42412071596 at 22655bb remains valid for byte-unchanged selected inputs: 1369 mutants, 970 killed/381 survived/16 uncovered/2 timeouts; detected 71.00%, 26 classes, engine 78 seconds. The original focused gate remains 11/11. Overall rebuild IN PROGRESS: continue capture-device/terminal-event and ViewModel ownership, then renderers/high-risk logic; do not repeat completed persistence work. Main/Samsung/private WAVs and the original skill/license remain untouched. See REBUILD_PROGRESS.md for URLs, artifact paths and measurement limitations.
+
+
+### Capture/workflow/raster local validation
+
+Combined continuation inputs after 9cd18f6: both JVM variants 618 discovered/602 passed/16 protected skips/zero failed. JVM lines/branches 35.46%/32.67%; core 98.66%/80.09%. Coverage/complexity/CRAP-L/CPD ratchets pass (393 mapped/90 unscored/78 JVM high scores; no >=100-token clones). Lint 0 errors/52 warnings/8 hints, Detekt 1,968 informational findings, localization parity, 21 Python tests, compiler inventory and 741 byte-identical differential outputs pass. Debug and androidTest APKs compile. Focused PIT: workflow 89 killed/5 survived of 94; raster 31/31; capture Windows 44 killed/9 survived/1 uncovered of 54. Scores are selected-scope, not whole-app.
+
+The owned API 37 pre-fix regression actually ran and failed (Discard A must not stop monitor B). Later post-fix instrumentation crashed before discovery; zero tests executed there and no accepted screenshot evidence. Clean API 35 CI remains pending publication; do not count compilation as execution. Full logs/reports stay ignored under checkpoints and build directories. No physical device or private fixture was used.
+
+
+Capture lifecycle correction after initial CI: de8df92 fast quality and broad PIT passed, but API 35 run 42419882993 correctly failed (147 discovered, 136 passed, 1 failed, 10 skipped). The failure exposed a legacy disposed-notice expectation, not an import/integrity failure. Keep the failed evidence. Strengthened live/disposed assertions and late device-error injection accompany a pure lifecycle boundary for microphone errors and a failed-start listening regression. Updated local verification: 622 JVM discovered/606 passed/16 protected skips; JVM 35.53%/32.73%, core 98.66%/80.13%; 395 mapped/90 unscored/78 high scores, no ratchet violations; focused ownership PIT 94 killed/5 survived of 99. New remote emulator/mutation evidence remains pending; no failed or compilation-only run counts as an Android pass.
+
+
+### Playback intent local validation
+
+Resume at a7d2514: CI fast 42421708587 and PIT 42421707813 passed (1,502 total: 1,098 killed/386 survived/16 uncovered/2 timeouts; selected scope, 116 seconds). Android 42421703832 correctly failed a pause-position assertion: 147 discovered/136 pass/1 failure/10 skips; capture/disposal cases passed. Four deterministic playback tests then failed before production correction.
+
+Corrected local inputs execute both JVM variants: 656 discovered/640 passed/16 protected skips/zero failures. JVM line/branch 35.67%/33.04%; core 98.67%/80.49%; 397 mapped/90 unscored/78 JVM high scores; ratchets and CPD pass. Detekt 1,970 informational; Lint 0 errors/52 warnings/8 hints; debug/androidTest build, localization, 21 Python tests and 741 differential outputs pass. Playback PIT: 125 killed/22 survivors/zero uncovered of 147. Full clean API 35 and broad CI mutation checks must be observed for the new source revision; previous failures/compilation do not count as a pass. Source/test changes preserve WAV/index assertions and the original 80 ms pause bound.
+
+
+### Accepted 7aa7fcb framework/CI evidence
+
+Fast 42469282408, full Android 42469279440 and broad PIT 42469281768 all passed for 7aa7fcb82a64e316f1dc21a6e84c7b4c42532d7d. JVM: 656 discovered/640 passed/16 protected skips/0 failures; Linux debug coverage 35.69% line/33.31% branch, core 98.73%/80.77%. Actual API 35 suite: 147 discovered/137 passed/10 skipped/0 failures; extra EN/ES recovery executions at 720x1280 and actual fontScale 1.5 each passed 1/1. Android coverage separately 91.56%/68.46%, source mapping 397/90 and 30 high CRAP-L; JVM has 78 high scores. PIT: 29 classes, 1,519 mutants, 1,119 killed/382 survived/16 uncovered/2 timeouts, detected 73.80%, 75 seconds engine time; original 11/11 gesture gate passed. Thirteen actual library/recovery images inspected, with originals retained. No new graph screenshot or physical-device claim. Artifacts/reproducibility and failed-run history: docs/engineering/REBUILD_VERIFICATION_7aa7fcb.md. Later documentation-only commits do not invalidate these unchanged runtime/test inputs.
+
+### Final rebuild local acceptance - 2026-11-09
+
+The isolated rebuild's final verification passes1052 JVM cases (1036 pass,16 protected
+skips),170 native cases (160 pass,ten justified skips),five actual compact150 locale/
+landscape configurations,14 overlapping current-APK owner/presentation checks,
+757 byte-identical synthetic contracts,46 tooling tests, strict gates and builds.
+Real ownership/WAV-boundary RED and rejected intermediate encoding/mutation-scope
+reports are preserved locally. Separate coverage, counters, PIT scope and comparable
+limits are versioned in docs/engineering/REBUILD_FINAL_VERIFICATION.md and its JSON.
+Remote exact-source results/artifacts are a separate mandatory gate in draft PR1.
+No Samsung/private WAV access, migration, main change or merge.
+
+### Final STFT cell boundary
+
+The f72136c remote fast/native/broad PIT jobs pass, but independent review exposes
+an introduced integer rounding error in scientific inspection. A125ms/44.1kHz/four-cell
+fixture produces actual RED before fractional selection is restored. Final local527
+JVM cases per variant and170 native cases plus five configurations pass; gate0.
+Current exact-source remote runs are recorded in PR1; prior f721 results do not
+substitute for changed-input validation. WAV/detector/layout semantics are preserved.

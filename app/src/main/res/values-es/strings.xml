@@ -478,6 +478,8 @@
     <string name="diagnostic_could_not_play_audio">"No se pudo reproducir: %1$s"</string>
     <string name="diagnostic_audio">"Audio %1$s/%2$s"</string>
     <string name="diagnostic_visualization_canceled">"Visualización cancelada."</string>
+    <string name="diagnostic_visualization_unavailable">"Visualización no disponible. Volvé a abrir la sesión."</string>
+    <string name="diagnostic_visualization_source_changed">"El audio cambió durante la carga. Volvé a abrir la sesión."</string>
     <string name="diagnostic_length_out_of_range">"Longitud fuera de rango"</string>
     <string name="diagnostic_no_resonances_found_in_the_range">"No se encontraron resonancias en el rango."</string>
     <string name="diagnostic_not_a_valid_riff_wav">"No es un WAV RIFF válido."</string>
@@ -586,4 +588,14 @@
     <string name="recording_discard_too_late">La grabación ya estaba finalizando y se guardará.</string>
     <string name="recording_release_failed">No se pudo liberar el micrófono.</string>
     <string name="graph_timeline_hint">Tocá o arrastrá para buscar. Dos dedos para zoom o desplazar.</string>
+    <string name="library_index_damaged">El índice de sesiones está dañado. Los audios se conservan; los metadatos no se pueden modificar hasta recuperarlo.</string>
+    <string name="library_index_recover">Recuperar índice de sesiones</string>
+    <string name="library_index_recovery_confirmation">¿Restaurar la última copia legible del índice? El texto dañado se conservará. No se eliminarán archivos de audio.</string>
+    <string name="library_index_restored">Índice de sesiones recuperado. Audios conservados.</string>
+    <string name="library_index_recovery_failed">No se pudo restaurar una copia legible. Los audios y los metadatos originales se conservan.</string>
+    <string name="library_metadata_write_failed">No se pudieron guardar los metadatos de forma segura. El audio se conservó.</string>
+    <string name="recording_finalize_failed">No se pudo cerrar el WAV: %1$s. La captura queda pendiente de recuperación.</string>
+    <string name="recording_empty">No se capturó audio. Intentá de nuevo.</string>
+    <string name="recording_saved">Sesión guardada en Biblioteca.</string>
+    <string name="recording_save_failed">No se pudo guardar la sesión: %1$s</string>
 </resources>

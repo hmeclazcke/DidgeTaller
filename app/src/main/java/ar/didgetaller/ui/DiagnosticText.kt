@@ -27,6 +27,8 @@ private data class DiagnosticRule(val source: String, val resource: Int, val plu
 }
 
 private val diagnosticRules = listOf(
+    DiagnosticRule("Stored metadata is damaged; recordings have been preserved.", R.string.library_index_damaged),
+    DiagnosticRule("Metadata publication failed; durability is unknown.", R.string.library_metadata_write_failed),
     DiagnosticRule("Destino inválido", R.string.diagnostic_invalid_destination),
     DiagnosticRule("Archivo exportado.", R.string.diagnostic_file_exported),
     DiagnosticRule("No se pudo guardar: {1}", R.string.diagnostic_could_not_save),
@@ -70,6 +72,9 @@ private val diagnosticRules = listOf(
     DiagnosticRule("No se pudo reproducir: {1}", R.string.diagnostic_could_not_play_audio),
     DiagnosticRule("Audio {1}/{2}", R.string.diagnostic_audio),
     DiagnosticRule("Visualización cancelada.", R.string.diagnostic_visualization_canceled),
+    DiagnosticRule("Visualization canceled.", R.string.diagnostic_visualization_canceled),
+    DiagnosticRule("Visualization unavailable.", R.string.diagnostic_visualization_unavailable),
+    DiagnosticRule("Visualization source changed.", R.string.diagnostic_visualization_source_changed),
     DiagnosticRule("Longitud fuera de rango", R.string.diagnostic_length_out_of_range),
     DiagnosticRule("No se encontraron resonancias en el rango.", R.string.diagnostic_no_resonances_found_in_the_range),
     DiagnosticRule("No es un WAV RIFF válido.", R.string.diagnostic_not_a_valid_riff_wav),

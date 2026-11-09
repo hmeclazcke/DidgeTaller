@@ -39,78 +39,14 @@ object PitchDetector {
         }
         val spectrum = if (includeVisuals) spectrum(pcm, sampleRate) else emptyList()
         if (rms < 0.005) {observe?.invoke(Diagnostic(null,"low_amplitude"));return Reading(rms = rms, waveform = wave, spectrum = spectrum)}
-        // Preserve the proven low-register path. Higher notes need longer periods in samples
-        // for accurate interpolation (27.6 samples at 1600Hz instead of 6.9 after /4).
-        val ds = if(maxHz>500)1 else 4
-        val fs=sampleRate.toDouble()/ds
-        val x = DoubleArray(pcm.size/ds) { i ->
-            var sum=0.0
-            for(j in 0 until ds)sum+=pcm[i*ds+j]-mean
-            sum/(ds*32768.0)
+        val search=YinPeriodSearch.prepare(pcm,mean,sampleRate,minHz..maxHz)
+        if(search==null) {
+            observe?.invoke(Diagnostic(null,"short_comparison"))
+            return Reading(rms=rms,waveform=wave,spectrum=spectrum)
         }
-        val minLag=max(2, floor(fs / maxHz).toInt()-(if(ds==1)1 else 0))
-        val maxLag=min(x.size/2, ceil(fs/minHz).toInt()+(if(ds==1)1 else 0))
-        val win=min(2200,x.size-maxLag-1)
-        if (win < 1000) {observe?.invoke(Diagnostic(null,"short_comparison"));return Reading(rms=rms,waveform=wave,spectrum=spectrum)}
-        val offset=if(ds==1)(x.size-win-maxLag).coerceAtLeast(0)/2 else 0
-        val cmndf=DoubleArray(maxLag+1)
-        var accumulated=0.0
-        cmndf[0]=1.0
-        for (lag in 1..maxLag) {
-            var squared=0.0
-            for (j in 0 until win) { val d=x[offset+j]-x[offset+j+lag]; squared+=d*d }
-            accumulated+=squared
-            cmndf[lag]=if (accumulated>1e-15) squared*lag/accumulated else 1.0
-        }
-        var best=-1
-        var lag=minLag
-        while (lag<=maxLag) {
-            if (cmndf[lag]<0.14) {
-                while(lag<maxLag && cmndf[lag+1]<cmndf[lag])lag++
-                best=lag; break
-            }
-            lag++
-        }
-        if(best<0) {
-            var smallest=1.0
-            for(j in minLag..maxLag) if(cmndf[j]<smallest) { smallest=cmndf[j];best=j }
-        }
-        if(best<0) {observe?.invoke(Diagnostic(null,"no_minimum"));return Reading(rms=rms,waveform=wave,spectrum=spectrum)}
-        // A strong H2 can create a shallow minimum at half the true period.
-        // Prefer its double only with a substantial measured improvement, never by continuity.
-        if(maxHz>500 && cmndf[best]>.025){
-            val doubled=(max(minLag,best*2-2)..min(maxLag,best*2+2)).minByOrNull {cmndf[it]}
-            if(doubled!=null && cmndf[doubled]<cmndf[best]*.65)best=doubled
-        }
-        var delta=0.0
-        if(best>minLag && best<maxLag) {
-            val a=cmndf[best-1];val b=cmndf[best];val c=cmndf[best+1]
-            val denominator=a-2*b+c
-            if (abs(denominator)>1e-9) delta=(0.5*(a-c)/denominator).coerceIn(-0.5,0.5)
-        }
-        val hz=fs/(best+delta)
-        val confidence=(1.0-cmndf[best]).coerceIn(0.0,1.0)
-        // The low-register difference function uses only the leading part of the buffer.
-        // Energy arriving later cannot validate a periodic candidate in that quiet support.
-        // Keep the candidate/periodicity inspectable; do not alter the flute policy.
-        val comparisonRms=if(ds==4){
-            val first=offset*ds;val end=(offset+win+best)*ds
-            val localMean=(first until end).sumOf {pcm[it].toDouble()}/(end-first)
-            sqrt((first until end).sumOf {(pcm[it]-localMean).pow(2)}/(end-first))/32768.0
-        }else rms
-        val reason=when {
-            comparisonRms<.005 -> "low_comparison_amplitude"
-            hz<minHz*.95 || hz>maxHz*1.05 -> "outside_range"
-            confidence<.65 -> "low_periodicity"
-            else -> "accepted"
-        }
-        observe?.invoke(Diagnostic(hz,reason,offset*ds,win*ds,(minLag..maxLag).filter {i ->
-            (i==minLag || cmndf[i]<=cmndf[i-1]) && (i==maxLag || cmndf[i]<=cmndf[i+1])
-        }.map {Minimum(fs/it,(1-cmndf[it]).coerceIn(0.0,1.0))},comparisonRms))
-        return Reading(
-            hz=if(reason=="accepted") hz else 0.0,
-            confidence=confidence,rms=rms,waveform=wave,spectrum=spectrum
-        )
+        val result=search.evaluate(pcm,rms,minHz..maxHz,observe!=null)
+        observe?.invoke(result.diagnostic)
+        return Reading(hz=result.hz,confidence=result.confidence,rms=rms,waveform=wave,spectrum=spectrum)
     }
 
     /** Hann-windowed radix-2 FFT, 0-600 Hz rendered as 160 normalized bins. */

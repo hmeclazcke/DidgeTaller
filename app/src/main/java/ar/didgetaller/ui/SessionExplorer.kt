@@ -68,7 +68,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         if(s.plot==AcousticPlot.PITCH && vm.musicalTraceFailed(item.id))
             Text(stringResource(R.string.musical_trace_unavailable),style=MaterialTheme.typography.bodySmall)
         Box(Modifier.fillMaxWidth().bringIntoViewRequester(chartRequester)) {
-            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(height),onExpand={onExpand(s.plot)})
+            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(height))
         }
     }
     Surface(shape=RoundedCornerShape(16.dp),color=MaterialTheme.colorScheme.surface) {
@@ -119,8 +119,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         AdvancedPitchDiagnostics(vm,item,s.selectedMs) {
             val diagnosticState=remember(item.id){ExplorerState(item.instrument)}
             LaunchedEffect(vm.swipeComparison.enabled) {
-                diagnosticState.configureComparisonRange(if(vm.swipeComparison.enabled)
-                    AxisWindow(item.instrument.minHz*.95,item.instrument.initialMaxHz*1.05) else null)
+                diagnosticState.configureComparisonRange(vm.swipeComparison.range)
             }
             Text(stringResource(R.string.pitch_yin_layer),style=MaterialTheme.typography.labelSmall)
             if(vm.swipeComparison.enabled) SwipeLegend()

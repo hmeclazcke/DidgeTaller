@@ -1,7 +1,7 @@
 """Failure-semantics and known-formula checks for the quality ratchets."""
 import copy
 import unittest
-from quality_gate import crap, violations
+from quality_gate import RETIRED, crap, violations
 
 
 class QualityGateTest(unittest.TestCase):
@@ -35,6 +35,36 @@ class QualityGateTest(unittest.TestCase):
         changed = copy.deepcopy(self.base)
         changed['methods'][0]['crap_line'] = 12
         self.assertTrue(violations(changed, self.base))
+
+    def test_retirement_requires_the_explicit_replacement_to_be_measured(self):
+        identity='ar/didgetaller/audio/SessionPlayer.requestSeek(J)V'
+        replacement=RETIRED[identity]['replacement']
+        baseline=copy.deepcopy(self.base);baseline['methods']=[dict(identity=identity,crap_line=5)]
+        current=copy.deepcopy(baseline);current['methods']=[]
+        self.assertTrue(violations(current,baseline))
+        current['methods']=[dict(identity=replacement,crap_line=3)]
+        self.assertEqual([],violations(current,baseline))
+
+    def test_signature_replacement_preserves_the_old_risk_ceiling(self):
+        identity='ar/didgetaller/audio/SessionPlayer.requestSeek(J)V'
+        replacement=RETIRED[identity]['replacement']
+        baseline=copy.deepcopy(self.base);baseline['methods']=[dict(identity=identity,crap_line=30)]
+        current=copy.deepcopy(baseline);current['methods']=[dict(identity=replacement,crap_line=12)]
+        self.assertEqual([],violations(current,baseline))
+        current['methods'][0]['crap_line']=31
+        self.assertTrue(violations(current,baseline))
+
+    def test_unreviewed_high_risk_signature_still_fails(self):
+        current=copy.deepcopy(self.base)
+        current['methods'].append(dict(identity='renamedWithoutReview()',crap_line=12))
+        self.assertTrue(violations(current,self.base))
+
+    def test_replacement_does_not_inherit_a_ceiling_while_the_old_method_remains(self):
+        identity='ar/didgetaller/audio/SessionPlayer.requestSeek(J)V'
+        replacement=RETIRED[identity]['replacement']
+        baseline=copy.deepcopy(self.base);baseline['methods']=[dict(identity=identity,crap_line=30)]
+        current=copy.deepcopy(baseline);current['methods'].append(dict(identity=replacement,crap_line=12))
+        self.assertTrue(violations(current,baseline))
 
 
 if __name__ == '__main__':

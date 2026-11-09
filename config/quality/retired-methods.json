@@ -1,0 +1,42 @@
+{
+  "ar/didgetaller/audio/SessionPlayer.requestSeek(J)V": {
+    "replacement": "ar/didgetaller/core/PlaybackController.requestSeek(J)V",
+    "reason": "Move asynchronous seek ownership into the tested framework-independent playback controller."
+  },
+  "ar/didgetaller/audio/SessionPlayer.fail(Ljava/lang/Throwable;)V": {
+    "replacement": "ar/didgetaller/core/PlaybackController.fail(Ljava/lang/Throwable;)V",
+    "reason": "Move failure cleanup into the state owner; retain localized error formatting at the Android boundary."
+  },
+  "ar/didgetaller/audio/MicrophoneEngine.finishRecording(Z)V": {
+    "replacement": "ar/didgetaller/audio/MicrophoneEngine.finishRecording(Lar/didgetaller/core/RecordingCapture;Z)V",
+    "reason": "Finalize the worker-owned capture rather than the engine-global writer; retain the original method's risk ceiling across its explicit owner parameter."
+  },
+  "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;)V": {
+    "replacement": "ar/didgetaller/audio/MicrophoneEngine.readLoop(Landroid/media/AudioRecord;Lar/didgetaller/core/RecordingCapture;)V",
+    "reason": "Bind each worker to its own recording state. Preserve original loop metric lineage while moving file decisions into the JVM-tested capture state owner."
+  },
+  "ar/didgetaller/data/RecordingStore.entries()Lorg/json/JSONArray;": {
+    "replacement": "ar/didgetaller/data/JsonPreferenceDocument.read()Ljava/lang/Object;",
+    "reason": "Replace malformed-as-empty parsing with the shared validated, backup-aware document boundary. Corrupt documents cannot be mutated."
+  },
+  "ar/didgetaller/data/RecordingStore.indexCapture(Ljava/lang/String;JLjava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;": {
+    "replacement": "ar/didgetaller/data/RecordingStore.captured(Ljava/lang/String;JJLjava/util/List;JLar/didgetaller/core/InstrumentProfile;)Lar/didgetaller/data/RecordingStore$Session;",
+    "reason": "Construct the captured session before WAV publication; RecordingMetadata owns the unchanged wire format and StoredDocument owns atomic metadata publication."
+  },
+  "ar/didgetaller/data/SessionToolsStore.root()Lorg/json/JSONObject;": {
+    "replacement": "ar/didgetaller/data/JsonPreferenceDocument.read()Ljava/lang/Object;",
+    "reason": "Consolidate JSON loading behind the same validated document boundary, retaining malformed evidence and read-only last-good data."
+  },
+  "ar/didgetaller/data/SessionToolsStore.save(Lorg/json/JSONObject;)V": {
+    "replacement": "ar/didgetaller/data/JsonPreferenceDocument.update(Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;",
+    "reason": "Replace separate load/save calls with one locked read-modify-publish operation; retain the original risk ceiling."
+  },
+  "ar/didgetaller/audio/SessionWorkspace.render(Lar/didgetaller/data/RecordingStore$Session;Lar/didgetaller/audio/VisualRequest;Z)V": {
+    "replacement": "ar/didgetaller/audio/SessionWorkspace.render(Lar/didgetaller/data/RecordingStore$Session;Lar/didgetaller/core/VisualRequest;Lar/didgetaller/core/VisualKind;)V",
+    "reason": "VisualRequest moves to the pure domain without changing fields/cache wire keys. Android render delegates to the fully JVM-tested operation owner; preserve explicit signature correspondence, not the old god-method risk."
+  },
+  "ar/didgetaller/audio/SessionWorkspace.stateSnapshot(Lar/didgetaller/audio/VisualState;Lar/didgetaller/core/AudioVisuals$Spectrogram;Landroid/graphics/Bitmap;)Lar/didgetaller/audio/VisualState;": {
+    "replacement": "ar/didgetaller/core/WorkspaceController.accept(Lar/didgetaller/core/WorkspaceController$Target;Lar/didgetaller/core/PreparedVisual;)V",
+    "reason": "Consolidate final tile snapshot/cache-key publication into the single typed controller. New acceptance is fully JVM tested and below target; no historical high-risk ceiling is raised."
+  }
+}

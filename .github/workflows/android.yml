@@ -1,14 +1,16 @@
 name: Android Kotlin CI
 on:
   push:
-    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
+    paths: ['app/**', 'engineering-tools/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   pull_request:
-    paths: ['app/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
+    paths: ['app/**', 'engineering-tools/**', 'tools/**', 'config/**', '*.gradle.kts', 'gradle/**', 'gradle.properties', 'gradlew*', 'scripts/**', '.github/workflows/**']
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  # A branch push and its PR update validate the same head: keep one automatic run.
+  # Fork branches and explicitly dispatched evidence runs retain separate ownership.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'automatic' }}
   cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   test-and-apk:
@@ -36,23 +38,32 @@ jobs:
       - name: Enable Gradle wrapper
         run: chmod +x ./gradlew
       - name: Tests JVM
-        run: ./gradlew --no-daemon :app:testDebugUnitTest :app:testReleaseUnitTest :app:lintDebug
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false :engineering-tools:test :app:testDebugUnitTest :app:testReleaseUnitTest :app:lintDebug
       - name: Build APK
-        run: ./gradlew --no-daemon :app:assembleDebug
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false :app:assembleDebug
+      - name: Differential synthetic contracts against pinned original main
+        run: |
+          git fetch --no-tags origin 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67
+          git worktree add --detach "$RUNNER_TEMP/didge-original" 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67
+          (cd "$RUNNER_TEMP/didge-original" && bash ./gradlew --no-daemon -Pkotlin.incremental=false :app:compileDebugKotlin)
+          jar --create --file "$RUNNER_TEMP/didge-original.jar" -C "$RUNNER_TEMP/didge-original/app/build/tmp/kotlin-classes/debug" .
+          ./gradlew --no-daemon -Pkotlin.incremental=false :app:qualityDifferential "-PdifferentialBaseline=$RUNNER_TEMP/didge-original.jar"
       - name: Compile instrumented tests
-        run: ./gradlew --no-daemon :app:assembleDebugAndroidTest
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false :app:assembleDebugAndroidTest
       - name: Validate English and Spanish resources
         run: python3 tools/check_localization.py
       - name: Informational JVM coverage
-        run: ./gradlew --no-daemon :app:jacocoDebugUnitTestReport
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false :app:jacocoDebugUnitTestReport
       - name: Informational Detekt audit
-        run: ./gradlew --no-daemon detekt detektComplexity
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false detekt detektComplexity
       - name: Summarize Detekt reports
         run: python3 tools/detekt_summary.py
       - name: Summarize JVM coverage and reviewed method matches
-        run: python3 tools/coverage_summary.py
+        run: |
+          ./gradlew --no-daemon -Pkotlin.incremental=false :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory
+          python3 tools/coverage_summary.py
       - name: Kotlin CPD
-        run: ./gradlew --no-daemon :app:qualityDuplication
+        run: ./gradlew --no-daemon -Pkotlin.incremental=false :app:qualityDuplication
       - name: Ratchet coverage, reliable CRAP-L, complexity and duplication
         run: python3 tools/quality_gate.py
       - name: Test quality failure semantics
