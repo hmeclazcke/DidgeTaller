@@ -98,3 +98,13 @@ and observed feature-branch CI are separate required evidence in the PR table.
 Original RED and rejected intermediate logs remain ignored under checkpoints/.
 This closes production reconstruction decisions; only failed required checks reopen
 a concrete defect. Owner review/merge remains a separate decision.
+
+## Final coordinate precision repair
+
+Independent review after the successful f72136c jobs reproduces an introduced
+fractional STFT-column selection regression with a44.1kHz synthetic tile. The precise
+125ms coordinate is5512.5, not5512; a failing expected-energy assertion precedes
+restoring the original fractional calculation. All527 JVM cases per variant and
+strict source gates pass; focused612-mutant outcomes are unchanged. Final source
+checks in PR1 supersede the earlier f721 evidence for this modified function.
+The repair affects readout selection, not audio, drawing geometry or persistence.

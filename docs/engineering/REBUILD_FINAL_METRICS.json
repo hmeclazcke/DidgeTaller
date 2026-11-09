@@ -1,16 +1,16 @@
 {
   "scope": "Final local implementation inputs; CI evidence is separately linked from draft PR1",
-  "source_inventory_sha256": "7cd7078f5550fd128d789f26d67cb5b023687afd95249fda32fa9e0c9c301ac8",
+  "source_inventory_sha256": "c6f2ccb1e0751e5e870062c22f7c47f26189b63ba70611afdc79b17bc246f2e4",
   "source_files": 116,
   "jvm": {
     "testDebugUnitTest": {
-      "tests": 526,
+      "tests": 527,
       "failures": 0,
       "errors": 0,
       "skipped": 8
     },
     "testReleaseUnitTest": {
-      "tests": 526,
+      "tests": 527,
       "failures": 0,
       "errors": 0,
       "skipped": 8
@@ -23,8 +23,8 @@
         "missed": 3158
       },
       "INSTRUCTION": {
-        "covered": 31978,
-        "missed": 69063
+        "covered": 31984,
+        "missed": 69062
       },
       "BRANCH": {
         "covered": 2884,
@@ -66,22 +66,22 @@
     },
     "overall": {
       "BRANCH": {
-        "covered": 4513,
-        "missed": 2047,
-        "fraction": 0.6879573170731708
+        "covered": 4515,
+        "missed": 2045,
+        "fraction": 0.6882621951219512
       },
       "LINE": {
-        "covered": 5446,
-        "missed": 471,
-        "fraction": 0.9203988507689708
+        "covered": 5448,
+        "missed": 469,
+        "fraction": 0.9207368598952171
       }
     },
     "packages": {
       "ar/didgetaller/core": {
         "BRANCH": {
-          "covered": 1901,
-          "missed": 855,
-          "fraction": 0.6897677793904209
+          "covered": 1900,
+          "missed": 856,
+          "fraction": 0.6894049346879536
         },
         "LINE": {
           "covered": 2114,
@@ -122,14 +122,14 @@
       },
       "ar/didgetaller/ui": {
         "BRANCH": {
-          "covered": 2047,
-          "missed": 854,
-          "fraction": 0.7056187521544295
+          "covered": 2050,
+          "missed": 851,
+          "fraction": 0.7066528783178214
         },
         "LINE": {
-          "covered": 2345,
-          "missed": 249,
-          "fraction": 0.9040092521202776
+          "covered": 2347,
+          "missed": 247,
+          "fraction": 0.9047802621434079
         }
       },
       "ar/didgetaller/audio": {
@@ -159,7 +159,7 @@
     "jvm_above_target": 64,
     "android_above_target": 30
   },
-  "detekt_findings": 1999,
+  "detekt_findings": 2000,
   "lint_local": {
     "errors": 0,
     "warnings": 52,
@@ -181,5 +181,23 @@
     "strings": 576,
     "plurals": 5,
     "arrays": 2
+  },
+  "previous_remote_integration": {
+    "revision": "f72136ca010853ab4034cb673bb3915a683b3a48",
+    "superseded_for_fractional_inspection_fix": true,
+    "fast_run": 42702489875,
+    "native_run": 42702483758,
+    "mutation_run": 42702487499,
+    "all_three_conclusions": "success",
+    "mutation": {
+      "classes": 101,
+      "generated": 2937,
+      "killed": 2284,
+      "survived": 615,
+      "uncovered": 34,
+      "timeouts": 4,
+      "engine_seconds": 127
+    },
+    "current_exact_source_results": "See the current evidence table in draft PR1; do not substitute these previous runs for changed inputs."
   }
 }

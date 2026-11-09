@@ -18,19 +18,19 @@ None of these historical checks is presented as a new final execution.
 
 | Measure | Original main evidence | Previous executable milestone | Final local implementation |
 | --- | --- | --- | --- |
-| JVM case-variants |390 discovered;374 pass;16 skips |936/920/16 |1052 discovered;1036 pass;16 protected skips;0 failures |
+| JVM case-variants |390 discovered;374 pass;16 skips |936/920/16 |1054 discovered;1038 pass;16 protected skips;0 failures |
 | Android suite |127/117/10 |163/153/10 |170 discovered;160 pass;10 skips;0 failures |
 | Additional configurations |Existing emulator evidence |Five pass |Five pass: EN/ES compact actual font150 and ES landscape |
 | JVM line/branch |28.19%/25.69% |43.39%/39.70% Linux |46.63%/43.96% local |
 | Core line/branch |98.47%/77.25% |99.07%/83.78% Linux |99.05%/84.87% local |
-| Android line/branch |91.09%/68.25% |92.02%/68.62% |92.04%/68.80%, separate scope |
+| Android line/branch |91.09%/68.25% |92.02%/68.62% |92.07%/68.83%, separate scope |
 | Independently scored/unscored |8/329 under old allowlist |484/114 |545/117 under PSI/JVM mapping |
 | CRAP-L above10 |Three of8 measured |72 JVM/28 Android |64 JVM/30 Android; separate reports |
 | PlotSurface MCC |139 |8 |8; native canvas7 |
 | SessionPlot MCC |Not scored by old correlator |74 |44; pure inspection owner methods remain below10 in JVM |
 | WavAnalysis.analyze MCC |29 |29 |2; window pass6, flute pass8 |
 | CPD groups >=100 tokens |0 across59 files |0 |0; no lowered clone threshold |
-| Detekt informational findings |1978 |1987 |1999; no blanket suppression/config reduction |
+| Detekt informational findings |1978 |1987 |2000; no blanket suppression/config reduction |
 | Local Android Lint |0 errors/60 warnings/10 hints |0/52/8 local |0/52/7; online version metadata can differ in Linux CI |
 | Mutation selection |11 gesture mutants |2318 across70 classes |New focused scope612; broad exact-source scope executed separately in CI |
 | Synthetic differential |Not yet configured |741 identical |757 identical, including16 complete offline analyses |
@@ -116,3 +116,30 @@ Verified commands and report locations are in [QUALITY_GUIDE](../quality/QUALITY
 No new global tool, paid dependency, private recording, physical-device operation,
 format migration or metronome is involved. Official ub-mode and its MIT notice remain
 unchanged. Main is a reference, not a publication target; the owner decides any merge.
+
+## Final source precision check after the first remote integration
+
+All three f72136c runs actually pass: [fast42702489875](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42702489875),
+[native42702483758](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42702483758) and
+[mutation42702487499](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42702487499).
+The broader report contains101 production classes/2937 mutants:2284 killed,
+615 survived,34 uncovered and4 timeouts, engine127s. Those are earlier source-scoped
+results, not an assertion that a changed function was already tested remotely.
+
+Independent coordinate review then finds an introduced readout regression which
+those green jobs miss. At125ms/44.1kHz, frame5512.5 starts column three in a four-column
+11025-frame tile; truncating first to5512 reads column two. A real failing assertion
+(-6.0206 rather than-2.4988dB) precedes restoring the original fractional selection.
+Integer bounds checking remains, while only column choice retains sub-sample time.
+No detector, drawn raster, gesture, WAV or persistence algorithm changes.
+
+The containing final local implementation passes527 JVM cases per variant and the
+complete170-case native run plus all five configurations again. This document's local
+metrics and source hash inventory include the correction. The focused612-mutant
+outcomes remain unchanged: DEFAULTS does not generate this numeric-type regression,
+so that unchanged score does not invalidate the independent boundary test.
+Removing a now-redundant identity conversion leaves all455 production Kotlin class
+files byte-identical; exact hashes justify reusing executed binary evidence for that
+nonfunctional cleanup. Current source-scoped CI must be observed in PR1 before
+integration readiness; earlier f721 jobs remain historical evidence. No optional
+style/performance work is promoted into another open-ended reconstruction.

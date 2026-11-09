@@ -976,3 +976,15 @@ survivors; prevent test bytecode contaminating production mutation reports. All
 BLOCKER/IMPORTANT production decisions are reconciled in REBUILD_ACCEPTANCE.md.
 Final integration/remote gates and source-scoped evidence are in the verification
 report and draft PR1. Preserve historical records without repeating their old tasks.
+
+### Final precision correction and finite closure
+
+Do not resume broad redesign: all finite production decisions are closed. A final
+independent STFT boundary check catches early integer sample rounding despite green
+f721 CI; a failing expected-energy test precedes the three-line type/precision repair.
+Current source passes527 JVM cases per variant, complete synthetic native170 plus
+five configurations and strict metrics. All455 production Kotlin class hashes match
+after removing an identity cast, so no redundant binary suite is invented. Publish
+one final source revision and observe its existing fast/native/manual mutation jobs.
+PR1 remains draft and is the current remote evidence table. Owner review follows
+successful required jobs; no automatic merge, Samsung access or metronome.

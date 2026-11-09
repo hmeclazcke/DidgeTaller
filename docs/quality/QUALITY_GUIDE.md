@@ -13,7 +13,7 @@ on a docs-only commit, even though branch push path filters exclude documentatio
 Verified commands (canonical compilation; run from the repository root):
 
 ```powershell
-# Full JVM suites: 526 cases per variant in this implementation, with 8 protected skips.
+# Full JVM suites: 527 cases per variant in this implementation, with 8 protected skips.
 .\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:test
 # Coverage/static/source/duplication gates (reports are required, not optional empty inputs).
 .\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:jacocoDebugUnitTestReport detekt detektComplexity :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory :app:qualityDuplication :app:lintDebug
@@ -268,3 +268,9 @@ The [capture design](../engineering/CAPTURE_EVENT_OWNERSHIP.md) describes the pu
 
 
 Accepted source-scoped results and before/after limits are recorded in [REBUILD_VERIFICATION_7aa7fcb.md](../engineering/REBUILD_VERIFICATION_7aa7fcb.md). Documentation-only descendants reuse this evidence while production, tests, build and quality inputs are unchanged. Do not combine JVM and instrumentation coverage XMLs or substitute the informational broad mutation score for the enforced original gesture threshold.
+
+The final inspection boundary preserves fractional sample time until choosing an
+STFT column; the source time-bound check still uses the integer frame domain.
+A44.1kHz fixture catches an introduced rounding regression even though earlier
+CI and unchanged PIT DEFAULTS scores pass. Current native/JVM evidence is recorded
+in the final verification report; source-scoped remote outcomes remain in PR1.

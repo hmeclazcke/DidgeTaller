@@ -1,4 +1,4 @@
-# 2026-11-09 comparison and accessible-renderer delivery - IN PROGRESS
+# Rebuild completion and verification
 
 ## Finite completion handoff - current implementation
 
@@ -15,15 +15,15 @@ has separate bounded I/O, weighted spectrum, flute cadence and statistics. Nativ
 post-clear regressions and both WAV overflow defects are fixed. No persisted format
 or accepted detector math changes. PlotSurface8; SessionPlot74 to44; offline29 to2.
 
-Final local1052 JVM discovered/1036 pass/16 skips;170 Android/160 pass/ten skips,
+Final local1054 JVM discovered/1038 pass/16 skips;170 Android/160 pass/ten skips,
 five actual compact150 EN/ES/landscape cases and14 current-APK overlapping smoke
 cases pass.757 differential contracts match main. JVM46.63/43.96%, core99.05/84.87%,
-separate Android92.04/68.80%.545 scored/117 independent unscored;64 JVM/30 Android
-above target. Gate0, CPD0, Detekt1999, local Lint0/52/7;46 Python tests pass.
+separate Android92.07/68.83%.545 scored/117 independent unscored;64 JVM/30 Android
+above target. Gate0, CPD0, Detekt2000, local Lint0/52/7;46 Python tests pass.
 Focused production PIT612:471 killed/121 survived/19 uncovered/one timeout.
 No baseline, operator, seek tolerance or required failure semantics weakened.
 
-Remaining delivery gate: publish the containing implementation, run/observe exact
+Final delivery gate: publish the containing implementation, run/observe exact
 source fast/full API35/manual broad PIT once, and record URLs/artifacts in PR1's
 current evidence table. A failed/pending required job blocks readiness. If those
 checks pass, next action is owner review of the draft, not another reconstruction
@@ -553,3 +553,18 @@ python -m unittest discover -s tools -p 'test_*.py'
 ```
 
 The local original production JAR was compiled before implementation edits. Do not overwrite it with rebuilt classes. CI rebuilds its oracle from pinned main. Reuse passing evidence for unchanged inputs; do not run broad suites or mutation merely because the tools exist.
+
+## Final fractional-cell regression
+
+The f72136c integration passed actual fast42702489875, native42702483758 and
+broad mutation42702487499. A final independent coordinate review then finds a
+regression not exposed by those green checks: truncating125ms at44.1kHz to frame5512
+before column selection reads4 instead of9 from a four-column/11025-frame tile.
+The intended coordinate is5512.5. A real failing JVM assertion (-6.0206 vs-2.4988dB)
+precedes restoring fractional precision; the integer boundary guard remains intact.
+This is an introduced readout regression fixed before completion, not an original
+main acoustic defect. Current527 cases per JVM variant pass, and the612-mutant
+focused scope stays unchanged: a useful test need not increase a mutation score.
+No layout, gesture, detector, WAV or persisted value changes. Current source-scoped
+final runs are linked from PR1; earlier successful f721 jobs remain historical
+proof, not substitutes for changed-input validation. No more exploratory work is pending.

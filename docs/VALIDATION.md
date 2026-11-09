@@ -2218,3 +2218,12 @@ reports are preserved locally. Separate coverage, counters, PIT scope and compar
 limits are versioned in docs/engineering/REBUILD_FINAL_VERIFICATION.md and its JSON.
 Remote exact-source results/artifacts are a separate mandatory gate in draft PR1.
 No Samsung/private WAV access, migration, main change or merge.
+
+### Final STFT cell boundary
+
+The f72136c remote fast/native/broad PIT jobs pass, but independent review exposes
+an introduced integer rounding error in scientific inspection. A125ms/44.1kHz/four-cell
+fixture produces actual RED before fractional selection is restored. Final local527
+JVM cases per variant and170 native cases plus five configurations pass; gate0.
+Current exact-source remote runs are recorded in PR1; prior f721 results do not
+substitute for changed-input validation. WAV/detector/layout semantics are preserved.

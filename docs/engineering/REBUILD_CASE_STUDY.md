@@ -1,4 +1,4 @@
-# Workspace operation ownership and plot preparation
+# Application reconstruction case study
 
 ## Final production reconstruction and acceptance
 
@@ -325,3 +325,17 @@ PIT found a fake scheduler retaining consumed tasks, which concealed a removed r
 ### Accepted source-scoped verification
 
 At 7aa7fcb, fast quality, real clean API 35 instrumentation and manual expanded PIT all passed. The suite executed 147 discovered cases (137 passed/10 skipped), and two additional EN/ES compact 150%-font executions passed. The original 80 ms loop-pause assertion passed without tolerance changes. All 13 supplied library/recovery PNGs were inspected; those images do not claim new graph visual coverage. See [the complete source-scoped scorecard](REBUILD_VERIFICATION_7aa7fcb.md) for exact JVM/Android coverage, mutation outcomes, unchanged official skill, artifact retention and remaining architectural work. Passing this milestone does not complete the application-wide reconstruction.
+
+## Why a green gate is necessary but insufficient
+
+The initial final integration f72136c passes all three remote workflows. Independent
+coordinate comparison nevertheless exposes an introduced STFT readout regression:
+125ms at44.1kHz lies at sample5512.5, but early integer rounding selects the previous
+column. A four-column synthetic tile gives an independent expected energy, producing
+real RED (-6.0206 vs-2.4988dB) before the three-line precision repair. The protected
+original uses fractional time for that selection. The new test passes after repair;
+all527 JVM cases per variant pass. PIT DEFAULTS still generates612 focused mutants
+and its score is unchanged. This illustrates an operator limitation, not a reason to
+discard a meaningful regression test or weaken an assertion. Final exact-source CI
+must run again because production input changed; unchanged layout/DSP investigations
+are reused instead of restarted. There is no claim that metric compliance proves correctness.

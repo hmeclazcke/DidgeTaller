@@ -108,7 +108,7 @@ app/src/main/java/ar/didgetaller/ui/RecordingAnalysisPanel.kt,58f6ce525770f388b7
 app/src/main/java/ar/didgetaller/ui/SavedPitchEvidencePanel.kt,29bf7af4cdc5bea095e8ac6631955c85a2551c184620d93f98677b9b5dcffe19,3,0,1,0,2,0,{}
 app/src/main/java/ar/didgetaller/ui/ScreenAwake.kt,14517ca51e10a2f4081a10363062e807e691bd73e023c2659510a7e6eed31db7,1,0,0,0,1,0,{}
 app/src/main/java/ar/didgetaller/ui/SessionExplorer.kt,5a348457ef3b84e3c5f1d11decdce4edeb850ae4c207be73f9e22d65838a0811,5,0,1,0,4,0,{}
-app/src/main/java/ar/didgetaller/ui/SessionInspector.kt,5645cfb0f1c31a2c39a2cc94359f96dbf38acc77f28fbb50c0094842458d08c8,10,9,0,1,0,0,{}
+app/src/main/java/ar/didgetaller/ui/SessionInspector.kt,beee71862c8dfa20ffbfed7f08c85622f655345b7a675ac136fc2e78774cd13c,10,9,0,1,0,0,{}
 app/src/main/java/ar/didgetaller/ui/SessionTransport.kt,9db74862c81a018e7773183c7aae0b442aea7844e3061cdcf54eccf646f64b3e,2,1,0,0,1,0,{}
 app/src/main/java/ar/didgetaller/ui/SwipeComparisonPanel.kt,33f586606479df4002db8ce6026527b91a1673849bea127a19e41d830edfe14d,5,0,0,0,5,0,{}
 app/src/main/java/ar/didgetaller/ui/TallerApp.kt,a9657d6c5763e96ca7ea358d7904b8612d89f309e1718f59a700b8fa5e4a92ae,34,4,6,0,24,0,{}

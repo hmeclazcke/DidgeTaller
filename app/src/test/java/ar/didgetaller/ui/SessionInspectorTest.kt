@@ -154,4 +154,11 @@ class SessionInspectorTest {
         assertEquals(listOf("0.30 s","0.2","0.8"),calls.last().second)
     }
 
+    @Test fun fractionalSampleTimesChooseTheOriginalStftCellWithoutEarlyRounding() {
+        val raster=tile.copy(end=11025,rate=44100,columns=4,rows=1,power=floatArrayOf(1f,4f,9f,16f))
+        inspect(data.copy(rate=44100,tile=raster,reference=16.0),AcousticPlot.SPECTROGRAM,125,100.0)
+        // 125 ms is frame5512.5, exactly the third column; rounding to5512 picks the second.
+        assertEquals(10*log10(9.0/16),calls.last().second.single() as Double,1e-9)
+    }
+
 }

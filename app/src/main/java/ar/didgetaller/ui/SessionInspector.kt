@@ -63,7 +63,7 @@ internal class SessionInspector(private val strings: InspectionStrings, private 
     }
 
     private fun cell(time: Long, frequency: Double, data: InspectionData): String {
-        val power = cellPower(data.tile, time * data.rate / 1000, frequency)
+        val power = cellPower(data.tile, time * data.rate / 1000.0, frequency)
             ?: return strings.text(R.string.ui_no_calculated_cell, seconds(time), hzLabel(frequency))
         val energy = if (data.reference > 1e-16)
             strings.text(R.string.ui_db_rel_stft_cell, 10 * log10(max(1e-30, power) / data.reference))
@@ -71,10 +71,10 @@ internal class SessionInspector(private val strings: InspectionStrings, private 
         return "${seconds(time)} · ${hzLabel(frequency)} · $energy"
     }
 
-    private fun cellPower(tile: AudioVisuals.Spectrogram?, frame: Long, frequency: Double): Double? {
-        if (tile == null || frame !in tile.start until tile.end || frequency !in tile.lowHz..tile.highHz) return null
+    private fun cellPower(tile: AudioVisuals.Spectrogram?, frame: Double, frequency: Double): Double? {
+        if (tile == null || frame.toLong() !in tile.start until tile.end || frequency !in tile.lowHz..tile.highHz) return null
         if (tile.columns <= 0 || tile.rows <= 0 || tile.power.size.toLong() < tile.columns.toLong() * tile.rows) return null
-        val column = ((frame - tile.start).toDouble() / (tile.end - tile.start) * tile.columns).toInt().coerceIn(0, tile.columns - 1)
+        val column = ((frame - tile.start) / (tile.end - tile.start) * tile.columns).toInt().coerceIn(0, tile.columns - 1)
         val row = (AxisWindow(tile.lowHz, tile.highHz).fraction(frequency, tile.logarithmic) * tile.rows).toInt().coerceIn(0, tile.rows - 1)
         return tile.power[column * tile.rows + row].toDouble()
     }
