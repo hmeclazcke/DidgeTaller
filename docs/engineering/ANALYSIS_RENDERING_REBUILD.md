@@ -1,6 +1,6 @@
 # Recording analysis ownership and plot boundaries
 
-Status: local implementation milestone; remote verification pending. The complete
+Status: source 8b73c21 remotely verified; see the [source-scoped report](ANALYSIS_RENDERING_VERIFICATION_8b73c21.md). The complete
 application rebuild remains IN PROGRESS. Implementation a4dd88a plus the bounded axis-readability follow-up; source baseline
 806db72. Original main
 3a160043f9ebb3a420b1d89a9cf4ddfe7d1b5d67 remains untouched.
@@ -106,8 +106,8 @@ The fullscreen explanation had maxLines=2. After one independently captured Syst
 UI ANR obstructed the fresh emulator, a bounded retry reached the intended failing
 GetTextLayoutResult.hasVisualOverflow assertion at 150% font. Removing that cap
 lets the explanation wrap without shrinking text or changing scientific wording.
-A subsequent full API 37 suite exposed a default-font width overflow: the intrinsic
-paragraph box was rounded below its measured width. Giving the explanation the
+A subsequent full API 37 suite exposed a default-font intrinsic-width overflow
+(didOverflowWidth=true, without height overflow). Giving the explanation the
 available parent width fixes that constraint without relaxing the assertion.
 The regression selects the exact tagged description, checks the full resource
 text, the final laid-out character, overflow and parent-clipped bounds. EN and ES
@@ -119,7 +119,8 @@ locale through Android's locale command. Infrastructure failures remain separate
 No physical acoustic accuracy, CPU/FPS improvement or completed whole-application
 rebuild is claimed. Local full API 37 evidence before the last fixes remains
 146 passed, one genuine text failure and nine skips. Focused final readiness and
-description cases pass; remote clean API 35 full-suite verification is pending.
+description cases pass; the subsequent clean API 35 full suite passes separately,
+as recorded in the source-scoped report.
 The unchanged 741-case original-main differential probe passes separately and is
 not advertised as pixel equivalence for the entire UI. No Samsung/private WAV access.
 
@@ -176,7 +177,8 @@ builds, source/bytecode inventory, JaCoCo, CPD, differential and focused PIT.
 `python tools/quality_gate.py` rejects unreviewed technical changes and passes
 only after exact supported reviews; numerical baselines and gate logic unchanged.
 Full current-source API 35 CI, separate Android coverage and broad domain PIT
-must be observed before replacing the pending remote status above.
+are now observed in the source-scoped report above, with Linux counters kept
+separate from this local table.
 
 The axis follow-up's PIT report exposed the exact-fit spacing boundary and a
 previously unasserted note-row X offset. Explicit fit/offset assertions kill both
@@ -191,4 +193,9 @@ Final axis native check: explicit emulator-5580 (API 37, synthetic-only AVD),
 The inspected landscape PNG shows separated 140/35 Hz labels while the middle
 grid line retains its true position; the scientific sentence remains complete.
 The emulator was restored to normal font/size/EN and stopped. These focused cases
-are not substituted for the pending full clean API 35 suite or Android coverage.
+are not substituted for the independently passing full clean API 35 suite or
+its separate Android coverage.
+
+Residual UI scope: the pre-existing fullscreen empty-evidence overlay can cross
+the Y-label area at 150%; the source-scoped report records the exact next
+annotation-layout regression. Whole-application and UI acceptance remain IN PROGRESS.

@@ -5,7 +5,8 @@
 The [current source-scoped milestone](ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis
 ownership, the ready-frame plot pipeline, actual native RED/GREEN, full scientific
 text at 150%, comparable complexity and focused mutation evidence. Whole rebuild
-remains IN PROGRESS; current remote full-suite/broad-mutation verification is pending.
+remains IN PROGRESS; [actual current source verification](ANALYSIS_RENDERING_VERIFICATION_8b73c21.md)
+records all three passing remote jobs, metrics, screenshots and precise residual work.
 
 
 Source ec19b18 now has observed successful fast, actual API 35 emulator and

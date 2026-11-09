@@ -5,7 +5,8 @@
 The [current source-scoped milestone](../engineering/ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis
 ownership, the ready-frame plot pipeline, actual native RED/GREEN, full scientific
 text at 150%, comparable complexity and focused mutation evidence. Whole rebuild
-remains IN PROGRESS; current remote full-suite/broad-mutation verification is pending.
+remains IN PROGRESS; [actual current source verification](../engineering/ANALYSIS_RENDERING_VERIFICATION_8b73c21.md)
+records all three passing remote jobs, metrics, screenshots and precise residual work.
 
 Focused verified tasks: `:app:qualityMutationAnalysis` and `:app:qualityMutationPlots`.
 Both scopes also join `:app:qualityMutationDomain`; framework Compose correspondence

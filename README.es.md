@@ -99,6 +99,7 @@ análisis y separa geometría, gestos, accesibilidad y dibujo nativo. Las regres
 JVM y Android protegen callbacks tardíos, intervalos sin medición y texto científico
 con fuente ampliada. El estudio informa la distribución de complejidad y sus
 límites, incluidos los ámbitos donde el total de decisiones todavía no disminuyó.
+Los resultados reales de CI por revisión y los límites pendientes figuran en el [informe de verificación](docs/engineering/ANALYSIS_RENDERING_VERIFICATION_8b73c21.md), en inglés.
 
 El [propietario de la simulación del laboratorio](docs/engineering/SIMULATION_OWNERSHIP.md),
 documentado en inglés, impide que resultados tardíos o duplicados modifiquen un

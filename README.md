@@ -101,6 +101,7 @@ plot geometry, gestures, accessibility and native painting. Controlled JVM and
 Android regressions protect late callbacks, measurement gaps and large-font
 scientific text. The case study reports complexity distribution and limitations,
 including scopes where total decision count has not decreased.
+Actual source-scoped CI results and remaining limitations are recorded in the [verification report](docs/engineering/ANALYSIS_RENDERING_VERIFICATION_8b73c21.md).
 
 The [laboratory simulation owner](docs/engineering/SIMULATION_OWNERSHIP.md)
 prevents late or duplicate results from updating a disposed ViewModel. Controlled

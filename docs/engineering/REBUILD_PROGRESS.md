@@ -1,5 +1,26 @@
 # Analysis ownership and rendering continuation - IN PROGRESS
 
+Verified executable source: 8b73c2110c72d20bc1aab696fed3139877542edc, implementation
+commits a4dd88a/8b73c21. Actual [fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42536349325),
+[full native](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42536344767) and
+[mutation](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42536346213) all pass.
+See [source-scoped evidence](ANALYSIS_RENDERING_VERIFICATION_8b73c21.md): Linux JVM
+880 passed/16 skips; native 148 passed/ten skips plus five configuration passes;
+JVM42.58/38.83%, core99.04/83.52%, Android91.94/68.47% separately. CRAP-L470/111,
+73 JVM/29 Android above target. Broad PIT2250=1739 killed/494 survived/15 uncovered/
+two timeouts, 64 classes,154s; raw killed77.29%, detected77.38%. No whole-app score.
+Documentation-only descendants reuse these unchanged executable inputs.
+
+Next exact renderer task: ImmersiveViewer's centered empty-trace overlay lies
+outside the measured plot owner and can overlap the Y-label area at 150%. Write
+a real EN/ES large-font overlap regression, then make annotation placement consume
+the same ready plot rectangle. Avoid arbitrary percentage padding or hiding the
+message. Then characterize setSwipeComparison's stale progress/result/disposal
+and replacement before replacing its executor/version publication. Association/
+optimization, remaining DSP/UI hotspots and survivors are still IN PROGRESS.
+
+### Local implementation record (remote values above are separate)
+
 This milestone replaces recording-analysis executor/version/flag orchestration
 with a typed operation owner, caller-scoped serial evaluation and one read-only
 presentation. Stale progress and terminal delivery are rejected after replacement,
@@ -19,9 +40,9 @@ Local JVM: 896 discovered, 880 passed, 16 protected skips. Coverage 42.57% lines
 38.74% branches, core 98.99% / 83.28%. CRAP-L 470 measured / 111 independent
 unscored / 73 above target. Focused PIT analysis 52/65 killed; plots 345/426,
 two uncovered. Detekt 1,989 informational; Lint 0/52/8; CPD zero >=100 tokens;
-differential 741 identical. Remote final verification is pending publication.
+differential 741 identical. Final remote verification is recorded above, without merging its coverage with local runs.
 
-Next concrete production cycle: characterize `setSwipeComparison` replacement,
+Following the annotation-layout correction above, the next state cycle will characterize `setSwipeComparison` replacement,
 disposal and progress ownership before replacing its separate executor/version
 publication; then review association/optimization orchestration and remaining
 DSP/UI hotspots. This milestone does not complete those subsystems. Keep PR #1
