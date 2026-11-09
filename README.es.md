@@ -93,6 +93,14 @@ Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controle
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
+La comparación experimental SWIPE vincula sus operaciones a cada sesión y bloquea
+nuevas tareas después de destruir el ViewModel. La planificación compartida conserva
+la ejecución serial del DSP, y la sincronización de cámaras probada mantiene el
+desplazamiento durante el progreso. Los mensajes de traza vacía usan los límites
+medidos del gráfico. Ver los ciclos de [comparación](docs/engineering/SWIPE_OPERATION_OWNERSHIP.md)
+y [anotaciones](docs/engineering/PLOT_NOTICE_OWNERSHIP.md), documentados en inglés;
+la reconstrucción completa sigue en curso.
+
 La [reconstrucción del análisis y renderizado](docs/engineering/ANALYSIS_RENDERING_REBUILD.md),
 documentada en inglés, asigna un propietario al progreso y los resultados del
 análisis y separa geometría, gestos, accesibilidad y dibujo nativo. Las regresiones

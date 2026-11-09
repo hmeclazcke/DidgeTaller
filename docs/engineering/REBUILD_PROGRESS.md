@@ -1,3 +1,44 @@
+# 2026-11-09 comparison and annotation integration - IN PROGRESS
+
+Local UI commit52bb4f5 is validated; the next comparison implementation is based
+on it and will be identified by the commit containing this checkpoint. Original
+main remains3a160043; remote parent/deliveryd82f3bf was verified. No reset/new branch.
+
+The [comparison cycle](SWIPE_OPERATION_OWNERSHIP.md) fixes a real native failure:
+setSwipeComparison after ViewModelStore.clear enabled work into a cancelled scope.
+Typed request/terminal ownership, cached toggles, permanent disposal and shared
+serial scheduling now defend it. Camera policy is pure Kotlin with four JVM
+contracts/12 killed mutants; the ViewModel only publishes and delegates. Original
+coroutine/Handler implementation is accurately described; no phantom executor fix.
+The [annotation cycle](PLOT_NOTICE_OWNERSHIP.md) fixes empty text crossing Y labels,
+with original message selection and actual frame bounds; tap/scrub still pass.
+
+Final local JVM936 discovered/920 passed/16 protected skips/0 failures. Coverage
+43.40/39.59%, core99.02/83.55%; final native ownership6/6 pass. Earlier affected
+native13 had11 passes/two Pixel Launcher focus failures; preserve that report.
+The one bounded retry plus diagnosed/fixed vertical-tab navigation tests pass,
+including actual synthetic-WAV analysis. No clean local full-suite pass invented.
+PIT analysis67=57 killed/10 survived; comparison81=72 killed/nine survived, zero
+uncovered/errors/timeouts; these scopes share scheduler mutants. No full broad
+PIT repeated locally; execute once in final CI. Source484 scored/114 independent
+unscored; all638 named declarations accounted for. JVM above target72, Detekt1987,
+Lint0/52/8, CPD0 >=100 tokens, gate0. No numerical baseline or ordinary waiver.
+
+Exact delivery steps: privacy/diff review, commit validated comparison paths,
+normal feature-only push of both cycles, one manual mutation dispatch, observe
+fast/full-native/mutation outcomes and current-source artifacts. Update PR1 draft
+with actual results. Reuse unchanged DSP oracle/tool tests; CI executes their
+required fresh checks. Never claim a pending or cancelled run passed.
+
+Next production cycle AFTER delivery: characterize saved-YIN/component/evidence
+analysis admission after disposal and session replacement, then rebuild the actual
+ownership faults proved by those tests. requestMusicalTrace and remaining DSP/UI
+hotspots plus surviving mutants are not complete. Keep canonical component data
+separate from diagnostic YIN/SWIPE and preserve existing cache/index guarantees.
+No Samsung/private WAV access, merge, force push, new dependency or metronome.
+
+## Prior checkpoints (historical)
+
 # 2026-11-09 continuation - IN PROGRESS
 
 Local plot-notice cycle is validated; see [ownership evidence](PLOT_NOTICE_OWNERSHIP.md).

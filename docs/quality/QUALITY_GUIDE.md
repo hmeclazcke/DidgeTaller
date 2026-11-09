@@ -1,5 +1,17 @@
 # Quality guide
 
+## Current comparison and annotation continuation
+
+The [comparison cycle](../engineering/SWIPE_OPERATION_OWNERSHIP.md) introduces
+`:app:qualityMutationSwipe`, verified locally against typed comparison ownership,
+shared progress scheduling and ordinary Kotlin camera reconciliation. The existing
+`:app:qualityMutationAnalysis` now also selects the shared scheduler. Their scopes
+overlap; do not add their mutant totals. Both join the existing domain task without
+running a second dispatcher or changing SWIPE equations. New named eligible code
+is measured below target; technical constructor/Compose reviews remain explicit.
+The [annotation cycle](../engineering/PLOT_NOTICE_OWNERSHIP.md) has real compact/
+150% bounds and passive-input regressions. Broad final CI is pending publication.
+
 ## Analysis and rendering milestone
 
 The [current source-scoped milestone](../engineering/ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis

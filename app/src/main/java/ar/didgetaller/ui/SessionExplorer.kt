@@ -119,8 +119,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         AdvancedPitchDiagnostics(vm,item,s.selectedMs) {
             val diagnosticState=remember(item.id){ExplorerState(item.instrument)}
             LaunchedEffect(vm.swipeComparison.enabled) {
-                diagnosticState.configureComparisonRange(if(vm.swipeComparison.enabled)
-                    AxisWindow(item.instrument.minHz*.95,item.instrument.initialMaxHz*1.05) else null)
+                diagnosticState.configureComparisonRange(vm.swipeComparison.range)
             }
             Text(stringResource(R.string.pitch_yin_layer),style=MaterialTheme.typography.labelSmall)
             if(vm.swipeComparison.enabled) SwipeLegend()

@@ -3022,17 +3022,445 @@
     "dfb1fe2ebe595cba063f543ff56d3940e11909349bd75d451c3da7bfbc977c1a": {
       "file": "app/src/main/java/ar/didgetaller/ui/SessionExplorer.kt",
       "kind": "function",
-      "semanticHash": "acdb91c58d190603a5db72e799c319228f7067671115c1fc8027b0e2f4f84250",
+      "semanticHash": "3d2522f71341342e3daa5c4dc3094338ef21b3350b51d391e0faf45dd9cd0a5c",
       "line": 45,
       "name": "SessionExplorer",
-      "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
       "evidence": [
-        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
       ],
-      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change.",
+      "metric_status": "compose-transformation"
+    },
+    "dd965a9fe041e00da484ad2d5fd0c4dab2632e9eeabececa9153587ae754e76a": {
+      "file": "app/src/main/java/ar/didgetaller/audio/SwipeComparisonLoader.kt",
+      "kind": "constructor",
+      "semanticHash": "24b208e9587956341eacffdcf8877f84e332d7bb581a8a1ef24cb01d0a660000",
+      "line": 8,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "aeb74da6e6a0648152c0fe51038b021a0ac65ff976fb9a823b4fc5bc847d42c1": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "618603167e8449145b72682359fa7ad1907eadb1ed8a8efd6f30c7c1a7b40ef2",
+      "line": 5,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "0a1bc4d29d8d44a24c9ca254bc72d1b826ba83c53bb73eb64d59a06fb8dd7d39": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "86a870457537f9dd120f155f8669c94b64a3d59e02e7c81964385e98f3f9f1ce",
+      "line": 9,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "b4009b4ab23f728a991a6f54ae8298b61574c804067773855ace1806a6e16830": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "07ed5c2a775bbd5558bd2f4515d55c9a883fd2b2f90eda19f6348640d1a384e1",
+      "line": 11,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "47f90794a5d298a6ca5d35025acddd68d1facc13361484a05c19a80f5b9a0588": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "be22c0a3aeaf8d7ff43c30344274456f40fd99eb855544accf255bc2921928a0",
+      "line": 13,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "fba2138df47581aa9ca7b80bb74d0338670b9fb0092f886096937cfaf16ac9e0": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "37f14745ebdd0bd159bd98ae61055132064a066e72a6b71307f9fb2d1185add7",
+      "line": 15,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "c2c0c686c1e4b5e41cb29d3e0e5e04055f786626a3ba6b2a7fc71ad5168821b5": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "10e6f91a8910dac3f2dcc25164eee44938c842a6157a298c19c851b3f142147a",
+      "line": 21,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "91f719924e2e24842bc336740b2240a359b447ef0f2a95dcf1cba7c4143f0d11": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "constructor",
+      "semanticHash": "0aed4468a7d63a80034f97b2326cad2439b45d04030ab804cd8836ffeb551aad",
+      "line": 23,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "19759b33b490df6670b8bb7bf23b289bbbf860bccd00d8689298d881fb31c10a": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "initializer",
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "line": 24,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "d2adbdd6eaa62954decf9e13efe8a768ea823a482a2aa097488d03d5c382ed7c": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "initializer",
+      "semanticHash": "917e9f766edb0b89bb5fe01750785b47f952436c7955a337f2f67badde77cf9f",
+      "line": 25,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "37380575b598eeee79bf5308d6a17c84bfe5e2e03e625985a4621b71cca34fd0": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonController.kt",
+      "kind": "accessor",
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "line": 25,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "968f273a359eceb8c753730b1e67c3729a291fc8b49ac8a2c44e2b80112b103d": {
+      "file": "app/src/main/java/ar/didgetaller/core/SwipeComparisonLoader.kt",
+      "kind": "constructor",
+      "semanticHash": "df87681eb1d96bd9be0b7c7fa3772d8a512d3faa97ce1d86aafb1e7848477db2",
+      "line": 4,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "a04e0fe849c07eeec8c79b8a17a6e00d572febd511b0ce2972d3b02b47970743": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "constructor",
+      "semanticHash": "5b8bbadbbdb81217f0303cea962d95bd73a5603b04e0c555d49edf64b4200cda",
+      "line": 6,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "ca001f4e80f0e7883fd2abfd440ad42398d7a6514d4c452367ce4d4744f74484": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "9755313fb85091092c6e34d4fe371ca8c082f298163732a0f6efc9884e9207d4",
+      "line": 7,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "934dbe47f38efd0d045bd01b4660095332c15c27a57cca544d9fae165270b1e0": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "ca88d3b6ccf4da436ad392b3aa005554a32a8ef87af0d12b39163565f8fefb28",
+      "line": 8,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "0a554c8de7d89ffcb1a72326e43a712130db19db6125776f852c3edf8de365dd": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "a9caff96c7495013a4300343ddceca02c58842906918ce50eda794350150e04f",
+      "line": 9,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "1b89f83c72da8cfa6db50a3e608bf01a7eb8f0715f13d09dff97d3df1994646a": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "c4ac6619ea00da2726ca607afa56a9d847d66770a6e90a29b181e03d6267731f",
+      "line": 10,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "8a32e4f6926ab4ec1e3529ee586fc5e80e2d13eed037c8720400dd545eeb7a0d": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "c0aedfb34285e9d6c43d75152f858f9f9ab9a15be22bcf5cf4bacf276b11036d",
+      "line": 11,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "f2f6cc16beef5ca07ce85baa7c25ce53ed2885d81d1020cbf13049c4266b701a": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "2640015a73e21ed6547e51f2154885bf995b84b61dc9523111cca3ffc5883497",
+      "line": 12,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "dd31e82d808f7c271eb7cf84bb7fb50bbfe5b7fc06f46a113fe222a7b2522f27": {
+      "file": "app/src/main/java/ar/didgetaller/SwipeComparisonState.kt",
+      "kind": "initializer",
+      "semanticHash": "143f884d53e3f275a5b2e8108501e910009ef13037e255f9e5c4148f3d93a52f",
+      "line": 13,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "01d63e3584bef51edb3ab00b96888572f96cf2aaffa14ddaf79ff7e449358485": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "constructor",
+      "semanticHash": "c0ceb1cf268d3a1a511e30e687d792256dba676cd5174b956308c10c1c3652ac",
+      "line": 80,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "d9bc3cf426f533326a5a86198590a8252a857b45ac5ea5eb456caed128bbd148": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "accessor",
+      "semanticHash": "a2d1d48aba27e029eb852ec1b6ad33b8cf3dbe61b219e7643475c3351c07abaf",
+      "line": 174,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "07d9b969ed5a786c6e21ce7c1974b0656dee933e7a777a0d26382fce7cf82770": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "initializer",
+      "semanticHash": "cf2126fe2aa2bc44bbb37934652a8a6b5978da92502dda5bd79a78ec7afe3b1a",
+      "line": 175,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "cbca532cc70d40e10e2d014b972ba339098ad478b7138072cfc2ee4d48216248": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "lambda",
+      "semanticHash": "5e2a67540e4075c72e6fe76ea8c8971960913af3690709a1497fd27c1d1fdf78",
+      "line": 176,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "eddee061de22dbfd7d0fdd598579562e52924d9495323cc065806a01d4217576": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "kind": "lambda",
+      "semanticHash": "46fb2a68aac71b7cb3a962350f8cffd73d9abd7dfec4b98be3ee021f791a048a",
+      "line": 177,
+      "name": null,
+      "reviewed_base": "52bb4f58d811eb5ccf774c526b6eff5e53a41f70",
+      "evidence": [
+        "docs/engineering/SWIPE_OPERATION_OWNERSHIP.md",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonControllerTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SwipeComparisonCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ComparisonCamerasTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ],
+      "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
     }
   }
 }

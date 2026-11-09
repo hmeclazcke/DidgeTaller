@@ -1,5 +1,18 @@
 # Workspace operation ownership and plot preparation
 
+## Comparison lifecycle and bounded annotations
+
+A [real disposed-ViewModel regression](SWIPE_OPERATION_OWNERSHIP.md) reproduces
+comparison entering a permanent running state after its coroutine scope closes.
+An explicit per-session owner, shared scheduling policy and testable camera
+reconciliation replace the mixed ViewModel responsibility. The quality gate
+rejects a new untested Android bridge; four ordinary JVM camera contracts and
+12 killed mutants replace that exception path. A surviving cancellation mutant
+also exposes an assertion hidden inside cancelled work; observations now reach
+the test thread. The [annotation cycle](PLOT_NOTICE_OWNERSHIP.md) moves coordinates
+to the renderer while retaining message selection in the viewer and strict bounds.
+These are production/test changes, not a claim of complete whole-app acceptance.
+
 ## Recording-analysis and renderer continuation
 
 The [current source-scoped milestone](ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis

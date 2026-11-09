@@ -1,5 +1,14 @@
 # 2026-11-08 workspace ownership integration
 
+## 2026-11-09 comparison operation integration
+
+[Source and evidence](engineering/SWIPE_OPERATION_OWNERSHIP.md) record native
+post-disposal RED/GREEN, cached/camera ownership, the shared coroutine scheduler,
+stronger cancellation observations, selected PIT, final local JVM936/920/16 and
+separately retained launcher/test-driver failures. Source/CRAP-L gate passes with
+484 scored/114 independent unscored and no ordinary risk waiver. Final remote
+emulator coverage and broad mutations await the single combined publication.
+
 ## 2026-11-09 bounded plot annotation
 
 The [annotation ownership cycle](engineering/PLOT_NOTICE_OWNERSHIP.md) records the actual native bounds RED,

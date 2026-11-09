@@ -7,6 +7,10 @@ import ar.didgetaller.core.RecordingPhase
 import ar.didgetaller.core.CapturedSession
 import ar.didgetaller.core.AcousticDiagnostics
 import ar.didgetaller.core.SavedPitchEvidence
+import ar.didgetaller.core.SwipeComparisonLoader
+import ar.didgetaller.core.SwipeComparisonController
+import ar.didgetaller.core.SwipeComparisonRequest
+import ar.didgetaller.core.SwipeComparisonStatus
 import ar.didgetaller.core.SwipeAnalysis
 import ar.didgetaller.core.SwipeCurve
 import ar.didgetaller.core.DroneComponentAnalysis
@@ -22,6 +26,8 @@ import ar.didgetaller.core.RecordingAnalysisRequest
 import ar.didgetaller.core.RecordingAnalysisController
 import ar.didgetaller.core.RecordingAnalysisStatus
 import ar.didgetaller.audio.CoroutineRecordingAnalysisLoader
+import ar.didgetaller.audio.CoroutineSwipeComparisonLoader
+import ar.didgetaller.ui.reconcileComparisonCameras
 import ar.didgetaller.lab.CoroutineSimulationLoader
 
 import android.app.Application
@@ -66,8 +72,6 @@ data class ComparisonState(val running:Boolean=false,val progress:Int=0,val a:Wa
 data class SavedEvidenceState(val sessionId:String?=null,val running:Boolean=false,
     val result:SavedPitchEvidence.Snapshot?=null,val failed:Boolean=false)
 
-data class SwipeComparisonState(val sessionId:String?=null,val enabled:Boolean=false,val running:Boolean=false,
-    val progress:Int=0,val curve:SwipeCurve?=null,val failed:Boolean=false)
 data class DroneComponentState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
     val curve:DroneComponentCurve?=null,val failed:Boolean=false)
 data class SavedYinReplayState(val sessionId:String?=null,val running:Boolean=false,
@@ -76,6 +80,7 @@ data class SavedYinReplayState(val sessionId:String?=null,val running:Boolean=fa
 class TallerViewModel internal constructor(
     application: Application, simulationLoader: SimulationLoader?,
     analysisLoader: RecordingAnalysisLoader? = null,
+    swipeLoader: SwipeComparisonLoader? = null,
 ): AndroidViewModel(application) {
     constructor(application: Application) : this(application, null)
     private val store=LocalStore(application)
@@ -164,7 +169,16 @@ class TallerViewModel internal constructor(
         }), { analysisState=it })
     var savedEvidence by mutableStateOf(SavedEvidenceState());private set
     private var evidenceJob:Job?=null
-    var swipeComparison by mutableStateOf(SwipeComparisonState());private set
+    private val swipeDispatcher=Dispatchers.IO.limitedParallelism(1)
+    private var swipeState by mutableStateOf<SwipeComparisonStatus>(SwipeComparisonStatus.Idle)
+    val swipeComparison get()=SwipeComparisonState(swipeState)
+    private val swipeOwner=SwipeComparisonController(swipeLoader ?: CoroutineSwipeComparisonLoader(
+        viewModelScope, swipeDispatcher, { request,cancelled,progress ->
+            Pcm16WavReader(recordingStore.file(request.sessionId)).use { source ->
+                SwipeAnalysis().analyze(source,InstrumentProfile.DIDGERIDOO,cancelled,progress)
+            }
+        }), ::publishSwipeComparison)
+
     var droneComponent by mutableStateOf(DroneComponentState());private set
     private val musicalTraces=mutableStateMapOf<String,MusicalTrace>()
     private val fluteTraces=mutableMapOf<String,MusicalTrace>()
@@ -206,10 +220,8 @@ class TallerViewModel internal constructor(
         if(activeDetail!=id)musicalTraceJobs.remove(id)?.cancel()
     }
     var savedYinReplay by mutableStateOf(SavedYinReplayState());private set
-    private var swipeJob:Job?=null
     private var droneComponentJob:Job?=null
     private var savedYinReplayJob:Job?=null
-    private val swipeDispatcher=Dispatchers.IO.limitedParallelism(1)
     fun analyzeSavedYin(item:RecordingStore.Session){
         if(item.instrument!=InstrumentProfile.DIDGERIDOO || savedYinReplay.sessionId==item.id)return
         savedYinReplayJob?.cancel()
@@ -260,35 +272,15 @@ class TallerViewModel internal constructor(
         droneComponent=DroneComponentState()
     }
     fun setSwipeComparison(item:RecordingStore.Session,enabled:Boolean){
-        if(item.instrument!=InstrumentProfile.DIDGERIDOO)return
-        swipeJob?.cancel()
-        val range=if(enabled)AxisWindow(item.instrument.minHz*.95,item.instrument.initialMaxHz*1.05) else null
-        explorer(item.id).configureComparisonRange(range)
-        val cached=swipeComparison.takeIf {it.sessionId==item.id}?.curve
-        swipeComparison=SwipeComparisonState(item.id,enabled,enabled && cached==null,curve=cached)
-        if(!enabled || cached!=null)return
-        swipeJob=viewModelScope.launch {
-            try {
-                val result=withContext(swipeDispatcher){
-                    val task=currentCoroutineContext()
-                    Pcm16WavReader(sessionFile(item)).use {source->
-                        SwipeAnalysis().analyze(source,item.instrument,cancelled={!task.isActive},progress={p->
-                            main.post {if(task.isActive && swipeComparison.sessionId==item.id && swipeComparison.enabled)
-                                swipeComparison=swipeComparison.copy(progress=p)}
-                        })
-                    }
-                }
-                ensureActive()
-                if(activeDetail==item.id && swipeComparison.enabled)swipeComparison=swipeComparison.copy(running=false,progress=100,curve=result)
-            }catch(e:CancellationException){throw e}
-            catch(e:Exception){ensureActive();if(activeDetail==item.id)swipeComparison=swipeComparison.copy(running=false,failed=true)}
-        }
+        if(item.instrument==InstrumentProfile.DIDGERIDOO)
+            swipeOwner.select(SwipeComparisonRequest(item.id),enabled)
     }
-    private fun clearSwipeComparison(){
-        swipeJob?.cancel()
-        swipeComparison.sessionId?.let {id->explorers[id]?.configureComparisonRange(null)}
-        swipeComparison=SwipeComparisonState()
+    private fun publishSwipeComparison(next:SwipeComparisonStatus){
+        val previous=swipeState
+        swipeState=next
+        reconcileComparisonCameras(previous,next,explorers,::explorer)
     }
+    private fun clearSwipeComparison(){swipeOwner.clear()}
 
     fun inspectSavedEvidence(item:RecordingStore.Session,positionMs:Long){
         cancelSavedEvidence()
@@ -566,7 +558,7 @@ class TallerViewModel internal constructor(
         microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
-        analysisOwner.close();simulationOwner.close();onAppStopped()
+        analysisOwner.close();simulationOwner.close();swipeOwner.close();onAppStopped()
         workspace.close()
         recording.dispose()
         optimizationVersion.incrementAndGet();optimizerExecutor.shutdownNow();super.onCleared()

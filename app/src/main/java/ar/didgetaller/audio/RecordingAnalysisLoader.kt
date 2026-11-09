@@ -13,20 +13,8 @@ internal class CoroutineRecordingAnalysisLoader(private val scope: CoroutineScop
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO.limitedParallelism(1),
 ) : RecordingAnalysisLoader {
     override fun submit(request: RecordingAnalysisRequest, progress: (Int) -> Unit,
-                        complete: (Result<WavAnalysis.Result>) -> Unit): Result<RecordingAnalysisTask> = try {
-        scope.ensureActive()
-        val job = scope.launch {
-            val owner = this
-            val result = try {
-                Result.success(withContext(dispatcher) {
-                    val worker = currentCoroutineContext()
-                    compute(request, { !worker.isActive }, { percent -> owner.launch { progress(percent) } })
-                })
-            } catch (error: Exception) { Result.failure(error) }
-            // Observer failures must not be reclassified as WAV or cache failures.
-            complete(result)
-            (result.exceptionOrNull() as? CancellationException)?.let { throw it }
-        }
-        Result.success(RecordingAnalysisTask { job.cancel() })
-    } catch (error: Exception) { Result.failure(error) }
+                        complete: (Result<WavAnalysis.Result>) -> Unit): Result<RecordingAnalysisTask> =
+        submitProgressWork(scope, dispatcher, progress, complete) { cancelled, update ->
+            compute(request, cancelled, update)
+        }.map { job -> RecordingAnalysisTask { job.cancel() } }
 }

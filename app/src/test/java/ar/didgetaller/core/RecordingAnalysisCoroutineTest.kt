@@ -40,15 +40,17 @@ class RecordingAnalysisCoroutineTest {
     }
 
     @Test fun cancellationInsideAnExpensiveWorkerIsObservedAndFinallyClosesItsResource() {
-        val ui = QueuedDispatcher(); val worker = QueuedDispatcher(); val scope = CoroutineScope(SupervisorJob() + ui)
-        var closed = false; lateinit var owner: RecordingAnalysisController
+        val ui = QueuedDispatcher(); val worker = QueuedDispatcher(); val errors = mutableListOf<Throwable>()
+        val scope = CoroutineScope(SupervisorJob() + ui + CoroutineExceptionHandler { _, e -> errors += e })
+        var closed = false; var cancellationObserved = false; lateinit var owner: RecordingAnalysisController
         owner = RecordingAnalysisController(CoroutineRecordingAnalysisLoader(scope, { _, cancelled, _ ->
-            try { owner.cancel(); assertTrue(cancelled()); throw CancellationException("synthetic cancellation") }
+            try { owner.cancel(); cancellationObserved = cancelled(); throw CancellationException("synthetic cancellation") }
             finally { closed = true }
         }, worker)) {}
         try {
             owner.request(request); ui.drain(); worker.drain(); ui.drain()
-            assertTrue(closed); assertTrue(owner.state.cancelled); assertNull(owner.state.result)
+            assertTrue(closed); assertTrue(cancellationObserved); assertTrue(errors.isEmpty())
+            assertTrue(owner.state.cancelled); assertNull(owner.state.result)
         } finally { owner.close(); scope.cancel(); ui.drain(); worker.drain(); ui.drain() }
     }
 

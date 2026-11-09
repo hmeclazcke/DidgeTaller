@@ -106,8 +106,10 @@ class SessionEvidenceUiTest {
         compose.onNodeWithText(uiText(R.string.ui_analyze_recording)).performScrollTo().performClick()
         compose.waitUntil(30000){vm.recordingAnalysis.result!=null || vm.recordingAnalysis.error!=null}
         assertNull(vm.recordingAnalysis.error)
-        compose.onNodeWithTag("plot-tab-spectrum").performScrollTo().performClick()
-        compose.onNodeWithTag("spectrum-chart").assertIsDisplayed()
+        // Analysis scrolls vertically below the card; first restore the tab row's vertical owner.
+        compose.onNodeWithTag("expand-plot").performScrollTo()
+        compose.onNodeWithTag("plot-tab-spectrum").performScrollTo().performClick().assertIsSelected()
+        compose.onNodeWithTag("spectrum-chart").performScrollTo().assertIsDisplayed()
         screenshot("harmonics")
     }
     @Test fun captureAndPreserveOriginals(){

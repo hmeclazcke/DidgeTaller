@@ -95,6 +95,12 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
+Experimental SWIPE comparison now has session-owned operations and permanent
+disposal. Shared scheduling preserves the serial DSP worker, and tested camera
+reconciliation keeps panning stable through progress. Fullscreen empty-evidence
+notices use the measured plot bounds. See the [comparison cycle](docs/engineering/SWIPE_OPERATION_OWNERSHIP.md)
+and [annotation cycle](docs/engineering/PLOT_NOTICE_OWNERSHIP.md); the full rebuild remains in progress.
+
 The [analysis and rendering reconstruction](docs/engineering/ANALYSIS_RENDERING_REBUILD.md)
 gives saved-recording analysis explicit progress/terminal ownership and separates
 plot geometry, gestures, accessibility and native painting. Controlled JVM and

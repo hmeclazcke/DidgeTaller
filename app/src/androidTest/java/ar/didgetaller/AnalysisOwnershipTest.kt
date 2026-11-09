@@ -30,6 +30,17 @@ class AnalysisOwnershipTest {
                             complete: (Result<WavAnalysis.Result>) -> Unit): Result<RecordingAnalysisTask> =
             Result.success(Pending(request, progress, complete).also { tasks += it })
     }
+    private class SwipePending(val request: SwipeComparisonRequest, val progress: (Int) -> Unit,
+        val complete: (Result<SwipeCurve>) -> Unit) : SwipeComparisonTask {
+        var cancelled = false
+        override fun cancel() { cancelled = true }
+    }
+    private class SwipeLoader : SwipeComparisonLoader {
+        val tasks = mutableListOf<SwipePending>()
+        override fun submit(request: SwipeComparisonRequest, progress: (Int) -> Unit,
+            complete: (Result<SwipeCurve>) -> Unit): Result<SwipeComparisonTask> =
+            Result.success(SwipePending(request, progress, complete).also { tasks += it })
+    }
     private class IsolatedApplication(context: Context) : Application() {
         private val namespace = "analysis-owner-${UUID.randomUUID()}"
         init { attachBaseContext(context) }
@@ -115,4 +126,69 @@ class AnalysisOwnershipTest {
             assertEquals(disposed, vm.recordingAnalysis); assertEquals(1, loader.tasks.size)
         }
     }
+    @Test fun aClearedModelCannotEnableOrStartASwipeComparison() {
+        assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
+        val app = IsolatedApplication(InstrumentationRegistry.getInstrumentation().targetContext)
+        val owners = ViewModelStore()
+        onMain {
+            val vm = TallerViewModel::class.java.getConstructor(Application::class.java).newInstance(app)
+            owners.put("analysis", vm)
+            owners.clear()
+            val disposed = vm.swipeComparison
+            vm.setSwipeComparison(session(), true)
+            assertEquals("A cleared owner must not publish new SWIPE work", disposed, vm.swipeComparison)
+        }
+    }
+
+    @Test fun swipeCacheAndProgressPreserveTheCorrectComparisonCameraAndInstrumentBoundary() {
+        assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
+        val app = IsolatedApplication(InstrumentationRegistry.getInstrumentation().targetContext)
+        val swipe = SwipeLoader(); val owners = ViewModelStore()
+        val curve = SwipeCurve(listOf(SwipeCurve.Sample(20.0, 70.0)), 10.0, 35, 140)
+        onMain {
+            try {
+                val vm = TallerViewModel(app, null, Loader(), swipe); owners.put("analysis", vm)
+                val item = session(); vm.onDestinationChanged(item.id)
+                val explorer = vm.explorer(item.id)
+                val original = PlotViewport(AxisWindow(0.0, 1000.0), AxisWindow(60.0, 100.0))
+                explorer.cameras[ar.didgetaller.ui.AcousticPlot.PITCH] = original
+                vm.setSwipeComparison(item, true); val task = swipe.tasks.single()
+                assertEquals(AxisWindow(33.25, 147.0), explorer.camera(1000, 44100, emptyList()).y)
+                val panned = original.copy(x = AxisWindow(100.0, 500.0), y = AxisWindow(50.0, 120.0))
+                explorer.cameras[ar.didgetaller.ui.AcousticPlot.PITCH] = panned
+                task.progress(40); task.complete(Result.success(curve))
+                assertEquals(panned, explorer.camera(1000, 44100, emptyList()))
+                vm.setSwipeComparison(item, false)
+                assertEquals(original, explorer.camera(1000, 44100, emptyList()))
+                vm.setSwipeComparison(item, true)
+                assertEquals(1, swipe.tasks.size); assertSame(curve, vm.swipeComparison.curve)
+                val ready = vm.swipeComparison
+                vm.setSwipeComparison(item.copy(instrument = InstrumentProfile.NATIVE_AMERICAN_FLUTE), true)
+                assertEquals(ready, vm.swipeComparison)
+                vm.onAppStopped(); assertFalse(vm.swipeComparison.enabled)
+                assertEquals(original, explorer.camera(1000, 44100, emptyList()))
+            } finally { owners.clear() }
+        }
+    }
+
+    @Test fun swipeReplacementNavigationAndDisposalRevokeLateNativeCallbacks() {
+        assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
+        val app = IsolatedApplication(InstrumentationRegistry.getInstrumentation().targetContext)
+        val swipe = SwipeLoader(); val owners = ViewModelStore()
+        onMain {
+            val vm = TallerViewModel(app, null, Loader(), swipe); owners.put("analysis", vm)
+            val a = session(); val b = session()
+            vm.onDestinationChanged(a.id); vm.setSwipeComparison(a, true); val old = swipe.tasks.single()
+            vm.onDestinationChanged(b.id); assertTrue(old.cancelled)
+            vm.setSwipeComparison(b, true); val current = swipe.tasks.last(); current.progress(25)
+            val selected = vm.swipeComparison
+            old.progress(90); old.complete(Result.failure(IllegalArgumentException("late")))
+            assertEquals(selected, vm.swipeComparison)
+            owners.clear(); assertTrue(current.cancelled); val disposed = vm.swipeComparison
+            current.progress(95); current.complete(Result.success(SwipeCurve(emptyList(), 10.0, 35, 140)))
+            vm.setSwipeComparison(a, true); vm.setSwipeComparison(b, false)
+            assertEquals(disposed, vm.swipeComparison); assertEquals(2, swipe.tasks.size)
+        }
+    }
+
 }
