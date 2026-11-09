@@ -13,6 +13,16 @@ the test thread. The [annotation cycle](PLOT_NOTICE_OWNERSHIP.md) moves coordina
 to the renderer while retaining message selection in the viewer and strict bounds.
 These are production/test changes, not a claim of complete whole-app acceptance.
 
+CI also rejects a clipped empty-trace notice in Spanish at150%. The main suite
+passes, but that extra configuration correctly fails the workflow. Native
+three-button reproduction identifies unnecessary vertical padding; landscape
+then reveals a permanently absent drawable frame. The viewer now reserves a
+usable minimum graph, grows into available space, and scrolls enlarged secondary
+text instead of shrinking typography or hiding it. Native contracts retain
+80ms paused-seek tolerance and verify two-finger pan/zoom without audio seeking.
+The normal-scale65% graph-area assertion is retained, not weakened to disguise
+the accessibility configuration. [Detailed evidence](PLOT_NOTICE_OWNERSHIP.md).
+
 ## Recording-analysis and renderer continuation
 
 The [current source-scoped milestone](ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis

@@ -1,5 +1,18 @@
 # 2026-11-08 workspace ownership integration
 
+## 2026-11-09 CI layout correction
+
+Source c9b3ab3 fast42614250039 and real mutation42614248589 pass. Full native
+42614242780 passes152 tests/ten skips, then correctly fails the Spanish/150%
+extra layout. The [focused correction](engineering/PLOT_NOTICE_OWNERSHIP.md)
+reproduces that failure and the subsequent landscape missing-frame defect.
+Ten final affected native cases pass on the owned synthetic API37 emulator,
+including EN/ES, three-button navigation,150% font, actual fullscreen gestures
+and80ms paused seeking. Fresh debug JVM460 passed/eight skips, JaCoCo43.38/39.61%,
+core99.02/83.55%, gate0 (484/114,72 high), Detekt1987, Lint0/52/8 and CPD0.
+Final corrected-source CI is still required. No historical
+or partial Android result is represented as that final pass.
+
 ## 2026-11-09 comparison operation integration
 
 [Source and evidence](engineering/SWIPE_OPERATION_OWNERSHIP.md) record native

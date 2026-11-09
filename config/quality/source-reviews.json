@@ -2279,17 +2279,17 @@
     "3f43431ca53f0fafff1c4569d48ae8290a8a3f7a6d128dc673fef19d83865bb1": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
       "kind": "function",
-      "semanticHash": "ce3bc3183ad70a0f8695ef4dde6e7cf1d8e9d1dd2437d335ac33ef72267b9e89",
+      "semanticHash": "2f7e755b914d68243ab3caa26200f54586f4835fcb12db318774d776ddcf3189",
       "line": 181,
       "name": "ImmersiveViewer",
       "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed. The same three-button large-font landscape regression also exposes a permanently absent plot frame. The safe-inset viewport now owns a scrollable intrinsic-minimum column: the plot keeps a 180dp minimum and grows into spare space; enlarged secondary text remains accessible by scrolling. No smaller fonts, axis overlap, extra inset or invented source CRAP.",
       "evidence": [
         "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
         "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
       ],
-      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+      "reviewed_base": "c9b3ab3eb036ad478426506bee753894e25a435f"
     },
     "b35e86ee4c049ddc605517fc473b87bcfbf62a82713669047db7f5817654d48e": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
@@ -2992,17 +2992,17 @@
     "ae64a530a75637d51e4cb3b4da5fad9926974c54bbc68e9255b2e5924c7fc43a": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotCanvas.kt",
       "kind": "function",
-      "semanticHash": "81b92773d659fbdea51c966e32bb54b03060b297c1a24b38579d5a58272bccf8",
+      "semanticHash": "dc7bb54b97df7edfba829b9e8f5c0acc16450913fc1935c4aaf0c8dbd29bf5b5",
       "line": 59,
       "name": "PlotNotice",
       "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed. CI c9b3ab3 rejects a clipped Spanish notice at 150% with three-button navigation. The same native regression reproduces height overflow (88px text allocation in a 130px plot after 42px vertical padding). Removing only vertical annotation padding preserves font scaling, full text, axis bounds and timeline gestures. No eligible ordinary function is waived.",
       "evidence": [
         "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
         "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
       ],
-      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+      "reviewed_base": "c9b3ab3eb036ad478426506bee753894e25a435f"
     },
     "f538fac24e1b47cf017c6df5abcf851b6e21b256f5447631f9231fb2a80ba9ba": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",

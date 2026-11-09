@@ -1,5 +1,16 @@
 # 2026-11-08 workspace continuation handoff
 
+## 2026-11-09 CI layout correction
+
+Preserve the failed c9b3ab3 extra-config result; do not retry it unchanged or
+weaken overflow assertions. Native reproduction identifies vertical padding,
+then a permanently absent landscape frame. The safe-inset owner now supplies
+an intrinsic minimum with intentional scrolling,180dp minimum graph and full
+scaled text. Ten final focused native cases pass; ordinary source quality policy
+and the existing65% normal-scale graph assertion are unchanged. Publish the
+correction on the feature branch and observe its real CI before final evidence.
+Reuse passing mutation42614248589 because this delta changes none of its targets.
+
 ## 2026-11-09 comparison operation integration
 
 [Source and evidence](engineering/SWIPE_OPERATION_OWNERSHIP.md) record native

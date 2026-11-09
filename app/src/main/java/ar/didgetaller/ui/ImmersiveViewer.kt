@@ -232,7 +232,10 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         }
     }
     // This is the sole owner of safe insets. Outer Scaffold supplies zero in viewer.
-    Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).testTag("acoustic-viewer")){
+    BoxWithConstraints(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+    // Grow the plot into spare space; scroll rather than collapse it under enlarged labels.
+    Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+        .heightIn(min=maxHeight).height(IntrinsicSize.Min).testTag("acoustic-viewer")){
         Row(Modifier.fillMaxWidth().height(48.dp).testTag("viewer-toolbar"),verticalAlignment=Alignment.CenterVertically){
             IconButton(onClick=onBack){Icon(Icons.AutoMirrored.Filled.ArrowBack,context.getString(R.string.ui_back_to_session))}
             Box(Modifier.weight(1f)){
@@ -256,7 +259,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         }
         val notice=if(state.plot==AcousticPlot.PITCH && musician.samples.none {it.hz!=null})
             stringResource(R.string.musical_trace_unavailable) else null
-        Box(Modifier.weight(1f).fillMaxWidth()){
+        Box(Modifier.weight(1f).fillMaxWidth().heightIn(min=180.dp)){
             SessionPlot(vm,item,cursor,Modifier.fillMaxSize(),immersive=true,notice=notice)
             if(state.plot==AcousticPlot.SPECTRUM && recording?.result==null && recording?.running!=true)
                 TextButton(onClick={vm.analyzeRecording(item)},modifier=Modifier.align(Alignment.Center).testTag("viewer-analyze")){Text(stringResource(R.string.ui_analyze_recording))}
@@ -297,6 +300,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
         if(!landscape)TextButton(onClick={tools=true},modifier=Modifier.fillMaxWidth()){
             Text(reading,style=MaterialTheme.typography.labelSmall,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         }
+    }
     }
     if(tools)ModalBottomSheet(onDismissRequest={tools=false}){
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){

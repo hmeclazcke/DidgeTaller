@@ -63,7 +63,7 @@ private fun BoxScope.PlotNotice(frame: PlotFrame, message: String) {
             right = frame.right.toDp(), bottom = frame.bottom.toDp())
     }
     Box(Modifier.matchParentSize().padding(insets).clipToBounds(), contentAlignment = Alignment.Center) {
-        Text(message, Modifier.padding(8.dp).fillMaxWidth().testTag("plot-notice"),
+        Text(message, Modifier.padding(horizontal = 8.dp).fillMaxWidth().testTag("plot-notice"),
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center)
     }

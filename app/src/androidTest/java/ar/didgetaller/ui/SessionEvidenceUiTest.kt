@@ -135,6 +135,12 @@ class SessionEvidenceUiTest {
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
         compose.runOnIdle {assertEquals("Selected chart in fullscreen",AcousticPlot.PITCH,vm.explorer(item.id).plot)}
+        try {
+            compose.waitUntil(5000) { compose.onNodeWithTag("immersive-plot").fetchSemanticsNode().config.contains(PlotDataArea) }
+        } catch (failure: ComposeTimeoutException) {
+            screenshot("wide-no-drawable-frame")
+            throw AssertionError("Fullscreen must retain a drawable plot at the selected font and navigation size", failure)
+        }
         val fullscreenChart = compose.onNodeWithTag("immersive-plot").fetchSemanticsNode()
         if (fullscreenChart.config[PlotDroneComponentCount] == 0) {
             val emptyEvidence = compose.onNodeWithText(uiText(R.string.musical_trace_unavailable)).assertIsDisplayed()
@@ -152,10 +158,16 @@ class SessionEvidenceUiTest {
             assertTrue("Empty evidence text must stay above the time labels", bounds.bottom <= bottom)
             val hintLayout = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
             emptyEvidence.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(hintLayout) }
-            assertFalse("Empty evidence explanation remains complete", hintLayout.single().hasVisualOverflow)
+            val renderedHint = hintLayout.single()
+            if (renderedHint.hasVisualOverflow) screenshot("wide-empty-text-overflow")
+            assertFalse("Empty evidence explanation remains complete: width=${renderedHint.didOverflowWidth}, " +
+                "height=${renderedHint.didOverflowHeight}, size=${renderedHint.size}, lines=${renderedHint.lineCount}, area=$area",
+                renderedHint.hasVisualOverflow)
         }
+        screenshot("wide-pitch")
         val scientificText = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
-        val explanationNode = compose.onNodeWithTag("viewer-scientific-description").assertTextEquals(uiText(R.string.musical_drone_description))
+        val explanationNode = compose.onNodeWithTag("viewer-scientific-description")
+            .performScrollTo().assertIsDisplayed().assertTextEquals(uiText(R.string.musical_drone_description))
         explanationNode
             .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(scientificText) }
         assertTrue("Scientific explanation exposes its rendered layout", scientificText.isNotEmpty())
@@ -168,10 +180,48 @@ class SessionEvidenceUiTest {
         assertEquals("The last scientific word must be laid out", explanationLayout.layoutInput.text.length,
             explanationLayout.getLineEnd(explanationLayout.lineCount-1,true))
         assertTrue("Parent clipping must not hide a scientific line", explanationNode.fetchSemanticsNode().boundsInRoot.height + .5f >= explanationLayout.size.height)
-        screenshot("wide-pitch")
+        screenshot("wide-pitch-reading")
         assertArrayEquals(original,store.file(item.id).readBytes())
         assertEquals(index,app.getSharedPreferences("local_data",0).all)
         assertEquals(item.timeline,store.list().first {session->session.id==item.id}.timeline)
+    }
+    @Test fun scrollableFullscreenPreservesPinchPanAndPausedScrubbing(){
+        compose.onNodeWithTag("plot-tab-pitch").performScrollTo().performClick()
+        compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
+        val graph=compose.onNodeWithTag("immersive-plot")
+        compose.waitUntil(5000){graph.fetchSemanticsNode().config.contains(PlotDataArea)}
+        val initial=graph.fetchSemanticsNode()
+        val area=initial.config[PlotDataArea]
+        val window=initial.config[PlotWindow]
+        val cursor=initial.config[PlotPlaybackMs]
+        val delta=androidx.compose.ui.geometry.Offset(area.width*.2f,0f)
+        graph.performTouchInput {
+            pinch(start0=area.center-delta,start1=area.center+delta,
+                end0=area.center-delta*1.5f,end1=area.center+delta*1.5f,durationMillis=500)
+        }
+        val zoomed=graph.fetchSemanticsNode().config[PlotWindow]
+        assertEquals(window.x.span/1.5,zoomed.x.span,window.x.span*.02)
+        assertEquals(cursor,graph.fetchSemanticsNode().config[PlotPlaybackMs])
+        assertNull("Pinching must not prepare audio",vm.playingId)
+        graph.panViewport(androidx.compose.ui.geometry.Offset(area.width*.08f,0f))
+        val panned=graph.fetchSemanticsNode().config[PlotWindow]
+        assertTrue("Two-finger pan must move the viewport",abs(panned.x.low-zoomed.x.low)>1)
+        assertEquals(cursor,graph.fetchSemanticsNode().config[PlotPlaybackMs])
+        assertNull("Panning must not prepare audio",vm.playingId)
+        val currentArea=graph.fetchSemanticsNode().config[PlotDataArea]
+        val target=panned.x.value(.75)
+        graph.performTouchInput {
+            swipe(androidx.compose.ui.geometry.Offset(currentArea.left+currentArea.width*.25f,currentArea.center.y),
+                androidx.compose.ui.geometry.Offset(currentArea.left+currentArea.width*.75f,currentArea.center.y),500)
+        }
+        compose.waitUntil(5000){vm.playingId==item.id && abs(vm.playbackPositionMs()-target)<=80}
+        assertTrue("Scrubbing before playback must stay paused",vm.playbackPaused)
+        assertEquals(target,graph.fetchSemanticsNode().config[PlotPlaybackMs].toDouble(),80.0)
+        assertEquals("Scrubbing must not pan",panned,graph.fetchSemanticsNode().config[PlotWindow])
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithTag("session-detail").assertIsDisplayed()
+        assertTrue(vm.playbackPaused)
+        assertEquals(target,vm.playbackPositionMs().toDouble(),80.0)
     }
     @Test fun audioLevelExplainsGapsAndFollowsTheSameViewport(){
         compose.onNodeWithTag("time-chart").performScrollTo()

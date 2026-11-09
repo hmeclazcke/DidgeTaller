@@ -1,3 +1,52 @@
+# 2026-11-09 source CI correction - IN PROGRESS
+
+Feature source c9b3ab3 is published. Its fast run42614250039 and mutation
+run42614248589 pass; full native run42614242780 correctly fails the extra
+Spanish compact/150% case AFTER the complete suite passes152/0/10 (162 total).
+Do not describe that entire Android workflow as passing. Broad PIT2318:
+1807 killed,494 survived,15 uncovered,two timed out (78.04% detected, scoped).
+
+The [annotation follow-up](PLOT_NOTICE_OWNERSHIP.md) reproduces vertical overflow
+with actual three-button insets on the owned synthetic API37 emulator. Remove
+only vertical annotation padding. A further landscape regression proves the
+frame never becomes drawable under the enlarged fixed labels. The safe-inset
+owner now grows from an intrinsic minimum and scrolls deliberately; plot minimum
+180dp, full scaled text, same geometry/gesture engine and one inset owner.
+
+Ten final focused native cases pass: three EN/ES/landscape150 evidence cases,
+three frame/overlay interaction cases, existing fullscreen paused seek/scrub,
+new portrait and landscape150 pinch/pan/scrub contracts (80ms tolerance), and
+the existing complete pinch/pan/rotation/reset case at its normal font scale.
+The existing65% area assertion remains unchanged. Running it at150% passes its
+gesture assertions but rejects the enlarged area proportion; the new accessibility
+contract tests the interaction without pretending that normal-font proportion
+is a large-font guarantee. The initial System UI startup ANR and incorrect new
+test-driver positional pinch arguments are preserved as rejected evidence;
+named finger arguments correct the driver, not the production gesture algorithm.
+Four final EN/ES/landscape PNGs are inspected, plus the original overflow/blank
+frame diagnostics. No whole-app performance improvement is claimed.
+
+Fresh correction debug JVM468 discovered/460 passed/eight protected skips,
+zero failures; local coverage43.38%/39.61%, core99.02%/83.55%. Source484 mapped,
+114 independent unscored,72 JVM above target, Detekt1987, Lint0/52/8, CPD0
+>=100tokens and gate0. SessionPlot74,viewer68,PlotSurface8,canvas7,notice2 MCC
+are unchanged: this fixes accessibility, not complexity debt. One stale Compose
+body fingerprint is correctly rejected, then renewed against the actual tested
+body. No ordinary scoring exception or numeric baseline changes.
+
+Delivery: commit/push this validated UI correction only to the feature branch, observe its fast and
+full-native CI. Do not rerun the successful c9b3ab3 broad mutation: selected
+production/test targets are unchanged by this UI-only delta. Record final run
+URLs, source SHA and separately measured coverage before claiming final success.
+PR1 stays draft; main3a160043 and the official skill/license stay unchanged.
+
+Next production cycle after delivery: saved-YIN/component/evidence admission
+after disposal/session replacement. Reproduce deterministic faults before
+rewriting those remaining ViewModel owners; preserve canonical/diagnostic
+boundaries and cache/index guarantees. Whole rebuild remains IN PROGRESS.
+
+## Previous local integration checkpoint
+
 # 2026-11-09 comparison and annotation integration - IN PROGRESS
 
 Local UI commit52bb4f5 is validated; the next comparison implementation is based

@@ -55,3 +55,40 @@ setSwipeComparison(true) publishes enabled/running state although the owner scop
 is cancelled. This is a coroutine/Handler lifecycle problem in the current code,
 not an executor/version implementation. Its failing native regression remains
 uncommitted for the next implementation cycle; no private WAV is opened.
+
+## CI configuration correction after c9b3ab3
+
+The combined source CI passes the complete API35 suite (152 passed, ten justified
+skips), but correctly fails the extra compact Spanish/150% configuration: the
+empty-trace notice overflows vertically. EN passes; landscape is not reached.
+This failed run is [42614242780](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42614242780),
+not a successful final Android validation.
+
+The same test reproduces the defect on the owned API37 synthetic emulator after
+selecting three-button navigation: the data rectangle is approximately130px high,
+but symmetric8dp padding leaves only88px for two large-font lines. Width does not
+overflow. A PNG and TextLayoutResult preserve the diagnosis. One initial System
+UI startup ANR is recorded separately and rejected as visual evidence.
+
+Remove vertical annotation padding; retain horizontal clearance, the full text,
+bodySmall typography, system font scaling, exact measured data bounds and parent
+timeline input. The regression still rejects every visual overflow and now captures
+the failed notice and dimensions. This is a layout correction, not a weakened
+assertion or metric baseline. Final focused/native CI results belong to the
+source-scoped delivery report.
+
+The landscape extension then exposes a second real constraint: the enlarged
+labels plus three-button navigation can leave no drawable frame at all. Waiting
+for a frame does not fix it (a five-second bounded readiness regression fails;
+the screenshot contains a blank chart). The safe-inset owner now gives the
+viewer an intrinsic minimum column and intentional vertical scrolling. Its
+weighted plot retains at least180dp and still grows into spare space. Intrinsic
+measurement accounts for actual translated/scaled text instead of guessed text
+heights. No second inset, new domain state or different gesture model is added.
+
+On the owned API37 emulator, Spanish landscape/150% now passes both the real frame
+and complete-text assertions. The screenshot before scrolling shows the graph;
+the separate reading screenshot shows the complete scientific paragraph after
+scrolling. The regression explicitly scrolls secondary text into view while
+retaining the same overflow/last-character/parent-clipping checks. It does not
+claim that every enlarged element fits simultaneously in one landscape viewport.

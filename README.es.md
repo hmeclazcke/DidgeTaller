@@ -97,7 +97,10 @@ La comparación experimental SWIPE vincula sus operaciones a cada sesión y bloq
 nuevas tareas después de destruir el ViewModel. La planificación compartida conserva
 la ejecución serial del DSP, y la sincronización de cámaras probada mantiene el
 desplazamiento durante el progreso. Los mensajes de traza vacía usan los límites
-medidos del gráfico. Ver los ciclos de [comparación](docs/engineering/SWIPE_OPERATION_OWNERSHIP.md)
+medidos del gráfico. En pantallas completas de poca altura, el contenido permite
+desplazamiento vertical cuando la letra ampliada necesita más espacio, conservando
+un gráfico utilizable y las explicaciones completas.
+Ver los ciclos de [comparación](docs/engineering/SWIPE_OPERATION_OWNERSHIP.md)
 y [anotaciones](docs/engineering/PLOT_NOTICE_OWNERSHIP.md), documentados en inglés;
 la reconstrucción completa sigue en curso.
 
