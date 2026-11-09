@@ -1,0 +1,185 @@
+{
+  "scope": "Final local implementation inputs; CI evidence is separately linked from draft PR1",
+  "source_inventory_sha256": "7cd7078f5550fd128d789f26d67cb5b023687afd95249fda32fa9e0c9c301ac8",
+  "source_files": 116,
+  "jvm": {
+    "testDebugUnitTest": {
+      "tests": 526,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    },
+    "testReleaseUnitTest": {
+      "tests": 526,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    }
+  },
+  "coverage": {
+    "Overall production": {
+      "LINE": {
+        "covered": 2759,
+        "missed": 3158
+      },
+      "INSTRUCTION": {
+        "covered": 31978,
+        "missed": 69063
+      },
+      "BRANCH": {
+        "covered": 2884,
+        "missed": 3676
+      },
+      "METHOD": {
+        "covered": 1233,
+        "missed": 1408
+      }
+    },
+    "Pure core": {
+      "LINE": {
+        "covered": 2201,
+        "missed": 21
+      },
+      "INSTRUCTION": {
+        "covered": 25198,
+        "missed": 1221
+      },
+      "BRANCH": {
+        "covered": 2339,
+        "missed": 417
+      },
+      "METHOD": {
+        "covered": 955,
+        "missed": 79
+      }
+    }
+  },
+  "android": {
+    "scope": "Android instrumentation only; not merged with JVM",
+    "test_run": {
+      "passed": 160,
+      "failed": 0,
+      "skipped": 10,
+      "discovered": 170,
+      "failures": [],
+      "scope": "complete suite"
+    },
+    "overall": {
+      "BRANCH": {
+        "covered": 4513,
+        "missed": 2047,
+        "fraction": 0.6879573170731708
+      },
+      "LINE": {
+        "covered": 5446,
+        "missed": 471,
+        "fraction": 0.9203988507689708
+      }
+    },
+    "packages": {
+      "ar/didgetaller/core": {
+        "BRANCH": {
+          "covered": 1901,
+          "missed": 855,
+          "fraction": 0.6897677793904209
+        },
+        "LINE": {
+          "covered": 2114,
+          "missed": 108,
+          "fraction": 0.9513951395139514
+        }
+      },
+      "ar/didgetaller": {
+        "BRANCH": {
+          "covered": 162,
+          "missed": 119,
+          "fraction": 0.5765124555160143
+        },
+        "LINE": {
+          "covered": 382,
+          "missed": 76,
+          "fraction": 0.834061135371179
+        }
+      },
+      "ar/didgetaller/data": {
+        "BRANCH": {
+          "covered": 349,
+          "missed": 189,
+          "fraction": 0.6486988847583643
+        },
+        "LINE": {
+          "covered": 430,
+          "missed": 23,
+          "fraction": 0.9492273730684326
+        }
+      },
+      "ar/didgetaller/lab": {
+        "LINE": {
+          "covered": 14,
+          "missed": 1,
+          "fraction": 0.9333333333333333
+        }
+      },
+      "ar/didgetaller/ui": {
+        "BRANCH": {
+          "covered": 2047,
+          "missed": 854,
+          "fraction": 0.7056187521544295
+        },
+        "LINE": {
+          "covered": 2345,
+          "missed": 249,
+          "fraction": 0.9040092521202776
+        }
+      },
+      "ar/didgetaller/audio": {
+        "BRANCH": {
+          "covered": 54,
+          "missed": 30,
+          "fraction": 0.6428571428571429
+        },
+        "LINE": {
+          "covered": 161,
+          "missed": 14,
+          "fraction": 0.92
+        }
+      }
+    }
+  },
+  "function_inventory": {
+    "named": 698,
+    "counts": {
+      "measured": 545,
+      "nested-metric-in-parent": 32,
+      "declaration-without-body": 35,
+      "anonymous-owner": 13,
+      "compose-transformation": 73
+    },
+    "independent_unscored": 117,
+    "jvm_above_target": 64,
+    "android_above_target": 30
+  },
+  "detekt_findings": 1999,
+  "lint_local": {
+    "errors": 0,
+    "warnings": 52,
+    "hints": 7
+  },
+  "cpd_groups_100_tokens": 0,
+  "focused_mutation": {
+    "production_classes": 31,
+    "total": 612,
+    "killed": 471,
+    "survived": 121,
+    "uncovered": 19,
+    "timeouts": 1,
+    "denominator": 612
+  },
+  "differential_identical": 757,
+  "quality_tool_tests": 46,
+  "localization": {
+    "strings": 576,
+    "plurals": 5,
+    "arrays": 2
+  }
+}

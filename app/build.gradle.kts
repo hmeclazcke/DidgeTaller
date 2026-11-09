@@ -167,7 +167,8 @@ fun registerMutation(name: String, directory: String, targets: String, testTarge
         args("--reportDir",layout.buildDirectory.dir("reports/quality/$directory").get().asFile.absolutePath,
             "--targetClasses",targets,"--targetTests",testTargets,
             "--sourceDirs","src/main/java","--outputFormats","XML,HTML","--timestampedReports","false",
-            "--threads","2","--mutators","DEFAULTS","--timeoutConst","4000")
+            "--threads","2","--mutators","DEFAULTS","--timeoutConst","4000",
+            "--excludedClasses","*Test*,*DifferentialProbe*,*Benchmark*")
         if(threshold!=null)args("--mutationThreshold",threshold)
     }
 }
@@ -198,8 +199,15 @@ val swipeTargets = listOf("SwipeComparisonController", "SwipeComparisonStatus", 
     "SwipeComparisonStatus\$Loading", "SwipeComparisonStatus\$Ready", "SwipeComparisonStatus\$Failed",
     "SwipeComparisonLoaderKt").joinToString(",") { "ar.didgetaller.core.$it" } +
     ",ar.didgetaller.audio.CoroutineSwipeComparisonLoader*,ar.didgetaller.ui.ComparisonCamerasKt"
-registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets + "," + simulationTargets + "," + analysisTargets + "," + swipeTargets + "," + progressWorkTargets + ",ar.didgetaller.core.SpectrumGeometry\$Companion,ar.didgetaller.core.AxisDrawing,ar.didgetaller.core.PlotGestureCoordinates,ar.didgetaller.core.TraceEvidence\$Companion,ar.didgetaller.ui.PlotInkKt,ar.didgetaller.ui.PlotContentKt,ar.didgetaller.ui.PlotFramePolicyKt",
-    syntheticTests + ",ar.didgetaller.data.AtomicCacheFileTest,ar.didgetaller.ui.ComparisonCamerasTest,ar.didgetaller.ui.PlotInkTest,ar.didgetaller.ui.PlotFramePolicyTest," + persistenceTests, null)
+val ownedTargets = listOf("LatestAnalysis*", "AnalysisState*", "SessionAnalyses*", "MusicalTraceCatalog*",
+    "OptimizationWorkKt*", "AnalysisInterval*", "AnalysisAdmission*", "OfflineWindowPass*", "OfflineSpectrum*",
+    "OfflineStatistics*", "RecordingWindow*", "OfflineRecordingAnalysisKt*", "WavAnalysis*", "MusicalTrace*")
+    .joinToString(",") { "ar.didgetaller.core.$it" } +
+    ",ar.didgetaller.audio.CoroutineAnalysisLoader*,ar.didgetaller.SavedDiagnosticStateKt*,ar.didgetaller.ui.SessionInspector*"
+val ownedTests = syntheticTests + ",ar.didgetaller.SavedDiagnosticStateTest,ar.didgetaller.ui.SessionInspectorTest"
+registerMutation("qualityMutationOwned", "pit-owned", ownedTargets, ownedTests, null)
+registerMutation("qualityMutationDomain", "pit-domain", domainTargets.joinToString(",") {"ar.didgetaller.core.$it"} + "," + ownedTargets + ",ar.didgetaller.data.AtomicCacheFile," + persistenceTargets + "," + workspaceTargets + "," + simulationTargets + "," + analysisTargets + "," + swipeTargets + "," + progressWorkTargets + ",ar.didgetaller.core.SpectrumGeometry\$Companion,ar.didgetaller.core.AxisDrawing,ar.didgetaller.core.PlotGestureCoordinates,ar.didgetaller.core.TraceEvidence\$Companion,ar.didgetaller.ui.PlotInkKt,ar.didgetaller.ui.PlotContentKt,ar.didgetaller.ui.PlotFramePolicyKt",
+    ownedTests + ",ar.didgetaller.data.AtomicCacheFileTest,ar.didgetaller.ui.ComparisonCamerasTest,ar.didgetaller.ui.PlotInkTest,ar.didgetaller.ui.PlotFramePolicyTest," + persistenceTests, null)
 registerMutation("qualityMutationCapture", "pit-capture", "ar.didgetaller.core.RecordingCapture", "ar.didgetaller.core.RecordingCaptureTest", null)
 registerMutation("qualityMutationHandoff", "pit-handoff", "ar.didgetaller.core.CaptureHandoff,ar.didgetaller.core.RecordingCoordinator", "ar.didgetaller.core.CaptureHandoffTest,ar.didgetaller.core.RecordingCoordinatorTest", null)
 registerMutation("qualityMutationRaster", "pit-raster", "ar.didgetaller.core.SpectrogramRaster", "ar.didgetaller.core.SpectrogramRasterTest", null)

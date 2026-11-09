@@ -93,6 +93,12 @@ class AnalysisOwnershipTest {
         assertFalse(vm.optimizationActive)
         assertNull(vm.optimizationBest)
     }
+    @Test fun disposedModelCannotPreparePlaybackOrPublishAPlaybackError() = afterDisposal { vm ->
+        val before = vm.message
+        vm.seekPlayback(session(), 500)
+        assertEquals(before, vm.message)
+        assertNull(vm.playingId)
+    }
 
     private class DiagnosticTask<R : Any, V : Any>(val request: R, val progress: (AnalysisProgress<V>) -> Unit,
         val complete: (Result<V>) -> Unit) : AnalysisTask {

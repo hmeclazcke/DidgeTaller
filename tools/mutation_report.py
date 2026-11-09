@@ -16,6 +16,11 @@ def summarize(path):
     unexpected = {status: count for status, count in counts.items() if status not in valid}
     if unexpected:
         raise ValueError('PIT execution incomplete: ' + json.dumps(unexpected))
+    for mutation in mutations:
+        owner=mutation.findtext('mutatedClass','').split('$',1)[0]
+        source=mutation.findtext('sourceFile','')
+        if owner.endswith('Test') or source.endswith(('Test.kt','Test.java')):
+            raise ValueError('Test bytecode is not production mutation scope: ' + owner)
     executed = sum(int(m.get('numberOfTestsRun', '0')) for m in mutations
                    if m.get('status') in {'KILLED', 'SURVIVED'})
     if executed <= 0:

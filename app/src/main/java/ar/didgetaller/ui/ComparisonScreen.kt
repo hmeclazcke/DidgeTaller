@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.core.Music
 import ar.didgetaller.core.WavAnalysis
+import ar.didgetaller.core.AnalysisInterval
+import ar.didgetaller.core.RecordingComparisonRequest
 import ar.didgetaller.data.RecordingStore
 
 @Composable
@@ -43,11 +45,10 @@ internal fun ComparisonScreen(vm:TallerViewModel) {
     var show by rememberSaveable {mutableIntStateOf(2)}
     var normalize by rememberSaveable {mutableStateOf(true)}
     val first=vm.sessions.find {it.id==a};val second=vm.sessions.find {it.id==b}
-    fun ms(value:String)=value.replace(',','.').toDoubleOrNull()?.takeIf {it.isFinite()}?.let {(it*1000).toLong()}
-    fun valid(start:String,end:String,duration:Long)=
-        (start.isBlank() || ms(start)?.let {it>=0 && it<duration}==true) &&
-        (end.isBlank() || ms(end)?.let {it> (ms(start) ?: 0) && it<=duration}==true)
-    val valid=first!=null && second!=null && valid(aStart,aEnd,first.durationMs) && valid(bStart,bEnd,second.durationMs)
+    val aRange=first?.let {AnalysisInterval.parse(aStart,aEnd,it.durationMs)}
+    val bRange=second?.let {AnalysisInterval.parse(bStart,bEnd,it.durationMs)}
+    val request=if(first!=null && second!=null && aRange!=null && bRange!=null)
+        RecordingComparisonRequest(aRange.request(first.id,first.instrument),bRange.request(second.id,second.instrument)) else null
     val state=vm.comparison
     LabCard(context.getString(R.string.ui_compare_sessions_or_excerpts)) {
         Text(stringResource(R.string.ui_choose_two_recordings_optionally_enter_start_and_end_times_in_seconds_leave_th))
@@ -55,9 +56,9 @@ internal fun ComparisonScreen(vm:TallerViewModel) {
         IntervalFields("A",aStart,aEnd,{aStart=it;vm.cancelComparison(clear=true)},{aEnd=it;vm.cancelComparison(clear=true)})
         SessionPicker(context.getString(R.string.ui_session_b),vm.sessions,b){b=it;vm.cancelComparison(clear=true)}
         IntervalFields("B",bStart,bEnd,{bStart=it;vm.cancelComparison(clear=true)},{bEnd=it;vm.cancelComparison(clear=true)})
-        if(!valid)Text(stringResource(R.string.ui_choose_two_sessions_and_a_valid_interval_within_each_recording),color=MaterialTheme.colorScheme.secondary)
+        if(request==null)Text(stringResource(R.string.ui_choose_two_sessions_and_a_valid_interval_within_each_recording),color=MaterialTheme.colorScheme.secondary)
         if(state.running){LinearProgressIndicator(progress={state.progress/100f},modifier=Modifier.fillMaxWidth());Text(stringResource(R.string.ui_comparing, state.progress));TextButton(onClick={vm.cancelComparison()}){Text(stringResource(R.string.ui_cancel_comparison))}}
-        else Button(onClick={vm.compare(first!!,second!!,ms(aStart) ?: 0,ms(aEnd),ms(bStart) ?: 0,ms(bEnd))},enabled=valid){Text(stringResource(R.string.ui_compare))}
+        else Button(onClick={request?.let(vm::compare)},enabled=request!=null){Text(stringResource(R.string.ui_compare))}
         state.error?.let {Text(context.localizedDiagnostic(it),color=MaterialTheme.colorScheme.error)}
         if(state.a!=null && state.b!=null){
             FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {

@@ -75,4 +75,13 @@ class MusicalTraceCatalogTest {
         assertNotSame(result, catalog.trace(flute)); catalog.remove("F")
         assertTrue(tasks.isEmpty())
     }
+    @Test fun removalPublishesTheMissingProductToObserversAndInvalidatesFluteMemoization() {
+        complete("A");assertNotNull(snapshots.last().products["A"])
+        catalog.remove("A");assertFalse(snapshots.last().products.containsKey("A"))
+        val flute=request("F",profile=InstrumentProfile.NATIVE_AMERICAN_FLUTE)
+        val before=catalog.trace(flute);val other=catalog.trace(flute.copy(sessionId="G"))
+        catalog.remove("F")
+        assertNotSame(before,catalog.trace(flute));assertSame(other,catalog.trace(flute.copy(sessionId="G")))
+    }
+
 }

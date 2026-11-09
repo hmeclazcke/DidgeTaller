@@ -92,6 +92,8 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     val scalePoints=remember(points,musician,diagnostic){if(diagnostic)points else musicianPlotPoints(musician)}
     SideEffect {if(s.musicianTrace!==musician.takeUnless {diagnostic})s.musicianTrace=musician.takeUnless {diagnostic}}
     val camera=s.camera(duration,visual.rate,scalePoints)
+    val inspector=remember(context){SessionInspector(InspectionStrings { resource,args->context.getString(resource,*args) }) {context.reasonLabel(it)}}
+    val inspection=InspectionData(musician,points,trace,visual.rate,visual.wave,visual.spectrogram,result?.harmonics,s.spectrumReference,swipe)
     LaunchedEffect(item.id){vm.openTools(item);vm.requestMusicalTrace(item);vm.analyzeSavedYin(item)}
     LaunchedEffect(camera,s.plot,s.logarithmic,s.rangeDb,s.gestureActive,visual.frames){
         if(!s.gestureActive && s.plot in listOf(AcousticPlot.SPECTROGRAM,AcousticPlot.WAVE)){
@@ -139,38 +141,9 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
                     else->vm.seekPlayback(item,time)
                 }
                 if(s.mode!=0 && !inspect){s.looping=false;vm.setPlaybackLoopOff()}
-                val point=points.minByOrNull {abs(it.timeMs-time)}?.takeIf {abs(it.timeMs-time)<=750}
-                s.inspected=when(s.plot){
-                    AcousticPlot.PITCH->if(!diagnostic && musician.meaning==MusicalTrace.Meaning.SPECTRAL_COMPONENT){
-                        val frequency=musician.frequencyAt(time)
-                        "${seconds(time)} · "+(frequency?.let {context.getString(R.string.musical_component_frequency,hzLabel(it))}
-                            ?: context.getString(R.string.ui_no_nearby_reliable_reading))
-                    }else "${seconds(time)} · "+(point?.let {p->trace.firstOrNull {it.point===p}}?.let {sample->
-                        val hz=sample.point.hz!!
-                        if(sample.uncertain) return@let context.getString(R.string.ui_uncertain_estimate_confidence_yin_no_confirmed_note, hzLabel(hz), context.reasonLabel(sample.reason), sample.point.confidence)
-                        val musical=Music.pitch(hz)!!
-                        context.getString(R.string.ui_cents_a4_440_periodicity_variation, hzLabel(hz), musical.note, musical.cents, sample.point.confidence, sample.variationCents?.let {"%.0f cents".format(displayLocale,it)} ?: context.getString(R.string.ui_no_neighbor))+
-                            if(sample.bridged)context.getString(R.string.ui_display_link) else ""
-                    } ?: context.getString(R.string.ui_no_nearby_reliable_reading))
-                    AcousticPlot.WAVE->{val wave=visual.wave;val frame=time*visual.rate/1000
-                        if(wave!=null && frame in wave.start until wave.end){val i=((frame-wave.start)*wave.min.size/(wave.end-wave.start)).toInt().coerceIn(wave.min.indices)
-                            context.getString(R.string.ui_pcm_amplitude_to, seconds(time), axisLabel(wave.min[i].toDouble(),.1), axisLabel(wave.max[i].toDouble(),.1))}else context.getString(R.string.ui_waiting_for_samples_from_this_region, seconds(time))}
-                    else->{val tile=visual.spectrogram
-                        if(tile!=null && time*visual.rate/1000 in tile.start until tile.end && y in tile.lowHz..tile.highHz){
-                            val col=((time*visual.rate/1000.0-tile.start)/(tile.end-tile.start)*tile.columns).toInt().coerceIn(0,tile.columns-1)
-                            val row=(AxisWindow(tile.lowHz,tile.highHz).fraction(y,tile.logarithmic)*tile.rows).toInt().coerceIn(0,tile.rows-1)
-                            val power=tile.power[col*tile.rows+row].toDouble();val ref=s.spectrumReference
-                            "${seconds(time)} · ${hzLabel(y)} · "+if(ref>1e-16)context.getString(R.string.ui_db_rel_stft_cell, 10*log10(max(1e-30,power)/ref)) else context.getString(R.string.ui_no_significant_energy)
-                        }else context.getString(R.string.ui_no_calculated_cell, seconds(time), hzLabel(y))}
-                }
-                if(s.plot==AcousticPlot.PITCH && diagnostic && vm.swipeComparison.enabled){
-                    val estimate=swipe?.nearest(time)?.hz
-                    s.inspected=s.inspected.orEmpty()+"\n"+context.getString(R.string.swipe_cursor,estimate?.let(::hzLabel) ?: context.getString(R.string.swipe_missing))
-                }
+                s.inspected=inspector.temporal(s.plot,time,y,inspection,inspectionMode(diagnostic,vm.swipeComparison.enabled))
             }else{
-                val peak=result?.harmonics?.peaks?.minByOrNull {abs(it.hz-x)}
-                s.inspected=if(peak!=null && abs(peak.hz-x)<camera.x.span*.06)"${peak.order?.let {context.getString(R.string.ui_h_candidate, it)} ?: context.getString(R.string.ui_unassigned_peak_66f03c)} · ${hzLabel(peak.hz)} · %.1f dB rel".format(displayLocale,peak.relativeDb)+(peak.deviationCents?.let {" · %+.1f cents".format(displayLocale,it)} ?: "")
-                    else context.getString(R.string.ui_no_nearby_assigned_peak, hzLabel(x))
+                s.inspected=inspector.peak(x,camera.x.span,inspection)
             }
         })
     }
@@ -257,8 +230,7 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
                 BadgedBox(badge={if(state.inspected!=null)Badge{Text("i")}}){Icon(Icons.Default.MoreVert,stringResource(R.string.ui_tools))}
             }
         }
-        val notice=if(state.plot==AcousticPlot.PITCH && musician.samples.none {it.hz!=null})
-            stringResource(R.string.musical_trace_unavailable) else null
+        val notice=traceNoticeResource(state.plot,available,vm.musicalTraceFailed(item.id))?.let {stringResource(it)}
         Box(Modifier.weight(1f).fillMaxWidth().heightIn(min=180.dp)){
             SessionPlot(vm,item,cursor,Modifier.fillMaxSize(),immersive=true,notice=notice)
             if(state.plot==AcousticPlot.SPECTRUM && recording?.result==null && recording?.running!=true)

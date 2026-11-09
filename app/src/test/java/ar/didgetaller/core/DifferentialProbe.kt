@@ -46,6 +46,42 @@ object DifferentialProbe {
         val viewport = PlotViewport(AxisWindow(30000.0, 90000.0), AxisWindow(35.0, 220.0))
         val projection = PlotProjection(viewport, 320.0, 200.0, 48.0, 12.0)
         for (x in listOf(-10.0, 48.0, 208.0, 368.0, 400.0)) println("projection/$x: " + projection.data(x, 100.0))
+        offlineRecordingContracts()
+    }
+
+    private fun offlineRecordingContracts() {
+        for (profile in InstrumentProfile.entries) for (kind in 0..3) {
+            val hz = if (profile == InstrumentProfile.DIDGERIDOO) 70.0 else 440.0
+            val pcm = ShortArray(24000) { i ->
+                val phase = 2 * PI * hz * i / 44100
+                when (kind) {
+                    0 -> 0.0
+                    1 -> 7000 * sin(phase)
+                    2 -> 3000 * sin(phase) + 9000 * sin(2 * phase)
+                    else -> if (i in 7000..11000) 0.0 else 7000 * sin(phase * if (i < 12000) 1.0 else 1.5)
+                }.toInt().toShort()
+            }
+            val source = object : MonoPcmSource {
+                override val sampleRate = 44100
+                override val frameCount = pcm.size.toLong()
+                override fun read(startFrame: Long, destination: ShortArray): Int {
+                    val count = minOf(destination.size, pcm.size - startFrame.toInt())
+                    pcm.copyInto(destination, 0, startFrame.toInt(), startFrame.toInt() + count)
+                    return count
+                }
+            }
+            for ((start, end) in listOf(0L to source.frameCount, 211L to source.frameCount - 119)) {
+                val progress = mutableListOf<Int>()
+                val result = WavAnalysis.analyze(source, start, end,
+                    WavAnalysis.Settings(4096, 2048, profile.minHz, profile.maxHz, 10000, profile), progress = progress::add)
+                val bytes = java.nio.ByteBuffer.allocate(result.spectrum.density.size * 8)
+                result.spectrum.density.forEach(bytes::putDouble)
+                val digest = MessageDigest.getInstance("SHA-256").digest(bytes.array()).joinToString("") { "%02x".format(it) }
+                println("offline/$profile/$kind/$start: ${result.startFrame}/${result.endFrame}/${result.windows}/$digest/" +
+                    "${result.harmonics}/${result.timeline}/${result.summary}/${result.medianValidHz}/" +
+                    "${result.meanValidHz}/${result.validWindowFraction}/${result.medianPeriodicityConfidence}/$progress")
+            }
+        }
     }
 
 }

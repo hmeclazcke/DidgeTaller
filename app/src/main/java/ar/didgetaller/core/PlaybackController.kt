@@ -35,6 +35,7 @@ class PlaybackController(
 ) {
     private sealed interface State {
         data object Stopped : State
+        data object Disposed : State
         data class Preparing(val id: String, val target: Long, val play: Boolean) : State
         // Intent and platform legality are separate: an initial seek can precede the first start.
         data class Ready(val id: String, val paused: Boolean, val hasStarted: Boolean = false) : State
@@ -49,7 +50,9 @@ class PlaybackController(
     val paused get() = (state as? State.Ready)?.paused ?: true
 
     fun open(sessionId: String, file: File, play: Boolean, position: Long = 0) {
+        if (state == State.Disposed) return
         stop()
+        if (state == State.Disposed) return
         perform {
             val candidate = createBackend()
             backend = candidate
@@ -154,6 +157,7 @@ class PlaybackController(
     }
 
     fun loop(region: LongRange?) {
+        if (state == State.Disposed) return
         require(region == null || (region.first >= 0 && region.last > region.first))
         loop = region
         if (region != null && ready && position().toLong() !in region) perform { requestSeek(region.first) }
@@ -173,10 +177,18 @@ class PlaybackController(
     }
 
     fun stop() {
+        if (state != State.Disposed) retire(State.Stopped)
+    }
+
+    fun close() {
+        if (state != State.Disposed) retire(State.Disposed)
+    }
+
+    private fun retire(next: State) {
         scheduler.cancel()
         val old = backend
         backend = null
-        state = State.Stopped
+        state = next
         seeking = null
         loop = null
         // Release failures are observable; clear ownership before cleanup to avoid recursion.

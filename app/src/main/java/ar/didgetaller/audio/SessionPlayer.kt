@@ -25,6 +25,7 @@ class SessionPlayer(changed: (String?, Boolean) -> Unit, error: (String) -> Unit
     fun duration() = controller.duration()
     fun restart(sessionId: String, file: File) = controller.restart(sessionId, file)
     fun stop() = controller.stop()
+    fun close() = controller.close()
 }
 
 private class HandlerScheduler : PlaybackScheduler {

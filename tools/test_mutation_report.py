@@ -32,6 +32,14 @@ class MutationReportTest(unittest.TestCase):
             self.assertNotEqual(0, process.returncode)
             self.assertIn('PIT execution incomplete', process.stderr)
 
+    def test_test_bytecode_is_not_a_production_mutation_result(self):
+        for owner,source in [('ar.demo.OwnerTest','OwnerTest.kt'),('ar.demo.OwnerTest$Pending','OwnerTest.kt')]:
+            with self.subTest(owner=owner),tempfile.TemporaryDirectory() as directory:
+                path=Path(directory,'mutations.xml')
+                path.write_text(f'<mutations><mutation status="KILLED" numberOfTestsRun="1"><mutatedClass>{owner}</mutatedClass><sourceFile>{source}</sourceFile></mutation></mutations>')
+                with self.assertRaisesRegex(ValueError,'Test bytecode'):
+                    summarize(path)
+
     def test_empty_or_unexecuted_reports_fail(self):
         for statuses in [[], ['NO_COVERAGE'], ['NON_VIABLE']]:
             with self.subTest(statuses=statuses), self.assertRaises(ValueError):

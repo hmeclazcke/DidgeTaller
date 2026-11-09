@@ -2278,18 +2278,20 @@
     },
     "3f43431ca53f0fafff1c4569d48ae8290a8a3f7a6d128dc673fef19d83865bb1": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "line": 154,
       "kind": "function",
-      "semanticHash": "2f7e755b914d68243ab3caa26200f54586f4835fcb12db318774d776ddcf3189",
-      "line": 181,
       "name": "ImmersiveViewer",
+      "semanticHash": "56f41facc410ff8b4bdf1eed11477754cf72942c5ed5218fb65c2f84e56957d0",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
       "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed. The same three-button large-font landscape regression also exposes a permanently absent plot frame. The safe-inset viewport now owns a scrollable intrinsic-minimum column: the plot keeps a 180dp minimum and grows into spare space; enlarged secondary text remains accessible by scrolling. No smaller fonts, axis overlap, extra inset or invented source CRAP.",
+      "reason": "Reviewed Compose declaration: interval validation/inspection decisions now delegate to typed pure boundaries; rendering, transport and gesture callbacks retain their existing ownership. Compose compiler signatures cannot be given an invented source method score. Native EN/ES150, Back, tap/scrub and80ms seeking remain required.",
       "evidence": [
-        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/ui/SessionInspectorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/AnalysisIntervalTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
-      ],
-      "reviewed_base": "c9b3ab3eb036ad478426506bee753894e25a435f"
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
     },
     "b35e86ee4c049ddc605517fc473b87bcfbf62a82713669047db7f5817654d48e": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
@@ -2961,18 +2963,20 @@
     },
     "79ed59faa0bdcf8597b63ff0675886bb467a3fb6c2bec84d852199d41d1cbdf6": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
-      "kind": "function",
-      "semanticHash": "515a6ed181ba289eff7a3b965dcb4d820d35f7216f1a40de0705e94126ee2ee1",
       "line": 72,
+      "kind": "function",
       "name": "SessionPlot",
+      "semanticHash": "582d4adfefe0ac415b362741f2a50d728056882c451fa7e9ed73ebe49e310ede",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
       "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "reason": "Reviewed Compose declaration: interval validation/inspection decisions now delegate to typed pure boundaries; rendering, transport and gesture callbacks retain their existing ownership. Compose compiler signatures cannot be given an invented source method score. Native EN/ES150, Back, tap/scrub and80ms seeking remain required.",
       "evidence": [
-        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/ui/SessionInspectorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/AnalysisIntervalTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
-      ],
-      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
     },
     "ba27ea167523de4a6cde1de6ca11ec01f865ae12e39d03abc3123a140011d69d": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotCanvas.kt",
@@ -3461,6 +3465,1371 @@
         "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
       ],
       "reason": "Immutable comparison request/status or read-only compatibility projection, scoped default wiring or Compose adapter; no standalone constructor/initializer/accessor CRAP is fabricated. Closed ownership, per-session cached curves and reader use are explicit. The original serial DSP dispatcher is retained and initialized before its adapter; the public Application constructor and native disposal are tested. All named eligible functions are independently measured. Camera policy is ordinary Kotlin with four real ExplorerState JVM contracts and twelve killed mutants; publication is one ViewModel delegation. No ordinary high-risk/missing-score waiver, acoustic algorithm or persisted-format change."
+    },
+    "39f5a3393da10f5b501fdac1c3ac4765f2ec5c7b4173fc6d0a4177156e8a6593": {
+      "file": "app/src/main/java/ar/didgetaller/audio/CoroutineAnalysisLoader.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ba8c6ce4c7fa7fea28be82a675c05bd4760301ce4d4ff26aeed8bc8a318f4257",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ProgressWorkTest.kt"
+      ]
+    },
+    "a2bd81e38fd0dffe530291fd4dc6947b61f54f73145bbc3abee3c4ba9f9b2a57": {
+      "file": "app/src/main/java/ar/didgetaller/core/AnalysisInterval.kt",
+      "line": 4,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ceaa5136c768540564c5a5e3d7f6bcb2101cc565c6c2c31d34cae9da7ad264ca",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AnalysisIntervalTest.kt"
+      ]
+    },
+    "e5b7214b57f8fbdf4f3159fb4d7ded317de321e0b32a7b7a1947d2768c72b2b6": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "51872276265d4c99acdd2ad1de1700e690f9de4f64d433b31c23eafd26dad8bf",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "20dbec81964280bdbbc244fec7644896e065fb3bbd3e2a9edb54fcb8bb1d0881": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "dac13e9e357bbe5da3cb325acc6fe456e65139705ede7d541dea0f41f2de2976",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "365f08d1a9a8bbe71f9eec2a053890d5ab1e38c8fa0133dabda8e200d9a261f3": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 16,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "99c4559af1ef01af590320526e71f53df7cb63abddb536ce28be53ec915b442e",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "f5c7ee34535e97c47584fc130efaa84261e637075dc2a08a565af1929868fce6": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d46b591ae1d263391dd2a7e5e372f7b98090d952a5215222d05296932ffb2088",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "f2e51289a86eba061a09c235069c0a83a150f7c917e78e889c5ecf2ef6ce9749": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 18,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "314f18202d1f2662accf5e04cff2aa8e2f05c5ff2905deaa83915bd801452be6",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "80bee4563ef7e984350ca953698e0890269ddfc73fc2b866d2796a6066f0b40d": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 19,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "793c5ec9b228818faa590417a6b4f50a3870764886255fed75e17d956452ba00",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "bf3b34d035720ecbbef3d9a4449740e458fbdaa3578c133e3e21103979a03e8a": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 24,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5a5a7c945343ba1171f3133a3c2efc4b175ee4d8d5f8b6b8d4613b13d0f732d4",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "1866d9df72ad6bb5d2b41f2f500459e890c9d7d79b1f6227d092fc84e2c09859": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 26,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c8460c85513f836cf51020d7cd2e98200261bc676b312f72c4ca0b5505c8df0a",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "5472ce0099c857aed120313df5c9f798b7666c68f85eb54583788f4b9fadcd26": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 27,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "9c30e602323e0efc1bc24137e9bb02de92d3cefa40aae3d8e9a80f55da88e1bb": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 28,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "3afa7b5d3bc61afd3731fcfcef694df4b655f843e69c28b9212f2e731a49cb89",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "d3dde2dacd82afe9ba83f2fb7f4e5ff131c10ac56fc75544a86c7a959d2ddf59": {
+      "file": "app/src/main/java/ar/didgetaller/core/LatestAnalysis.kt",
+      "line": 28,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisCoroutineTest.kt"
+      ]
+    },
+    "5bc90ccf8821b012e4f27dbe46648e1bf2afb64f766664297492e8fbcfc865e8": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "0e56e88ee3b4901768011fd691e160a7f5349182319d3abdb6e3b5431f302c95",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "c85cf6564e2b25f3ff4f14d92749ccba052091125141d63686e4e52d9db61693": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 4,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "9f8a095c7c7f4a529e7717438818ed4d54631127bbd4350fa2a1fb16031f63d0",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "b1faa981e1bf92b1f24d7826e7b8fa68f59ab6ce9260a0b7b305b9948184dd12": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a390039736e99ecc883bb22eab780670e64b3185b98fe7e0f1856456b50bfbc5",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "3313ae364eae964146762d064e41fd99aa332e2934fcb1487d494e400de97efb": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 9,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "2710c8319233bb3780dcc02b9bc8fac81e939f2b46f194168c12dc83ece9e367",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "4d25a611bf4b0a85e550ce2b38d66433d8a6993e780812e27add048ccc862d1c": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 10,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "cc047a7ea4fe5f1f768162d92087557ff2f00a64778a785bc0d9b90c2645d253",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "ac608c2726c4beb1ca879788f6c83aa0b21ad1ddd167bcc22792c82e85177c07": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 11,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "b91ca7eb32854a967e1e8bb4c509cf4c593679ade8e2bee16255e4ca15fb5c2b",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "b2e0e3d78c6fbe1056a18b5e801759762c6da9b9baa0b1df663a26437447a903": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 12,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "512561e3fdc3e496cf60f3217ef2d4cf544e37ac6cd6a81b3701795a79bd9a64",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "ad77a43c275d140b8f1904ab9bf8b3433fce9a975a26ff95304457b5231d945a": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 13,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "69a8d22a66cc62d7282af853521c2971d9996973f2805606c50d82f15b4a56cd": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 14,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "ee56f4c96cf37df5b0548cf7b1471070d23e452e61ef5bf41f48170745f66fe4": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "aebf7e26275a84642ef83367738ea2bf7af9fefcff5d77d41897aefbea53f0f6",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "71832da63fd1db14fcf13bcaa354976c9dea64743893572d2997dd00e323a389": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 15,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "97a09a266af3909302d4a0323d2ba7de03164754839ebd74cf3fb97d5717c41e",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "add48c103f27a337c8fb7063932caf3993dbd9960c41c4c5531c925fae1a90fb": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 18,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "39bef97974cd14ae9535d6a299f748a60389eb32ca5819fc88df9beb76904a88",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "b1172a8e18d0cef7ce46c951bab633097403067d50434f9978ab93c3e44c0be4": {
+      "file": "app/src/main/java/ar/didgetaller/core/MusicalTraceCatalog.kt",
+      "line": 18,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt"
+      ]
+    },
+    "31aad1e569e9b2fd4bab58150eac0a5a5e387ccefbc1a951b293dbdedb1f7ac2": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ce29a250301fdb1a3bb0e1ae6ea5294e810902594b583177846a56d241e5c1ed",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "f82a1228b9ccb5c2ce3275a7e0e021b5d751d8f4606f3293e607b60d5980ebc6": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 29,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "0da0aaaf307d3e3efcb9f7ee910e4791ed588a2a1926bf2fd37020f188de261d",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "50145804a350ca2b5f88442a7a44c3dd6c6582a3153edb0f455de73d7c0b2cbc": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 30,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "e7f8da9c81082df229ac2e4ceb9f7883327f8b06a289cd179f1aa236dc2fed03",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "51c220454c16300c995a909c7d4e16228f8a20bdeb08a3a0a0edd5764878afdc": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 31,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "21390b1730779501758848667e3183e591a7344a2a33ba9174b698115dc14812",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "3e473c9e17067cd3eec1cb60fea91c4fd04b39ccd1e54bcc3ca9969dd11e0c13": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 32,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "b8f4d82098588c2fc5d8035f5f1568511f4eea3f35c6edbf3da9117630e870d1",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "9867a597b9d8957b19c7dde332043b615424427110c04fb53b6cdaa3f7d7ac5d": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 33,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "00aa63bf24902c9c9a038661f60aaa3eecf8c74b428cb5553820a0016e3cef82": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 34,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "aa2c3c59db827009b9186d2d6b61db4bdac920e5af8d125c5f05bf4bc43136d6",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "d2af3dea00bfcdd23c98d956d1486240272c61af22eabf15c4f56366a6ae1e8a": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 34,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "a39f695c99cd82c27bb358b25e80514b12002b67081eb10fa8dc3dcb89691db1": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 54,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "18b6f7c7db11f5625eb1d3aee576b39dd1214749decf6b31ddc4f8ad34e0c400",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "a38135b95e51f18cfa397632603bdedbc5dea48b7676f67e363b3e9208b850ba": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 56,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "1bd540f6349b2e3d3b0602828c8620b696828e3f722b53547f5fafebabd81f0a",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "ac754253130f91f214ab5fd3b0b7c879a4508d0c900321034f164f2a8eb394bb": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 57,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "36cc29bb67397b99d2b19263eadb02653d351fba7bb6e275526cd52ecff2ee8d",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "b70c025cdca7d4860cf551e3155a128f02d6094b6bc51ab09a64cda5550c9853": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 58,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "055e529753298c4c7c87edf0cf3f4d7d9d84ec942044781ac07184309804d5f1",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "4077596cf569c8ae65b3cb73546f111b09a2b663b0b79109754a039c55f006ed": {
+      "file": "app/src/main/java/ar/didgetaller/core/OfflineRecordingAnalysis.kt",
+      "line": 59,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5ab6d38ef9ffeb43a7b99a2cd89fee48ff89afb58089cf2756601a5f6ce2752a",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/AudioAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/FluteAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/OfflineRecordingBoundaryTest.kt"
+      ]
+    },
+    "ef2412e327447d5b908510b43c296c86c3246343ffbcdde89a944814dada1442": {
+      "file": "app/src/main/java/ar/didgetaller/core/OptimizationWork.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bf70ac05c773d1decf2c02b7efbbb3439b46738b40bf37da20ac791a788c2612",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/OptimizationWorkTest.kt"
+      ]
+    },
+    "d5c7ac1c4ece88cbb14744b997a8f902bebb6df1d9f31be36afb969713dac3a4": {
+      "file": "app/src/main/java/ar/didgetaller/core/OptimizationWork.kt",
+      "line": 5,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "9cf8e3452d31882b4cdf997d36197e102fea1dec93018bec23606bf69a3ff0c4",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/OptimizationWorkTest.kt"
+      ]
+    },
+    "09cb1c2b44d8c61c5f8bfe63ed060602eebb81a0204440b05d13a223d0ee5562": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 4,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "83e04ea278262bcc04dc259ba0d32bfda06b2f4453a4f9917ffff50231a5e945",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "cfbadb35631973771d86e5efbe76506acb692cbed0420ad31326503e3f553f84": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 5,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d972f0d65e948228d79ecace4ae75164ce5db64ceeb35392440eea6838cb1e50",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "694a7cf826d62108090c3282856f5e2e180952fbb69543ad30c940dc808e3b57": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2b7876fa2e5323ba2879f8b4ef658187f3f5e798a96a7c7ff2cc3440f9883aa0",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "a3c21818708b76cf9298da6ed3698e84fdc089b40575e1c176dddc53e4056546": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "01500141bfca18a2d0098471aa7fd8509e3a299289f278072b8c9bf59bf9d338",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "0f4bf250ae45d3b7d193446fd9283543e223b1f01a0f183d98a5b68e059891ba": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "17b219f38f5aa25dd9a53001d7534acb1ca6f7f2a44ef7ff982321dcd0693e95",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "081e2f34741379d3ddf687c5a7c39efbd2a8aaba0974e8b01bbc415ceb15ec98": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5a5a7c945343ba1171f3133a3c2efc4b175ee4d8d5f8b6b8d4613b13d0f732d4",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "7476e79ba7b42514723cb8fc4d28e57acf3840a9a9b9c544de91ba9866b26a09": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "12ebd83769e60162f6f540117c3faa5415b5f56a422becf9721ab4c8346060e1",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "a87b10709e43c1e821a77f31c0cf48adeafcccf02f772320e295fd5daef82989": {
+      "file": "app/src/main/java/ar/didgetaller/core/SavedDiagnosticRequests.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/core/SessionAnalysesTest.kt",
+        "app/src/test/java/ar/didgetaller/core/LatestAnalysisTest.kt"
+      ]
+    },
+    "2fed324c4e626d22d78c86e50b7b38f753701dace3b54e6649d79725e48f3acb": {
+      "file": "app/src/main/java/ar/didgetaller/SavedDiagnosticState.kt",
+      "line": 5,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f9a0df63ddb20be91521d02591c5750528a2a9a779d5a4f83332acbf8f769468",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt"
+      ]
+    },
+    "b023a4ea6520e43ff0545091da6b15e9d998c3f3be534426acc06dcf5d4717f8": {
+      "file": "app/src/main/java/ar/didgetaller/SavedDiagnosticState.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1bfba320d1c5d423f81ae711c76d11ea78a37faffdc659f851ce648c44b93bba",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt"
+      ]
+    },
+    "3523db48867ee440fa1c71fa8e5168213707377bc16111edd665fbd1c2abb278": {
+      "file": "app/src/main/java/ar/didgetaller/SavedDiagnosticState.kt",
+      "line": 9,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ce28d8544ce0573bffbc698da47a70714c6807049e149755508eec8107287d07",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt"
+      ]
+    },
+    "68a33d2823577c15895ee428153a1f8cbcc2f7a91345a6e0af7ee94ce34d0b7c": {
+      "file": "app/src/main/java/ar/didgetaller/SavedDiagnosticState.kt",
+      "line": 11,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "739aa417fa1c8049f30bae8bce1f91c4bab2c94125e6e80b2233d8e6a0501bd5",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt"
+      ]
+    },
+    "6ed8036f75bc02b98f1b26b3d0924eb0258fde060b0f717168212556a8b8dc84": {
+      "file": "app/src/main/java/ar/didgetaller/SavedDiagnosticState.kt",
+      "line": 32,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1e1e0908c791bca845707adf81d37f43c469d08e11f11a75f6e7c8e08654bcd0",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt"
+      ]
+    },
+    "c0e7e3f541f4b963fe0bb7b92c58ef842e6dd4a9594a4caf4111db1ec23c1801": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 86,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "57ab5e156fc39f57f5bfd5371d1376d2b68b522145d1e32b3dfffbe201930673",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "c3daed291a1ec22a5c74f4d5025931980d89035716fc669ee1f203c6e332f92c": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 126,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "e10212d31524915290965537a29914d19f62cb93510cc53abecbb6842572a1fb",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "db9eba14e128833c25361ec8e7f85a3affd7d7dac6f39028d4ab73d0a3c5a0e9": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 127,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f6b86b959c19ba0ad8ae116d235d53b0b73f008c9cfe6054e14929bd540f3b8b",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "9c271dce62645657277f3b1aabaa4bd9233834bc26a29d265d7996b0cfd96b7e": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 127,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "9efc5d90da2c782acdc0b6e871af277b4910bf7f9ac3a3fedc5b2218570a9f61",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "0f5e5735032e8763c36cadd081dd60b0c78527c96a00d5b0636e1345b1a0b0d7": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 129,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "7462bc8edc55c46deacaacf0cdc9a9d51119528c73d3bd61b9238ea3bc858076",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "ade9f1b9d78cbae4ce9729a66f7d7584a906cf4c32a58fdb688a129cbc320edb": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 131,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "61e326500e228725294c29607e3d1e61ea9c3ae084cba5f5b03f3c1fd183473e",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "eb8116cd18bd0b58ef3966f76b065103e691387de2cc59f6b7342b375fd8907f": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 132,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6ee8612c0e51a0d3ce3ceef0493f12ae2f400ca93c58d071c02cd1f9f401be7e",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "fc3a4e83c97fa5048ebbc3a83ee8abe78071d2a2d8628157d29ce2acbe9368ad": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 132,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "ae63c15bcf04ce26f12a8538d1acc50146aa78a4cbb71d3e0841dbd2a7ec93d3",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "80389493faa94796e541976822bd2d023b5183c717452f9695789930aea4a848": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 136,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "695f800f7e966e97bca8381e9739e81b6560cce579cdf8453052e2ce026b913f",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "9bf39ecea8ccf845be1f05d304bea92a58099db97006de4ea98103ed3653bf2b": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 138,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "457e217736372f46e330748cd40a198f4a0768ba0a65e433581e064b1d1e3a82",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "84cf4e016a7488a75a9815156f67481e84d0b2c2c481589a42dc646d00520d50": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 140,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "278b37086360f03c37fac92e96b46f4307e0174b00a75eea6ca8c0e690cef7be",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "27eae3eff139ef349baaae7183ccade92811f0f3bc382bfb088eb24a4c9201e2": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 172,
+      "kind": "function",
+      "name": "emptyTrash",
+      "semanticHash": "2b9520a9977cdf0289f826f97c4525c3d38731be96b265b2d0c6ad2a2121ad01",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "max_cc": 4,
+      "max_crap_line": 20,
+      "reason": "Sequential retryable cross-store cleanup preserves acknowledged deletions and metadata order; coroutine ensureActive before success/error publication prevents stale screen updates. Existing two category loops and one recoverable error boundary remain cohesive; JVM zero coverage is not hidden.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LibraryRecoveryUiTest.kt"
+      ]
+    },
+    "8f8d9c58c51f01b9a799dbd84b0c288d1a26b006e66eaf67855d6b3cdcb1385a": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 188,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "8d101d17c7442caeef3082e6e608ba05110d15ba6731c36bb7b84e2302d50431",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "de48464e513a9227cc50b486ec1f9fd3d16ada4cc25ba73a138b4f16d3fc47b3": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 189,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "0980d0a9ace2c63ba91a242a8ada7ff8b6fbec4a5e44c91fc8ab27d510065c6d",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "ef30b0024feae587807c5bb3ee19e3e4f1a97f9190438e5b921f215aff96a73a": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 190,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "42c047222705bb8dc3d52e2ad258164dee7bb025593a0c0069bd62696c0cf498",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "cdc134df2158730f27eec171506f1b75cfe66ec53acf71da73cf70833f87149d": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 194,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "7faa353a6eff552d28d52de5b7a90c36ea624774346be6f69a95eba22f2bcdba",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "bb8e045fe4577d025790a2c086c3e9dbc29da7b1601d73d4ad7f1080ae4893f3": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 195,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "521dc8daae1a319e08ee18e08b8fcb68c7815b6c0ff68a18678c38b30ee5eba4",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "86bf7eada01a18c0a613f7292dafa5473de8bef468ba30664fba01cfbe6e9373": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 197,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "e3df1e4d9f7c5090d194f82119b6d9143ccc0e2d988eefcaa6261675c11a404e",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "2d8d26f1912a86c4de25d01c37522a19f16767069372b0422ee321cd06b4049a": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 198,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "3332ad02d9f2055fb361784c5bdbedd17360aabb4bf31fe10a2f9f01c41bacbb",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "754355068c20f488a3e1f38f6e34391315ad0f6cd6342f206e6e55d74f6f22f6": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 205,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "3b4926450fbd3e5927c295ace5ce42f6c4ccb2cd7786e761de8b8441afbfc5c0",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "cbdf3b1ea20d12f50aedf5d5ae7922c3ad1358849454f49eb9c5c5b95e765488": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 205,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "12061d23132232845d70fb611d2b550f95a8b170a3c35f66dd6508cfa804b992",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "281ee173d601530096134db58a67ac0c583cf9ab06f64a8b8c0eb0d96e3bb4f4": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 206,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "faec60e7865762dd93b990bf6029ccbff99384c6caf3befcd401ab248b55ef2e",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "bdd84f8291dd4c8ed4f7d4ee10ff0031a9f3c46bad25158093ee0c3259f8044b": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 206,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "ce1bac4b6b17fe65c7c84b78a3cd1b235d0eec0744efcada66add6d57adc084d",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "863349a6610627b49162df646acfc222fe00f2a556a422836f9acff5f883d3b0": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 207,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "ef8c3f5d1f935c8f390bc7b14d8bba50be799b5ba757db6fdf618f04f6514b12",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "8cfdfefc0632dc54f667067b0a1df2ba030d0969f37a88236f60bc8f9ed0364a": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 207,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "07637c05f68f0db1591bd44447b02e6f5e785899eeaac5424b55e3933ecc64d6",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "d123fac4e8e9dbd5716b9d7fab5083a2266009e07112450c585a8e0120a6fd18": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 208,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "b846b60b266d8a903c9e96a2b6a6a3719ee680aac6b0d8c4425c3a61e1a83d39",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "72b399dd97d8c8f5ea422355f74c72615d18703e347b317e2c6f5e61b8887120": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 209,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "57ddfc8ed5bffa60599c76cbaa1a8d1ae70957aff098a1c1895a275675e15c62",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "b83dc1cf18470d79a846efb8c1e37bdd9666b20b25465a24f71c0c05949716f6": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 210,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "819b6e66bd062dbcc76ef1750a2d1224027b4d27b921eb15e034dd21a39f0f14",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "4aa13ac90f8c507ad5445416f5f27a9429750b57577a301f25155aed88beef10": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 221,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "143a4d789180b2e732c1272afb0f741d229724e8ea3e828d0602e47ed26d3a09",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "bb6b3fb92408ce922106778b4e6daff28b23202c083a36c4e7bfae5f5ba0b0f0": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 221,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "954e4c97f114622626e035467724f8264d44c2bf54674674c21eb11698fe0a75",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Scoped asynchronous wiring closure, capturing its operation input and delegating scheduling/publication to the tested revocable owner. Not independently correlated as a source named function; retained in authored inventory.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "560b2fb055477ae91bd4df6ec5092a662c748c31373d778a88ac7779fc747413": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 289,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "9a4ec6c38c3f0c09bf613c203f40da61a4f7b8770d8f3a82b050d0dc241afdca",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "8f7cba160edf09ad28f54e3f4dfec7a15a3cfd2ad5b9fac94336e9e5f9fe2999": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 290,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "0c93dc0a0d840d4b7147c6aef4632f0c479c39171399ae060dded70e16fec8e2",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Single scoped state/port initialization. Reviewed writer identity, lazy lifetime and captured input ownership; executable behavior is challenged through the enclosing controller and native facade contracts. No independent named-function MCC.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "253ed0e892e49f410721207a7badba325d531b6825b529122984cf801e01d62b": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 291,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "edd451cd1eb225e32537f7923ec33a815c506e2a12266e2eada65a00f40ab3fd",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "507490a6f3a5b73d004c3ae92b909de73327e0c14d3f42e9c97fcc98d94441fd": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 292,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "b611132932490c605a0f818d1379c0480c2dfeb5a202b2de6507acf1c7f87301",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "d80c130a952ca295473c994d11ae3431021a8b33742b93e7dcd4c8b468676037": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 293,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "1d5bb5052bbe45650c46e49d02d20d4dc50247216c9f1472dafd97a30ebe391f",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Read-only projection or private state setter delegates to its authoritative owner. No independently correlated Detekt named-function MCC; preserve state ownership rather than add a second mutable source.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/SavedDiagnosticStateTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MusicalTraceCatalogTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt"
+      ]
+    },
+    "a96f76ec28c5a917ee6a324dafd4a13b64dbe298612f3e7f3a4e9a320586fbb8": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 344,
+      "kind": "function",
+      "name": "onDestinationChanged",
+      "semanticHash": "a2f5b819ad5ca27ae2da5c830e775805f042206187a017546769cfa6af5971e2",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "max_cc": 6,
+      "max_crap_line": 42,
+      "reason": "Destination transition revokes the old session resources and pins the new canonical trace. Six existing route/resource decisions preserve capture across its two presentations and stop work when leaving. Native navigation and disposed diagnostic contracts protect lifecycle; no duplicate navigation state machine.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LibraryRecoveryUiTest.kt"
+      ]
+    },
+    "d8636ecc5e458ba643e13e36a0589fe29dcccdd09d8cb55ac0d2dfcdc9220057": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 422,
+      "kind": "function",
+      "name": "deleteSession",
+      "semanticHash": "bf1447d0410669d3e2eef3772fdbbb53bd9e696fc80f93d5ec460ae1cd15d429",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "max_cc": 7,
+      "max_crap_line": 56,
+      "reason": "Deletion invalidates the keyed trace and explicitly cancels only the seven resource/diagnostic owners associated with that session before moving its metadata to trash. Preserve existing undo/restore and failure feedback; Android integration is the appropriate execution boundary.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LibraryRecoveryUiTest.kt"
+      ]
+    },
+    "ef5f46821319a4d0ead04812a583ffd35103d1626e54d09584decd7e74b94fef": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ComparisonScreen.kt",
+      "line": 39,
+      "kind": "function",
+      "name": "ComparisonScreen",
+      "semanticHash": "ca83997dfca679354dab0638820cec146ed1aa52cf746bb872a8ec8b992e8b02",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "metric_status": "compose-transformation",
+      "reason": "Reviewed Compose declaration: interval validation/inspection decisions now delegate to typed pure boundaries; rendering, transport and gesture callbacks retain their existing ownership. Compose compiler signatures cannot be given an invented source method score. Native EN/ES150, Back, tap/scrub and80ms seeking remain required.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/ui/SessionInspectorTest.kt",
+        "app/src/test/java/ar/didgetaller/core/AnalysisIntervalTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt"
+      ]
+    },
+    "c4d3a6ec70b66b95ebd4c578d971b03579ca10568113ca72576241d1d22ad844": {
+      "file": "app/src/main/java/ar/didgetaller/ui/SessionInspector.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "99dcf96cba0e7f7f20058c50aed1391e6161ddd2220a79a5b3b2abd11ad57d37",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/ui/SessionInspectorTest.kt"
+      ]
+    },
+    "14d3978ead1a11792a66459a7d4860f690f0993a567d512aaa80f0425112f1fd": {
+      "file": "app/src/main/java/ar/didgetaller/ui/SessionInspector.kt",
+      "line": 20,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c0abc295b522cbb20bd82830a3bdb599bd613b676c057fbd7650afa96a79835d",
+      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
+      "reason": "Explicit immutable input/value/default dependencies; construction does not expose a separate named Detekt MCC. Reviewed fields and ports against owner contracts, not assigned invented constructor CRAP.",
+      "evidence": [
+        "docs/engineering/REBUILD_ACCEPTANCE.md",
+        "app/src/test/java/ar/didgetaller/ui/SessionInspectorTest.kt"
+      ]
     }
   }
 }

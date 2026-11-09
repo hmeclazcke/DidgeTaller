@@ -342,4 +342,34 @@ class PlaybackControllerTest {
         val h=Harness();h.controller.restart("first",h.file);h.backend.events.prepared()
         assertEquals(1,h.backends.size);assertTrue(h.backend.playing);assertEquals(0,h.controller.position())
     }
+    @Test fun disposalRevokesEveryCommandAndDelayedBackendEvent() {
+        val h=Harness();h.open(true);h.backend.events.prepared()
+        val old=h.backend;val poll=h.scheduler.pending!!
+        h.controller.seek("first",h.file,5000);h.controller.close()
+        val changes=h.changes.toList()
+        h.controller.open("second",h.file,true);h.controller.toggle("second",h.file)
+        h.controller.seek("second",h.file,1000);h.controller.restart("second",h.file)
+        h.controller.loop(100L..500L);h.controller.stop();h.controller.close()
+        old.events.prepared();old.events.completed();old.events.seekCompleted()
+        old.events.failed(IllegalStateException("late"));poll()
+        assertEquals(1,h.backends.size);assertTrue(old.released)
+        assertEquals(changes,h.changes);assertTrue(h.errors.isEmpty())
+        assertNull(h.controller.id);assertNull(h.controller.loop);assertNull(h.scheduler.pending)
+        assertEquals(0,h.controller.position());assertEquals(0,h.controller.duration())
+    }
+    @Test fun disposalDuringStopNotificationCannotPrepareAReplacement() {
+        val backends=mutableListOf<Backend>();lateinit var controller:PlaybackController
+        controller=PlaybackController({Backend().also{backends+=it}},Scheduler(),
+            {_,_->controller.close()},{fail(it.message)})
+        controller.open("first",File("synthetic.wav"),true)
+        assertTrue(backends.isEmpty());assertNull(controller.id)
+    }
+    @Test fun failedReleaseCannotReopenADisposedOwnerOrRepeatCleanup() {
+        val h=Harness();h.open();h.backend.releaseFails=true
+        h.controller.close();h.controller.close();h.controller.stop()
+        h.controller.toggle("second",h.file)
+        assertEquals(1,h.errors.size);assertEquals(1,h.backends.size)
+        assertTrue(h.backend.released);assertFalse(h.controller.ready)
+    }
+
 }

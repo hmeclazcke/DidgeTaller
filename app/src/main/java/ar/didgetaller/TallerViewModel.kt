@@ -26,6 +26,7 @@ import ar.didgetaller.core.RecordingAnalysisRequest
 import ar.didgetaller.core.RecordingAnalysisController
 import ar.didgetaller.core.RecordingAnalysisStatus
 import ar.didgetaller.core.AnalysisState
+import ar.didgetaller.core.AnalysisAdmission
 import ar.didgetaller.core.AnalysisLoader
 import ar.didgetaller.core.AnalysisProgress
 import ar.didgetaller.core.OptimizationRequest
@@ -140,7 +141,7 @@ class TallerViewModel internal constructor(
     fun setRecordingLimit(seconds:Int){tools.setLimitSeconds(seconds);recordingLimitSeconds=seconds}
     fun availableMegabytes()=getApplication<Application>().filesDir.usableSpace/(1024*1024)
     fun sessionFile(item:RecordingStore.Session)=recordingStore.file(item.id)
-    fun openTools(item:RecordingStore.Session){if(activeDetail==item.id && workspace.state.sessionId!=item.id){workspace.open(item);loadTools(item)}}
+    fun openTools(item:RecordingStore.Session){if(AnalysisAdmission.opensWorkspace(activeDetail,item.id,workspace.state.sessionId)){workspace.open(item);loadTools(item)}}
     private fun loadTools(item:RecordingStore.Session){markers=tools.markers(item.id);associatedDesignId=tools.designId(item.id)
         associationOwner.clear()
         val selected=store.designs(true).find {it.id==associatedDesignId}
@@ -158,6 +159,7 @@ class TallerViewModel internal constructor(
             RecordingAnalysisRequest(b.id,b.instrument,bStart,bEnd)))
     }
     fun cancelComparison(clear:Boolean=false){if(clear)comparisonOwner.clear() else comparisonOwner.cancel()}
+    fun compare(request:RecordingComparisonRequest){comparisonOwner.replace(request)}
     private fun refreshLibrary(){library=catalog.load()}
     fun recoverSessionIndex(){
         runCatching {recordingStore.recoverIndex();refreshLibrary()}
@@ -171,7 +173,6 @@ class TallerViewModel internal constructor(
         for(id in trash.ids("session")){recordingStore.delete(id);cache.remove(id);tools.forget(id);trash.restore("session",id)}
         for(id in trash.ids("design")){store.deleteDesign(id);tools.forgetDesign(id);trash.restore("design",id)}
     };ensureActive();refreshLibrary();undoEntry=null;message="Papelera vaciada."}
-        catch(e:CancellationException){throw e}
         catch(e:Exception){ensureActive();refreshLibrary();message="No se pudo completar el vaciado: ${e.message}"}}}
 
     private val sessionExecutor=Executors.newSingleThreadExecutor()
@@ -224,12 +225,12 @@ class TallerViewModel internal constructor(
     fun requestMusicalTrace(item:RecordingStore.Session){traceCatalog.request(traceRequest(item))}
     fun releaseMusicalTraceRequest(id:String){traceCatalog.release(id)}
     fun analyzeSavedYin(item:RecordingStore.Session){
-        if(activeDetail==item.id && item.instrument==InstrumentProfile.DIDGERIDOO)
+        if(AnalysisAdmission.acceptsDidgeridoo(activeDetail,item.id,item.instrument))
             yinOwner.select(YinReplayRequest(item.id,SavedYinReplay.usesExpandedRange(item.timeline)))
     }
     private fun clearSavedYinReplay(){yinOwner.clear()}
     fun analyzeDroneComponent(item:RecordingStore.Session){
-        if(activeDetail==item.id && item.instrument==InstrumentProfile.DIDGERIDOO)componentOwner.select(ComponentRequest(item.id))
+        if(AnalysisAdmission.acceptsDidgeridoo(activeDetail,item.id,item.instrument))componentOwner.select(ComponentRequest(item.id))
     }
     private fun clearDroneComponent(){componentOwner.clear()}
     fun setSwipeComparison(item:RecordingStore.Session,enabled:Boolean){
@@ -489,6 +490,7 @@ class TallerViewModel internal constructor(
         microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
+        player.close()
         optimizationOwner.close()
         analysisOwner.close();simulationOwner.close();swipeOwner.close()
         traceCatalog.close();yinOwner.close();componentOwner.close();evidenceOwner.close()
