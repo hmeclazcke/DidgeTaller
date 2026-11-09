@@ -2279,22 +2279,17 @@
     "3f43431ca53f0fafff1c4569d48ae8290a8a3f7a6d128dc673fef19d83865bb1": {
       "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
       "kind": "function",
-      "semanticHash": "a15c79fad48be71a077806cf3cf0c8a8442c7ca687d75d79436920b86a7af17f",
-      "line": 180,
+      "semanticHash": "ce3bc3183ad70a0f8695ef4dde6e7cf1d8e9d1dd2437d335ac33ef72267b9e89",
+      "line": 181,
       "name": "ImmersiveViewer",
-      "reason": "The existing correlator refuses transformed Compose entry/lambda method coverage. A real large-font GetTextLayoutResult regression reproduces the fixed two-line cap; complete explanation wraps in EN/ES portrait and landscape without smaller type. Native UI proof remains mandatory, not substituted JVM coverage.",
+      "metric_status": "compose-transformation",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
       "evidence": [
-        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
-        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
-        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
-        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
-        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
-        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
       ],
-      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
-      "metric_status": "compose-transformation"
+      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
     },
     "b35e86ee4c049ddc605517fc473b87bcfbf62a82713669047db7f5817654d48e": {
       "file": "app/src/main/java/ar/didgetaller/ui/PlotAccessibility.kt",
@@ -2963,6 +2958,81 @@
       ],
       "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
       "metric_status": "compose-transformation"
+    },
+    "79ed59faa0bdcf8597b63ff0675886bb467a3fb6c2bec84d852199d41d1cbdf6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ImmersiveViewer.kt",
+      "kind": "function",
+      "semanticHash": "515a6ed181ba289eff7a3b965dcb4d820d35f7216f1a40de0705e94126ee2ee1",
+      "line": 72,
+      "name": "SessionPlot",
+      "metric_status": "compose-transformation",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "evidence": [
+        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
+      ],
+      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+    },
+    "ba27ea167523de4a6cde1de6ca11ec01f865ae12e39d03abc3123a140011d69d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotCanvas.kt",
+      "kind": "function",
+      "semanticHash": "5d643e4afa14eb9c90c9caefc464487128c55adee5be807c94b310fd8c786bdf",
+      "line": 29,
+      "name": "PlotCanvas",
+      "metric_status": "compose-transformation",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "evidence": [
+        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
+      ],
+      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+    },
+    "ae64a530a75637d51e4cb3b4da5fad9926974c54bbc68e9255b2e5924c7fc43a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotCanvas.kt",
+      "kind": "function",
+      "semanticHash": "81b92773d659fbdea51c966e32bb54b03060b297c1a24b38579d5a58272bccf8",
+      "line": 59,
+      "name": "PlotNotice",
+      "metric_status": "compose-transformation",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "evidence": [
+        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
+      ],
+      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+    },
+    "f538fac24e1b47cf017c6df5abcf851b6e21b256f5447631f9231fb2a80ba9ba": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PlotSurface.kt",
+      "kind": "function",
+      "semanticHash": "fd0a722f5339110879484c3610762d246fb16f505c9cd3c659be098d4e8ab843",
+      "line": 58,
+      "name": "PlotSurface",
+      "metric_status": "compose-transformation",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "evidence": [
+        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
+      ],
+      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
+    },
+    "dfb1fe2ebe595cba063f543ff56d3940e11909349bd75d451c3da7bfbc977c1a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/SessionExplorer.kt",
+      "kind": "function",
+      "semanticHash": "acdb91c58d190603a5db72e799c319228f7067671115c1fc8027b0e2f4f84250",
+      "line": 45,
+      "name": "SessionExplorer",
+      "metric_status": "compose-transformation",
+      "reason": "Compose source/JVM correspondence is explicitly unsupported, not missing ordinary-function test coverage. The viewer retains the original empty-evidence selection policy; the ready native frame alone owns physical annotation insets. Remove unused preview forwarding without changing explicit fullscreen buttons. Actual native RED/GREEN verifies data-area containment, complete text and timeline input through the passive notice. SessionPlot remains MCC 74; no complexity threshold or numeric baseline is relaxed.",
+      "evidence": [
+        "docs/engineering/PLOT_NOTICE_OWNERSHIP.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/PlotReadinessUiTest.kt"
+      ],
+      "reviewed_base": "d82f3bf293d6f9216e7cb9eb8347b7a57f92cdc6"
     }
   }
 }

@@ -68,7 +68,7 @@ internal fun SessionExplorer(vm:TallerViewModel,item:RecordingStore.Session,curs
         if(s.plot==AcousticPlot.PITCH && vm.musicalTraceFailed(item.id))
             Text(stringResource(R.string.musical_trace_unavailable),style=MaterialTheme.typography.bodySmall)
         Box(Modifier.fillMaxWidth().bringIntoViewRequester(chartRequester)) {
-            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(height),onExpand={onExpand(s.plot)})
+            SessionPlot(vm,item,cursor,Modifier.fillMaxWidth().height(height))
         }
     }
     Surface(shape=RoundedCornerShape(16.dp),color=MaterialTheme.colorScheme.surface) {

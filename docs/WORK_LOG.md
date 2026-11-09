@@ -1,5 +1,12 @@
 # 2026-11-08 workspace continuation handoff
 
+## 2026-11-09 bounded plot annotation
+
+The [annotation ownership cycle](engineering/PLOT_NOTICE_OWNERSHIP.md) records the actual native bounds RED,
+final four-case GREEN plus ES/landscape150 validation, passive seek/scrub proof,
+focused current-source metrics and the next independent comparison lifecycle RED.
+No DSP, persistence, measurement threshold or public/private data changes.
+
 ## 2026-11-08 analysis and rendering decisions
 
 The [current source-scoped milestone](engineering/ANALYSIS_RENDERING_REBUILD.md) documents typed recording-analysis

@@ -61,8 +61,8 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
     musicianTrace:MusicalTrace?=null,
     durationMs:Long=visual.durationMs,
     onScrub:(Long,Boolean)->Unit={_,_->},
-    onPreview:()->Unit={},onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
-    onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->}) {
+    onPoint:(Double,Double,Boolean)->Unit={_,_,_->},onReset:()->Unit={},
+    onTransform:(Double,Double,Double,Double,Double,Double)->Unit={_,_,_,_,_,_->},notice:String?=null) {
     val density=LocalDensity.current
     var dimensions by remember {mutableStateOf(androidx.compose.ui.unit.IntSize.Zero)}
     val displayedTrace=musicianTrace
@@ -103,6 +103,6 @@ internal fun PlotSurface(state:ExplorerState,visual:VisualState,viewport:PlotVie
         val content=PlotContent(rasterInk,pitchInk,comparisonInk,waveDrawing,spectrumInk,timeline)
         PlotCanvas(frame,content,effects,levelPixels,plotUnitLabel(state.plot),
             measuredModifier.then(gesture)
-            .plotAccessibility(accessibility,plotDescription(state.plot,state.instrument,camera,pitchTicks,spectralTrace,diagnostic),onScrub))
+            .plotAccessibility(accessibility,plotDescription(state.plot,state.instrument,camera,pitchTicks,spectralTrace,diagnostic),onScrub),notice)
     }
 }

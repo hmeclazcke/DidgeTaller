@@ -133,6 +133,25 @@ class SessionEvidenceUiTest {
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
         compose.runOnIdle {assertEquals("Selected chart in fullscreen",AcousticPlot.PITCH,vm.explorer(item.id).plot)}
+        val fullscreenChart = compose.onNodeWithTag("immersive-plot").fetchSemanticsNode()
+        if (fullscreenChart.config[PlotDroneComponentCount] == 0) {
+            val emptyEvidence = compose.onNodeWithText(uiText(R.string.musical_trace_unavailable)).assertIsDisplayed()
+            val bounds = emptyEvidence.fetchSemanticsNode().boundsInRoot
+            val area = fullscreenChart.config[PlotDataArea]
+            val left = fullscreenChart.boundsInRoot.left + area.left
+            val top = fullscreenChart.boundsInRoot.top + area.top
+            val right = fullscreenChart.boundsInRoot.left + area.right
+            val bottom = fullscreenChart.boundsInRoot.top + area.bottom
+            if (bounds.left < left || bounds.top < top || bounds.right > right || bounds.bottom > bottom)
+                screenshot("wide-empty-overlay-overlap")
+            assertTrue("Empty evidence text must stay right of the Y-axis labels", bounds.left >= left)
+            assertTrue("Empty evidence text must stay below the plot top", bounds.top >= top)
+            assertTrue("Empty evidence text must stay inside the plot right", bounds.right <= right)
+            assertTrue("Empty evidence text must stay above the time labels", bounds.bottom <= bottom)
+            val hintLayout = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+            emptyEvidence.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(hintLayout) }
+            assertFalse("Empty evidence explanation remains complete", hintLayout.single().hasVisualOverflow)
+        }
         val scientificText = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
         val explanationNode = compose.onNodeWithTag("viewer-scientific-description").assertTextEquals(uiText(R.string.musical_drone_description))
         explanationNode

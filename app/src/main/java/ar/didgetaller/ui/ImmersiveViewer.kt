@@ -70,7 +70,7 @@ internal fun playbackCursor(vm:TallerViewModel,item:RecordingStore.Session):Long
 /** Stable session owner supplies both preview and immersive adapters. No WAV in camera state. */
 @Composable
 internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:Long,modifier:Modifier,
-                         immersive:Boolean=false,onExpand:()->Unit={},
+                         immersive:Boolean=false,notice:String?=null,
                          stateOverride:ExplorerState?=null,diagnosticMode:Boolean=false) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val s=stateOverride ?: if(immersive)vm.explorer(item.id) else vm.preview(item.id);val visual=vm.workspace.state
@@ -121,7 +121,8 @@ internal fun SessionPlot(vm:TallerViewModel,item:RecordingStore.Session,cursor:L
     }
     PlotSurface(s,visual,camera,points,result,s.selection.scrubMs ?: if(vm.playingId==item.id)cursor else s.selectedMs,Modifier.fillMaxWidth().weight(1f),immersive,
         swipe=if(diagnostic)swipe else null,diagnostic=diagnosticMode,
-        musicianTrace=if(diagnostic)null else musician,onPreview=onExpand,
+        musicianTrace=if(diagnostic)null else musician,
+        notice=notice,
         durationMs=duration,onScrub={time,commit ->
             val target=time.coerceIn(0,duration);s.follow=false
             if(commit){s.selectedMs=target;s.selection.scrubMs=null;vm.seekPlayback(item,target)}
@@ -253,11 +254,10 @@ internal fun ImmersiveViewer(vm:TallerViewModel,item:RecordingStore.Session,init
                 BadgedBox(badge={if(state.inspected!=null)Badge{Text("i")}}){Icon(Icons.Default.MoreVert,stringResource(R.string.ui_tools))}
             }
         }
+        val notice=if(state.plot==AcousticPlot.PITCH && musician.samples.none {it.hz!=null})
+            stringResource(R.string.musical_trace_unavailable) else null
         Box(Modifier.weight(1f).fillMaxWidth()){
-            SessionPlot(vm,item,cursor,Modifier.fillMaxSize(),immersive=true)
-            if(state.plot==AcousticPlot.PITCH && musician.samples.none {it.hz!=null})Text(
-                context.getString(R.string.musical_trace_unavailable),Modifier.align(Alignment.Center).padding(16.dp),
-                style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurface)
+            SessionPlot(vm,item,cursor,Modifier.fillMaxSize(),immersive=true,notice=notice)
             if(state.plot==AcousticPlot.SPECTRUM && recording?.result==null && recording?.running!=true)
                 TextButton(onClick={vm.analyzeRecording(item)},modifier=Modifier.align(Alignment.Center).testTag("viewer-analyze")){Text(stringResource(R.string.ui_analyze_recording))}
             if(visual.error!=null)TextButton(onClick={vm.workspace.open(item)},modifier=Modifier.align(Alignment.Center)){

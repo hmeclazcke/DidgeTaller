@@ -1,3 +1,29 @@
+# 2026-11-09 continuation - IN PROGRESS
+
+Local plot-notice cycle is validated; see [ownership evidence](PLOT_NOTICE_OWNERSHIP.md).
+The viewer selects the original localized message; PlotCanvas places it inside
+its ready measured rectangle. Final four-case native wiring/input checks pass;
+ES/landscape150 checks and inspected PNGs protect complete readable text. Debug
+JVM440 passed/eight skips; Detekt/source/coverage/CPD gate passes with470 scored/
+112 independent unscored and no ordinary-function measurement waiver.
+
+Next active production correction: a real native test proves that
+setSwipeComparison(true) after ViewModelStore.clear publishes enabled/running
+state into a disposed ViewModel. The current implementation uses coroutines and
+Handler progress; earlier executor/version wording is inaccurate. Preserve the
+independent failing regression in AnalysisOwnershipTest until the fix passes.
+Implement explicit comparison operation/lifecycle ownership and characterize
+cached toggles, replacement, terminal progress and cancellation. Preserve the
+shared serial swipeDispatcher, WAV reader use/closure and actual SWIPE equations.
+
+Commit the validated UI cycle locally, continue comparison, and publish the
+combined integration once to avoid duplicate expensive native CI. Main remains
+3a160043; existing draft PR1 stays draft. Parent/delivery d82f3bf fast CI42537909456
+passed; its unchanged executable source8b73c21 had all three verified runs below.
+No Samsung/private WAV access or new dependencies/tools/gates.
+
+## Prior remotely verified milestone (historical)
+
 # Analysis ownership and rendering continuation - IN PROGRESS
 
 Verified executable source: 8b73c2110c72d20bc1aab696fed3139877542edc, implementation

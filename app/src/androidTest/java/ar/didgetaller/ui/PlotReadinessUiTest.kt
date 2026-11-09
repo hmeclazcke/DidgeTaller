@@ -67,4 +67,43 @@ class PlotReadinessUiTest {
             assertNull(state.selection.scrubMs); assertTrue(commits.isEmpty())
         }
     }
+    @Test fun aPlotNoticeUsesDataBoundsWithoutStealingTimelineInput() {
+        assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
+        val state = ExplorerState(InstrumentProfile.DIDGERIDOO)
+        var selected = -1.0
+        val previews = mutableListOf<Long>(); val commits = mutableListOf<Long>()
+        compose.setContent {
+            Box(Modifier.width(360.dp).height(240.dp)) {
+                PlotSurface(state, VisualState(), viewport, emptyList(), null, -1,
+                    Modifier.width(360.dp).height(240.dp), notice = "No approved measurements",
+                    onPoint = { time, _, _ -> selected = time },
+                    onScrub = { time, commit -> if (commit) commits += time else previews += time })
+            }
+        }
+        val chart = compose.onNodeWithTag("time-chart")
+        val graph = chart.fetchSemanticsNode()
+        val area = graph.config[PlotDataArea]
+        val notice = compose.onNodeWithTag("plot-notice").assertIsDisplayed()
+        val text = notice.fetchSemanticsNode().boundsInRoot
+        assertTrue(text.left >= graph.boundsInRoot.left + area.left)
+        assertTrue(text.top >= graph.boundsInRoot.top + area.top)
+        assertTrue(text.right <= graph.boundsInRoot.left + area.right)
+        assertTrue(text.bottom <= graph.boundsInRoot.top + area.bottom)
+        val touch = text.center - graph.boundsInRoot.topLeft
+        val expected = viewport.x.low + (touch.x - area.left) / area.width * viewport.x.span
+        notice.performTouchInput { click(center) }
+        compose.runOnIdle { assertEquals(expected, selected, 1.0) }
+        chart.performTouchInput {
+            down(touch)
+            moveTo(Offset(area.left + area.width * .75f, touch.y))
+            up()
+        }
+        compose.runOnIdle {
+            assertTrue(previews.isNotEmpty())
+            assertEquals(70000.0, previews.last().toDouble(), 2.0)
+            assertEquals(70000.0, commits.single().toDouble(), 2.0)
+            assertFalse(state.gestureActive)
+        }
+    }
+
 }
