@@ -1,5 +1,18 @@
 # Quality guide
 
+## Verified comparison/rendering delivery - 2026-11-09
+
+[Executable source11fa244 verification](../engineering/SWIPE_VERIFICATION_11fa244.md) records passed fast42650147321,
+full API35 emulator42650133214, five actual EN/ES/large-font configuration cases,
+and valid unchanged-scope mutation42614248589. JVM936/920/16; Android163/153/10,
+zero failures. JVM43.39/39.70%, core99.07/83.78%; separate Android92.02/68.62%.
+CRAP-L484/114 (72 JVM/28 Android high), Detekt1987, Linux Lint0/53/8 (one
+version-metadata advisory beyond local52), CPD0. The earlier failed ES150 run
+is preserved along with the actual layout correction; no gate/test weakening.
+Whole application remains IN PROGRESS; exact next owner-admission regression
+and remaining work are in the continuation checkpoint. Reuse executable source
+for documentation-only descendants, not as proof of a newly executed suite.
+
 ## Current comparison and annotation continuation
 
 The [comparison cycle](../engineering/SWIPE_OPERATION_OWNERSHIP.md) introduces

@@ -1,5 +1,9 @@
 # Workspace operation ownership and plot preparation
 
+[Observed comparison and accessible-renderer delivery](SWIPE_VERIFICATION_11fa244.md)
+records the current before/after scope, successful remote checks and preserved
+failed configuration evidence. The full application rebuild remains IN PROGRESS.
+
 ## Comparison lifecycle and bounded annotations
 
 A [real disposed-ViewModel regression](SWIPE_OPERATION_OWNERSHIP.md) reproduces

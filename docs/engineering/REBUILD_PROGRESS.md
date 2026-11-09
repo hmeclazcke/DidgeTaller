@@ -1,49 +1,46 @@
-# 2026-11-09 source CI correction - IN PROGRESS
+# 2026-11-09 comparison and accessible-renderer delivery - IN PROGRESS
 
-Feature source c9b3ab3 is published. Its fast run42614250039 and mutation
-run42614248589 pass; full native run42614242780 correctly fails the extra
-Spanish compact/150% case AFTER the complete suite passes152/0/10 (162 total).
-Do not describe that entire Android workflow as passing. Broad PIT2318:
-1807 killed,494 survived,15 uncovered,two timed out (78.04% detected, scoped).
+Executable source11fa244f27160bf0401312d64ea2742917137e27 is pushed, following
+52bb4f5 (annotation) andc9b3ab3 (comparison ownership). Original main3a160043
+is unchanged; PR1 is draft. Documentation-only descendants reuse this exact source.
+[Source-scoped final verification](SWIPE_VERIFICATION_11fa244.md) records actual
+successful fast42650147321, full API35 native42650133214 and reused selected-scope
+mutation42614248589. No pending/cancelled result is represented as passing.
 
-The [annotation follow-up](PLOT_NOTICE_OWNERSHIP.md) reproduces vertical overflow
-with actual three-button insets on the owned synthetic API37 emulator. Remove
-only vertical annotation padding. A further landscape regression proves the
-frame never becomes drawable under the enlarged fixed labels. The safe-inset
-owner now grows from an intrinsic minimum and scrolls deliberately; plot minimum
-180dp, full scaled text, same geometry/gesture engine and one inset owner.
+The native c9b3ab3 run42614242780 really FAILS extra ES150 text overflow after
+its main suite passes. Native reproduction fixes vertical notice padding, then
+reveals a permanently absent large-font landscape frame. The safe-inset owner
+now uses intrinsic minimum layout, a usable180dp graph and intentional scrolling;
+all text/font scaling and ordinary gesture/data/measurement contracts remain.
+Ten final focused API37 cases and six inspected API35 CI PNGs protect EN/ES,
+portrait/landscape150, insets, full scientific text and80ms paused seeking.
+Normal-scale65% area assertion is retained; invalid driver/startup ANR runs remain
+rejected evidence, not hidden passes. No performance benchmark claim.
 
-Ten final focused native cases pass: three EN/ES/landscape150 evidence cases,
-three frame/overlay interaction cases, existing fullscreen paused seek/scrub,
-new portrait and landscape150 pinch/pan/scrub contracts (80ms tolerance), and
-the existing complete pinch/pan/rotation/reset case at its normal font scale.
-The existing65% area assertion remains unchanged. Running it at150% passes its
-gesture assertions but rejects the enlarged area proportion; the new accessibility
-contract tests the interaction without pretending that normal-font proportion
-is a large-font guarantee. The initial System UI startup ANR and incorrect new
-test-driver positional pinch arguments are preserved as rejected evidence;
-named finger arguments correct the driver, not the production gesture algorithm.
-Four final EN/ES/landscape PNGs are inspected, plus the original overflow/blank
-frame diagnostics. No whole-app performance improvement is claimed.
+Current Linux JVM936 discovered/920 passed/16 protected skips/0 failed; native
+163 discovered/153 passed/ten justified skips/0 failed plus five extra configs
+all pass. JVM43.39/39.70%, core99.07/83.78%; separate Android92.02/68.62%.
+CRAP-L484 scored/114 independent unscored,72 JVM/28 Android above target.
+638 named functions are accounted;14 of17 new functions since8b are scored,
+two are abstract andone Compose. Detekt1987; Lint0/53/8 Linux (one update-metadata
+advisory beyond local52), CPD0>=100tokens, gate0; no ordinary scoring waiver or
+numeric baseline change. Pure comparison owner maximumMCC5; setter15 ->2,
+SessionPlot74/viewer68/PlotSurface8/canvas7/notice2; viewer debt is not declared solved.
+PIT70 classes/2318 mutants:1807 killed/494 survived/15 uncovered/two timeouts,
+78.04% detected,77.96% killed. This unchanged selected scope is measured onc9b3ab3;
+11fa244 only changes two non-target Compose files and Android tests. No duplicate
+broad dispatch. Synthetic differential outputs741 byte-identical to pinned main.
 
-Fresh correction debug JVM468 discovered/460 passed/eight protected skips,
-zero failures; local coverage43.38%/39.61%, core99.02%/83.55%. Source484 mapped,
-114 independent unscored,72 JVM above target, Detekt1987, Lint0/52/8, CPD0
->=100tokens and gate0. SessionPlot74,viewer68,PlotSurface8,canvas7,notice2 MCC
-are unchanged: this fixes accessibility, not complexity debt. One stale Compose
-body fingerprint is correctly rejected, then renewed against the actual tested
-body. No ordinary scoring exception or numeric baseline changes.
-
-Delivery: commit/push this validated UI correction only to the feature branch, observe its fast and
-full-native CI. Do not rerun the successful c9b3ab3 broad mutation: selected
-production/test targets are unchanged by this UI-only delta. Record final run
-URLs, source SHA and separately measured coverage before claiming final success.
-PR1 stays draft; main3a160043 and the official skill/license stay unchanged.
-
-Next production cycle after delivery: saved-YIN/component/evidence admission
-after disposal/session replacement. Reproduce deterministic faults before
-rewriting those remaining ViewModel owners; preserve canonical/diagnostic
-boundaries and cache/index guarantees. Whole rebuild remains IN PROGRESS.
+Next exact production task: add a native ViewModelStore.clear regression for
+analyzeSavedYin, analyzeDroneComponent and inspectSavedEvidence. Current source
+publishes running before launching into viewModelScope; establish actual RED
+without reading a WAV, then rebuild admission/terminal ownership and test late
+success/failure/progress after session replacement. This is source-level evidence
+for the next hypothesis, not a claimed executed new regression. Preserve serial
+DSP scheduling, reader/cache ownership and canonical-versus-diagnostic semantics.
+Then continue requestMusicalTrace ownership and the remaining ViewModel/UI hotspots.
+No restart, audit repeat, new branch, dependency, Samsung/private WAV access,
+merge/main push, destructive cleanup or metronome. Official skill/MIT unchanged.
 
 ## Previous local integration checkpoint
 
