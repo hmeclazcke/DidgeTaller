@@ -25,6 +25,22 @@ import ar.didgetaller.core.RecordingAnalysisLoader
 import ar.didgetaller.core.RecordingAnalysisRequest
 import ar.didgetaller.core.RecordingAnalysisController
 import ar.didgetaller.core.RecordingAnalysisStatus
+import ar.didgetaller.core.AnalysisState
+import ar.didgetaller.core.AnalysisLoader
+import ar.didgetaller.core.AnalysisProgress
+import ar.didgetaller.core.OptimizationRequest
+import ar.didgetaller.core.OptimizationSnapshot
+import ar.didgetaller.core.optimizeBore
+import ar.didgetaller.core.optimizationNotice
+import ar.didgetaller.core.LatestAnalysis
+import ar.didgetaller.core.MusicalTraceCatalog
+import ar.didgetaller.core.TraceSnapshot
+import ar.didgetaller.core.YinReplayRequest
+import ar.didgetaller.core.ComponentRequest
+import ar.didgetaller.core.MusicalTraceRequest
+import ar.didgetaller.core.EvidenceRequest
+import ar.didgetaller.core.RecordingComparisonRequest
+import ar.didgetaller.audio.CoroutineAnalysisLoader
 import ar.didgetaller.audio.CoroutineRecordingAnalysisLoader
 import ar.didgetaller.audio.CoroutineSwipeComparisonLoader
 import ar.didgetaller.ui.reconcileComparisonCameras
@@ -44,7 +60,6 @@ import java.io.File
 import android.os.SystemClock
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import ar.didgetaller.audio.MicrophoneEngine
@@ -60,7 +75,6 @@ import ar.didgetaller.data.LocalStore
 import ar.didgetaller.data.RecordingStore
 import ar.didgetaller.data.LibraryCatalog
 import java.util.concurrent.Executors
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
 import kotlin.math.ln
 
@@ -68,19 +82,12 @@ typealias SessionPhase = RecordingPhase
 private const val MIC_PERMISSION_NOTICE="Para medir hace falta permiso de micrófono. Podés concederlo desde Ajustes."
 
 data class UndoEntry(val kind:String,val id:String)
-data class ComparisonState(val running:Boolean=false,val progress:Int=0,val a:WavAnalysis.Result?=null,val b:WavAnalysis.Result?=null,val error:String?=null)
-data class SavedEvidenceState(val sessionId:String?=null,val running:Boolean=false,
-    val result:SavedPitchEvidence.Snapshot?=null,val failed:Boolean=false)
-
-data class DroneComponentState(val sessionId:String?=null,val running:Boolean=false,val progress:Int=0,
-    val curve:DroneComponentCurve?=null,val failed:Boolean=false)
-data class SavedYinReplayState(val sessionId:String?=null,val running:Boolean=false,
-    val result:SavedYinReplay.Result?=null,val failed:Boolean=false)
-
 class TallerViewModel internal constructor(
     application: Application, simulationLoader: SimulationLoader?,
     analysisLoader: RecordingAnalysisLoader? = null,
     swipeLoader: SwipeComparisonLoader? = null,
+    diagnosticLoaders: SavedDiagnosticLoaders? = null,
+    optimizationLoader: AnalysisLoader<OptimizationRequest,OptimizationSnapshot>? = null,
 ): AndroidViewModel(application) {
     constructor(application: Application) : this(application, null)
     private val store=LocalStore(application)
@@ -96,7 +103,7 @@ class TallerViewModel internal constructor(
     fun explorer(id:String)=explorers.getOrPut(id){ar.didgetaller.ui.ExplorerState(sessions.firstOrNull {it.id==id}?.instrument ?: InstrumentProfile.DIDGERIDOO)}
     private val previews=mutableMapOf<String,ar.didgetaller.ui.ExplorerState>()
     fun preview(id:String)=previews.getOrPut(id){explorer(id).let {ar.didgetaller.ui.ExplorerState(it.instrument,it.selection)}}
-    private var activeDetail:String?=null
+    private var activeDetail by mutableStateOf<String?>(null)
     var viewerOriginalOrientation:Int?=null
     var instrument by mutableStateOf(tools.instrument());private set
     fun selectInstrument(profile:InstrumentProfile){
@@ -114,18 +121,30 @@ class TallerViewModel internal constructor(
     val sessionIndexDamaged get()=library.indexDamaged
     var markers by mutableStateOf<List<SessionToolsStore.Marker>>(emptyList());private set
     var associatedDesignId by mutableStateOf<String?>(null);private set
-    var associatedSimulation by mutableStateOf<AcousticModel.Simulation?>(null);private set
-    private var associationJob:Job?=null
-    var comparison by mutableStateOf(ComparisonState());private set
-    private var comparisonJob:Job?=null
+    private var associationState by mutableStateOf<AnalysisState<AcousticModel.Shape,AcousticModel.Simulation>>(AnalysisState.Idle)
+    val associatedSimulation get()=associationState.value
+    private val associationOwner=LatestAnalysis(CoroutineAnalysisLoader<AcousticModel.Shape,AcousticModel.Simulation>(viewModelScope,Dispatchers.Default) {
+        shape:AcousticModel.Shape,_,_->AcousticModel.evaluate(shape)
+    }) { associationState=it }
+    private var comparisonState by mutableStateOf<AnalysisState<RecordingComparisonRequest,Pair<WavAnalysis.Result,WavAnalysis.Result>>>(AnalysisState.Idle)
+    val comparison get()=comparisonState.comparisonState()
+    private val comparisonOwner=LatestAnalysis(CoroutineAnalysisLoader<RecordingComparisonRequest,Pair<WavAnalysis.Result,WavAnalysis.Result>>(viewModelScope,Dispatchers.Default) {
+        request:RecordingComparisonRequest,cancelled,progress->
+        val a=request.first;val b=request.second
+        val first=cache.analyze(a.sessionId,recordingStore.file(a.sessionId),a.startMs,a.endMs,
+            instrument=a.instrument,cancelled=cancelled,progress={progress(AnalysisProgress(it/2))})
+        val second=cache.analyze(b.sessionId,recordingStore.file(b.sessionId),b.startMs,b.endMs,
+            instrument=b.instrument,cancelled=cancelled,progress={progress(AnalysisProgress(50+it/2))})
+        first to second
+    }) { comparisonState=it }
     fun setRecordingLimit(seconds:Int){tools.setLimitSeconds(seconds);recordingLimitSeconds=seconds}
     fun availableMegabytes()=getApplication<Application>().filesDir.usableSpace/(1024*1024)
     fun sessionFile(item:RecordingStore.Session)=recordingStore.file(item.id)
-    fun openTools(item:RecordingStore.Session){if(workspace.state.sessionId!=item.id){workspace.open(item);loadTools(item)}}
+    fun openTools(item:RecordingStore.Session){if(activeDetail==item.id && workspace.state.sessionId!=item.id){workspace.open(item);loadTools(item)}}
     private fun loadTools(item:RecordingStore.Session){markers=tools.markers(item.id);associatedDesignId=tools.designId(item.id)
-        associationJob?.cancel();associatedSimulation=null
+        associationOwner.clear()
         val selected=store.designs(true).find {it.id==associatedDesignId}
-        if(selected!=null)associationJob=viewModelScope.launch {associatedSimulation=withContext(Dispatchers.Default){AcousticModel.evaluate(selected.shape)}}
+        if(selected!=null)associationOwner.select(selected.shape)
     }
     private fun persistMetadata(change:()->Unit){
         runCatching(change).onFailure {message=getApplication<Application>().getString(R.string.library_metadata_write_failed)}
@@ -135,16 +154,10 @@ class TallerViewModel internal constructor(
     fun addMarker(item:RecordingStore.Session,time:Long,type:String){persistMetadata {tools.addMarker(item.id,time,type,"");markers=tools.markers(item.id)}}
     fun removeMarker(item:RecordingStore.Session,id:String){persistMetadata {tools.deleteMarker(item.id,id);markers=tools.markers(item.id)}}
     fun compare(a:RecordingStore.Session,b:RecordingStore.Session,aStart:Long=0,aEnd:Long?=null,bStart:Long=0,bEnd:Long?=null){
-        comparisonJob?.cancel();comparison=ComparisonState(running=true)
-        comparisonJob=viewModelScope.launch {try {
-            val results=withContext(Dispatchers.Default){
-                val first=cache.analyze(a.id,sessionFile(a),aStart,aEnd,instrument=a.instrument,cancelled={!isActive},progress={p->main.post {if(isActive)comparison=comparison.copy(progress=p/2)}})
-                val second=cache.analyze(b.id,sessionFile(b),bStart,bEnd,instrument=b.instrument,cancelled={!isActive},progress={p->main.post {if(isActive)comparison=comparison.copy(progress=50+p/2)}})
-                first to second
-            };comparison=ComparisonState(a=results.first,b=results.second,progress=100)
-        } catch(e:CancellationException){throw e} catch(e:Exception){comparison=ComparisonState(error=e.message ?: "Error de comparación.")}}
+        comparisonOwner.replace(RecordingComparisonRequest(RecordingAnalysisRequest(a.id,a.instrument,aStart,aEnd),
+            RecordingAnalysisRequest(b.id,b.instrument,bStart,bEnd)))
     }
-    fun cancelComparison(clear:Boolean=false){comparisonJob?.cancel();comparison=if(clear)ComparisonState() else comparison.copy(running=false)}
+    fun cancelComparison(clear:Boolean=false){if(clear)comparisonOwner.clear() else comparisonOwner.cancel()}
     private fun refreshLibrary(){library=catalog.load()}
     fun recoverSessionIndex(){
         runCatching {recordingStore.recoverIndex();refreshLibrary()}
@@ -157,7 +170,9 @@ class TallerViewModel internal constructor(
     fun emptyTrash(){viewModelScope.launch {try {withContext(Dispatchers.IO){
         for(id in trash.ids("session")){recordingStore.delete(id);cache.remove(id);tools.forget(id);trash.restore("session",id)}
         for(id in trash.ids("design")){store.deleteDesign(id);tools.forgetDesign(id);trash.restore("design",id)}
-    };refreshLibrary();undoEntry=null;message="Papelera vaciada."}catch(e:Exception){refreshLibrary();message="No se pudo completar el vaciado: ${e.message}"}}}
+    };ensureActive();refreshLibrary();undoEntry=null;message="Papelera vaciada."}
+        catch(e:CancellationException){throw e}
+        catch(e:Exception){ensureActive();refreshLibrary();message="No se pudo completar el vaciado: ${e.message}"}}}
 
     private val sessionExecutor=Executors.newSingleThreadExecutor()
     private var analysisState by mutableStateOf<RecordingAnalysisStatus>(RecordingAnalysisStatus.Idle)
@@ -167,9 +182,31 @@ class TallerViewModel internal constructor(
             cache.analyze(request.sessionId,recordingStore.file(request.sessionId),request.startMs,request.endMs,
                 cancelled=cancelled,progress=progress,force=request.force,instrument=request.instrument)
         }), { analysisState=it })
-    var savedEvidence by mutableStateOf(SavedEvidenceState());private set
-    private var evidenceJob:Job?=null
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     private val swipeDispatcher=Dispatchers.IO.limitedParallelism(1)
+    private val savedLoaders=diagnosticLoaders ?: SavedDiagnosticLoaders(
+        CoroutineAnalysisLoader(viewModelScope,swipeDispatcher) { request:YinReplayRequest,cancelled,_->
+            Pcm16WavReader(recordingStore.file(request.sessionId)).use {
+                SavedYinReplay.analyze(it,request.expandedRange,cancelled)
+            }
+        },
+        CoroutineAnalysisLoader(viewModelScope,swipeDispatcher) { request:ComponentRequest,cancelled,progress->
+            cache.droneComponent(request.sessionId,recordingStore.file(request.sessionId),cancelled=cancelled,progress={progress(AnalysisProgress(it))})
+        },
+        CoroutineAnalysisLoader(viewModelScope,Dispatchers.IO) { request:EvidenceRequest,cancelled,_->
+            Pcm16WavReader(recordingStore.file(request.sessionId)).use {
+                SavedPitchEvidence.inspect(it,request.positionMs,request.instrument,cancelled)
+            }
+        })
+    private var yinState by mutableStateOf<AnalysisState<YinReplayRequest,SavedYinReplay.Result>>(AnalysisState.Idle)
+    private var componentState by mutableStateOf<AnalysisState<ComponentRequest,DroneComponentCurve>>(AnalysisState.Idle)
+    private var evidenceState by mutableStateOf<AnalysisState<EvidenceRequest,SavedPitchEvidence.Snapshot>>(AnalysisState.Idle)
+    private val yinOwner=LatestAnalysis(savedLoaders.yin) { yinState=it }
+    private val componentOwner=LatestAnalysis(savedLoaders.component) { componentState=it }
+    private val evidenceOwner=LatestAnalysis(savedLoaders.evidence) { evidenceState=it }
+    val savedYinReplay get()=yinState.yinReplayState()
+    val droneComponent get()=componentState.componentState(activeDetail,traceSnapshot)
+    val savedEvidence get()=evidenceState.evidenceState()
     private var swipeState by mutableStateOf<SwipeComparisonStatus>(SwipeComparisonStatus.Idle)
     val swipeComparison get()=SwipeComparisonState(swipeState)
     private val swipeOwner=SwipeComparisonController(swipeLoader ?: CoroutineSwipeComparisonLoader(
@@ -179,98 +216,22 @@ class TallerViewModel internal constructor(
             }
         }), ::publishSwipeComparison)
 
-    var droneComponent by mutableStateOf(DroneComponentState());private set
-    private val musicalTraces=mutableStateMapOf<String,MusicalTrace>()
-    private val fluteTraces=mutableMapOf<String,MusicalTrace>()
-    private val musicalTraceJobs=mutableMapOf<String,Job>()
-    private val musicalTraceFailures=mutableStateMapOf<String,Boolean>()
-    fun musicalTrace(item:RecordingStore.Session):MusicalTrace? =
-        if(item.instrument==InstrumentProfile.NATIVE_AMERICAN_FLUTE)
-            fluteTraces.getOrPut(item.id){MusicalTrace.flute(item.timeline,item.durationMs)} else musicalTraces[item.id]
-    fun musicalTraceFailed(id:String)=musicalTraceFailures[id]==true
-    fun requestMusicalTrace(item:RecordingStore.Session){
-        if(item.instrument!=InstrumentProfile.DIDGERIDOO)return
-        if(musicalTraces.containsKey(item.id)){
-            if(activeDetail==item.id && droneComponent.sessionId!=item.id)analyzeDroneComponent(item)
-            return
-        }
-        if(musicalTraceJobs[item.id]?.isActive==true || musicalTraceFailures[item.id]==true)return
-        musicalTraceJobs[item.id]=viewModelScope.launch {
-            try {
-                val curve=withContext(swipeDispatcher){
-                    val task=currentCoroutineContext()
-                    cache.droneComponent(item.id,sessionFile(item),cancelled={!task.isActive})
-                }
-                ensureActive()
-                musicalTraces[item.id]=MusicalTrace.didgeridoo(curve,item.durationMs,item.timeline)
-                if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,progress=100,curve=curve)
-                // The disk cache is authoritative; retain only a few decoded series in memory.
-                while(musicalTraces.size>6){
-                    val oldest=musicalTraces.keys.firstOrNull {it!=activeDetail && it!=item.id} ?: break
-                    musicalTraces.remove(oldest)
-                }
-            }catch(e:CancellationException){throw e}
-            catch(e:Exception){ensureActive();musicalTraceFailures[item.id]=true
-                if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,failed=true)
-            }finally{if(musicalTraceJobs[item.id]===currentCoroutineContext()[Job])
-                musicalTraceJobs.remove(item.id)}
-        }
-    }
-    fun releaseMusicalTraceRequest(id:String){
-        if(activeDetail!=id)musicalTraceJobs.remove(id)?.cancel()
-    }
-    var savedYinReplay by mutableStateOf(SavedYinReplayState());private set
-    private var droneComponentJob:Job?=null
-    private var savedYinReplayJob:Job?=null
+    private var traceSnapshot by mutableStateOf(TraceSnapshot())
+    private val traceCatalog=MusicalTraceCatalog(savedLoaders.component,{traceSnapshot=it})
+    private fun traceRequest(item:RecordingStore.Session)=MusicalTraceRequest(item.id,item.durationMs,item.timeline.toList(),item.instrument)
+    fun musicalTrace(item:RecordingStore.Session)=traceCatalog.trace(traceRequest(item),traceSnapshot)
+    fun musicalTraceFailed(id:String)=id in traceSnapshot.failures
+    fun requestMusicalTrace(item:RecordingStore.Session){traceCatalog.request(traceRequest(item))}
+    fun releaseMusicalTraceRequest(id:String){traceCatalog.release(id)}
     fun analyzeSavedYin(item:RecordingStore.Session){
-        if(item.instrument!=InstrumentProfile.DIDGERIDOO || savedYinReplay.sessionId==item.id)return
-        savedYinReplayJob?.cancel()
-        savedYinReplay=SavedYinReplayState(item.id,running=true)
-        savedYinReplayJob=viewModelScope.launch {
-            try {
-                val result=withContext(swipeDispatcher){
-                    val task=currentCoroutineContext()
-                    Pcm16WavReader(sessionFile(item)).use { source ->
-                        SavedYinReplay.analyze(source,
-                            expandedRange=SavedYinReplay.usesExpandedRange(item.timeline),
-                            cancelled={!task.isActive})
-                    }
-                }
-                ensureActive()
-                if(activeDetail==item.id)savedYinReplay=SavedYinReplayState(item.id,result=result)
-            }catch(e:CancellationException){throw e}
-            catch(e:Exception){ensureActive();if(activeDetail==item.id)
-                savedYinReplay=SavedYinReplayState(item.id,failed=true)}
-        }
+        if(activeDetail==item.id && item.instrument==InstrumentProfile.DIDGERIDOO)
+            yinOwner.select(YinReplayRequest(item.id,SavedYinReplay.usesExpandedRange(item.timeline)))
     }
-    private fun clearSavedYinReplay(){
-        savedYinReplayJob?.cancel()
-        savedYinReplay=SavedYinReplayState()
-    }
+    private fun clearSavedYinReplay(){yinOwner.clear()}
     fun analyzeDroneComponent(item:RecordingStore.Session){
-        if(item.instrument!=InstrumentProfile.DIDGERIDOO || droneComponent.sessionId==item.id)return
-        droneComponentJob?.cancel()
-        droneComponent=DroneComponentState(item.id,running=true)
-        droneComponentJob=viewModelScope.launch {
-            try {
-                val result=withContext(swipeDispatcher){
-                    val task=currentCoroutineContext()
-                    cache.droneComponent(item.id,sessionFile(item),cancelled={!task.isActive},progress={p->
-                            main.post {if(task.isActive && droneComponent.sessionId==item.id)
-                                droneComponent=droneComponent.copy(progress=p)}
-                        })
-                }
-                ensureActive()
-                if(activeDetail==item.id)droneComponent=DroneComponentState(item.id,progress=100,curve=result)
-            }catch(e:CancellationException){throw e}
-            catch(e:Exception){ensureActive();if(activeDetail==item.id)
-                droneComponent=DroneComponentState(item.id,failed=true)}
-        }
+        if(activeDetail==item.id && item.instrument==InstrumentProfile.DIDGERIDOO)componentOwner.select(ComponentRequest(item.id))
     }
-    private fun clearDroneComponent(){
-        droneComponentJob?.cancel()
-        droneComponent=DroneComponentState()
-    }
+    private fun clearDroneComponent(){componentOwner.clear()}
     fun setSwipeComparison(item:RecordingStore.Session,enabled:Boolean){
         if(item.instrument==InstrumentProfile.DIDGERIDOO)
             swipeOwner.select(SwipeComparisonRequest(item.id),enabled)
@@ -283,28 +244,12 @@ class TallerViewModel internal constructor(
     private fun clearSwipeComparison(){swipeOwner.clear()}
 
     fun inspectSavedEvidence(item:RecordingStore.Session,positionMs:Long){
-        cancelSavedEvidence()
-        savedEvidence=SavedEvidenceState(item.id,running=true)
-        evidenceJob=viewModelScope.launch {
-            try {
-                val result=withContext(Dispatchers.IO){
-                    val task=currentCoroutineContext()
-                    Pcm16WavReader(sessionFile(item)).use {source->
-                        SavedPitchEvidence.inspect(source,positionMs,item.instrument){!task.isActive}
-                    }
-                }
-                ensureActive()
-                if(activeDetail==item.id)savedEvidence=SavedEvidenceState(item.id,result=result)
-            }catch(e:CancellationException){throw e}
-            catch(e:Exception){if(activeDetail==item.id)savedEvidence=SavedEvidenceState(item.id,failed=true)}
-        }
+        if(activeDetail==item.id)evidenceOwner.replace(EvidenceRequest(item.id,positionMs,item.instrument))
     }
-    fun cancelSavedEvidence(){evidenceJob?.cancel();savedEvidence=SavedEvidenceState()}
+    fun cancelSavedEvidence(){evidenceOwner.clear()}
     private val main=Handler(Looper.getMainLooper())
-    private val optimizerExecutor=Executors.newSingleThreadExecutor()
     var pendingExport:ByteArray?=null
     var pendingExportFile:File?=null
-    private val optimizationVersion=AtomicInteger(0)
     var labTab by mutableStateOf(0)
     var libraryTab by mutableStateOf(0)
     var fullScreen by mutableStateOf(false)
@@ -338,9 +283,13 @@ class TallerViewModel internal constructor(
     val simBusy get()=simulationState is SimulationState.Working
     private val simulationOwner=SimulationController(
         simulationLoader ?: CoroutineSimulationLoader(viewModelScope),::onSimulationState)
-    var optimizationActive by mutableStateOf(false); private set
-    var optimizationGeneration by mutableStateOf(0); private set
-    var optimizationBest by mutableStateOf<BoreOptimizer.Candidate?>(null); private set
+    private var optimizationState by mutableStateOf<AnalysisState<OptimizationRequest,OptimizationSnapshot>>(AnalysisState.Idle)
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    private val optimizationDispatcher=Dispatchers.Default.limitedParallelism(1)
+    private val optimizationOwner=LatestAnalysis(optimizationLoader ?: CoroutineAnalysisLoader(viewModelScope,optimizationDispatcher,::optimizeBore),::publishOptimization)
+    val optimizationActive get()=optimizationState is AnalysisState.Loading
+    val optimizationGeneration get()=optimizationState.value?.generation ?: 0
+    val optimizationBest get()=optimizationState.value?.best
     var optimizationTarget by mutableStateOf(BoreOptimizer.Target()); private set
     val measurements get()=library.measurements
     val designs get()=library.designs
@@ -397,10 +346,10 @@ class TallerViewModel internal constructor(
         inMeasurementDestination=measurement
         microphoneStop()
         if(activeDetail!=sessionId || sessionId==null){
-            stopPlayback();cancelRecordingAnalysis(clear=true);cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.clear();cancelComparison(clear=true);associationJob?.cancel()
+            stopPlayback();cancelRecordingAnalysis(clear=true);cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.clear();cancelComparison(clear=true);associationOwner.clear()
             activeDetail?.let {explorers.remove(it);previews.remove(it)}
         }
-        activeDetail=sessionId
+        activeDetail=sessionId;traceCatalog.pin(sessionId)
     }
     fun analyzeRecording(item:RecordingStore.Session,startMs:Long=0,endMs:Long?=null,force:Boolean=false) {
         analysisOwner.request(RecordingAnalysisRequest(item.id,item.instrument,startMs,endMs,force))
@@ -470,7 +419,7 @@ class TallerViewModel internal constructor(
             .onFailure {message="No se pudo renombrar: ${it.message}"}
     }
     fun deleteSession(item:RecordingStore.Session){
-        musicalTraceJobs.remove(item.id)?.cancel();musicalTraces.remove(item.id);fluteTraces.remove(item.id)
+        traceCatalog.remove(item.id)
         if(playingId==item.id)stopPlayback()
         if(recordingAnalysis.sessionId==item.id)cancelRecordingAnalysis(clear=true)
         if(savedEvidence.sessionId==item.id)cancelSavedEvidence()
@@ -510,31 +459,13 @@ class TallerViewModel internal constructor(
         optimizationTarget=BoreOptimizer.Target(drone ?: old.droneHz,second ?: old.secondHz,third ?: old.thirdHz)
     }
     fun optimize() {
-        if (optimizationActive) return
-        val serial=optimizationVersion.incrementAndGet()
-        val start=shape; val goal=optimizationTarget
-        optimizationActive=true;optimizationGeneration=0;optimizationBest=null
-        optimizerExecutor.execute {
-            val result=runCatching {
-                BoreOptimizer.search(start,goal,
-                    cancelled={serial!=optimizationVersion.get() || Thread.currentThread().isInterrupted},
-                    progress={step,best -> main.post {
-                        if (serial==optimizationVersion.get()) {
-                            optimizationGeneration=step;optimizationBest=best
-                        }
-                    }} )
-            }
-            main.post { if(serial==optimizationVersion.get()) {
-                optimizationActive=false
-                result.getOrNull()?.let { optimizationBest=it;message="Búsqueda terminada: probá el diseño encontrado." }
-                result.exceptionOrNull()?.let { message="Error de búsqueda: ${it.message}" }
-            }}
-        }
+        if(!optimizationActive)optimizationOwner.replace(OptimizationRequest(shape,optimizationTarget))
     }
-    fun cancelOptimization() {
-        optimizationVersion.incrementAndGet();optimizationActive=false
-        message="Búsqueda cancelada. Podés aplicar el mejor resultado parcial."
+    private fun publishOptimization(state:AnalysisState<OptimizationRequest,OptimizationSnapshot>){
+        optimizationState=state
+        optimizationNotice(state)?.let {message=it}
     }
+    fun cancelOptimization(){optimizationOwner.cancel()}
     fun applyOptimization() {
         val selected=optimizationBest ?: return
         shape=selected.shape;calculate();labTab=0
@@ -558,9 +489,12 @@ class TallerViewModel internal constructor(
         microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
-        analysisOwner.close();simulationOwner.close();swipeOwner.close();onAppStopped()
+        optimizationOwner.close()
+        analysisOwner.close();simulationOwner.close();swipeOwner.close()
+        traceCatalog.close();yinOwner.close();componentOwner.close();evidenceOwner.close()
+        comparisonOwner.close();associationOwner.close();onAppStopped()
         workspace.close()
         recording.dispose()
-        optimizationVersion.incrementAndGet();optimizerExecutor.shutdownNow();super.onCleared()
+        super.onCleared()
     }
 }

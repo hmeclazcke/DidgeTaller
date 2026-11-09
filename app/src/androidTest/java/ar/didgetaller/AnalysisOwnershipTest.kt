@@ -58,6 +58,92 @@ class AnalysisOwnershipTest {
     private val result = WavAnalysis.Result(0, 4096, 44100, 1, PowerSpectrum(44100, 4096, DoubleArray(2049)),
         HarmonicAnalysis.Result(null, emptyList(), null), emptyList(), null, null, null, 0.0, null)
 
+    private fun afterDisposal(action: (TallerViewModel) -> Unit) {
+        assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
+        val app = IsolatedApplication(InstrumentationRegistry.getInstrumentation().targetContext)
+        onMain {
+            val owners = ViewModelStore()
+            val vm = TallerViewModel(app); owners.put("diagnostic", vm)
+            owners.clear()
+            action(vm)
+        }
+    }
+    @Test fun disposedModelCannotStartSavedYin() = afterDisposal { vm ->
+        val before = vm.savedYinReplay
+        val item = session(); vm.onDestinationChanged(item.id); vm.analyzeSavedYin(item)
+        assertEquals(before, vm.savedYinReplay)
+    }
+    @Test fun disposedModelCannotStartComponentAnalysis() = afterDisposal { vm ->
+        val before = vm.droneComponent
+        val item = session(); vm.onDestinationChanged(item.id); vm.analyzeDroneComponent(item)
+        assertEquals(before, vm.droneComponent)
+    }
+    @Test fun disposedModelCannotStartEvidenceInspection() = afterDisposal { vm ->
+        val before = vm.savedEvidence
+        val item = session(); vm.onDestinationChanged(item.id); vm.inspectSavedEvidence(item, 500)
+        assertEquals(before, vm.savedEvidence)
+    }
+    @Test fun disposedModelCannotStartRecordingComparison() = afterDisposal { vm ->
+        val before = vm.comparison
+        vm.compare(session(), session())
+        assertEquals(before, vm.comparison)
+    }
+    @Test fun disposedModelCannotScheduleAnOptimization() = afterDisposal { vm ->
+        vm.optimize()
+        assertFalse(vm.optimizationActive)
+        assertNull(vm.optimizationBest)
+    }
+
+    private class DiagnosticTask<R : Any, V : Any>(val request: R, val progress: (AnalysisProgress<V>) -> Unit,
+        val complete: (Result<V>) -> Unit) : AnalysisTask {
+        var cancelled = false
+        override fun cancel() { cancelled = true }
+    }
+    private class DiagnosticLoader<R : Any, V : Any> : AnalysisLoader<R, V> {
+        val tasks = mutableListOf<DiagnosticTask<R, V>>()
+        override fun submit(request: R, progress: (AnalysisProgress<V>) -> Unit, complete: (Result<V>) -> Unit): Result<AnalysisTask> =
+            Result.success(DiagnosticTask(request, progress, complete).also { tasks += it })
+    }
+    @Test fun savedDiagnosticsAndCanonicalRequestsRejectStaleGenerationsAndDisposedCallbacks() {
+        assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
+        val app = IsolatedApplication(InstrumentationRegistry.getInstrumentation().targetContext)
+        val yin = DiagnosticLoader<YinReplayRequest, SavedYinReplay.Result>()
+        val component = DiagnosticLoader<ComponentRequest, DroneComponentCurve>()
+        val evidence = DiagnosticLoader<EvidenceRequest, SavedPitchEvidence.Snapshot>()
+        val owners = ViewModelStore()
+        onMain {
+            try {
+                val vm = TallerViewModel(app, null, Loader(), SwipeLoader(), SavedDiagnosticLoaders(yin, component, evidence))
+                owners.put("diagnostics", vm); val a = session(); val b = session()
+                vm.onDestinationChanged(a.id); vm.analyzeSavedYin(a); vm.analyzeDroneComponent(a)
+                vm.inspectSavedEvidence(a, 250); vm.requestMusicalTrace(a)
+                val oldYin = yin.tasks.single(); val oldComponent = component.tasks.first()
+                val oldTrace = component.tasks.last(); val oldEvidence = evidence.tasks.single()
+                vm.onDestinationChanged(b.id); vm.releaseMusicalTraceRequest(a.id)
+                vm.analyzeSavedYin(b); vm.analyzeDroneComponent(b); vm.inspectSavedEvidence(b, 750)
+                assertTrue(oldYin.cancelled); assertTrue(oldComponent.cancelled)
+                assertTrue(oldTrace.cancelled); assertTrue(oldEvidence.cancelled)
+                val selectedYin = vm.savedYinReplay; val selectedComponent = vm.droneComponent
+                val selectedEvidence = vm.savedEvidence
+                vm.analyzeSavedYin(a); vm.analyzeDroneComponent(a); vm.inspectSavedEvidence(a, 300)
+                assertEquals(2, yin.tasks.size); assertEquals(3, component.tasks.size); assertEquals(2, evidence.tasks.size)
+                oldYin.complete(Result.success(SavedYinReplay.Result(1, emptyList(), emptyList())))
+                oldComponent.progress(AnalysisProgress(90)); oldComponent.complete(Result.success(DroneComponentCurve(emptyList(), 10.0)))
+                oldTrace.complete(Result.success(DroneComponentCurve(emptyList(), 10.0)))
+                oldEvidence.complete(Result.failure(IllegalStateException("late")))
+                assertEquals(selectedYin, vm.savedYinReplay); assertEquals(selectedComponent, vm.droneComponent)
+                assertEquals(selectedEvidence, vm.savedEvidence); assertNull(vm.musicalTrace(a))
+                val current = component.tasks.last(); current.progress(AnalysisProgress(45))
+                assertEquals(45, vm.droneComponent.progress); assertEquals(750, evidence.tasks.last().request.positionMs)
+                owners.clear(); assertTrue(current.cancelled)
+                val disposed = vm.droneComponent
+                current.progress(AnalysisProgress(95)); current.complete(Result.success(DroneComponentCurve(emptyList(), 10.0)))
+                vm.requestMusicalTrace(session()); vm.analyzeDroneComponent(a)
+                assertEquals(disposed, vm.droneComponent); assertEquals(3, component.tasks.size)
+            } finally { owners.clear() }
+        }
+    }
+
     @Test fun terminalFailureCannotAcceptLateProgressAndDisposalCannotStartANewAnalysis() {
         assumeTrue("Emulator only", Build.HARDWARE in listOf("ranchu", "goldfish"))
         val app = IsolatedApplication(InstrumentationRegistry.getInstrumentation().targetContext)

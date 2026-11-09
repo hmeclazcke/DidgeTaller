@@ -3,9 +3,9 @@ package ar.didgetaller.audio
 import kotlinx.coroutines.*
 
 /** Shared scheduling policy; domain controllers alone decide whether a callback may publish. */
-internal fun <T> submitProgressWork(scope: CoroutineScope, dispatcher: CoroutineDispatcher,
-    progress: (Int) -> Unit, complete: (Result<T>) -> Unit,
-    compute: (() -> Boolean, (Int) -> Unit) -> T): Result<Job> = try {
+internal fun <P, T> submitProgressWork(scope: CoroutineScope, dispatcher: CoroutineDispatcher,
+    progress: (P) -> Unit, complete: (Result<T>) -> Unit,
+    compute: (() -> Boolean, (P) -> Unit) -> T): Result<Job> = try {
     scope.ensureActive()
     val job = scope.launch {
         val owner = this

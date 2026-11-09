@@ -13,7 +13,7 @@ class ProgressWorkTest {
         val results = mutableListOf<Result<String>>(); val completions = mutableListOf<Throwable?>()
         val cancellation = CancellationException("worker cancelled itself")
         try {
-            val job = submitProgressWork(scope, worker, {}, results::add) { _, _ -> throw cancellation }
+            val job = submitProgressWork<Int, String>(scope, worker, {}, results::add) { _, _ -> throw cancellation }
                 .getOrThrow()
             job.invokeOnCompletion { completions += it }
             ui.drain(); worker.drain(); ui.drain()
