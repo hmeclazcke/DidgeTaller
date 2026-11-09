@@ -964,3 +964,15 @@ Verified actual branch/remote and main. Retrieved completed CI evidence: fast/PI
 
 
 Closed this source-scoped framework gate at 7aa7fcb: fast, full API 35 and expanded PIT all passed; the original pause assertion now passes unchanged. Extracted actual reports, separately mapped Android coverage, inspected all 13 available library/recovery PNGs and verified both rendered README Git blobs. Recorded versioned before/after evidence with changed-denominator and survivor limits. Main/original skill/private WAVs/Samsung untouched. Full rebuild stays IN PROGRESS; continue controlled SessionWorkspace publication and then PlotSurface/remaining ViewModel ownership, without restarting validated capture or persistence cycles.
+
+### Final finite rebuild implementation - 2026-11-09
+
+Closed saved-diagnostic/canonical/comparison/association/optimization ownership,
+permanent playback disposal, pure interval/readout boundaries and cohesive offline
+WAV passes. Native regressions prove post-clear publication/optimizer rejection;
+original WAV tests prove interval/timestamp overflow.757 valid outputs still match
+main. Strengthened returned-text, grid and statistics assertions from actual PIT
+survivors; prevent test bytecode contaminating production mutation reports. All
+BLOCKER/IMPORTANT production decisions are reconciled in REBUILD_ACCEPTANCE.md.
+Final integration/remote gates and source-scoped evidence are in the verification
+report and draft PR1. Preserve historical records without repeating their old tasks.

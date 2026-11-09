@@ -2206,3 +2206,15 @@ Corrected local inputs execute both JVM variants: 656 discovered/640 passed/16 p
 ### Accepted 7aa7fcb framework/CI evidence
 
 Fast 42469282408, full Android 42469279440 and broad PIT 42469281768 all passed for 7aa7fcb82a64e316f1dc21a6e84c7b4c42532d7d. JVM: 656 discovered/640 passed/16 protected skips/0 failures; Linux debug coverage 35.69% line/33.31% branch, core 98.73%/80.77%. Actual API 35 suite: 147 discovered/137 passed/10 skipped/0 failures; extra EN/ES recovery executions at 720x1280 and actual fontScale 1.5 each passed 1/1. Android coverage separately 91.56%/68.46%, source mapping 397/90 and 30 high CRAP-L; JVM has 78 high scores. PIT: 29 classes, 1,519 mutants, 1,119 killed/382 survived/16 uncovered/2 timeouts, detected 73.80%, 75 seconds engine time; original 11/11 gesture gate passed. Thirteen actual library/recovery images inspected, with originals retained. No new graph screenshot or physical-device claim. Artifacts/reproducibility and failed-run history: docs/engineering/REBUILD_VERIFICATION_7aa7fcb.md. Later documentation-only commits do not invalidate these unchanged runtime/test inputs.
+
+### Final rebuild local acceptance - 2026-11-09
+
+The isolated rebuild's final verification passes1052 JVM cases (1036 pass,16 protected
+skips),170 native cases (160 pass,ten justified skips),five actual compact150 locale/
+landscape configurations,14 overlapping current-APK owner/presentation checks,
+757 byte-identical synthetic contracts,46 tooling tests, strict gates and builds.
+Real ownership/WAV-boundary RED and rejected intermediate encoding/mutation-scope
+reports are preserved locally. Separate coverage, counters, PIT scope and comparable
+limits are versioned in docs/engineering/REBUILD_FINAL_VERIFICATION.md and its JSON.
+Remote exact-source results/artifacts are a separate mandatory gate in draft PR1.
+No Samsung/private WAV access, migration, main change or merge.

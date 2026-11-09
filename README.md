@@ -95,62 +95,28 @@ Fast GitHub Actions checks run both JVM variants and measured quality ratchets. 
 
 ## Engineering Practices - Official Uncle Bob ub-mode
 
-Experimental SWIPE comparison now has session-owned operations and permanent
-disposal. Shared scheduling preserves the serial DSP worker, and tested camera
-reconciliation keeps panning stable through progress. Fullscreen empty-evidence
-notices use the measured plot bounds. Short fullscreen layouts scroll when enlarged
-text needs more space, preserving a usable graph and complete explanations.
-See the [comparison cycle](docs/engineering/SWIPE_OPERATION_OWNERSHIP.md)
-and [annotation cycle](docs/engineering/PLOT_NOTICE_OWNERSHIP.md); the full rebuild remains in progress.
+Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), unchanged under its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). It supplies engineering instructions; project safety and Kotlin execution rules live separately in [AGENTS.md](AGENTS.md) and the [quality guide](docs/quality/QUALITY_GUIDE.md).
 
-The [analysis and rendering reconstruction](docs/engineering/ANALYSIS_RENDERING_REBUILD.md)
-gives saved-recording analysis explicit progress/terminal ownership and separates
-plot geometry, gestures, accessibility and native painting. Controlled JVM and
-Android regressions protect late callbacks, measurement gaps and large-font
-scientific text. The case study reports complexity distribution and limitations,
-including scopes where total decision count has not decreased.
-Actual source-scoped CI results and remaining limitations are recorded in the [verification report](docs/engineering/ANALYSIS_RENDERING_VERIFICATION_8b73c21.md).
+- **First Make it Work:** model the domain, validate boundaries, establish operation ownership and use TDD/red-green-refactor for demonstrated defects.
+- **Then Make it Right:** refactor under behavioral characterization, reduce duplicated knowledge (DRY), and investigate complexity, coverage, CRAP-L and surviving mutations. BDD-style acceptance scenarios do not imply a Cucumber integration.
+- **Practice:** focused investigation, small reviewable commits, reproducible evidence and risk-based validation; reuse unchanged evidence without concealing missing checks.
 
-The [laboratory simulation owner](docs/engineering/SIMULATION_OWNERSHIP.md)
-prevents late or duplicate results from updating a disposed ViewModel. Controlled
-coroutine tests, native lifecycle tests and real mutations defend the boundary.
-Quality reports use canonical compilation and exact Kotlin metadata correspondence;
-unsupported source constructs remain visible rather than receiving invented scores.
+The [rebuild case study](docs/engineering/REBUILD_CASE_STUDY.md) and [finite acceptance report](docs/engineering/REBUILD_ACCEPTANCE.md) explain the production reconstruction on `refactor/uncle-bob-rebuild`. Main remains the behavioral reference; [PR #1](https://github.com/hmeclazcke/DidgeTaller/pull/1) stays draft for owner review. Its current evidence table links exact source-scoped CI jobs and artifacts; a failed or pending required check prevents integration readiness.
 
-The [session workspace reconstruction](docs/engineering/WORKSPACE_REBUILD.md) gives
-asynchronous visualization requests explicit ownership, a controllable loader,
-resource-safe PCM preparation and one immutable Compose projection. Pure tests
-exercise late results, cancellation and disposal; Android regressions cover real
-images/playback and data preservation. Display-only RMS/spectrum reductions and
-ordered trace geometry are separate from projection/drawing; gap and bridge
-decisions have pure behavioral contracts. Waveform pixels and completed-raster
-placement are tested separately; a native adapter owns the cached waveform path.
-Remaining PlotSurface/ViewModel reconstruction is still
-in progress; CI results and scope limitations are linked from the draft PR.
+Pure Kotlin owns DSP, recording phases, playback intent, session/analysis requests, timeline geometry and scientific readouts. Android adapters own devices, files and scheduling; Compose owns presentation. Revocable operation grants prevent obsolete progress/results from publishing after replacement or disposal. Canonical traces retain independent bounded session lifetimes. Guarded metadata publication preserves corrupt originals and historical sessions. The renderer separates prepared geometry/painters from viewport and gestures; direct graph seeking and the strict 80 ms pause contract remain protected.
 
-An isolated [engineering reconstruction](docs/engineering/REBUILD_CASE_STUDY.md) is **in progress** on `refactor/uncle-bob-rebuild`. It preserves main as the behavioral reference. The case study records DSP/trace responsibility changes, framework-independent playback, worker-owned recording, independent atomic cache publication, differential contracts and actual CI evidence. The [per-file review](docs/engineering/REBUILD_REVIEW.md) records remaining architectural work; this is not a completed application rebuild.
+| Check | Actual integration and enforcement |
+| --- | --- |
+| Behavioral tests | Gradle/JUnit debug and release; deterministic ownership/error tests; synthetic acoustic and differential contracts against pinned main |
+| Android | Actual emulator instrumentation, separate JaCoCo reports, EN/ES compact 150% font and landscape checks |
+| Complexity and coverage | Detekt and JaCoCo; compiler PSI plus exact Kotlin/JVM metadata produces method-line **CRAP-L**, with measured regression ratchets |
+| Changed code | Missing/ambiguous eligible metrics and required reports fail; unsupported constructs and reviewed above-target bridges remain explicit, content-bound exceptions |
+| DRY | Kotlin PMD CPD token-clone regression detection, alongside review of duplicated domain knowledge |
+| Mutation strength | Free PIT executes real production bytecode mutants; the original gesture threshold is mandatory, expanded domain results are informational with execution/report validity mandatory |
 
-Didge Taller uses Robert C. Martin's original [ub-mode](https://github.com/unclebob/ub-mode), copied verbatim with its MIT license and [pinned provenance](.agents/skills/ub-mode/UPSTREAM.md). Project safety and Kotlin-specific execution live separately in AGENTS.md and the [quality guide](docs/quality/QUALITY_GUIDE.md).
+These Kotlin integrations pursue the official Crapper/Dryer/Mutator objectives without claiming those original executables are installed. CRAP-L uses method-specific **line** coverage, not official Crapper basis-path coverage. Compose/compiler limitations, abstract contracts and anonymous declarations remain inventoried; no score is fabricated. JVM and Android coverage are never merged, and a selected mutation score is not whole-application strength.
 
-The [persistence reconstruction](docs/engineering/PERSISTENCE_REBUILD.md) separates metadata validation, document publication and WAV ownership. A damaged index cannot authorize audio deletion or silently become an empty database. Last-good reads, explicit recovery with preserved damaged text, concurrent publication tests and a single library-state snapshot protect the existing session formats. Recovery controls remain bilingual; the broader ViewModel and renderer rebuild is still in progress.
-
-The [capture-event reconstruction](docs/engineering/CAPTURE_EVENT_OWNERSHIP.md) gives every worker a terminal-event identity and moves recording phases, immutable save requests and disposal policy into a pure Kotlin coordinator. One Compose snapshot publishes recording state. Delayed completion can save its own audio without stopping a replacement monitor. Spectrogram power-to-pixel conversion is separately tested and cancellable; broader workspace and renderer reconstruction remains in progress.
-
-The [playback intent reconstruction](docs/engineering/PLAYBACK_INTENT_OWNERSHIP.md) separates user commands from delayed player observations: pausing prevents late callbacks from restarting a loop, and a selected starting position is acknowledged before audio starts. Deterministic state contracts and focused mutation tests challenge these asynchronous boundaries. [Versioned verification](docs/engineering/REBUILD_VERIFICATION_7aa7fcb.md) records actual successful JVM, emulator and mutation CI, with separate coverage scopes and remaining limitations.
-
-- **First Make it Work:** model the domain, validate boundaries, establish state ownership and use TDD/red-green-refactor for verifiable changes.
-- **Then Make it Right:** preserve behavior while refactoring; use BDD-style acceptance scenarios, coverage, complexity and mutation evidence to investigate risk and duplicated knowledge (DRY).
-- **Practice:** focused investigation, reviewable commits, concise evidence and risk-based validation. BDD scenarios do not imply Cucumber.
-
-Actual tools are Gradle/JUnit, Android instrumentation, JaCoCo, Detekt, PMD CPD and free PIT. Relevant-code CI checks both JVM variants, lint, localization, builds, coverage and measured ratchets. CPD detects token clones. PIT enforces the original pure-Kotlin gesture scope and reports an expanded selection of acoustic, playback, recording and WAV logic while survivors are investigated. Full emulator tests run for relevant main and rebuild-branch pushes and manual dispatch; mutation runs on manual dispatch. README-only changes avoid those costs.
-
-Compiler-PSI declarations and unambiguous source/owner/parameter/body/bytecode correspondences produce method-level **CRAP-L**, using JaCoCo line coverage explicitly. Unsupported transformations remain classified and visible. This is not official Crapper basis-path coverage. Coverage, complexity, mapped CRAP-L and duplication have measured regression baselines. Expanded domain mutation results remain informational during survivor review; the original focused mutation threshold stays enforced. Thresholds, scope, reports and verified commands are in the quality guide.
-
-Changed authored callables are now checked against source fingerprints as well as metric ratchets. New eligible missing/ambiguous measurements fail; unsupported framework transformations and above-target changed methods require narrow, content-bound reviews. Abstract contracts do not receive invented execution scores. The [forensic audit and function inventory](docs/quality/FORENSIC_COMPLIANCE_AUDIT.md) explain the historical enforcement gap, corrections and remaining measurement limits.
-
-**Measurement limits:** JVM and emulator coverage are separate measurements. CRAP-L exists only where correspondence is reliable; explicitly reviewed framework gaps remain visibly unscored. Source-bound reviews acknowledge risk, not completed architectural quality. Mutation strength applies to its selected Kotlin scope. Historical complexity debt and uncovered paths remain in the [baseline and backlog](docs/quality/QUALITY_BASELINE.md); acoustic algorithms were not changed to improve metrics. Check the linked execution records for actual CI outcomes.
-
-The [verification audit](docs/quality/QUALITY_AUDIT_VERIFICATION.md) reconciles numerical reports, executed CI jobs and failure probes. Job gates fail on regressions; repository branch protection is a separate setting. Download-only caches and bounded concurrency avoid restoring stale compilation/coverage outputs.
+Relevant pushes/PRs run fast compilation, both JVM variants, localization, lint, Detekt and measured gates. Relevant main/rebuild pushes and manual dispatch execute the full emulator workflow; broader mutations use manual dispatch. Path filters avoid unrelated work, though an open PR's accumulated source diff can still trigger fast checks on a documentation commit. See the [quality guide](docs/quality/QUALITY_GUIDE.md) for verified commands, reports, cadence and remaining technical limitations. Existing screenshots and acoustic beta limitations remain applicable.
 
 ## License and contributions
 

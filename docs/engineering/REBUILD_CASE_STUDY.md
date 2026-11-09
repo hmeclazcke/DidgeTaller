@@ -1,5 +1,39 @@
 # Workspace operation ownership and plot preparation
 
+## Final production reconstruction and acceptance
+
+The [finite acceptance decisions](REBUILD_ACCEPTANCE.md),
+[before/after verification](REBUILD_FINAL_VERIFICATION.md) and
+[complete source inventory](REBUILD_SOURCE_INVENTORY.csv) now supersede historical
+unfinished-task notes below. Exact remote implementation SHA, checks and artifacts
+are linked from the [draft PR evidence table](https://github.com/hmeclazcke/DidgeTaller/pull/1);
+passing local evidence is not presented as a remote pass.
+
+The final cycle replaces unowned saved-diagnostic/optimization callbacks with
+revocable typed requests, a bounded keyed canonical cache and permanent playback
+closure. Native RED demonstrates actual post-destruction state publication and
+executor rejection. Tests cover stale progress/results, duplicates, reentrancy,
+partial cancellation and independent sessions. The scientific inspector and typed
+interval boundary remove business decisions from Compose (SessionPlot MCC74 to44).
+WavAnalysis MCC29 to2 now orchestrates cohesive bounded passes; independent tests
+reproduce two original overflow failures while757 complete synthetic results match.
+The window/flute passes are MCC6/8; no giant helper replaces the old method.
+
+PIT also improves test architecture: resource-request logs alone did not prove that
+text reached the UI result. Returned-text, full grid and numerical-summary contracts
+raise killed production mutants439 to471 in the same612-mutant selection. An invalid
+experimental prefix selection mutates test classes; explicit target exclusions plus
+a failing report-validator fixture prevent accepting that denominator. This is a
+measurement correction, not a manufactured score improvement. Broad final PIT
+includes these owners and existing domains; its exact executed scope belongs to CI.
+
+Remaining limitations are explicit: separate JVM/Android coverage, compiler/Compose
+mapping gaps, generic Kotlin bytecode mutants, informational static style debt,
+physical microphone uncertainty and no new performance claim. Cohesive numerical
+kernels and declarative layout branches are retained with specific evidence instead
+of arbitrary method splitting. No clean-code certification or endorsement is implied.
+
+
 [Observed comparison and accessible-renderer delivery](SWIPE_VERIFICATION_11fa244.md)
 records the current before/after scope, successful remote checks and preserved
 failed configuration evidence. The full application rebuild remains IN PROGRESS.

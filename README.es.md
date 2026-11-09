@@ -93,67 +93,28 @@ Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controle
 
 ## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
 
-La comparación experimental SWIPE vincula sus operaciones a cada sesión y bloquea
-nuevas tareas después de destruir el ViewModel. La planificación compartida conserva
-la ejecución serial del DSP, y la sincronización de cámaras probada mantiene el
-desplazamiento durante el progreso. Los mensajes de traza vacía usan los límites
-medidos del gráfico. En pantallas completas de poca altura, el contenido permite
-desplazamiento vertical cuando la letra ampliada necesita más espacio, conservando
-un gráfico utilizable y las explicaciones completas.
-Ver los ciclos de [comparación](docs/engineering/SWIPE_OPERATION_OWNERSHIP.md)
-y [anotaciones](docs/engineering/PLOT_NOTICE_OWNERSHIP.md), documentados en inglés;
-la reconstrucción completa sigue en curso.
+Didge Taller usa el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, sin modificaciones, con licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). Es un conjunto de instrucciones de ingeniería; la seguridad del proyecto y su aplicación a Kotlin se definen aparte en [AGENTS.md](AGENTS.md) y la [guía de calidad](docs/quality/QUALITY_GUIDE.md), en inglés.
 
-La [reconstrucción del análisis y renderizado](docs/engineering/ANALYSIS_RENDERING_REBUILD.md),
-documentada en inglés, asigna un propietario al progreso y los resultados del
-análisis y separa geometría, gestos, accesibilidad y dibujo nativo. Las regresiones
-JVM y Android protegen callbacks tardíos, intervalos sin medición y texto científico
-con fuente ampliada. El estudio informa la distribución de complejidad y sus
-límites, incluidos los ámbitos donde el total de decisiones todavía no disminuyó.
-Los resultados reales de CI por revisión y los límites pendientes figuran en el [informe de verificación](docs/engineering/ANALYSIS_RENDERING_VERIFICATION_8b73c21.md), en inglés.
+- **First Make it Work:** modelar el dominio, validar los límites, asignar propietarios a las operaciones y aplicar TDD/rojo-verde-refactor ante defectos demostrados.
+- **Then Make it Right:** refactorizar con pruebas de caracterización, reducir conocimiento duplicado (DRY) e investigar complejidad, cobertura, CRAP-L y mutaciones supervivientes. Los escenarios de aceptación de estilo BDD no implican una integración con Cucumber.
+- **Practice:** investigación focalizada, commits pequeños y revisables, evidencia reproducible y validación proporcional al riesgo; reutilizar evidencia vigente sin ocultar controles ausentes.
 
-El [propietario de la simulación del laboratorio](docs/engineering/SIMULATION_OWNERSHIP.md),
-documentado en inglés, impide que resultados tardíos o duplicados modifiquen un
-ViewModel destruido. Lo protegen pruebas controladas de coroutines, de ciclo de
-vida Android y de mutaciones reales. Los reportes usan compilación canónica y
-correspondencia exacta de metadata Kotlin; los casos no soportados siguen visibles,
-sin puntajes inventados.
+El [caso de estudio](docs/engineering/REBUILD_CASE_STUDY.md) y el [informe finito de aceptación](docs/engineering/REBUILD_ACCEPTANCE.md), en inglés, explican la reconstrucción productiva en `refactor/uncle-bob-rebuild`. Main permanece como referencia de comportamiento; el [PR #1](https://github.com/hmeclazcke/DidgeTaller/pull/1) sigue en borrador para revisión del propietario. Su tabla de evidencia enlaza trabajos y artefactos de CI para la revisión exacta; un control obligatorio fallido o pendiente impide considerar lista la integración.
 
-La [reconstrucción del espacio de sesión](docs/engineering/WORKSPACE_REBUILD.md),
-documentada en inglés, asigna un propietario a cada solicitud de visualización,
-separa un cargador controlable, prepara PCM con cierre seguro y publica una sola
-proyección inmutable en Compose. Las pruebas puras cubren resultados tardíos,
-cancelación y disposición; las regresiones Android verifican imágenes reales,
-reproducción y conservación de datos. Las reducciones visuales de RMS/espectro y
-la geometría ordenada de las trazas se separan de la proyección y el dibujo; los
-huecos y puentes tienen contratos de comportamiento puros. Los píxeles de onda y
-la ubicación del mosaico terminado se prueban por separado; un adaptador nativo
-posee el path de onda en caché. La reconstrucción restante de PlotSurface/ViewModel sigue en
-curso; el PR en borrador enlaza los resultados de CI y los límites del alcance.
+Kotlin puro posee DSP, fases de grabación, intención de reproducción, solicitudes de sesión/análisis, geometría temporal y lecturas científicas. Los adaptadores Android poseen dispositivos, archivos y planificación; Compose presenta el estado. Las autorizaciones revocables impiden que operaciones reemplazadas o destruidas publiquen progreso o resultados. Las trazas canónicas mantienen ciclos de vida independientes y acotados por sesión. La publicación protegida de metadatos conserva índices dañados y sesiones históricas. El renderizado separa geometría preparada y dibujo de la cámara y los gestos; siguen protegidos la búsqueda directa sobre el gráfico y el contrato estricto de pausa de 80 ms.
 
-Hay una [reconstrucción de ingeniería](docs/engineering/REBUILD_CASE_STUDY.md), documentada en inglés, **en curso** en `refactor/uncle-bob-rebuild`. Conserva main como referencia de comportamiento. El estudio registra cambios en DSP y trazas, reproducción independiente de Android, grabación con propiedad por captura, publicación atómica independiente de caché, contratos diferenciales y evidencia real de CI. La [revisión por archivo](docs/engineering/REBUILD_REVIEW.md), en inglés, registra el trabajo arquitectónico pendiente; la reconstrucción completa de la aplicación sigue en curso.
+| Control | Integración real y obligatoriedad |
+| --- | --- |
+| Pruebas de comportamiento | Gradle/JUnit en debug y release; pruebas deterministas de propiedad y errores; contratos acústicos sintéticos y comparación diferencial con main fijado |
+| Android | Instrumentación ejecutada en emulador, informes JaCoCo separados y controles EN/ES compactos con fuente al 150% y paisaje |
+| Complejidad y cobertura | Detekt y JaCoCo; PSI del compilador y metadata exacta Kotlin/JVM producen **CRAP-L** por líneas del método, con controles medidos de regresión |
+| Código modificado | Fallan las mediciones elegibles ausentes o ambiguas y los informes obligatorios faltantes; los casos no soportados y puentes revisados sobre el objetivo conservan excepciones explícitas vinculadas a su contenido |
+| DRY | PMD CPD para Kotlin detecta regresiones de bloques duplicados por tokens, junto con revisión del conocimiento de dominio repetido |
+| Fortaleza de las pruebas | PIT gratuito ejecuta mutantes reales de bytecode productivo; el umbral original de gestos es obligatorio y el dominio ampliado es informativo, pero debe ejecutar y producir un informe válido |
 
-Didge Taller utiliza el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, copiado sin modificaciones con su licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). La seguridad del proyecto y la ejecución para Kotlin se definen aparte en AGENTS.md y la [guía de calidad](docs/quality/QUALITY_GUIDE.md).
+Estas integraciones para Kotlin persiguen los objetivos de Crapper/Dryer/Mutator sin afirmar que esos ejecutables originales estén instalados. CRAP-L usa cobertura de **líneas** del método, no cobertura de caminos base de Crapper. Los límites de Compose/compilador, contratos abstractos y declaraciones anónimas permanecen inventariados, sin puntajes fabricados. Las coberturas JVM y Android nunca se mezclan; una puntuación de mutaciones seleccionadas no representa toda la aplicación.
 
-La [reconstrucción de persistencia](docs/engineering/PERSISTENCE_REBUILD.md), documentada en inglés, separa la validación de metadatos, la publicación del índice y la gestión de los WAV. Un índice dañado no puede autorizar el borrado de audio ni convertirse silenciosamente en una base vacía. La lectura de la última copia válida, la recuperación explícita que conserva el texto dañado, las pruebas de publicación concurrente y una única instantánea de biblioteca protegen los formatos existentes. Los controles de recuperación siguen siendo bilingües; la reconstrucción general del ViewModel y los renderizadores continúa en curso.
-
-La [reconstrucción de eventos de captura](docs/engineering/CAPTURE_EVENT_OWNERSHIP.md), documentada en inglés, identifica los eventos terminales de cada trabajador y lleva las fases de grabación, las solicitudes inmutables de guardado y la finalización del ciclo de vida a un coordinador Kotlin puro. Una sola instantánea de Compose publica el estado de grabación. Una finalización tardía puede guardar su propio audio sin detener al monitor que la reemplaza. La conversión de potencia espectral a píxeles tiene pruebas independientes y admite cancelación; la reconstrucción general del espacio de sesión y los renderizadores continúa en curso.
-
-La [reconstrucción de la intención de reproducción](docs/engineering/PLAYBACK_INTENT_OWNERSHIP.md), documentada en inglés, separa las órdenes del usuario de las observaciones tardías del reproductor: pausar impide que un callback anterior reinicie el bucle, y la posición inicial seleccionada se confirma antes de reproducir audio. Las pruebas deterministas de estado y las mutaciones focalizadas verifican esos límites asíncronos. La [verificación versionada](docs/engineering/REBUILD_VERIFICATION_7aa7fcb.md), documentada en inglés, registra las ejecuciones aprobadas de JVM, emulador y mutaciones en CI, con coberturas separadas y limitaciones pendientes.
-
-- **First Make it Work:** modelar el dominio, validar entradas, definir quién controla el estado y aplicar TDD/rojo-verde-refactorización a cambios verificables.
-- **Then Make it Right:** conservar el comportamiento al refactorizar; usar escenarios de aceptación BDD, cobertura, complejidad y mutaciones para investigar riesgo y conocimiento duplicado (DRY).
-- **Practice:** investigar con foco, crear commits revisables, registrar evidencia concisa y validar según el riesgo. Los escenarios BDD no implican Cucumber.
-
-Las herramientas reales son Gradle/JUnit, instrumentación Android, JaCoCo, Detekt, PMD CPD y PIT gratuito. CI verifica ambas variantes JVM, lint, localización, compilaciones y controles medidos de regresión cuando cambia código relevante. CPD detecta clones de tokens. PIT exige el umbral del alcance original de gestos Kotlin y genera informes de una selección ampliada de lógica acústica, reproducción, grabación y WAV mientras se investigan supervivientes. La suite completa de emulador se ejecuta en cambios relevantes de main, la rama de reconstrucción y manualmente; las mutaciones se ejecutan manualmente. Los cambios exclusivos de README evitan esos costos.
-
-Las declaraciones del compilador PSI y las correspondencias inequívocas de fuente, propietario, parámetros, cuerpo y bytecode producen **CRAP-L** por método, usando explícitamente cobertura de líneas JaCoCo. Las transformaciones no soportadas quedan clasificadas y visibles. No es cobertura de caminos base de Crapper. Cobertura, complejidad, CRAP-L y duplicación tienen bases medidas para prevenir regresiones. Las mutaciones ampliadas de dominio siguen siendo informativas mientras se revisan supervivientes; el umbral del alcance original continúa obligatorio. La guía describe umbrales, alcance, informes y comandos.
-
-Los elementos ejecutables nuevos o modificados ahora se contrastan con huellas del código, además de los controles métricos de regresión. Las mediciones elegibles ausentes o ambiguas fallan; las transformaciones del framework no soportadas y los métodos modificados sobre el objetivo requieren revisiones acotadas al contenido concreto. Los contratos abstractos no reciben puntuaciones de ejecución inventadas. La [auditoría forense y el inventario de funciones](docs/quality/FORENSIC_COMPLIANCE_AUDIT.md), en inglés, explican la brecha histórica de control, las correcciones y los límites pendientes.
-
-**Límites de medición:** las coberturas JVM y de emulador se informan por separado. CRAP-L existe solamente donde la correspondencia es confiable; las excepciones técnicas revisadas quedan visibles sin puntuar. Estas revisiones reconocen riesgos y no certifican una arquitectura terminada. La fortaleza de las mutaciones corresponde a su alcance Kotlin seleccionado. La [base y deuda](docs/quality/QUALITY_BASELINE.md) conserva la complejidad histórica y los caminos sin cubrir; no se cambiaron algoritmos acústicos para mejorar métricas. Consultá los registros de ejecución para conocer el resultado real de CI.
-
-La [auditoría de verificación](docs/quality/QUALITY_AUDIT_VERIFICATION.md), en inglés, compara informes numéricos, trabajos de CI ejecutados y pruebas de fallo. Las regresiones hacen fallar los trabajos; la protección de la rama es una configuración independiente. La caché exclusiva de descargas y los límites de concurrencia evitan reutilizar compilaciones o coberturas antiguas.
+Los pushes y PR relevantes ejecutan compilación rápida, ambas variantes JVM, localización, Lint, Detekt y controles medidos. Los pushes relevantes de main/rebuild y la ejecución manual lanzan el flujo completo de emulador; las mutaciones amplias se solicitan manualmente. Los filtros evitan trabajo ajeno, aunque el diff acumulado de un PR abierto puede volver a activar controles rápidos ante un commit documental. La [guía de calidad](docs/quality/QUALITY_GUIDE.md), en inglés, contiene comandos verificados, informes, frecuencia y límites técnicos. Se conservan las capturas reales y los límites acústicos de la versión beta.
 
 ## Licencia y colaboración
 

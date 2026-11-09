@@ -1,5 +1,35 @@
 # 2026-11-09 comparison and accessible-renderer delivery - IN PROGRESS
 
+## Finite completion handoff - current implementation
+
+Production BLOCKER/IMPORTANT work is closed or accepted with concrete architectural
+reasoning in [REBUILD_ACCEPTANCE](REBUILD_ACCEPTANCE.md). The [finite inventory](REBUILD_COMPLETION.md)
+and [final local verification](REBUILD_FINAL_VERIFICATION.md) supersede the historical
+next-task paragraphs below; do not restart YIN, capture, workspace or PlotSurface.
+The code below this header records chronological milestones, not active commands.
+
+Current local implementation: saved YIN/component/evidence, canonical traces,
+comparison/association and optimization have explicit revocable ownership; player
+closure is permanent. Validated interval/readout policy is pure; offline analysis
+has separate bounded I/O, weighted spectrum, flute cadence and statistics. Native
+post-clear regressions and both WAV overflow defects are fixed. No persisted format
+or accepted detector math changes. PlotSurface8; SessionPlot74 to44; offline29 to2.
+
+Final local1052 JVM discovered/1036 pass/16 skips;170 Android/160 pass/ten skips,
+five actual compact150 EN/ES/landscape cases and14 current-APK overlapping smoke
+cases pass.757 differential contracts match main. JVM46.63/43.96%, core99.05/84.87%,
+separate Android92.04/68.80%.545 scored/117 independent unscored;64 JVM/30 Android
+above target. Gate0, CPD0, Detekt1999, local Lint0/52/7;46 Python tests pass.
+Focused production PIT612:471 killed/121 survived/19 uncovered/one timeout.
+No baseline, operator, seek tolerance or required failure semantics weakened.
+
+Remaining delivery gate: publish the containing implementation, run/observe exact
+source fast/full API35/manual broad PIT once, and record URLs/artifacts in PR1's
+current evidence table. A failed/pending required job blocks readiness. If those
+checks pass, next action is owner review of the draft, not another reconstruction
+cycle or automatic merge. Keep main3a160043, official skill/MIT and private data intact.
+
+
 Executable source11fa244f27160bf0401312d64ea2742917137e27 is pushed, following
 52bb4f5 (annotation) andc9b3ab3 (comparison ownership). Original main3a160043
 is unchanged; PR1 is draft. Documentation-only descendants reuse this exact source.

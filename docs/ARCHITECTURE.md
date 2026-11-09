@@ -1,6 +1,6 @@
 # Architecture
 
-Didge Taller has one Android runtime module, `app`, and a JVM-only `engineering-tools` module for compiler-PSI inventory and controlled performance probes. The tooling module is not packaged into the app. Kotlin/JVM code handles signal processing and models; Android adapters handle audio, local files, and presentation. There is no backend or Internet permission. The isolated [rebuild](engineering/REBUILD_CASE_STUDY.md) remains IN PROGRESS; this map describes implemented boundaries, not a completed Clean Architecture claim.
+Didge Taller has one Android runtime module, `app`, and a JVM-only `engineering-tools` module for compiler-PSI inventory and controlled performance probes. The tooling module is not packaged into the app. Kotlin/JVM code handles signal processing and models; Android adapters handle audio, local files, and presentation. There is no backend or Internet permission. The isolated [rebuild](engineering/REBUILD_CASE_STUDY.md) has a [finite acceptance record](engineering/REBUILD_ACCEPTANCE.md); this map describes implemented boundaries, not a Clean Architecture certification.
 
 ## Responsibility map
 
@@ -81,3 +81,15 @@ See [Data safety](DATA_SAFETY.md) for the existing backup/update rules and [WAV 
 ## Testing boundaries
 
 Pure-core tests run on the JVM; Android storage, navigation, player, and UI tests use isolated emulator fixtures. Local synthetic success is distinct from physical microphone accuracy, audible synchronization, or validated acoustic predictions. [Development](DEVELOPMENT.md) lists checks; [VALIDATION.md](VALIDATION.md) records what actually ran.
+
+## Final ownership and presentation boundaries
+
+`LatestAnalysis` owns revocable terminal/progress authority; `SessionAnalyses` and
+`MusicalTraceCatalog` provide independently keyed, bounded canonical lifetimes.
+`CoroutineAnalysisLoader` shares scheduling, not business decisions. `OptimizationWork`
+retains seeded model search and immutable partial results. `SessionInspector` and
+`AnalysisInterval` isolate evidence/readout and validated units from Compose.
+`OfflineWindowPass`, `OfflineSpectrum` and `OfflineStatistics` separate recording
+I/O cadence, weighted accumulation and accepted-point summaries. Playback has a
+permanent disposed state distinct from reusable stopped transport. WAV/index formats
+and accepted acoustic semantics are unchanged; strict original-main contracts remain.

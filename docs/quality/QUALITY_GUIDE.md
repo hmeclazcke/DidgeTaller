@@ -1,5 +1,58 @@
 # Quality guide
 
+## Final rebuild commands and evidence - 2026-11-09
+
+Current production boundaries, measured local scorecard and technical acceptance are
+in [final verification](../engineering/REBUILD_FINAL_VERIFICATION.md) and
+[acceptance](../engineering/REBUILD_ACCEPTANCE.md). Historical milestone sections below
+are evidence, not a command to redo completed work. Source-scoped remote results and
+artifacts are linked from draft PR1; only observed required job outcomes establish
+remote readiness. The open PR's accumulated source diff can still trigger fast CI
+on a docs-only commit, even though branch push path filters exclude documentation.
+
+Verified commands (canonical compilation; run from the repository root):
+
+```powershell
+# Full JVM suites: 526 cases per variant in this implementation, with 8 protected skips.
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:test
+# Coverage/static/source/duplication gates (reports are required, not optional empty inputs).
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:jacocoDebugUnitTestReport detekt detektComplexity :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory :app:qualityDuplication :app:lintDebug
+python tools/detekt_summary.py
+python tools/coverage_summary.py
+python tools/quality_gate.py
+python tools/check_localization.py
+python -m unittest discover -s tools -p 'test_*.py'
+# Native full execution: only the explicitly verified owned synthetic emulator.
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false -PandroidCoverage=true :app:assembleDebug :app:assembleDebugAndroidTest
+python tools/run_instrumentation.py --serial emulator-5580 --adb "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" --coverage
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false -PandroidCoverage=true :app:jacocoEmulatorReport
+python tools/emulator_coverage_summary.py
+# Targeted new owners/readout/offline scope; broad selection is a separate manual CI run.
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:qualityMutationOwned
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:qualityMutationDomain
+# Existing original pure-gesture mutation threshold remains mandatory.
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:qualityMutation
+# Original-main jar construction is documented in the differential section below.
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:qualityDifferential -PdifferentialBaseline=checkpoints/baseline-production.jar
+```
+
+These are the consolidated verification sequence, not a nonexistent single wrapper
+task. Production code does not change while comparing reports. Use focused tests
+while coding; do not repeatedly execute this entire sequence for documentation.
+`qualityMutationOwned` writes `app/build/reports/quality/pit-owned/`; it also joins
+`qualityMutationDomain`. PIT DEFAULTS is unchanged; test/probe/benchmark classes are
+excluded from mutation candidates, not test execution. The shared validator rejects
+PIT tool errors, unfinished reports and accidentally mutated test bytecode. No paid
+Kotlin mutation plugin is claimed. Expanded score thresholds remain informational;
+report validity and the original gesture threshold remain enforced.
+
+Current source inventory:545 measured/117 independent unscored; all698 named
+functions accounted. New ordinary eligible functions are scored; three additional
+abstract contracts explain the independent unscored increase. Constructors and
+Compose have narrow semantic-hash-bound reviews. Numerical baseline/thresholds
+are unchanged. See `config/quality/policy.properties` for authoritative values.
+
+
 ## Verified comparison/rendering delivery - 2026-11-09
 
 [Executable source11fa244 verification](../engineering/SWIPE_VERIFICATION_11fa244.md) records passed fast42650147321,
@@ -190,12 +243,15 @@ The emulator quality script also runs the recovery scenario in actual Android en
 
 When analyzing downloaded coverage, verify the artifact run's head SHA against the source revision. The mapper rejects a stale PSI inventory; JaCoCo XML itself does not embed a source-tree Git SHA, so successful parsing alone does not establish report provenance. Never substitute an older external XML after a production edit.
 
-## Prioritized debt
+## Accepted limitations and optional maintenance
 
-1. Complete remaining function measurement limitations after the compiler-PSI expansion. The original eight-function allowlist is superseded; mapped and explicitly unscored declarations are recorded in function-mapping.json. The original 43/33/15 acoustic hotspots were restructured under differential protection. Broad high-risk UI/Android functions remain unfinished; JVM zeros must not be confused with separate emulator coverage.
-2. Improve critical uncovered Android error/background paths using the separate instrumentation report. Android coverage is informational until a stable cross-environment baseline is established; the existing JVM ratchets remain enforced. Never substitute class coverage into CRAP.
-3. Review the remaining selected-domain survivors, including the 26 new persistence/JSON/library survivors. The seven-class persistence expansion is implemented and executed; do not repeat its integration. Keep generic Kotlin bytecode operators and paid enhancements distinct.
-4. Reduce measured high complexity in UI presentation only with behavioral characterization. PlotSurface MCC 139 is a prioritization signal, not proof of an acoustic fault. Do not split stable logic solely to improve a number.
+The [finite acceptance report](../engineering/REBUILD_ACCEPTANCE.md) replaces the
+old open-ended rebuild debt list. Independent Compose/anonymous source mapping,
+Android-only coverage semantics and generic Kotlin bytecode mutation limitations
+remain visible. Further descriptive layout extraction, style cleanup and measured
+performance optimization are optional; do not disguise unmeasured performance as
+an improvement or restart sound DSP solely to lower a number. Improve uncovered
+error/boundary behavior when a real defect or meaningful survivor warrants it.
 
 When a gate fails, inspect its saved report, reproduce one failure, fix the cause, and preserve the failed evidence. Do not reset baselines or add exclusions to manufacture green CI. Samsung installation is outside this task and all private recordings remain untouched.
 

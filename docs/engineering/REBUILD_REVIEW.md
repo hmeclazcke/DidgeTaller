@@ -1,5 +1,18 @@
 # Production responsibility review — IN PROGRESS
 
+## Current acceptance supersedes historical review questions
+
+The tables below preserve the original source-reading decisions at their historical
+milestone. Their phrases such as PlotSurface139, unowned ViewModel diagnostics and
+pending persistence/workspace are not current open defects. The
+[finite acceptance report](REBUILD_ACCEPTANCE.md) reconciles each major subsystem
+with implemented boundaries and tests. The [source hash inventory](REBUILD_SOURCE_INVENTORY.csv)
+accounts for all116 current production Kotlin files, including class-only files;
+698 named declarations remain measured or explicitly classified. Current metrics
+and limitations are in [final verification](REBUILD_FINAL_VERIFICATION.md). Optional
+style/performance work does not reopen a previously closed reconstruction cycle.
+
+
 Follow-up review: SimulationController/SimulationLoader and
 lab/CoroutineSimulationLoader replace the laboratory executor/version lifecycle;
 TallerViewModel retains one derived projection. VisualGeometry, TraceDrawing and
