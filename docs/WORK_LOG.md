@@ -1145,3 +1145,18 @@ numeric baselines. Remote native screenshots/CI and the authorized Samsung updat
 remain pending; do not describe them as passed before observing results. Next:
 publish for one focused API 35 run, inspect screenshots, then verify package,
 signature and metadata before Samsung install-r. No private audio access.
+
+
+Screenshot review of 7062629: metronome balance and all its focused configurations
+passed. Normal Measure recording/readout and protected confirmations passed.
+The idle action was still visibly detached in the footer; place it with the reading.
+Five 150%-font assertions incorrectly demanded simultaneous visibility in a genuinely
+constrained viewport. Keep the normal-size simultaneous/no-scroll contract, and
+explicitly scroll to verify reachability plus retained slot/control geometry at 150%.
+Do not reduce font scaling or touch targets. Preserve the strict playback seek test.
+The first native run is failure 42859788837, not final passing evidence.
+
+Samsung metadata preflight, before installation/launch: 31 sessions /31 WAV files,
+19 active /12 trashed; index membership is consistent, no partial capture. This differs
+from the supplied previous 30/30 reference. Physical operations are paused pending
+owner confirmation of the additional session. No WAV contents accessed.

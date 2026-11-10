@@ -114,6 +114,8 @@ class RecoveryUiTest {
     @Suppress("UNCHECKED_CAST")
     @Test fun controlledPcmReachesLiveMeterAndProfilesResetWithoutGraphFiltering(){
         show()
+        val config=compose.activity.resources.configuration
+        val limited=config.fontScale>1.05f || config.screenHeightDp<500
         fun meter(profile:InstrumentProfile,hz:Double,weights:List<Double>,name:String){
             compose.runOnIdle {vm.selectInstrument(profile)}
             val f=TallerViewModel::class.java.getDeclaredField("mic").apply {isAccessible=true}
@@ -127,8 +129,11 @@ class RecoveryUiTest {
             val readings=pcm.asList().chunked(4096).mapNotNull {stream.append(it.toShortArray())}
             readings.forEach {r->compose.runOnIdle {callback(r)};android.os.SystemClock.sleep(profile.analysisChunks*93L)}
             compose.runOnIdle {assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument);assertEquals(readings.size,vm.sessionTimeline.size)}
+            if(limited)capture("$name-before-accessibility-scroll")
+            if(limited)compose.onNodeWithText(uiText(R.string.ui_stable_note)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.ui_stable_note)).assertIsDisplayed()
             compose.onNodeWithText(hzLabel(vm.filteredHz)).assertIsDisplayed()
+            if(limited)compose.onNodeWithTag("recording-primary").performScrollTo().assertIsDisplayed()
             val stableParts=listOf("measurement-note-slot","measurement-note-name","measurement-frequency","acoustic-signal-status").map {compose.onNodeWithTag(it).fetchSemanticsNode().boundsInRoot}
             val stableCard=compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot
             val stableSave=compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot
@@ -140,14 +145,18 @@ class RecoveryUiTest {
             capture(name)
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
+            if(limited)compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
+            if(limited)compose.onNodeWithTag("recording-primary").performScrollTo()
             compose.onNodeWithTag("measurement-frequency").assertTextEquals("— Hz")
             assertEquals(stableCard,compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableDiscard,compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot)
             capture("$name-silence")
             compose.runOnIdle {callback(PitchDetector.Reading(confidence=.52,rms=.10));assertEquals(0.0,vm.filteredHz,0.0)}
+            if(limited)compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).assertIsDisplayed()
+            if(limited)compose.onNodeWithTag("recording-primary").performScrollTo()
             val nowParts=listOf("measurement-note-slot","measurement-note-name","measurement-frequency","acoustic-signal-status").map {compose.onNodeWithTag(it).fetchSemanticsNode().boundsInRoot}
             assertEquals("parts stable=$stableParts now=$nowParts",stableCard,compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)

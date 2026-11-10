@@ -175,7 +175,6 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
             },
             bottomBar={
                 if(!inViewer && route!=TallerRoutes.Session)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
-                    if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
                     if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
                         NavigationSections(sections,section) {navController.navigateToSection(it)}
                     }
@@ -438,7 +437,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     }
     if(prioritizeReading)measurementHeader()
     if(prioritizeReading && !capturing)setupControls()
-    if(capturing) RecordingActions(vm,startMeasurement,onDiscard)
+    RecordingActions(vm,startMeasurement,onDiscard)
     var details by rememberSaveable {mutableStateOf(false)}
     if(!vm.fullScreen) TextButton(onClick={details=!details},modifier=Modifier.fillMaxWidth().testTag("measurement-details")) {
         Text(stringResource(if(details)R.string.measure_details_hide else R.string.measure_details))

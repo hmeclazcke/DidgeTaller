@@ -5479,18 +5479,18 @@
     },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "311",
+      "line": "310",
       "kind": "function",
       "name": "MeasureScreen",
-      "semanticHash": "2c34637c31092d240b780090c67b0750334c9656ebeeb028f890072b2677f2b2",
+      "semanticHash": "ad863aec16e31029d9f087bc5f56a6ed2ef6e3e0cd880ab58d4148c9a87fe267",
       "metric_status": "compose-transformation",
-      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen stays below its previous MCC 105. Idle and active actions now share the reading composition instead of a separated footer. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+      "reviewed_source": "7062629 + cohesive idle action placement"
     },
     "d4472273b926e36faa07c393eb7a62c57ec6f11da1b9b88f36881db20e00fd2b": {
       "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
@@ -5687,15 +5687,15 @@
       "line": "112",
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "c7ae06925212a8da344cb39895e3969597398c8e30a59873e35fb1242b7eb667",
+      "semanticHash": "2602f862129e634d1aec15ec25e8d74ade1fe98d05afc05836697e91c12d5eab",
       "metric_status": "compose-transformation",
-      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen stays below its previous MCC 105. Idle and active actions now share the reading composition instead of a separated footer. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+      "reviewed_source": "7062629 + cohesive idle action placement"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",

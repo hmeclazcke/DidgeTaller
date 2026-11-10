@@ -57,7 +57,7 @@ class MeasureDiscardUiTest {
     }
 
     private fun start() {
-        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performScrollTo().performClick()
         compose.waitUntil(10000) { vm.sessionPhase == SessionPhase.CAPTURING }
     }
 
@@ -147,18 +147,22 @@ class MeasureDiscardUiTest {
     }
 
     @Test fun activeLayoutAndConfirmationAreAccessible() {
-        compose.onNodeWithTag("measurement-details").assertIsDisplayed().assertHasClickAction()
+        compose.onNodeWithTag("measurement-details").performScrollTo().assertIsDisplayed().assertHasClickAction()
         compose.onNodeWithText(uiText(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in)).assertDoesNotExist()
         val configuration = compose.activity.resources.configuration
+        val limited = configuration.fontScale > 1.05f || configuration.screenHeightDp < 500
         if (configuration.screenHeightDp >= 600 && configuration.fontScale <= 1.05f) {
             assertEquals(0f, compose.onNodeWithTag("measure-screen").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue())
         }
+        compose.onNodeWithTag("instrument-selector").performScrollTo()
         capture("idle")
         start()
+        if (limited) compose.onNodeWithTag("measurement-frequency").performScrollTo()
         compose.onNodeWithTag("measurement-frequency").assertIsDisplayed()
         compose.onNodeWithTag("measurement-note-name").assertIsDisplayed()
         compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
         compose.onNodeWithTag("acoustic-signal-status").assertIsDisplayed()
+        if (limited) compose.onNodeWithTag("recording-primary").performScrollTo()
         compose.onNodeWithTag("recording-primary").assertIsDisplayed().assertHasClickAction()
         compose.onNodeWithTag("discard-recording").assertIsDisplayed().assertHasClickAction()
         val reading = compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode().boundsInRoot
