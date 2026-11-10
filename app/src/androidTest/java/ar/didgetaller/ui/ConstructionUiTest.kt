@@ -60,9 +60,12 @@ class ConstructionUiTest {
         val before=legacy.all.toMap()
         open();screenshot("target")
         field("target","73.42");tab(1);click("construction-search")
-        compose.waitUntil(60000){compose.onAllNodesWithTag("construction-candidate-0").fetchSemanticsNodes().isNotEmpty()}
-        compose.onNodeWithTag("construction-candidate-0").performScrollTo().assertIsDisplayed()
-        screenshot("candidates");click("construction-candidate-0")
+        val first="construction-candidate-0"
+        compose.waitUntil(60000){compose.onAllNodesWithTag(first).fetchSemanticsNodes().any {it.size.height>0}}
+        val candidate=compose.onNodeWithTag(first).performScrollTo()
+        compose.waitUntil(10000){candidate.isDisplayed()}
+        candidate.assertIsDisplayed()
+        screenshot("candidates");candidate.performClick()
         compose.onNodeWithTag("construction-method-SANDWICH").assertIsSelected()
         screenshot("wood-method");tab(3);click("construction-generate");ready()
         screenshot("wood-plan");click("construction-save")

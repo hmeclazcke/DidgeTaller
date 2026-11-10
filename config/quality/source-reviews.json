@@ -6237,7 +6237,7 @@
       "line": "37",
       "kind": "function",
       "name": "ConstructionWorkspace",
-      "semanticHash": "20d898c98a1bb431a7c2f06491edccc16faf90e5e842246d43e6f85a4f0ee507",
+      "semanticHash": "c085299887e636e4f24b0f2fcbd72e38c54d947152ebfb2ad8452224e60eba70",
       "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. One dialog owns revocable analysis/export workers, form snapshots and stages. Editing or closing revokes old publication.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
@@ -6351,10 +6351,10 @@
     },
     "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "217",
+      "line": "218",
       "kind": "function",
       "name": "ConstructionCandidateCard",
-      "semanticHash": "9dfa6374bbca3c8a23c3070979510a85969233d61cd45d3764b386e95a916c9c",
+      "semanticHash": "172078a7ca300bc90e893b843ba063e234de7b12f6cf28f362cc18d4e96a14ea",
       "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Predicted resonance, error, dimensions and profile comparison share the exact candidate selected by the action.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"

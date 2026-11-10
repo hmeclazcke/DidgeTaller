@@ -65,7 +65,8 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
         Surface(Modifier.fillMaxSize().testTag("construction-workspace")) {
             Column(Modifier.fillMaxSize().safeDrawingPadding()) {
                 ConstructionHeader(stage,select,dismiss)
-                Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+                val scroll=key(stage){rememberScrollState()}
+                Column(Modifier.weight(1f).verticalScroll(scroll).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                     ConstructionStatus(load.isFailure,failed,saved,analysis,exported)
                     when(stage) {
                         0->ConstructionTargetFields(fields,::set)
@@ -220,8 +221,8 @@ private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->
             Text("${index+1}: ${hzLabel(c.hz)} | ${ConstructionDrawing.number(c.cents)} cents")
             Text("${constructionDimensions(c.plan)} | n=${c.plan.parts.size}")
             Text(c.higher.joinToString(" / "){hzLabel(it)},style=MaterialTheme.typography.bodySmall)
-            ConstructionProfile(c.plan)
             TextButton(onClick=use,modifier=Modifier.testTag("construction-candidate-$index")){Text(stringResource(R.string.construction_choose))}
+            ConstructionProfile(c.plan)
         }
     }
 }
