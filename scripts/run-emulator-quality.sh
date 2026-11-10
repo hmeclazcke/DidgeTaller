@@ -3,7 +3,9 @@ set -euo pipefail
 
 # The Python runner verifies the explicit emulator identity before installing or executing anything.
 emulator_serial="${1:?An explicit emulator serial is required}"
-python3 tools/run_instrumentation.py --serial "$emulator_serial" --coverage
+[[ "$emulator_serial" == emulator-* ]] || exit 2
+hardware="$(adb -s "$emulator_serial" shell getprop ro.hardware | tr -d '\r')"
+[[ "$hardware" == ranchu || "$hardware" == goldfish ]] || exit 2
 
 # Change settings only after the runner has verified this fresh emulator. Preserve failure status.
 collect_and_restore() {
@@ -25,6 +27,7 @@ collect_and_restore() {
   exit "$result"
 }
 trap collect_and_restore EXIT
+python3 tools/run_instrumentation.py --serial "$emulator_serial" --coverage
 
 # Compose-local overrides do not reproduce a separate Android dialog window's configuration.
 # Verify actual compact screen, application locales and system font at fresh process boundaries.

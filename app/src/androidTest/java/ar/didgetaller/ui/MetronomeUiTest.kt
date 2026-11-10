@@ -65,7 +65,8 @@ class MetronomeUiTest {
             val node = compose.onNode(hasText(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")), useUnmergedTree = true)
             val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
             node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
-            assertFalse("Navigation labels must fit", layouts.single().hasVisualOverflow)
+            val layout = layouts.single()
+            assertFalse("Navigation label ${compose.activity.getString(resource)} must fit: size=${layout.size}, width=${layout.didOverflowWidth}, height=${layout.didOverflowHeight}, lines=${layout.lineCount}", layout.hasVisualOverflow)
             node.fetchSemanticsNode().boundsInRoot
         }
         assertTrue("Four labels must not overlap", labelBounds.zipWithNext().all { (a, b) -> a.right <= b.left })

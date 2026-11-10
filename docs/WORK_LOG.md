@@ -1,3 +1,14 @@
+# Focused native diagnostics - 2026-11-10
+
+The full run on 2a9d806 still found label overflow and a paused-scrubbing failure.
+Do not repeat the whole suite to diagnose each layout. Add an explicit manual
+metronome-only emulator scope with native audio/navigation cases, the four
+localized label regressions and the paused-scrubbing scenario, followed by real
+EN/ES 150% and landscape captures. It is labeled focused, has no invented coverage,
+and preserves every failure in its exit code. Full acceptance stays unchanged.
+Capture images on failure as well as success; the full script now installs its
+collection trap before running the suite, after explicit emulator verification.
+
 # Responsive metronome follow-up - 2026-11-10
 
 Real API35 acceptance exposed a four-tab Spanish label constraint and a test's
