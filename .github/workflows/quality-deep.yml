@@ -9,7 +9,7 @@ on:
         description: Select deep checks without repeating unchanged successful evidence
         type: choice
         default: all
-        options: [all, instrumentation, mutation]
+        options: [all, instrumentation, mutation, metronome]
 permissions:
   contents: read
 concurrency:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   mutation:
-    if: github.event_name == 'workflow_dispatch' && inputs.scope != 'instrumentation'
+    if: github.event_name == 'workflow_dispatch' && (inputs.scope == 'all' || inputs.scope == 'mutation')
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -47,6 +47,7 @@ jobs:
           retention-days: 7
           if-no-files-found: error
   instrumentation:
+    name: ${{ inputs.scope == 'metronome' && 'Focused Measure and metronome UI (not full suite)' || 'instrumentation' }}
     if: github.event_name != 'workflow_dispatch' || inputs.scope != 'mutation'
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -79,9 +80,9 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: bash scripts/run-emulator-quality.sh emulator-5554
+          script: bash ${{ inputs.scope == 'metronome' && 'scripts/run-metronome-quality.sh' || 'scripts/run-emulator-quality.sh' }} emulator-5554
       - name: Separate emulator coverage report
-        if: always()
+        if: always() && inputs.scope != 'metronome'
         run: |
           ./gradlew --no-daemon -Pkotlin.incremental=false -PandroidCoverage=true :app:jacocoEmulatorReport detekt detektComplexity :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory
           python3 tools/emulator_coverage_summary.py
@@ -90,13 +91,17 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: Complete-Emulator-Results
+          name: ${{ inputs.scope == 'metronome' && 'Focused-Metronome-Results' || 'Complete-Emulator-Results' }}
           path: |
             build/reports/quality/instrumentation.*
             build/reports/quality/library-screenshots/
             build/reports/quality/library-configuration-*.txt
             build/reports/quality/session-screenshots/
             build/reports/quality/workspace-configuration-*.txt
+            build/reports/quality/metronome-screenshots/
+            build/reports/quality/measure-screenshots/
+            build/reports/quality/measure-synthetic-screenshots/
+            build/reports/quality/metronome-configuration-*.txt
             build/reports/quality/android-function-mapping.json
             build/reports/quality/source-inventory.xml
             build/reports/quality/jvm-method-inventory.xml

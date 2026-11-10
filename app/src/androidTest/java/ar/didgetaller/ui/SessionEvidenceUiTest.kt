@@ -60,7 +60,7 @@ class SessionEvidenceUiTest {
         item=RecordingStore(app).save(bytes,points,if(args.getString("evidenceLabel")?.startsWith("current-")==true)1793923200000L else 1000000)
         compose.runOnUiThread {vm=TallerViewModel(app);owners.put("evidence",vm)}
         compose.setContent {TallerApp(vm,{}, {}, {_,_,_->})}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         compose.waitUntil(20000){!vm.workspace.state.loading && vm.workspace.state.frames>0}
     }
@@ -215,7 +215,8 @@ class SessionEvidenceUiTest {
                 androidx.compose.ui.geometry.Offset(currentArea.left+currentArea.width*.75f,currentArea.center.y),500)
         }
         compose.waitUntil(5000){vm.playingId==item.id && abs(vm.playbackPositionMs()-target)<=80}
-        assertTrue("Scrubbing before playback must stay paused",vm.playbackPaused)
+        // The callback publishes id and pause intent on main; inspect the completed UI transaction.
+        compose.runOnIdle { assertTrue("Scrubbing before playback must stay paused",vm.playbackPaused) }
         assertEquals(target,graph.fetchSemanticsNode().config[PlotPlaybackMs].toDouble(),80.0)
         assertEquals("Scrubbing must not pan",panned,graph.fetchSemanticsNode().config[PlotWindow])
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)

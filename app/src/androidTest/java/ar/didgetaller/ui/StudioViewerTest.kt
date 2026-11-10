@@ -47,7 +47,7 @@ class StudioViewerTest {
         path.outputStream().use {compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG,100,it)}
     }
     @Test fun landscapeAndPortraitEvidence(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         compose.runOnIdle {vm.preview(item.id).plot=AcousticPlot.SPECTROGRAM}
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
@@ -115,7 +115,7 @@ class StudioViewerTest {
         val flute=store.save(WavCodec.encode(pcm,pcm.size,44100),points,instrument=InstrumentProfile.NATIVE_AMERICAN_FLUTE)
         extraFixtures+=flute.id
         compose.runOnIdle {vm.renameSession(flute,"Melodía sintética · Flauta");vm.selectInstrument(InstrumentProfile.DIDGERIDOO)}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${flute.id}").performScrollTo().performClick()
         compose.onNodeWithTag("session-detail").assertIsDisplayed()
         capture("flute-detail")

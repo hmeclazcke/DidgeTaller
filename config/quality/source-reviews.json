@@ -373,36 +373,34 @@
     },
     "1276048d32762fe1a2214aad40da201c0f920af8295e21cfaf551d7216d88a43": {
       "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
-      "line": 348,
+      "line": 307,
       "kind": "initializer",
-      "name": "recording",
-      "semanticHash": "70bd4f26bc9ebdaddcbc1c458e5645f64383c7e4280b6759316b401389a9b722",
-      "reason": "Property initializer wires capture/coordinator ownership or initializes null/false/empty owned collections/identity. No standalone Detekt method MCC. Reviewed initialization order and owner tests; enclosing field initializer coverage must not be presented as independent function CRAP.",
+      "name": null,
+      "semanticHash": "d9316af5f66b4966f9aef1f3c9308ff0aa554898450346bfaf86cf1d7428d4f0",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
       "evidence": [
-        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
-        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
-        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4"
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
     },
     "00d7b2ef0c1f46cd92b7bb7860e1e3531da2a2a47eaaac7afb82e493b9bd64eb": {
       "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
-      "line": 349,
+      "line": 308,
       "kind": "function",
       "name": "changed",
-      "semanticHash": "9ebd4999f01a26507df9beb9ee76e85b77cf1698aa74bb349adef15f466a1df3",
-      "reason": "Anonymous RecordingCoordinator.Observer adapter: Detekt reports standalone MCC 0 (invalid for CRAP), although a unique JaCoCo method exists. JVM method lines 0%; Android integration evidence is separate. This is a measured tooling gap with thin Android UI/resource/executor delegation, not an excuse to invent CC=1 or coverage. Investigate Detekt visitor before independent scoring.",
+      "semanticHash": "c81ac0938636d78331a048e9f508b7f9209ae3d3c671bdfaa6971ade62fd472b",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
       "evidence": [
-        "docs/quality/FORENSIC_COMPLIANCE_AUDIT.md",
-        "app/src/test/java/ar/didgetaller/core/RecordingCoordinatorTest.kt",
-        "app/src/test/java/ar/didgetaller/core/CaptureHandoffTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/data/CapturePersistenceTest.kt"
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "reviewed_source": "672c9b2120a7c869cd4331699ba85017945a0db4",
-      "metric_status": "anonymous-owner"
+      "metric_status": "anonymous-owner",
+      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
     },
     "c5f470e600f70847aae9a38bfe75b874d6ce04daafe46a31b83ab49aff00cbcd": {
       "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
@@ -4756,20 +4754,20 @@
     },
     "a96f76ec28c5a917ee6a324dafd4a13b64dbe298612f3e7f3a4e9a320586fbb8": {
       "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
-      "line": 344,
+      "line": 346,
       "kind": "function",
       "name": "onDestinationChanged",
-      "semanticHash": "a2f5b819ad5ca27ae2da5c830e775805f042206187a017546769cfa6af5971e2",
-      "reviewed_base": "6867c4afb1f12657940a0efec70f0fb0a8e78528",
-      "max_cc": 6,
-      "max_crap_line": 42,
-      "reason": "Destination transition revokes the old session resources and pins the new canonical trace. Six existing route/resource decisions preserve capture across its two presentations and stop work when leaving. Native navigation and disposed diagnostic contracts protect lifecycle; no duplicate navigation state machine.",
+      "semanticHash": "4dc395b31639bac139626cb046a9d8a55716ac4c34b7d429c442d05362803a8f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
       "evidence": [
-        "docs/engineering/REBUILD_ACCEPTANCE.md",
-        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionNavigationTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LibraryRecoveryUiTest.kt"
-      ]
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "max_cc": 6,
+      "max_crap_line": 42.0,
+      "reason": "Existing Android host boundary: pure screen policy or unconditional metronome pause added. Numeric complexity/debt ceilings do not increase. Native navigation/background/disposal tests protect the new effect; Android coverage is never substituted for zero JVM execution. See the method-specific review in docs/METRONOME.md."
     },
     "d8636ecc5e458ba643e13e36a0589fe29dcccdd09d8cb55ac0d2dfcdc9220057": {
       "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
@@ -4830,6 +4828,974 @@
         "docs/engineering/REBUILD_ACCEPTANCE.md",
         "app/src/test/java/ar/didgetaller/ui/SessionInspectorTest.kt"
       ]
+    },
+    "eb0593992d9507ea58e85d43df77d758bac5f88bd30fd342dcd45c3b4520400a": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClick.kt",
+      "line": 11,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "0a9c8c2c766feffaabec00b541ca2a28fe024b8f98b3dcd9ce0c267f4c262c4f",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "7dc70d3e94023a01e164469085710deab1f1a702d9d78e07b3f1ad00fcede813": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClick.kt",
+      "line": 13,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f68ebe6eb28aad3bd814a73d842aad4f536be4c733e641cf04102e3b70745378",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "cf1fbe3e54815ee11fb5f3337a4af284c5452470521ce20cf789246c0e2f9a81": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClick.kt",
+      "line": 43,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f46181037c659975c0e278e6729120bfc498e80a0d4ebe49457a7006dac8e0ca",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "bb1cf3a8d88248f8e8f69695a990b87eca483a49c8fb43f6631fcddecd823645": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClock.kt",
+      "line": 12,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "f62f43a5b34b3100380770362a9b2e94cc26b22fbd135ec2f954342e399a18c9": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClock.kt",
+      "line": 13,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "cf881a159815f426cad5ff550b3a85eda27376009100a0739381b057c0f18bde": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeFocus.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "512f70f80780bd01c9e631cf71c7c5b8b3431d38abb932965dcce3d0e6183cde",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "f910505c459c533d11cf345dd2408d7312653565fac495c50236de1185f33dc7": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeFocus.kt",
+      "line": 14,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fb473bce7b1816811e3dd4f1b0b920b8ae023143838fb1704e3395b7639e8851",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "2aaa216c063efa55f712f2328ac33cd82c3c6783ef6583c3522ab96492d5567c": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MetronomeFocus.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "256738a60a90a15500efa42c93956ba5fb115537e8d1d4ff1d44457c26c95229",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "3155567b070222a442acf75f79de424fb00c093f6faf5bef5c9c3fb58a01269e": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 16,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "512f70f80780bd01c9e631cf71c7c5b8b3431d38abb932965dcce3d0e6183cde",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "81742ef7ba1d2bffd621c40b3bb3cb541ac198b90720bbd5036f2e168dc6f1fd": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 17,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "256738a60a90a15500efa42c93956ba5fb115537e8d1d4ff1d44457c26c95229",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "584e2d8ca2cc935e703c3b255772dd97a68df46240497f9854c20289b94832e8": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 18,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "996260ad2d971870bf6399c74fae6bf3697398b69c8daa66886119d797b8bb84",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "7f9a9c6abf0e5c43fe5393dd7bd8921c0f7feec0917ffdf3459f5fefbf4cd3e4": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 19,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "303d2f5c4e33f4af7b3311c36a76433540a15bb9a705f754e38af581cdad08b7",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "ca062e0157ee3ec85c607a939882ebc1b99e8bb9ba130805c4070a67422b1d71": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 20,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "d1f0b6c4dc447357e08ce75a83def08b54b762091c046d2f66ddb82f6867666f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "e64aafc05512b7cfa2d0bf623ccbc72589a90109e0ee6b341aa662ea6575ec55": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 21,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "9df93fbe93962a480d926095b2dec3f7c3ff7a177f9a5cf0e8e89472443a3b4c": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 22,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "4ba2bb187951b29b715d9fcfa27d4718838767575c80fa967e94d1242a3e7931": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 23,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "e02df98b733cd72b38b4c82dc612638473402918f57553c9f940e6411f51f5b7",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "3e098a889696398ebd1f0f3ea792da734931ab151419ffd39996964c26feccff": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 24,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5d28d2d54cc3cfb5b94ca98f6ecbb0440e34174a02190f27c09134af567fd200",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "2ca5c9068f0aa8fc1ae06a23a372d981919b79ac6f2be29eebcacc8f7302e163": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a8704a23a4753133070b8f569c6e2ccdf3d7f447e654dd330d71bec945da5a01",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "4bff84d7c2bb780ae30c881de5d02882476c7ab07cec05c5aa1f7fcb58924be1": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "dfc455fbd9347ce0f5cc10c3839591d46e10f136aced564425d0f996a047989d",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "7097ca215a8f5033531b5ab0347588a067504e4281eb52a0940a283600441ed8": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 9,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "1343e15b777d75d2be6d20c52c3c383f0a969c3395e51a8fdbbb286bd1c6ece6",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "c25bb6160e5faf6f2fb93ba01d7843e5a4113d704eab38f606823d0e4dad81c5": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 26,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "69634a63411a7b633795032f6d659cf7b8ecaef7bcbd29e0db7a9492425d4ce4",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "718c5077c95a9e47b950daf1da61cc00c6363d5ea1c579839b5921263e69f944": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 27,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "66509153317171c95ec67e66a4eb3417df8ebea6d20dea77ab92e7f025f71149",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "f2c0b493124ec2531ccadb82bf56cd60018d8243a49c50ef95ba8e456abdf830": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 32,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1f252e55a27e6a74c76e17e7af3487211ed9d5731bd48019f8ca3a8519f2e8e6",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "0350c885d74d1b841ee4a016a541ccbf2910eee261e0b8ad439dfcfa0d5bf0bc": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 33,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "c5e09be239aae3043f8093c90de98603130e2b4b9a67033b5b26b4faadbf7770",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "051d19d2531d39ad8e8c0d05935afaca8fd8846ab576670c9da7129d8e3ff90c": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 36,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "98190598aebd3a47602149bdaccb65de41ec16ed5cc7bbf8492f1861bd637e47",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "e100a46baa5a1da6e98093b355efb53af27cff0e24737445c09841c452a5e866": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 52,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d899fada6650eec3c0f5efd92c9edf4d854a0243cc3491bc1cf80ab875f71928",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "406f57d7ced40d48a54ed4bd0357b470ef1404519fc95a7fb23c7993f88d6e08": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 54,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "010878abef27ec2cbf3f7855c36624fc9b184e16b9620db80fbc168d2362c60f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "f84a7c95ab420b48d0734765120fdcae1d257620ccc88f6c773b433b6fcd7111": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 54,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "0e07c05422aebec250e4470a97701452acebfb0b67cc9566caeeebb1f9a46bfb": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 55,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "d7a6971ba1d5d1decd7e901771eb1a80de4158bfbbaec2ca9c687687c10b324a",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "df7a89c42852520ce77a5d7f92f262d2f224328b1f9d65d7c235482c186190f7": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 56,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "a240fef37a067aca8086acbd414c879916bafe6fc137e8b1b6df9aa56b00b75f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "ab7c9e079601feec00cce8f4aefe39ed3f27544f5796481520d7c422a242117e": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 57,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "a240fef37a067aca8086acbd414c879916bafe6fc137e8b1b6df9aa56b00b75f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "d95d6ffc4131e2c3b2cccca38f6eb56419929a912056e0e72ecfcb41401f5cab": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 58,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "a240fef37a067aca8086acbd414c879916bafe6fc137e8b1b6df9aa56b00b75f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "bcaff687f6a7a0c8561f3fdd0951948059bd04633fd5aec7c707a4f079784307": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 59,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "9929fd0055c8805f3fcadd38740420a7ae6bdca61f2b7f394202da414ac9b80b": {
+      "file": "app/src/main/java/ar/didgetaller/core/Metronome.kt",
+      "line": 60,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "f245327fd3b72b878181691768470d70c217cb2eabf5c290395eab9f3fabce5e": {
+      "file": "app/src/main/java/ar/didgetaller/core/MetronomeOutput.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7731adb13c34a6fd31792e10e8e9576bc2f9b89b349a985a5076c0e462c21b07",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "0ed7b292a68f923818298212a8ab87ee902e846bd888f946c95f5344ef1e06e0": {
+      "file": "app/src/main/java/ar/didgetaller/core/MetronomeOutput.kt",
+      "line": 10,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "0472215f61e3ea32f4c29b68db920a89939d5f3f6fe05d3dc8d403283e7a6bd3": {
+      "file": "app/src/main/java/ar/didgetaller/core/MetronomeOutput.kt",
+      "line": 11,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "a240fef37a067aca8086acbd414c879916bafe6fc137e8b1b6df9aa56b00b75f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "07df20ec643908b4b6c76fb8f1b8bbf3d0311f5ad8f227ee43505e6778240abb": {
+      "file": "app/src/main/java/ar/didgetaller/core/MetronomeOutput.kt",
+      "line": 12,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "06069bae5749b2cc1de912c66821de6fa7f0e92fa9793492aaa8a0c74fed693f",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "68f7eaac4732736bc14c1bfcb9648ffbac67e5834a928858603cbec4424fc7fd": {
+      "file": "app/src/main/java/ar/didgetaller/data/MetronomePreferences.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "512f70f80780bd01c9e631cf71c7c5b8b3431d38abb932965dcce3d0e6183cde",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "966e163e1b98b6a16c238922284e3c80dfc337256c1bc8bae9f911e7eda4e821": {
+      "file": "app/src/main/java/ar/didgetaller/data/MetronomePreferences.kt",
+      "line": 8,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "72b271cfed544ab289a2dc353f018e8f44e6d83063f9a69927512a3464ad65cd",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "574fdf0e9141c38cf0add23e4b3cb44e7fd85ff9302fa3a8cf4bfc2e9ef21c6b": {
+      "file": "app/src/main/java/ar/didgetaller/MainActivity.kt",
+      "line": 40,
+      "kind": "function",
+      "name": "onCreate",
+      "semanticHash": "36c9f819827d4d75ec906598cdcee8def20f96e5fe5b37cdb1b239faa99b423d",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "max_cc": 6,
+      "max_crap_line": 42.0,
+      "reason": "Existing Android host boundary: pure screen policy or unconditional metronome pause added. Numeric complexity/debt ceilings do not increase. Native navigation/background/disposal tests protect the new effect; Android coverage is never substituted for zero JVM execution. See the method-specific review in docs/METRONOME.md."
+    },
+    "3cb1799546c0c757c1b2d53ff9cc85f2872fda7da7ac72d03bbd9b89902ea625": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 94,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "0a3936c0fb6f47a5493b5e46283d06f483288427f808ce164fc54391a3a2a2b1",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+    },
+    "544fbf0166e519669f40bd21ce2e3d43efe6a9eba970f7d98eefa754938b9023": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 491,
+      "kind": "function",
+      "name": "onAppStopped",
+      "semanticHash": "4fcd54318cc90d42bc5cd8a91d5eaf0c9ec5d10caceafdeab8180fa5d63b8faf",
+      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "max_cc": 4,
+      "max_crap_line": 20.0,
+      "reason": "Existing Android host boundary: pure screen policy or unconditional metronome pause added. Numeric complexity/debt ceilings do not increase. Native navigation/background/disposal tests protect the new effect; Android coverage is never substituted for zero JVM execution. See the method-specific review in docs/METRONOME.md."
+    },
+    "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "311",
+      "kind": "function",
+      "name": "MeasureScreen",
+      "semanticHash": "2f6b6839612b685dda38849d76647af467304aeef58cb5021f365d7b8b67c9d1",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
+      ],
+      "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
+    },
+    "d4472273b926e36faa07c393eb7a62c57ec6f11da1b9b88f36881db20e00fd2b": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 19,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fb473bce7b1816811e3dd4f1b0b920b8ae023143838fb1704e3395b7639e8851",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "e7ebb2efacd006756b04a8833bac5dfce5145448a37e496ccc7f0ffad8e8ff4a": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 20,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "9d7b2610e2c5fc5d1ecbfe1a2acac261c7d8ce52e0e1b34eafaeee2bde1cd339": {
+      "file": "app/src/main/java/ar/didgetaller/core/MetronomeAudio.kt",
+      "line": 8,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f46181037c659975c0e278e6729120bfc498e80a0d4ebe49457a7006dac8e0ca",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "95acebec2ab6b1782586e0177de703cc5feb2d4d4b8b04a04f9d874fc98c5c1e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 43,
+      "kind": "function",
+      "name": "MetronomeMediaControls",
+      "semanticHash": "f1d3b096045fc042f8b076b8bde243bcfd8b91036315b572f338f055f34ed90d",
+      "reason": "Compose-owned media-key and resume lifecycle boundary: restores the prior stream and removes its observer on disposal. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "894e682eeed7d9f2950ddd6d57ddbb5872090d9150f22947e270397aac9868ce": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": "61",
+      "kind": "function",
+      "name": "MetronomeScreen",
+      "semanticHash": "86b8b1cca4a9f11d0db2e3137fe397f3ee0939405bf7e54080ed410b373ec4e2",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+    },
+    "aa9c77932bba65679cc501ea2603d9bb3350ca776731b267d233cf439510c9e9": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 82,
+      "kind": "function",
+      "name": "MetronomeTempo",
+      "semanticHash": "4c094521a84c2ab0b3daa027b40f029d55bf4a1ccb2f6f6ca7a55f8d618886f9",
+      "metric_status": "compose-transformation",
+      "reason": "Reviewed icon-only Material tabs with complete localized icon descriptions, native Tab role/selection/click tests; viewport-dependent tempo density preserves system scaling and expanded scrolling. Compose JVM correspondence remains unsupported; no numeric ceiling changed.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+      ],
+      "reviewed_source": "bfc70c5 + icon-only/viewport correction"
+    },
+    "2c13ae93d7c8d75ed4a20f87edc7052fd5e3a8bfc37d2db29e3b4965f97ef5c9": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 104,
+      "kind": "function",
+      "name": "MetronomeTempoDialog",
+      "semanticHash": "ecdd998e2e784b5e2cab1b29f1fcab2116aeab414b89b26e0e37efc23928ce3f",
+      "reason": "User-requested numeric editor; invalid and out-of-range values disable Apply; dismissal clears editing state. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "14e5eaa9cd175f05684154a81df0e1e09384a0425129061e721f6371ed01f004": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 118,
+      "kind": "function",
+      "name": "MetronomeMeter",
+      "semanticHash": "84184be1c0fbbbc58d5eed931a9cbc663a2ede3cbf27895e5d59e7aa873a9eac",
+      "reason": "Meter chips delegate to the existing engine; no independent timing state. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "1e8cbdb119abd3c2e93468458d701d89e046daccda4d84e7fe8ecde78470dd8b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 128,
+      "kind": "function",
+      "name": "MetronomeBeats",
+      "semanticHash": "ed886024c5568997524e9a22aeb034bcd3a5459d2efeaf01ea37dc0fcfbde810",
+      "reason": "Indicators derive only from engine pulse ordinal, including first-beat styling; animation does not schedule musical events. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "782eb00ccfce6125064de8709c599b82fbf06d63efb49c3061514d3bd8bbd6e8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 153,
+      "kind": "function",
+      "name": "MetronomeTransport",
+      "semanticHash": "ede245d2941bb8fc1b77f02f0e5bdaf1cdfe4761ef32e0b271877c7ab145f57d",
+      "reason": "Primary start/stop precedes secondary sound/pause controls so constrained practice viewports retain their main action. All decisions use the one existing engine and tested sound-status policy. Native pause/resume/stop/interlock regressions protect this Compose-only presentation.",
+      "metric_status": "compose-transformation",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+      ],
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+    },
+    "3b80a142cc16107737d1a02e10a10c62c1b54810e191fea767bb38f212380360": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 175,
+      "kind": "function",
+      "name": "MetronomeSoundNotice",
+      "semanticHash": "8586af1894adec2594694f0bce1608275b5d88518c4959d9aa9cb3084842a97a",
+      "reason": "Localized status presentation and user-requested Android volume panel; never forces gain or route. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "d9c1a99414fe464cfc33304387274b0c0af8b8630d81637b8c3079ed8a4bd3ee": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 187,
+      "kind": "function",
+      "name": "MetronomeAdvanced",
+      "semanticHash": "860ddd890f81984f6c0aeb0534072f353db1d0d1ef976be10d4afa1ae1c92ff2",
+      "reason": "Expandable rhythm/gain presentation; updates the same settings owner without duplicated controls. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "902b2573a5ecf83aa691a5b86d6a29b9c5e55cf5b414f33742ef361efe2c3a99": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 83,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "016fa6b8a4feef1c8b66c45c04514cd7d2fe9c213d896c4ee97269dfb622e9ad",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "c7c20c886466a32843eb06cae5e4e1be68c58c2230fe95c3789065cb1b09e3d7": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "112",
+      "kind": "function",
+      "name": "TallerApp",
+      "semanticHash": "2602f862129e634d1aec15ec25e8d74ade1fe98d05afc05836697e91c12d5eab",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen stays below its previous MCC 105. Idle and active actions now share the reading composition instead of a separated footer. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reviewed_source": "7062629 + cohesive idle action placement"
+    },
+    "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "line": 9,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "0c35d0e04c52609498dc4bc9c343da86e69aeb7ffe8637178e642f22d911d6c7",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "5938a19a994638d7c4607c4c70cabee29586de73a537a67b7073ca35c07456a3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5b7601691645e1537b5a62ef56b9ef2f6990eb1768ee2c53bc023d46b5aa0c8f",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "6fb537759ceaad7c363d55656bc7ffef5e25a801bff1dfff3a89f02d3a0de561": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 113,
+      "kind": "function",
+      "name": "TallerToolbar",
+      "semanticHash": "2c6ac8f1e08186a1fbb573c879bf2a88ea09a9c0b55e8f64cdb6011d579b6a6d",
+      "reason": "Cohesive platform header owns a declarative per-destination suppression policy: preserve viewer/measurement/fullscreen rules and free landscape practice space. MCC is below the unchanged complexity ceiling; real navigation/font/recording UI regressions protect this Compose-only boundary.",
+      "metric_status": "compose-transformation",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+      ],
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+    },
+    "62ff3f35dedd6ea9f6ede82711c677111c666d35b7dc9839c5138587e2d231a6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 87,
+      "kind": "function",
+      "name": "NavigationSections",
+      "semanticHash": "a8d8b8b6b808274ae7778a5b72059b077603ffd087a451f93767f6a9d31165ae",
+      "metric_status": "compose-transformation",
+      "reason": "Reviewed icon-only Material tabs with complete localized icon descriptions, native Tab role/selection/click tests; viewport-dependent tempo density preserves system scaling and expanded scrolling. Compose JVM correspondence remains unsupported; no numeric ceiling changed.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+      ],
+      "reviewed_source": "bfc70c5 + icon-only/viewport correction"
+    },
+    "30ec659422b8c152a39abd1d6ed1bcc333f0b4e7f81685b04ca454b4658722e3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "451",
+      "kind": "function",
+      "name": "MeasurementDetails",
+      "semanticHash": "98d3c672626db519c988feab7fa03ecf77257b4f080abbff9705d26d16682c8c",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+    },
+    "8cb166f5225e7ee5ebf4662fa4d5478ffccc66fc9a2ce186d066ab217232bedc": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "462",
+      "kind": "function",
+      "name": "LiveReadingDetails",
+      "semanticHash": "07f9c33c28601377a02645284c2c5c1cae3b0190a673af948ad05cc2d86b2453",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+    },
+    "dfb9df52f9307bb7cd99c7048e9c69c9c7bf6b9abfb11ea81d5bcca0fcc6f93f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "286",
+      "kind": "function",
+      "name": "RecordingActions",
+      "semanticHash": "f5e409ffd4c2158238fbe71c87c25a9a4dfaeeb813f6490ff69c9c61b8c8a73e",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
+      ],
+      "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
     }
   }
 }

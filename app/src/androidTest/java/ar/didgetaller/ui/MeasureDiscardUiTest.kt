@@ -57,7 +57,7 @@ class MeasureDiscardUiTest {
     }
 
     private fun start() {
-        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
+        compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performScrollTo().performClick()
         compose.waitUntil(10000) { vm.sessionPhase == SessionPhase.CAPTURING }
     }
 
@@ -130,10 +130,10 @@ class MeasureDiscardUiTest {
         assertEquals(index, app.getSharedPreferences("local_data", 0).getString("recordings", null))
         assertArrayEquals(original, store.file(existing.id).readBytes())
         assertEquals(listOf(existing.id), store.list().map { it.id })
-        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${existing.id}").assertIsDisplayed()
         compose.runOnIdle { assertEquals(listOf(existing.id), vm.sessions.map { it.id }) }
-        compose.onNodeWithText(uiText(R.string.ui_measure), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_measure)).performClick()
         start()
         confirmDiscard() // Immediate discard, including a possible header-only WAV.
         assertEquals(listOf(existing.id), store.list().map { it.id })
@@ -147,24 +147,41 @@ class MeasureDiscardUiTest {
     }
 
     @Test fun activeLayoutAndConfirmationAreAccessible() {
+        compose.onNodeWithTag("measurement-details").performScrollTo().assertIsDisplayed().assertHasClickAction()
+        compose.onNodeWithText(uiText(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in)).assertDoesNotExist()
+        val configuration = compose.activity.resources.configuration
+        val limited = configuration.fontScale > 1.05f || configuration.screenHeightDp < 500
+        if (configuration.screenHeightDp >= 600 && configuration.fontScale <= 1.05f) {
+            assertEquals(0f, compose.onNodeWithTag("measure-screen").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue())
+        }
+        compose.onNodeWithTag("instrument-selector").performScrollTo()
         capture("idle")
         start()
+        if (limited) compose.onNodeWithTag("measurement-frequency").performScrollTo()
         compose.onNodeWithTag("measurement-frequency").assertIsDisplayed()
-        compose.onNodeWithTag("measurement-note-name").assertIsDisplayed()
+        compose.onNodeWithTag("measurement-note-name").assertTextEquals(" ")
         compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
         compose.onNodeWithTag("acoustic-signal-status").assertIsDisplayed()
+        if (limited) compose.onNodeWithTag("discard-recording").performScrollTo()
         compose.onNodeWithTag("recording-primary").assertIsDisplayed().assertHasClickAction()
         compose.onNodeWithTag("discard-recording").assertIsDisplayed().assertHasClickAction()
         val reading = compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode().boundsInRoot
         val primary = compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot
         val discard = compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot
-        val navigation = compose.onNodeWithText(uiText(R.string.ui_measure),useUnmergedTree=true).fetchSemanticsNode().boundsInRoot
+        val navigation = compose.onNodeWithContentDescription(uiText(R.string.ui_measure)).fetchSemanticsNode().boundsInRoot
         val density = compose.activity.resources.displayMetrics.density
         assertTrue(reading.bottom <= primary.top)
         assertTrue(primary.height >= 48 * density && discard.height >= 48 * density)
-        assertTrue(primary.right < discard.left)
+        if(limited)assertTrue(primary.right < discard.left || primary.bottom <= discard.top)
+        else assertTrue(primary.right < discard.left)
         assertTrue(primary.bottom <= navigation.top)
+        compose.onNodeWithText(uiText(R.string.ui_live_reading)).assertDoesNotExist()
         capture("pending")
+        compose.onNodeWithTag("measurement-details").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_live_reading)).performScrollTo().assertIsDisplayed()
+        capture("details")
+        compose.onNodeWithTag("measurement-details").performScrollTo().performClick()
+        compose.onNodeWithTag("discard-recording").performScrollTo()
         compose.onNodeWithTag("discard-recording").performClick()
         compose.onNodeWithText(uiText(R.string.recording_discard_title)).assertIsDisplayed()
         compose.onNodeWithTag("continue-recording").assertHasClickAction()

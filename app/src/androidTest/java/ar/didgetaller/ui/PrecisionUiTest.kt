@@ -98,7 +98,7 @@ class PrecisionUiTest {
         return item
     }
     private fun detail(item:RecordingStore.Session){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo()
         capture("library-same-session")
         compose.onNodeWithTag("session-${item.id}").performClick()

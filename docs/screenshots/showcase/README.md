@@ -1,5 +1,26 @@
 # Current README showcase - en
 
+## 2026-11-10 UI update
+
+`live-measurement.png` and `metronome.png` are unaltered, visually inspected
+captures from implementation `89cd201`, version `3.3.0-beta1` / code `13`.
+[Passing API 35 Pixel 2 x86_64 run](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42865033307),
+artifact `Focused-Metronome-Results`, normal font scale, English locale.
+The live reading uses controlled 70 Hz PCM through the production callback,
+without a hardware microphone or WAV writer. Metronome is stopped after testing
+its settings. Neither image contains private audio or comes from the Samsung.
+The four saved-session images retain the historical provenance below.
+
+| Current file | Dimensions | SHA-256 |
+| --- | --- | --- |
+| live-measurement.png | 1080 x 1920 | `d440046655e156519cdd2f5d64bccd0b89b26a0cee983f6f156a1fab8bbe22ff` |
+| metronome.png | 1080 x 1920 | `07a1d7ee2b726dd0552db9f920f1f98decbd385398cf9254381cd1a9c1c5a20e` |
+
+## Historical 2026-11-06 capture record
+
+This record covers the unchanged session images and the previous live-reading
+revision, which remains available in Git history.
+
 Captured on 2026-11-06 from the real Android app on emulator-5554 (ranchu), based on production revision 0ed87d6. Production executable code and Android resources are unchanged; this task translates two comments and technical test messages and updates screenshot-only fixture preparation.
 
 Captured debug APK: package `ar.didgetaller`, version `3.2.6-beta1` / code `12`, SHA-256 `8287b1f3357f4f03a88d2a1039509495c06c0c5a66193a8a032fd58208453fa9`.
@@ -33,7 +54,7 @@ a completed recording.
 | --- | --- | --- |
 | harmonic-analysis.png | 1080 x 2400 | `1bea5adb95f63a19b537d273ea653ae9158cfecb90ccd37e8c5591b1ff0769da` |
 | library.png | 1080 x 2400 | `c1d598e47e8512396c188fb6232914b090002ed04fc537c2635a42e39b8d62b6` |
-| live-measurement.png | 1080 x 2400 | `e1689cd0a4c8d7da9b9314cf144697165a12b8f17ad3671fdc364d6ab12e1de6` |
+| live-measurement.png (previous revision) | 1080 x 2400 | `e1689cd0a4c8d7da9b9314cf144697165a12b8f17ad3671fdc364d6ab12e1de6` |
 | session-analysis.png | 1080 x 2400 | `a93be741d5e59545c7d9393b12705a559e40e2f9ac6e72bebdacfe6d4517eb57` |
 | spectrogram.png | 1080 x 2400 | `b84da7f1b9a6d620d96fb9b63177d605443b7aec9025d17933dc9370df425002` |
 

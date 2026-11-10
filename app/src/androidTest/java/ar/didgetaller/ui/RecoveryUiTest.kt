@@ -52,7 +52,7 @@ class RecoveryUiTest {
         file.outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)};bitmap.recycle()
     }
     private fun back(){Espresso.pressBackUnconditionally();compose.waitForIdle()}
-    private fun library(){compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()}
+    private fun library(){compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()}
     private fun open(item:RecordingStore.Session){compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick();compose.onNodeWithTag("time-chart").performScrollTo()}
 
     @Test fun allSurfacesRenderVariationAndPeriodicityWithOriginalDataIntact(){
@@ -114,6 +114,8 @@ class RecoveryUiTest {
     @Suppress("UNCHECKED_CAST")
     @Test fun controlledPcmReachesLiveMeterAndProfilesResetWithoutGraphFiltering(){
         show()
+        val config=compose.activity.resources.configuration
+        val limited=config.fontScale>1.05f || config.screenHeightDp<500
         fun meter(profile:InstrumentProfile,hz:Double,weights:List<Double>,name:String){
             compose.runOnIdle {vm.selectInstrument(profile)}
             val f=TallerViewModel::class.java.getDeclaredField("mic").apply {isAccessible=true}
@@ -127,8 +129,13 @@ class RecoveryUiTest {
             val readings=pcm.asList().chunked(4096).mapNotNull {stream.append(it.toShortArray())}
             readings.forEach {r->compose.runOnIdle {callback(r)};android.os.SystemClock.sleep(profile.analysisChunks*93L)}
             compose.runOnIdle {assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument);assertEquals(readings.size,vm.sessionTimeline.size)}
+            if(limited)capture("$name-before-accessibility-scroll")
+            if(limited)compose.onNodeWithTag("measurement-note-name").performScrollTo()
+            compose.onNodeWithTag("measurement-note-name").assertIsDisplayed().assertTextEquals(if(profile==InstrumentProfile.NATIVE_AMERICAN_FLUTE)"A4" else "C#2")
+            if(limited)compose.onNodeWithText(uiText(R.string.ui_stable_note)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.ui_stable_note)).assertIsDisplayed()
             compose.onNodeWithText(hzLabel(vm.filteredHz)).assertIsDisplayed()
+            if(limited)compose.onNodeWithTag("discard-recording").performScrollTo().assertIsDisplayed()
             val stableParts=listOf("measurement-note-slot","measurement-note-name","measurement-frequency","acoustic-signal-status").map {compose.onNodeWithTag(it).fetchSemanticsNode().boundsInRoot}
             val stableCard=compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot
             val stableSave=compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot
@@ -140,14 +147,18 @@ class RecoveryUiTest {
             capture(name)
             compose.runOnIdle {vm.selectInstrument(if(profile==InstrumentProfile.DIDGERIDOO)InstrumentProfile.NATIVE_AMERICAN_FLUTE else InstrumentProfile.DIDGERIDOO);assertEquals(profile,vm.instrument)}
             compose.runOnIdle {callback(PitchDetector.Reading());assertEquals(0.0,vm.filteredHz,0.0);assertFalse(vm.stableReading)}
+            if(limited)compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
+            if(limited)compose.onNodeWithTag("discard-recording").performScrollTo()
             compose.onNodeWithTag("measurement-frequency").assertTextEquals("— Hz")
             assertEquals(stableCard,compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableDiscard,compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot)
             capture("$name-silence")
             compose.runOnIdle {callback(PitchDetector.Reading(confidence=.52,rms=.10));assertEquals(0.0,vm.filteredHz,0.0)}
+            if(limited)compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).assertIsDisplayed()
+            if(limited)compose.onNodeWithTag("discard-recording").performScrollTo()
             val nowParts=listOf("measurement-note-slot","measurement-note-name","measurement-frequency","acoustic-signal-status").map {compose.onNodeWithTag(it).fetchSemanticsNode().boundsInRoot}
             assertEquals("parts stable=$stableParts now=$nowParts",stableCard,compose.onNodeWithTag("measurement-card").fetchSemanticsNode().boundsInRoot)
             assertEquals(stableSave,compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot)
@@ -184,6 +195,7 @@ class RecoveryUiTest {
         val noise=ShortArray(20480){(random.nextInt(12000)-6000).toShort()}
         deliver(noise)
         compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("measurement-details").performScrollTo().performClick()
         compose.onNodeWithTag("acoustic-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("acoustic-diagnostic-candidate").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("acoustic-diagnostic-values").assertExists()

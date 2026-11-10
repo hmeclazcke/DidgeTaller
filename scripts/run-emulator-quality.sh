@@ -3,7 +3,9 @@ set -euo pipefail
 
 # The Python runner verifies the explicit emulator identity before installing or executing anything.
 emulator_serial="${1:?An explicit emulator serial is required}"
-python3 tools/run_instrumentation.py --serial "$emulator_serial" --coverage
+[[ "$emulator_serial" == emulator-* ]] || exit 2
+hardware="$(adb -s "$emulator_serial" shell getprop ro.hardware | tr -d '\r')"
+[[ "$hardware" == ranchu || "$hardware" == goldfish ]] || exit 2
 
 # Change settings only after the runner has verified this fresh emulator. Preserve failure status.
 collect_and_restore() {
@@ -16,12 +18,16 @@ collect_and_restore() {
   if ! adb -s "$emulator_serial" pull \
     /sdcard/Android/data/ar.didgetaller/files/session-evidence \
     build/reports/quality/session-screenshots; then result=1; fi
+  if ! adb -s "$emulator_serial" pull \
+    /sdcard/Android/data/ar.didgetaller/files/metronome-evidence \
+    build/reports/quality/metronome-screenshots; then result=1; fi
   if ! adb -s "$emulator_serial" shell wm size reset; then result=1; fi
   if ! adb -s "$emulator_serial" shell settings put system font_scale 1.0; then result=1; fi
   if ! adb -s "$emulator_serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales en; then result=1; fi
   exit "$result"
 }
 trap collect_and_restore EXIT
+python3 tools/run_instrumentation.py --serial "$emulator_serial" --coverage
 
 # Compose-local overrides do not reproduce a separate Android dialog window's configuration.
 # Verify actual compact screen, application locales and system font at fresh process boundaries.
@@ -43,6 +49,12 @@ for language in en es; do
     ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
     > "build/reports/quality/workspace-configuration-$language.txt"
   python3 tools/run_instrumentation.py --verify-log "build/reports/quality/workspace-configuration-$language.txt"
+  timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
+    -e class 'ar.didgetaller.ui.MetronomeUiTest#transportSettingsAndVisualCaptureInterlock' \
+    -e evidenceLabel "$language-metronome150" \
+    ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
+    > "build/reports/quality/metronome-configuration-$language.txt"
+  python3 tools/run_instrumentation.py --verify-log "build/reports/quality/metronome-configuration-$language.txt"
 done
 adb -s "$emulator_serial" shell wm size 1280x720
 timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
@@ -52,3 +64,9 @@ timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
   ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
   > build/reports/quality/workspace-configuration-landscape.txt
 python3 tools/run_instrumentation.py --verify-log build/reports/quality/workspace-configuration-landscape.txt
+timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
+  -e class 'ar.didgetaller.ui.MetronomeUiTest#transportSettingsAndVisualCaptureInterlock' \
+  -e evidenceLabel 'landscape-metronome150' \
+  ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
+  > build/reports/quality/metronome-configuration-landscape.txt
+python3 tools/run_instrumentation.py --verify-log build/reports/quality/metronome-configuration-landscape.txt

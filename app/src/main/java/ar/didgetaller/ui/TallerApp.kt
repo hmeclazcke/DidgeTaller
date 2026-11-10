@@ -80,7 +80,32 @@ private val appColors=darkColorScheme(
     surfaceContainerLow=cardColor,surfaceContainer=cardColor,
     surfaceContainerHigh=Color(0xFF263D42),surfaceContainerHighest=Color(0xFF2F484B),surfaceTint=accent
 )
-private val symbols=listOf("♪","◇","▣")
+private val sectionIcons=listOf(R.drawable.nav_measure, R.drawable.nav_metronome, R.drawable.nav_lab, R.drawable.nav_library)
+
+/** Navigation presentation owns short labels and readable text independently from destination content. */
+@Composable
+private fun RowScope.NavigationSections(sections: List<String>, selected: Int, navigate: (Int) -> Unit) {
+    sections.forEachIndexed { index, title ->
+        NavigationBarItem(selected=selected==index,onClick={navigate(index)},
+            icon={Icon(androidx.compose.ui.res.painterResource(sectionIcons[index]),contentDescription=title)},
+            alwaysShowLabel=false)
+    }
+}
+
+/** Preserve header behavior while leaving short practice viewports to their primary controls. */
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun TallerToolbar(route: String?, detail: Boolean, fullscreen: Boolean, capturing: Boolean,
+    title: @Composable () -> Unit, navigationIcon: @Composable () -> Unit) {
+    val configuration=androidx.compose.ui.platform.LocalConfiguration.current
+    val shortLarge=configuration.screenHeightDp<500 && configuration.fontScale>=1.5f
+    val suppressed=mapOf(
+        TallerRoutes.Viewer to true,
+        TallerRoutes.Measure to (shortLarge || capturing),
+        TallerRoutes.Metronome to (configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE))
+    if((detail || !fullscreen) && suppressed[route]!=true)
+        TopAppBar(title=title,navigationIcon=navigationIcon,colors=TopAppBarDefaults.topAppBarColors(containerColor=background))
+}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,11 +114,9 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
               navController:NavHostController=rememberNavController(),
               exportRecording:(RecordingStore.Session)->Unit={}) {
     val context = androidx.compose.ui.platform.LocalContext.current
-    val sections=listOf(stringResource(R.string.ui_measure),stringResource(R.string.ui_laboratory),stringResource(R.string.ui_library))
+    val sections=listOf(stringResource(R.string.ui_measure),stringResource(R.string.metronome_tab),stringResource(R.string.ui_laboratory),stringResource(R.string.ui_library))
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val fontScale=configuration.fontScale
-    val shortLandscapeWithLargeText=configuration.screenHeightDp<500 && fontScale>=1.5f
-    val navigationTextFactor=(1.2f/fontScale).coerceAtMost(1f)
     var confirmDiscard by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(vm.sessionPhase) { if(vm.sessionPhase!=SessionPhase.CAPTURING)confirmDiscard=false }
     MaterialTheme(colorScheme=appColors) {
@@ -110,10 +133,11 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         val hostActivity=androidx.compose.ui.platform.LocalContext.current.activity()
         val entry by navController.currentBackStackEntryAsState()
         val route=entry?.destination?.route
+        MetronomeMediaControls(vm.metronome, route==TallerRoutes.Metronome)
         val inViewer=route==TallerRoutes.Viewer
         val inTool=route==TallerRoutes.LabTool
         val inDetail=route==TallerRoutes.Session || route==TallerRoutes.Compare || inViewer || inTool
-        val section=if(inTool)1 else if(inDetail)2 else TallerRoutes.sections.indexOf(route).coerceAtLeast(0)
+        val section=if(inTool)2 else if(inDetail)3 else TallerRoutes.sections.indexOf(route).coerceAtLeast(0)
         // The same destination change handles system Back, the toolbar arrow and section changes.
         DisposableEffect(navController,vm) {
             val listener=NavController.OnDestinationChangedListener { _,destination,args ->
@@ -136,7 +160,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         Scaffold(
             containerColor=background,
             topBar={
-                if(!inViewer && (inDetail || !vm.fullScreen) && !(route==TallerRoutes.Measure && (shortLandscapeWithLargeText || vm.sessionPhase==SessionPhase.CAPTURING))) TopAppBar(
+                TallerToolbar(route,inDetail,vm.fullScreen,vm.sessionPhase==SessionPhase.CAPTURING,
                     title={
                         if(inDetail)Text(if(inTool)listOf(stringResource(R.string.ui_design),stringResource(R.string.ui_spectrum),stringResource(R.string.ui_search),stringResource(R.string.ui_guide))[vm.labTab] else if(route==TallerRoutes.Compare)stringResource(R.string.ui_compare_sessions) else stringResource(R.string.ui_session_3cb186))
                         else Column {
@@ -147,23 +171,12 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                     navigationIcon={if(inDetail)IconButton(onClick={navController.popBackStack()}) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack,contentDescription=if(inTool)context.getString(R.string.ui_back_to_laboratory) else context.getString(R.string.ui_back_to_sessions))
                     }},
-                    colors=TopAppBarDefaults.topAppBarColors(containerColor=background)
                 )
             },
             bottomBar={
                 if(!inViewer && route!=TallerRoutes.Session)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
-                    if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
-                    if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
-                        sections.forEachIndexed { idx,title ->
-                            NavigationBarItem(
-                                selected=section==idx,
-                                onClick={navController.navigateToSection(idx)},
-                                icon={Text(symbols[idx],Modifier.clearAndSetSemantics {},fontSize=(21f*navigationTextFactor).sp)},
-                                label={Text(title,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                                    fontSize=(14f*navigationTextFactor).sp)},
-                                alwaysShowLabel=true
-                            )
-                        }
+                    if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
+                        NavigationSections(sections,section) {navController.navigateToSection(it)}
                     }
                 }
             },contentWindowInsets=if(inViewer)WindowInsets(0,0,0,0) else ScaffoldDefaults.contentWindowInsets,
@@ -172,13 +185,16 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
             NavHost(navController,startDestination=TallerRoutes.Measure,modifier=Modifier.fillMaxSize()) {
                 composable(TallerRoutes.Measure) {
                     DestinationFrame(padding,route==TallerRoutes.Measure) {
-                        DestinationContent("measure-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
+                        DestinationContent("measure-screen",compact=true) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
                     }
                 }
                 composable(TallerRoutes.MeasureWide) {
                     DestinationFrame(padding,route==TallerRoutes.MeasureWide) {
-                        DestinationContent("measure-wide-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
+                        DestinationContent("measure-wide-screen",compact=true) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
                     }
+                }
+                composable(TallerRoutes.Metronome) {
+                    DestinationFrame(padding,route==TallerRoutes.Metronome) { MetronomeScreen(vm.metronome) }
                 }
                 composable(TallerRoutes.Lab) {
                     DestinationFrame(padding,route==TallerRoutes.Lab) {
@@ -208,7 +224,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                             key(vm.libraryTab){DestinationContent("library-list"){
                                 LibraryScreen(vm,exportFile,
                                     onOpen={navController.navigate(TallerRoutes.session(it.id))},
-                                    onOpenDesign={vm.selectDesign(it);navController.navigateToSection(1);navController.navigate(TallerRoutes.tool(0))},
+                                    onOpenDesign={vm.selectDesign(it);navController.navigateToSection(2);navController.navigate(TallerRoutes.tool(0))},
                                     onCompare={navController.navigate(TallerRoutes.Compare)})
                             }}
                         }
@@ -270,10 +286,11 @@ private fun Panel(title:String?=null,subtitle:String?=null,content:@Composable C
 private fun RecordingActions(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard:()->Unit) {
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val largeText=configuration.fontScale>=1.3f
-    Row(Modifier.fillMaxWidth().background(background).padding(horizontal=if(vm.sessionPhase==SessionPhase.CAPTURING)0.dp else 16.dp,vertical=if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)0.dp else 6.dp),
-        horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+    val fontScale=androidx.compose.ui.platform.LocalDensity.current.fontScale
+    FlowRow(Modifier.fillMaxWidth().background(background).padding(vertical=if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)0.dp else 6.dp),
+        horizontalArrangement=Arrangement.spacedBy(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Button(onClick={if(vm.sessionPhase==SessionPhase.CAPTURING)vm.finishSession() else startMeasurement()},
-            modifier=Modifier.weight(1f).heightIn(min=48.dp).testTag("recording-primary"),
+            modifier=Modifier.widthIn(min=184.dp*fontScale).weight(2f).heightIn(min=48.dp).testTag("recording-primary"),
             enabled=!vm.requestingPermission && vm.sessionPhase in listOf(SessionPhase.IDLE,SessionPhase.CAPTURING),
             colors=ButtonDefaults.buttonColors(containerColor=if(vm.sessionPhase==SessionPhase.CAPTURING)orange else accent)) {
             Text(when(vm.sessionPhase){
@@ -284,7 +301,7 @@ private fun RecordingActions(vm:TallerViewModel,startMeasurement:()->Unit,onDisc
             },textAlign=TextAlign.Center,fontWeight=FontWeight.Bold,fontSize=if(largeText)14.sp else 17.sp)
         }
         if(vm.sessionPhase==SessionPhase.CAPTURING) OutlinedButton(onClick=onDiscard,
-            modifier=Modifier.heightIn(min=48.dp).testTag("discard-recording")) {
+            modifier=Modifier.widthIn(min=104.dp*fontScale).weight(1f).heightIn(min=48.dp).testTag("discard-recording")) {
             Text(stringResource(R.string.recording_discard_action),textAlign=TextAlign.Center)
         }
     }
@@ -300,6 +317,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     val prioritizeReading=!capturing && !vm.fullScreen && (compactWide || configuration.screenHeightDp/configuration.fontScale<560f)
     var instruments by remember {mutableStateOf(false)}
     @Composable fun setupControls() {
+      FlowRow(Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(0.dp)) {
         if(!vm.fullScreen || !compactWide)Box {
             TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
                 Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)))
@@ -309,6 +327,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             }
         }
         RecordingSettings(vm)
+      }
     }
     if(!capturing && !prioritizeReading)setupControls()
     if(vm.permissionDenied){
@@ -338,8 +357,8 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
         }
     }
     @Composable fun measurementHeader() {
-        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
+        FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
+            Column(Modifier.heightIn(min=48.dp),verticalArrangement=Arrangement.Center) {
                 if(compactWide && !capturing)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
                 Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
                     color=if(capturing)orange else muted,fontSize=if(capturing && configuration.fontScale>=1.3f)10.sp else 12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
@@ -350,9 +369,9 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
         }
     }
     if(!prioritizeReading)measurementHeader()
-    Surface(Modifier.fillMaxWidth().testTag("measurement-card"),shape=RoundedCornerShape(28.dp),color=cardColor) {
+    Surface(Modifier.fillMaxWidth().testTag("measurement-card"),shape=RoundedCornerShape(20.dp),color=cardColor) {
         Column(Modifier.background(Brush.verticalGradient(listOf(Color(0xFF1D3839),cardColor)))
-            .padding(horizontal=20.dp,vertical=if(compactWide && capturing)4.dp else if(compactWide)8.dp else if(capturing)12.dp else if(vm.fullScreen)28.dp else 20.dp),
+            .padding(horizontal=16.dp,vertical=if(compactWide && capturing)4.dp else if(compactWide)8.dp else if(vm.fullScreen)28.dp else 12.dp),
             horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(if(compactWide)0.dp else 8.dp)) {
             if(!compactCaptureHeader) Row(Modifier.fillMaxWidth().testTag("measurement-card-header"),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
                 Text(stringResource(R.string.ui_fundamental_base_note),Modifier.weight(1f),color=muted,fontSize=if(capturing && configuration.fontScale>=1.3f)10.sp else 12.sp)
@@ -362,12 +381,12 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             @Composable fun noteDisplay() { BoxWithConstraints(Modifier.fillMaxWidth(),contentAlignment=Alignment.Center) {
                 val label=if(hz>0)note.first().uppercase(Locale.getDefault()) else ""
                 val preferred=if(compactWide)(maxWidth.value*.3f).coerceIn(if(configuration.fontScale>=1.3f)28f else 32f,if(configuration.fontScale>=1.3f)28f else 44f)
-                    else (maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(if(capturing && configuration.fontScale>=1.3f)48f else 74f,if(capturing && configuration.fontScale>=1.3f)48f else if(capturing)90f else 155f)
+                    else (maxWidth.value*(if(vm.fullScreen)0.37f else 0.25f)).coerceIn(if(capturing && configuration.fontScale>=1.3f)48f else 56f,if(capturing && configuration.fontScale>=1.3f)48f else if(vm.fullScreen)155f else 86f)
                 val measurer=androidx.compose.ui.text.rememberTextMeasurer()
                 val density=androidx.compose.ui.platform.LocalDensity.current
                 val width=measurer.measure(label,style=androidx.compose.ui.text.TextStyle(fontSize=preferred.sp,fontWeight=FontWeight.Bold),softWrap=false).size.width
                 val size=(preferred*(with(density){maxWidth.toPx()}/width.coerceAtLeast(1)).coerceAtMost(1f)).sp
-                val secondarySize=if(compactWide && configuration.fontScale>=1.3f)13.sp else if(compactWide)16.sp else if(vm.fullScreen)26.sp else 20.sp
+                val secondarySize=if(compactWide && configuration.fontScale>=1.3f)13.sp else if(compactWide)16.sp else if(vm.fullScreen)26.sp else 16.sp
                 Column(horizontalAlignment=Alignment.CenterHorizontally) {
                     if(capturing) Box(Modifier.fillMaxWidth().heightIn(min=with(density){preferred.sp.toDp()}*1.4f).testTag("measurement-note-slot"),contentAlignment=Alignment.Center) {
                         // Measure both alternatives so changing pitch never changes the reserved slot.
@@ -392,7 +411,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             @Composable fun readingDisplay() { Column(horizontalAlignment=Alignment.CenterHorizontally,
                 verticalArrangement=Arrangement.spacedBy(if(compactWide)0.dp else 8.dp)) {
             Box(contentAlignment=Alignment.Center) {
-                val frequencySize=if(compactWide && configuration.fontScale>=1.3f)24.sp else if(compactWide)28.sp else if(vm.fullScreen)46.sp else 36.sp
+                val frequencySize=if(compactWide && configuration.fontScale>=1.3f)24.sp else if(compactWide)28.sp else if(vm.fullScreen)46.sp else 30.sp
                 if(capturing) Text("888.8 Hz",Modifier.alpha(0f).clearAndSetSemantics {},fontSize=frequencySize,fontWeight=FontWeight.Bold)
                 Text(hzLabel(hz),modifier=Modifier.testTag("measurement-frequency"),fontSize=frequencySize,
                     fontWeight=FontWeight.Bold,color=accent)
@@ -419,27 +438,39 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     }
     if(prioritizeReading)measurementHeader()
     if(prioritizeReading && !capturing)setupControls()
-    if(capturing) {
-        RecordingActions(vm,startMeasurement,onDiscard)
-        Panel(context.getString(R.string.ui_live_reading),if(vm.stableReading)context.getString(R.string.ui_the_frequency_holds_between_readings) else context.getString(R.string.ui_the_note_may_still_change)) {
-            if(hz>0) {
-                val cents=Music.cents(hz)
-                Text(stringResource(R.string.ui_periodicity_26b035, vm.reading.confidence),color=muted,fontSize=12.sp)
-                Text(stringResource(R.string.ui_cents_relative_to, if(cents>0) "+" else "", cents, note.getOrElse(1){stringResource(R.string.ui_the_nearby_note)}),
-                    color=ink,fontSize=13.sp)
-                CentMeter(cents)
-            } else Text(stringResource(if(signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || vm.reading.rms>=.005)
-                R.string.acoustic_uncertain_help else R.string.ui_play_a_sustained_note_silence_is_preserved_as_a_pause_in_the_chart),color=muted,fontSize=13.sp)
-            if(!vm.fullScreen && vm.sessionTimeline.size>2)
-                SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true,instrument=vm.instrument)
-        }
-    } else if(!vm.fullScreen) {
-        Text(stringResource(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in),
-            color=muted,fontSize=14.sp,lineHeight=21.sp)
+    RecordingActions(vm,startMeasurement,onDiscard)
+    var details by rememberSaveable {mutableStateOf(false)}
+    if(!vm.fullScreen) TextButton(onClick={details=!details},modifier=Modifier.fillMaxWidth().testTag("measurement-details")) {
+        Text(stringResource(if(details)R.string.measure_details_hide else R.string.measure_details))
     }
+    if(details || vm.fullScreen) MeasurementDetails(vm,hz,elapsed)
+}
+
+/** Explanations and retained diagnostics are available without displacing live actions. */
+@Composable
+private fun MeasurementDetails(vm:TallerViewModel,hz:Double,elapsed:Int) {
+    if(vm.sessionPhase==SessionPhase.CAPTURING) LiveReadingDetails(vm,hz,elapsed)
+    else if(!vm.fullScreen) Text(stringResource(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in),
+        color=muted,fontSize=14.sp,lineHeight=21.sp)
     if(!vm.fullScreen)AcousticDiagnosticsPanel(vm.acousticSample,vm.recentAcousticDiagnostics.size)
-    if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
+    if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=vm.sessionPhase!=SessionPhase.CAPTURING) {
         Text(if(vm.maxHz==140)stringResource(R.string.ui_range_35_140_hz_extend_to_220) else stringResource(R.string.ui_range_35_220_hz_return_to_140))
+    }
+}
+
+@Composable
+private fun LiveReadingDetails(vm:TallerViewModel,hz:Double,elapsed:Int) {
+    val signal=vm.acousticSample?.signal
+    Panel(stringResource(R.string.ui_live_reading),stringResource(if(vm.stableReading)R.string.ui_the_frequency_holds_between_readings else R.string.ui_the_note_may_still_change)) {
+        if(hz>0) {
+            val cents=Music.cents(hz)
+            Text(stringResource(R.string.ui_periodicity_26b035,vm.reading.confidence),color=muted,fontSize=12.sp)
+            Text(stringResource(R.string.ui_cents_relative_to,if(cents>0)"+" else "",cents,Music.pitch(hz)?.note.orEmpty()),color=ink,fontSize=13.sp)
+            CentMeter(cents)
+        } else Text(stringResource(if(signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || vm.reading.rms>=.005)
+            R.string.acoustic_uncertain_help else R.string.ui_play_a_sustained_note_silence_is_preserved_as_a_pause_in_the_chart),color=muted,fontSize=13.sp)
+        if(!vm.fullScreen && vm.sessionTimeline.size>2)
+            SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true,instrument=vm.instrument)
     }
 }
 

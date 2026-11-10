@@ -80,7 +80,7 @@ class LibraryRecoveryUiTest {
         lateinit var vm: TallerViewModel
         compose.runOnUiThread { vm = TallerViewModel(app); owner.put("library", vm) }
         compose.setContent { TallerApp(vm, {}, {}, { _, _, _ -> }, rememberNavController()) }
-        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("recover-session-index").performScrollTo().assertIsDisplayed()
         assertTrue(vm.sessionIndexDamaged)
         assertEquals(damaged, prefs.getString("recordings", null))

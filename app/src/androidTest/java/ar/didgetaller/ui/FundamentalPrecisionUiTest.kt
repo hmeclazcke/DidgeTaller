@@ -52,7 +52,7 @@ class FundamentalPrecisionUiTest {
             vm.renameSession(drone,"Drone con retornos · fixture");vm.renameSession(toot,"Toot breve · fixture");vm.renameSession(flute,"Flauta melódica · fixture")
         }
         compose.setContent {TallerApp(vm,{}, {},{_,_,_->},rememberNavController())}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
     }
     @After fun cleanup(){if(::vm.isInitialized)compose.runOnUiThread {owner.clear()};if(::app.isInitialized)app.clean()}
     private fun capture(name:String){

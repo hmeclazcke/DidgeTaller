@@ -43,8 +43,8 @@ class MainActivity:ComponentActivity() {
         WindowCompat.getInsetsController(window,window.decorView).isAppearanceLightNavigationBars=false
         vm=ViewModelProvider(this)[TallerViewModel::class.java]
         setContent {
-            val active = vm.sessionPhase == SessionPhase.CAPTURING ||
-                (vm.playingId != null && !vm.playbackPaused)
+            val active = ar.didgetaller.core.practiceKeepsScreenAwake(vm.sessionPhase == SessionPhase.CAPTURING,
+                vm.playingId != null, vm.playbackPaused, vm.metronome.state.mode)
             ar.didgetaller.ui.ScreenAwake(window.decorView,lifecycle,active)
             TallerApp(vm,
                 startMeasurement = {

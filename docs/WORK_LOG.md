@@ -1,3 +1,140 @@
+# Sequential validation checkpoint
+
+Old Gradle clients finished. One --no-daemon execution completed successfully in
+2m47s: debug JVM 550 discovered/542 passed/8 protected skips/0 failures, debug APK,
+androidTest APK, Lint, coverage, Detekt, PSI/JVM inventories and CPD. Historical
+NoClassDefFoundError output is invalid overlap evidence, not a production regression.
+Four changed Compose declarations received source-bound technical reviews; no numeric
+gate changes. Next: run focused native CI on this commit, inspect screenshots and
+collapsed-zero-scroll test; stop if it fails. Samsung update remains conditional on
+that result and fresh package/signature/read-only recording metadata checks.
+
+# Icon-only navigation and collapsed metronome viewport - IN PROGRESS
+
+Baseline bfc70c5, feature/metronome. Remove visual navigation captions; the icon
+supplies the complete localized description to Material NavigationBarItem's Tab
+selection/click semantics. Existing destinations and Back are unchanged. Adapt
+collapsed metronome density to available height, preserving scroll for expanded
+settings and constrained accessibility viewports. Add native role/click/selection
+checks and a 360x520dp, 150% font collapsed-zero-scroll/expanded-scroll regression.
+Navigation tests now address full accessible titles instead of removed captions.
+
+Validation is not complete. Overlapping local Gradle clients invalidated one JVM run with widespread NoClassDefFoundError; this is not accepted as regression evidence. Wait for every client to finish, then rebuild and run checks sequentially before using reports. Current ignored logs are checkpoints/metronome-icons/
+(build.log, test-build.log, final-build.log). Wait for running Gradle sessions to
+finish before a single canonical validation. Refresh only source-bound Compose
+reviews after inspecting current inventory/mapping; do not relax numeric gates.
+Then run the existing manual metronome emulator scope and inspect real EN/ES and
+landscape screenshots. Commit/push only validated changes to feature/metronome,
+update PR2, and install on R5CT21KTQ8W only after fresh signature/package and
+read-only data checks. Samsung installation is explicitly authorized for this
+iteration but has NOT been performed. Reuse metadata-only helpers under
+checkpoints/samsung-metronome-ux-4e30174 in a fresh evidence directory; no WAV
+contents, instrumentation, data clearing or uninstall on the phone. Main intact.
+
+# Full native suite and caption-independent configuration checks - 2026-11-10
+
+Full run 42837217775 on production source 4e30174 executed 176 cases: 166 passed,
+10 protected/configuration skips, zero failures. Its later Spanish 150% library
+configuration case still selected the old visible Biblioteca caption, now Biblio
+at that extreme width. Navigation tests select the unchanged full accessible title
+instead of the abbreviated rendering. No assertions, seek tolerances, application
+behavior or production inputs change. Keep the existing complete-suite acceptance
+and rerun the final workflow to observe all configuration cases together.
+
+The owner separately authorized installing this correction on Samsung. Use only
+the specified serial, package/signature checks and read-only current metadata;
+never read private audio or perform destructive application operations.
+
+# Measured viewport follow-up - 2026-11-10
+
+Focused 42833806307 confirms the portrait structure and actual tempo display are
+restored. Its remaining diagnostics exposed a constrained-pane test using global
+configuration width, a pause click below the viewport, and redundant centered text
+alignment in a glyph-bound assertion. Pass measured navigation width, scroll to
+the secondary action before tapping, and keep a single tempo alignment owner.
+Remove the outer unused BoxWithConstraints flagged by Lint; retain the actually
+needed width scopes. Local native APK compilation/Lint pass before publication.
+No pure timing/audio/PIT inputs changed; next validate the short native scope,
+then run complete instrumentation once on the accepted implementation.
+
+# Captured portrait/landscape correction - 2026-11-10
+
+Focused run 42830157254 retained four real failure images. They revealed that
+remaining body width/height misclassified a short portrait as landscape. Use
+Android orientation, a width/font budget for short captions and the normal single
+portrait column. The header owns per-destination suppression and frees landscape
+practice space; the primary transport action precedes sound/pause. The old image
+also demonstrated subpixel width rounding: preserve the project's existing
+one-pixel glyph allowance, explicit no-ellipsis/height checks and nonoverlap checks.
+
+The selected paused-scrubbing scenario passed in isolation. Read its pause assertion
+on main after the callback finishes publishing id and pause intent, avoiding an
+instrumentation-thread observation between the two assignments. The 80ms seek
+contract and pause assertion are unchanged; no playback production code changed.
+
+Local compilation, resources and gate pass: 592 measured/135 explicitly unscored,
+64 historical above-target functions, no new numerical exceptions. TallerApp MCC
+40, window toolbar 6 and navigation renderer 3 (original host 48). Existing timing,
+PCM and 177-mutant evidence is unchanged. Revalidate the captured UI configurations
+before the final complete native run. PR2 remains draft; no physical device/data
+operation is part of this correction.
+
+# Focused native diagnostics - 2026-11-10
+
+The full run on 2a9d806 still found label overflow and a paused-scrubbing failure.
+Do not repeat the whole suite to diagnose each layout. Add an explicit manual
+metronome-only emulator scope with native audio/navigation cases, the four
+localized label regressions and the paused-scrubbing scenario, followed by real
+EN/ES 150% and landscape captures. It is labeled focused, has no invented coverage,
+and preserves every failure in its exit code. Full acceptance stays unchanged.
+Capture images on failure as well as success; the full script now installs its
+collection trap before running the suite, after explicit emulator verification.
+
+# Responsive metronome follow-up - 2026-11-10
+
+Real API35 acceptance exposed a four-tab Spanish label constraint and a test's
+incorrect initial-tempo assumption. Correct line height/full item label width,
+shorten only the very narrow laboratory label, and keep full accessible titles.
+NavigationSections owns this presentation; TallerApp stays within its existing
+complexity ceiling. Bound tempo glyph size to the available slot and choose the
+landscape layout from actual constraints. Strengthen four-label/digit overflow
+checks; allow deliberate scrolling on extremely short 150% viewports. Retain
+failure/top/transport captures. Revalidate affected UI and gates, reuse unchanged
+pure-engine/PIT results. Latest remote outcome and screenshot evidence live on PR2.
+
+# Metronome UX/audio correction - 2026-11-10
+
+Replace the large Measure panel with a dedicated second section. Four destination
+icons, a central explicit tempo editor, beat-derived animation and compact advanced
+options preserve the existing transport and capture interlock. Media keys target
+the media stream on that tab; requested sound and muted/zero-gain/failed output are
+visibly distinguished. Do not infer a Samsung hardware cause from the earlier
+persisted off preference. Extract unchanged PCM generation for energy tests and
+validate native gain/play state; require frame-consumption evidence in the clean
+emulator. Native tests additionally cover four sections, Back, all meter indicator
+counts, invalid tempo and keyboard dismissal at real compact EN/ES 150% settings.
+VersionCode stays 13 because this is a correction on the same unmerged beta branch;
+no phone installation or new release is performed. Local evidence is in VALIDATION;
+remote/native acceptance remains pending until the actual runs complete. Keep PR2
+draft, preserve main and private data.
+
+# Metronome feature — 2026-11-09
+
+Branch `feature/metronome` starts at merged main `bc2df23`. The rhythm model and
+absolute rational grid live outside Android. A single engine monitor owns click
+effects, capture admission, cancellation and terminal disposal. Measure hosts one
+expandable panel; navigation/backgrounding pause without automatic restart.
+Separate preferences preserve settings without changing session/WAV formats.
+See [design and reproducible checks](METRONOME.md). Physical-device access and
+installation are outside this task; only a new synthetic emulator data directory
+is used. Existing rebuild tools/gates are retained.
+
+Actual API35 captures from source `5f706ba` prompted an IME usability correction:
+transport/Done end tempo editing, the native case asserts focus/keyboard release,
+and screenshots use safe insets and a stable scrolled view. This changes UI inputs;
+its CI is revalidated while unchanged domain/PIT evidence is reused. PR2 remains
+draft and main remains unchanged.
+
 # 2026-11-08 workspace continuation handoff
 
 ## Verified comparison/rendering delivery - 2026-11-09
@@ -988,3 +1125,71 @@ after removing an identity cast, so no redundant binary suite is invented. Publi
 one final source revision and observe its existing fast/native/manual mutation jobs.
 PR1 remains draft and is the current remote evidence table. Owner review follows
 successful required jobs; no automatic merge, Samsung access or metronome.
+
+
+### Measure and metronome presentation redesign (from 4a28143)
+
+Preserve approved icon-only navigation and all audio, capture, persistence and
+metronome engines. Measure uses compact setup/readout spacing and opt-in details
+instead of a second large live-explanation card. Reserved reading slots and
+Save/Discard confirmation remain intact. Metronome groups tempo, beat feedback
+and transport across the real available height; intrinsic overflow still scrolls.
+Normal and 150%-font ES/EN portrait/landscape native contracts and synthetic PCM
+screenshots are selected by the existing focused emulator workflow. This is a
+focused run, not the complete instrumentation suite.
+
+Local sequential Gradle build, 550 debug JVM cases (542 passed, 8 protected skips),
+app/test APK compilation, Lint (0 errors), coverage/complexity/CPD and 46 Python
+quality tests completed. Source-bound Compose reviews renewed without changing
+numeric baselines. Remote native screenshots/CI and the authorized Samsung update
+remain pending; do not describe them as passed before observing results. Next:
+publish for one focused API 35 run, inspect screenshots, then verify package,
+signature and metadata before Samsung install-r. No private audio access.
+
+
+Screenshot review of 7062629: metronome balance and all its focused configurations
+passed. Normal Measure recording/readout and protected confirmations passed.
+The idle action was still visibly detached in the footer; place it with the reading.
+Five 150%-font assertions incorrectly demanded simultaneous visibility in a genuinely
+constrained viewport. Keep the normal-size simultaneous/no-scroll contract, and
+explicitly scroll to verify reachability plus retained slot/control geometry at 150%.
+Do not reduce font scaling or touch targets. Preserve the strict playback seek test.
+The first native run is failure 42859788837, not final passing evidence.
+
+Samsung metadata preflight, before installation/launch: 31 sessions /31 WAV files,
+19 active /12 trashed; index membership is consistent, no partial capture. This differs
+from the supplied previous 30/30 reference. Physical operations are paused pending
+owner confirmation of the additional session. No WAV contents accessed.
+
+
+Second native run 42862160962: 28/29 pass. The remaining assertion targets a blank
+scientific-note placeholder; replace it with an explicit blank-text assertion and
+assert independent C#2/A4 scientific labels for accepted synthetic tones. Actual
+ES150 screenshots also expose the wide-view button squeezing the header to one
+letter per line. Correct the production header with intrinsic-width wrapping;
+recording actions likewise wrap by real available width and system font scale.
+Keep normal simultaneous controls, geometry stability and min48dp assertions.
+Owner confirmed the pre-existing 31-session/31-WAV Samsung baseline; signatures
+and package/code13 match. Install remains gated on passing final native verification.
+
+### Verified UI delivery at 89cd201
+
+Fast CI42865043802 and focused API35 CI42865033307 pass: 29/29 native
+executions, 542 passed/8 protected skips per JVM variant, no failures. Final
+screenshots were visually inspected and the EN/ES live showcase refreshed;
+metronome captures link from both README files. No full instrumentation or fresh
+mutation claim is made for this focused presentation revision. VALIDATION.md
+records exact scope and the acknowledged Compose mapping limitation.
+
+The authorized Samsung install-r succeeded with the original compatible
+package/signature and code13. Owner confirmed 31 sessions/31 WAV, 19 active/12
+trashed. Protected metadata and app-owned preferences match after installation,
+startup and visual checks. No private audio was read or played. No recording or
+instrumentation ran on the phone. Inspected idle Measure, stopped metronome,
+four icon-only destinations and scrolling advanced controls; collapsed metronome
+positions remain unchanged after a vertical swipe. Returned to idle Measure.
+
+No pending implementation or installation step remains for this UI task. PR2
+stays draft, main remains unchanged. Documentation/screenshot-only follow-ups
+reuse unchanged 89cd201 executable evidence; do not rebuild or reinstall for
+those files. Physical imagery/metadata stays ignored and must never be published.

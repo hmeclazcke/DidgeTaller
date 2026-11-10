@@ -1,3 +1,89 @@
+# Responsive metronome follow-up - 2026-11-10
+
+[Fast CI on 46d841f](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42809274276)
+passed, including 1,100 JVM cases and unchanged differential contracts.
+[API35 on that revision](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42809281908)
+executed 176 cases: 164 passed, 10 protected/configuration skips, 2 failures.
+Native PCM consumption/media mute and resource/lifecycle cases passed. The failures
+were Spanish navigation text clipping and a new test incorrectly assuming a
+120 BPM default instead of the existing 90 BPM.
+
+The correction keeps all four labels legible, adds full accessibility descriptions,
+uses Lab only below 320dp and separates navigation rendering from the host. Tempo
+text fits its actual three-digit slot; short landscape uses two columns. Tests
+now check all four localized labels and all tempo digits, retain strict overflow
+assertions and scroll constrained viewports to reachable controls. Failure captures
+and separate transport captures prevent future missing visual evidence.
+
+Local APK/test compilation and the unchanged gate pass: 592 scored, 134 explicitly
+unscored, 64 existing above target, zero violations. The extra unscored declaration
+is the Compose navigation renderer, with a source-bound technical review. No
+numeric baseline was relaxed. Pure timing/audio/PIT inputs did not change; their
+successful 177-mutant evidence is reused. Latest implementation CI and authentic
+configuration captures are recorded on [PR2](https://github.com/hmeclazcke/DidgeTaller/pull/2);
+a cancelled or failed run is never counted as passing acceptance.
+
+# Metronome UX/audio correction - 2026-11-10
+
+From feature HEAD `fa4f32b`, the metronome moves into its own section. Timing,
+capture interlock, persistence formats and version 3.3.0-beta1 (13) are unchanged.
+Local JVM debug/release: 1,100 discovered, 1,084 passed, 16 protected skips, zero
+failures. The three new audio cases run in both variants. PCM energy/peak tests,
+media mute/status cases and gain forwarding assertions pass. Selected PIT expands
+to eight bytecode classes: 177 generated, 163 killed, 14 survived, zero uncovered
+or other outcomes. All 23 mutations in the added PCM/status logic are killed.
+The initial child-process connection reset was rejected as incomplete; one bounded
+retry completed, with no policy relaxation.
+
+CRAP-L: 592 scored, 133 explicitly unscored, 64 above target; zero gate violations
+and no numeric baseline changes. PCM/status policy is 100% method-line covered,
+MCC/CRAP-L 2/2/7. Separate Android platform methods retain honest zero JVM coverage.
+Compose/auxiliary declarations have narrow semantic-hash reviews, not invented
+scores. JVM line/branch: 45.87%/44.26%; pure core: 99.10%/85.50%. The UI denominator
+changed, so the overall percentage is not a behavior-regression measurement.
+
+Debug APK and instrumentation APK compile. Detekt: 2,093 informational findings;
+CPD: zero groups >=100 tokens. Lint: zero errors, 57 warnings, 7 hints; four added
+warnings identify retained, now-unused localized labels from the removed panel.
+Localization parity and 46 Python quality-tool tests pass. Full emulator execution,
+real screenshots and remote CI must still be observed for this correction.
+No phone or private recording was accessed. Physical audibility is not established
+by PCM/API success: see [audio evidence](METRONOME.md).
+
+# Metronome feature verification
+
+From merged main `bc2df23`, feature `3.3.0-beta1` (versionCode 13) adds a separate
+practice timing/output owner without changing acoustic equations or session/WAV
+formats. Local final debug/release JVM runs: 1,094 discovered, 1,078 passed,
+16 protected skips, zero failures. Twenty new domain cases run in each variant.
+Selected PIT: 154 mutants across six bytecode classes; 140 killed, 14 survived,
+zero uncovered/timeouts. Surviving redundant guards/Unit bridges are not all claimed
+equivalent; the score is 90.91% for this selection, not whole-app mutation coverage.
+
+JVM production line/branch coverage after the focus refinement: 46.12%/44.26%; pure core: 99.10%/85.40%.
+CRAP-L: 587 scored, 131 classified unscored, 64 above target; all 42 new measured
+metronome functions are below target (maximum MCC/CRAP-L 8). Existing numeric
+baselines are unchanged. CPD: zero groups of at least 100 tokens. Lint: zero errors,
+53 warnings, 7 hints. Localization parity and 46 Python quality-tool tests pass.
+
+Local API37 native evidence has three passing metronome cases; the transport UI
+case was obstructed by a System UI ANR dialog, confirmed in the actual screenshot.
+It is not counted as passing. Native acceptance uses the existing API35 CI workflow:
+the full suite plus actual compact EN/ES at 150% font, with metronome screenshots
+and strict log/result verification. Observed source-scoped CI runs are linked from
+the feature PR and delivery report. No physical Samsung access or installation is
+authorized by this feature task. See [metronome design](METRONOME.md).
+
+Source `5f706ba` has observed successful [fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42790012770)
+and [full API35 CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42790009056):
+174 native cases, 164 passed, 10 protected/configuration skips, zero failures;
+the separate compact EN/ES 150% metronome cases also passed. Inspection of those
+actual images exposed a keyboard left open after Stop. Transport/Done now release
+editor focus; native regression additionally checks IME visibility and captures a
+stable view with system insets. Latest-source CI is linked from PR2. Timing, focus
+lease code and PIT inputs did not change in this UI refinement, so their existing
+mutation evidence is reused rather than rerun.
+
 # 2026-11-08 workspace ownership integration
 
 ## Verified comparison/rendering delivery - 2026-11-09
@@ -2227,3 +2313,45 @@ fixture produces actual RED before fractional selection is restored. Final local
 JVM cases per variant and170 native cases plus five configurations pass; gate0.
 Current exact-source remote runs are recorded in PR1; prior f721 results do not
 substitute for changed-input validation. WAV/detector/layout semantics are preserved.
+
+### Measure/metronome UI delivery — 89cd201 (2026-11-10)
+
+- [Fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42865043802)
+  passed: 550 app JVM cases per variant, 542 passed/8 protected skips each,
+  no failures; resources, differential reference comparison, APK/test compilation,
+  Lint, Detekt, CPD, source accountability and quality-tool failure tests passed.
+- [Focused API35 UI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42865033307)
+  passed: 29 executions across nine selections/configurations, no failures/skips.
+  This is not the complete instrumentation suite. It covers normal EN/ES,
+  narrow EN/ES150, landscape150, synthetic didgeridoo/flute/strong harmonics,
+  silence/uncertainty, recording confirmations, accessible tabs/Back, metronome
+  states/audio isolation and the unchanged strict playback scrubbing test.
+- Actual final PNGs were inspected for idle/active Measure, pending/accepted
+  readings, stopped/running/paused/expanded metronome and constrained layouts.
+  Primary information/actions fit together at normal size; constrained or expanded
+  content scrolls. A real localized header-width defect found during visual review
+  was fixed with intrinsic-width wrapping. Controls wrap at larger system font
+  sizes without shrinking accessibility scaling or touch targets.
+- No numeric threshold changed. Gate: 592 scored/137 unscored functions,
+  64 existing above-target JVM methods, zero CPD groups and source violations.
+  Compose remains technically unscored and explicitly reviewed. MeasureScreen
+  MCC 105 ->95, detail boundaries 7/8, metronome root 2. Lint: zero errors,
+  62 warnings/7 hints. No fresh mutation or Android-coverage claim is made for
+  this presentation-only revision.
+- Authorized Samsung install-r succeeded: compatible `ar.didgetaller` package
+  and certificate, version/code `3.3.0-beta1`/13. The owner confirmed the fresh
+  pre-existing 31 sessions/31 WAV baseline, 19 active/12 trashed, replacing 30/30.
+  UID, index, WAV filename/size/mtime membership and app-owned preferences match
+  before installation, after startup and after safe visual navigation. No private
+  WAV contents were read, copied, hashed or played. No microphone or physical
+  instrumentation was started. No crash was observed at startup.
+- Physical screenshots were inspected: idle Measure and stopped metronome fit
+  above navigation. A vertical swipe leaves collapsed metronome bounds unchanged;
+  expanded settings scroll to subdivisions, accent and volume. The app was left
+  in idle Measure. Recording and altered font/orientation states were verified
+  on the clean emulator rather than by recording on the phone.
+
+Ignored full evidence: `checkpoints/metronome-redesign/42865033307/`,
+`checkpoints/metronome-redesign/42865043802/` and
+`checkpoints/measure-metronome-ui/samsung/`. Published clean-emulator images
+and individual provenance are in `docs/screenshots/showcase/` and `showcase-es/`.

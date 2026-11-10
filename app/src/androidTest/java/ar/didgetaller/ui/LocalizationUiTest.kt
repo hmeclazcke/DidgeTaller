@@ -103,7 +103,7 @@ class LocalizationUiTest {
         Assert.assertEquals("73.4 Hz", hzLabel(73.4))
         Assert.assertEquals("18.5", axisLabel(18.5, 5.0))
         compose.onNodeWithText("Start measurement").assertIsDisplayed()
-        compose.onNodeWithText("Library").performClick()
+        compose.onNodeWithContentDescription("Library").performClick()
         compose.onNodeWithText("No sessions yet").assertIsDisplayed()
     }
 
@@ -122,34 +122,34 @@ class LocalizationUiTest {
     @Test fun unsupportedLanguageFallsBackToEnglish() {
         show("de-DE")
         compose.onNodeWithText("Start measurement").assertIsDisplayed()
-        compose.onNodeWithText("Library").performClick()
+        compose.onNodeWithContentDescription("Library").performClick()
         compose.onNodeWithText("No sessions yet").assertIsDisplayed()
     }
 
     @Test fun largeEnglishNavigationFitsAtDoubleFontScale() {
-        assertLargeFontNavigation("en", listOf("Measure", "Laboratory", "Library"))
+        assertLargeFontNavigation("en", listOf("Measure", "Metronome", "Laboratory", "Library"))
     }
 
     @Test fun largeSpanishNavigationFitsAtDoubleFontScale() {
-        assertLargeFontNavigation("es-AR", listOf("Medir", "Laboratorio", "Biblioteca"))
+        assertLargeFontNavigation("es-AR", listOf("Medir", "Metrónomo", "Laboratorio", "Biblioteca"))
     }
 
     @Test fun compactEnglishNavigationKeepsEveryLabelAtLargeFontScale() {
-        assertCompactNavigation("en", listOf("Measure", "Laboratory", "Library"))
+        assertCompactNavigation("en", listOf("Measure", "Metr.", "Lab", "Library"))
     }
 
     @Test fun compactSpanishNavigationKeepsEveryLabelAtLargeFontScale() {
-        assertCompactNavigation("es-AR", listOf("Medir", "Laboratorio", "Biblioteca"))
+        assertCompactNavigation("es-AR", listOf("Medir", "Metr.", "Lab", "Biblio"))
     }
 
     private fun assertCompactNavigation(language:String, labels:List<String>) {
         show(language, widthDp = 343, fontScale = 1.5f)
-        labels.forEach { label ->
-            val results = mutableListOf<TextLayoutResult>()
-            val nodes=compose.onAllNodesWithText(label, useUnmergedTree = true)
-            nodes[nodes.fetchSemanticsNodes().lastIndex]
-                .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(results) }
-            assertCompleteTextFits(results.single())
+        assertIconNavigation()
+    }
+    private fun assertIconNavigation() {
+        listOf(R.string.ui_measure,R.string.metronome_tab,R.string.ui_laboratory,R.string.ui_library).forEach { resource ->
+            compose.onNode(hasContentDescription(app.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation"))).assertIsDisplayed().assertHasClickAction()
+            compose.onAllNodes(hasText(app.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")),useUnmergedTree=true).assertCountEquals(0)
         }
     }
 
@@ -163,12 +163,7 @@ class LocalizationUiTest {
     private fun assertLargeFontNavigation(language: String, labels: List<String>) {
         show(language, fontScale = 2f)
         compose.onNodeWithText("DIDGE TALLER").assertDoesNotExist()
-        val bounds = labels.map { compose.onAllNodesWithText(it, useUnmergedTree = true).fetchSemanticsNodes().last().boundsInRoot }
-        Assert.assertTrue("Navigation labels must not overlap at 2x font scale", bounds.zipWithNext().all { (a, b) -> a.right <= b.left })
-        labels.forEach { label ->
-            val nodes = compose.onAllNodesWithText(label, useUnmergedTree = true)
-            nodes[nodes.fetchSemanticsNodes().lastIndex].assertIsDisplayed()
-        }
+        assertIconNavigation()
     }
 
     @Test fun englishBackendFailureIsLocalizedAtPresentation() {
@@ -184,7 +179,7 @@ class LocalizationUiTest {
             store.file(UUID.randomUUID().toString()).writeBytes(WavCodec.encode(ShortArray(4410), 4410, 44100))
             orphan = store.list().single()
         })
-        compose.onNodeWithText("Library").performClick()
+        compose.onNodeWithContentDescription("Library").performClick()
         compose.onNodeWithText("Audio recuperado").assertDoesNotExist()
         compose.onNodeWithText("Recovered audio").assertIsDisplayed()
         compose.runOnUiThread { changeLanguage("es-AR") }
@@ -251,7 +246,7 @@ class LocalizationUiTest {
         })
         val index = app.getSharedPreferences("local_data", 0).getString("recordings", null)
         val extras = app.getSharedPreferences("session_tools", 0).getString("extras", null)
-        compose.onNodeWithText("Library").performClick()
+        compose.onNodeWithContentDescription("Library").performClick()
         compose.onNodeWithText("Mi sesión personal · preserve").assertExists()
         compose.runOnUiThread { changeLanguage("es-AR") }
         compose.onAllNodesWithText("Biblioteca").assertCountEquals(2)

@@ -75,7 +75,7 @@ class SessionNavigationTest {
             TallerApp(vm, startMeasurement = {vm.startSession()}, toggleMic = {}, exportFile = { _, _, _ -> },
                 navController = navController)
         }
-        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo()
     }
 
@@ -266,10 +266,10 @@ class SessionNavigationTest {
         val offset = scrollOffset()
         openAndPlay()
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_sessions)).performClick()
-        compose.onNodeWithText(uiText(R.string.ui_measure), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_measure)).performClick()
         compose.onNodeWithTag("measure-screen").assertIsDisplayed()
         compose.runOnIdle { assertNull(vm.playingId) }
-        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         assertReturnedToSameList(offset)
     }
 
@@ -379,7 +379,7 @@ class SessionNavigationTest {
         val instrument=InstrumentationRegistry.getInstrumentation()
         instrument.uiAutomation.grantRuntimePermission(application.packageName,android.Manifest.permission.RECORD_AUDIO)
         val original=vm.sessions.map {it.id}.toSet()
-        compose.onNodeWithText(uiText(R.string.ui_measure),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_measure)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_start_measurement)).performClick()
         compose.waitUntil {vm.sessionPhase==ar.didgetaller.SessionPhase.CAPTURING}
         Thread.sleep(1200)
@@ -397,7 +397,7 @@ class SessionNavigationTest {
         compose.runOnUiThread {vm.onAppStopped()}
         compose.waitUntil(10000){vm.sessionPhase==ar.didgetaller.SessionPhase.IDLE && vm.sessions.size==original.size+2}
         assertFalse(vm.listening)
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.runOnIdle {assertEquals(original.size+2,RecordingStore(application).list().size)}
     }
 
@@ -426,7 +426,7 @@ class SessionNavigationTest {
         openAndPlay()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("acoustic-viewer").assertIsDisplayed()
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).assertDoesNotExist()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).assertDoesNotExist()
         assertEquals(session.id,vm.playingId)
         choosePlot(uiText(R.string.ui_spectrogram))
         compose.waitUntil(20000){vm.workspace.state.bitmap!=null || vm.workspace.state.error!=null}
@@ -508,7 +508,7 @@ class SessionNavigationTest {
         compose.runOnIdle {assertEquals(manuallyMoved,state.cameras[AcousticPlot.PITCH])}
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
         awaitDisplayed("session-detail")
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).assertIsNotDisplayed()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).assertIsNotDisplayed()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.runOnIdle {assertEquals(manuallyMoved,state.cameras[AcousticPlot.PITCH])}
     }

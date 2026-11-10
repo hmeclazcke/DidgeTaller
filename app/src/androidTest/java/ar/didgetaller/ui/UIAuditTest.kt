@@ -85,7 +85,7 @@ class UIAuditTest {
         compose.onNodeWithTag("immersive-plot").assertIsDisplayed()
     }
     @Test fun immersiveChartSwitchesHaveSelfContainedAccessibleNames(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.onNodeWithTag("viewer-tools").performClick()
@@ -100,7 +100,7 @@ class UIAuditTest {
     }
 
     @Test fun pitchReadoutPrecedesPlotAndExplanationRemainsAccessible(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.musical_drone_description)).performScrollTo()
         val legend=compose.onNodeWithText(uiText(R.string.musical_drone_description)).fetchSemanticsNode().boundsInRoot
@@ -141,7 +141,7 @@ class UIAuditTest {
         shot("compact-portrait-reading")
     }
     @Test fun productPolishEvidenceAndTouchTargets(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("swipe-compare-toggle").assertDoesNotExist()
         compose.onNodeWithTag("time-chart").performScrollTo()
@@ -171,12 +171,12 @@ class UIAuditTest {
     }
 
     @Test fun chartsInventory(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         graphInventory()
     }
     @Test fun sessionUxScreenshots(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("time-chart").assertIsDisplayed()
         compose.onNodeWithText(uiText(R.string.ui_play)).assertIsDisplayed()
@@ -198,7 +198,7 @@ class UIAuditTest {
         shot("advanced",nativeWindow=true)
     }
     @Test fun compactChartTabsScreenshot(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("time-chart").assertIsDisplayed()
         shot("chart-tabs")
@@ -232,7 +232,7 @@ class UIAuditTest {
     @Test fun matrixInventory(){
         shot("medir")
         compose.onNodeWithText(uiText(R.string.ui_limit_min_settings, vm.recordingLimitSeconds/60)).performClick();shot("ajustes-captura")
-        compose.onNodeWithText(uiText(R.string.ui_laboratory),useUnmergedTree=true).performClick();shot("laboratorio")
+        compose.onNodeWithContentDescription(uiText(R.string.ui_laboratory)).performClick();shot("laboratorio")
         compose.onNodeWithText(uiText(R.string.ui_design),useUnmergedTree=true).performClick();shot("disenar")
         compose.onNodeWithText(uiText(R.string.ui_bore_points)).performScrollTo();shot("perfil")
         compose.onNodeWithText(uiText(R.string.ui_estimated_resonances)).performScrollTo();shot("simulacion")
@@ -241,7 +241,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_guide),useUnmergedTree=true).performScrollTo().performClick();shot("guia")
         compose.onNodeWithContentDescription(uiText(R.string.ui_back_to_laboratory)).performClick()
         compose.onNodeWithTag("lab-home").assertIsDisplayed()
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick();shot("biblioteca")
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick();shot("biblioteca")
         compose.onNodeWithText(uiText(R.string.ui_designs),useUnmergedTree=true).performClick();shot("disenos")
         compose.onNodeWithText(uiText(R.string.ui_sessions),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick();shot("detalle")
@@ -253,7 +253,7 @@ class UIAuditTest {
     }
     @Test fun renameDialogIsLocalizedWithoutChangingStoredName(){
         val original=RecordingStore(application).list().first {it.id==session.id}.name
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_rename)).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_rename_session)).assertIsDisplayed()
@@ -264,7 +264,7 @@ class UIAuditTest {
         assertEquals(original,RecordingStore(application).list().first {it.id==session.id}.name)
     }
     @Test fun selectedComponentGapAndZoomUseVisibleTimeline() {
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick()
         compose.onNodeWithTag("expand-plot").performScrollTo().performClick()
         compose.waitUntil(15000){vm.musicalTrace(session)!=null}
@@ -311,7 +311,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_stop_and_save)).performClick()
         compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE}
         compose.runOnIdle {vm.fullScreen=false;vm.clearMessage()}
-        compose.onNodeWithText(uiText(R.string.ui_laboratory),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_laboratory)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_design),useUnmergedTree=true).performClick();shot("disenar")
         frame(uiText(R.string.ui_bore_points),"lab-screen");shot("perfil-controles")
         frame(uiText(R.string.ui_overall_dimensions),"lab-screen");shot("dimensiones")
@@ -319,7 +319,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_search),useUnmergedTree=true).performScrollTo().performClick()
         compose.onNodeWithText(uiText(R.string.ui_find_an_approximate_geometry)).performScrollTo().performClick();shot("busqueda-progreso")
         compose.runOnIdle {vm.cancelOptimization();vm.clearMessage()}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick();shot("biblioteca")
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick();shot("biblioteca")
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick();shot("detalle")
     }
     private fun frame(text:String,tag:String){
@@ -330,14 +330,14 @@ class UIAuditTest {
         compose.waitForIdle()
     }
     @Test fun finalDesignCardsAndResonancesAppearance(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_designs),useUnmergedTree=true).performClick();shot("disenos")
         val card=compose.onNodeWithTag("swipe-design-${vm.designs.first().id}").captureToImage().asAndroidBitmap()
         var redPixels=0
         for(y in 0 until card.height)for(x in 0 until card.width){val pixel=card.getPixel(x,y);val r=android.graphics.Color.red(pixel);val g=android.graphics.Color.green(pixel);val b=android.graphics.Color.blue(pixel)
             if(r>g*1.5 && r>b*2 && r>40)redPixels++}
         assertEquals("El fondo destructivo no debe asomar en reposo",0,redPixels)
-        compose.onNodeWithText(uiText(R.string.ui_laboratory),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_laboratory)).performClick()
         compose.onNodeWithText(uiText(R.string.ui_design),useUnmergedTree=true).performClick()
         frame(uiText(R.string.ui_estimated_resonances),"lab-screen");shot("simulacion")
     }
@@ -351,7 +351,7 @@ class UIAuditTest {
         compose.runOnIdle {vm.fullScreen=false;vm.finishSession()}
         compose.waitUntil(10000){vm.sessionPhase==SessionPhase.IDLE}
         compose.runOnIdle {vm.clearMessage()}
-        compose.onNodeWithText(uiText(R.string.ui_laboratory),useUnmergedTree=true).performClick();shot("laboratorio");compose.onNodeWithText(uiText(R.string.ui_design),useUnmergedTree=true).performClick();shot("disenar")
+        compose.onNodeWithContentDescription(uiText(R.string.ui_laboratory)).performClick();shot("laboratorio");compose.onNodeWithText(uiText(R.string.ui_design),useUnmergedTree=true).performClick();shot("disenar")
         compose.onNodeWithText(uiText(R.string.ui_bore_points)).performScrollTo();shot("perfil")
         compose.onNodeWithText(uiText(R.string.ui_estimated_resonances)).performScrollTo();shot("simulacion")
         top("lab-screen")
@@ -360,7 +360,7 @@ class UIAuditTest {
         compose.onNodeWithText(uiText(R.string.ui_find_an_approximate_geometry)).performScrollTo().performClick();shot("busqueda-progreso")
         compose.runOnIdle {vm.cancelOptimization();vm.clearMessage()}
         top("lab-screen");compose.onNodeWithText(uiText(R.string.ui_guide),useUnmergedTree=true).performClick();shot("guia")
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick();shot("biblioteca")
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick();shot("biblioteca")
         compose.onNodeWithText(uiText(R.string.ui_designs),useUnmergedTree=true).performClick();shot("disenos")
         compose.onNodeWithText(uiText(R.string.ui_sessions),useUnmergedTree=true).performClick()
         compose.onNodeWithTag("session-${session.id}").performScrollTo().performClick();shot("detalle")
