@@ -2355,3 +2355,8 @@ Ignored full evidence: `checkpoints/metronome-redesign/42865033307/`,
 `checkpoints/metronome-redesign/42865043802/` and
 `checkpoints/measure-metronome-ui/samsung/`. Published clean-emulator images
 and individual provenance are in `docs/screenshots/showcase/` and `showcase-es/`.
+
+
+### Workshop domain checkpoint ? IN PROGRESS
+
+See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,561 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.

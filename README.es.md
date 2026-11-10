@@ -141,6 +141,8 @@ Estos comandos ejecutan suites JVM y verifican formatos de recursos, no instrume
 
 La app sigue siendo una beta personal distribuida desde el código fuente. La respuesta del micrófono y la latencia de audio dependen del dispositivo; no se afirma precisión calibrada, temporización universal, cobertura completa ni un puntaje de mutaciones de toda la app. Conservá las grabaciones originales y la compatibilidad de firma al actualizar.
 
+La planificación de construcción está en desarrollo en una rama dedicada; su base geométrica probada todavía no está disponible en la app. El [checkpoint de implementación](docs/engineering/CONSTRUCTION_PROGRESS.md), en inglés, distingue métodos y exportaciones implementados de las limitaciones pendientes.
+
 ## Licencia y colaboración
 
 Didge Taller se distribuye bajo la [licencia MIT](LICENSE). DidgeLab y CADSD son referencias de investigación, no motores incluidos; el contexto de atribución está en la [guía del Laboratorio](README-LAB.md). Antes de colaborar, leé [AGENTS.md](AGENTS.md), mantené los cambios acotados y dejá fuera de Git el audio privado, los diagnósticos locales y las credenciales.

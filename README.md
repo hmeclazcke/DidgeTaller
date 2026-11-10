@@ -142,6 +142,8 @@ These run JVM suites and resource-format parity, not Android instrumentation. Fo
 
 The app remains a personal beta distributed from source. Hardware microphone response and audio output latency vary; no calibrated accuracy, universal timing guarantee, full coverage or whole-app mutation score is claimed. Preserve original recordings and signing compatibility when updating.
 
+Workshop construction planning is under development on a dedicated branch; its tested geometry foundation is not yet available in the app. See the [implementation checkpoint](docs/engineering/CONSTRUCTION_PROGRESS.md) for implemented methods, exports and remaining limitations.
+
 ## License and contributions
 
 Didge Taller is licensed under [MIT](LICENSE). DidgeLab and CADSD are research references, not bundled engines; attribution context is in the [Laboratory guide](README-LAB.md). Before contributing, read [AGENTS.md](AGENTS.md), keep changes focused, and leave private audio, local diagnostics, and credentials out of Git.

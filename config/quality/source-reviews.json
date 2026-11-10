@@ -5796,6 +5796,357 @@
         "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
       ],
       "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
+    },
+    "6b27e74d3d931ca97719e4f90acca7c0d7b7f44e103a96511cb34c0b34cde6c2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "5",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d5797dfc6b669cec7249978756787203a1e237131d58f8d542d0b43e46d6def7",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "5c422d46eef3100a5c476e7d5b00ce9b0ec45d1d4c0885542de54ef50f3719ff": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "6",
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "769d967ea0d132deb0704cc7d1bf72abfa91e37cf63151e92132d5da64cd9f31",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "27c6bb4351c7094d271cc72c4c7af13ea14e7ebe0b952a65a038e294c1c6bed1": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "8",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5fded918be88bc310cae56d0296edc17ed27a5a236db4fe1f67b7db563e5c20b",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "ed0c40ee6627fa89cd15dfda1c987ab68aa90a6397be489f5e9256948de72958": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "10",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "83871d6f71e3d30d206741a6d2b76847a8d72332c080c555544cbc7878912ae5",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "dfd715561590c13f356a16243562e3725902c8ea9abe49fbd9132778a26f27a8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "12",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f931d52ed950fb7d4767bb19087d588b460eeebd932d31bc0741e65bdea3dbd1",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "cb995bc385eee2e425fe86fa0e527e431c0ca2f28cde223c945ff5c606f3b608": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "13",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "8a95be2fe90f2ad9f975ec6a0bd67af56d6e690fb718835a8620977ac55d4f57",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "a8d0c0e7afd7b948be6b4c50b0c8a81ccfa7cea7f4ee7d88bdb8a076f8750c09": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "20",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d908c8a824c11e128a971269d3d0d05c845b8bf3b6e79ae9b2f97ae6ccc4b91a",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "a953d4dcbb3107181f29a09d9c0908a63253a70acd9f3f7b3826e9fe0ff983b2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "23",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "9295b9ad03f93800e675527609942429e07e39e4b260346db677075771761d58",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "d974f165d39580f4ab209aa85bacb2df9f6b0a72f0e5781d8ae1eb4eea052f27": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "31",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1cbe8de0262cea129ce7e497f17fadf54003fe7feb7cf071eafd1e44b047ec19",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "f3e832c07e73f322046c6afed849bd09d59dd0acfceef0f8be9a1dde3d4633c2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "32",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d780dd0fe7e2e6ce6713c59b17ffd8f8bb9d672bea58d35f3452313cab56524d",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "0aa03787f7cb5079f22f97a3ec9a487acf359198ec274b10fe80933e38f9e846": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "33",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "732c39720d8850955a0d9a7866e355ebd83c4a515885dcfe0730b1cd82b40ab7",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "e04cdced542fec7fbac49a04a202f7be07d3be8a64e8f430071b126303a80ed5": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "38",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "8df340c590f96f6eb546b7f66f7d3d37b1fbca1ec6fa151edf39c37145090a45",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "5b2d1ed07ee7c76343b512619d6a0f3c47d4683f88f0c33d6b7220b7a70387ba": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "39",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "894864d91e4d9304477aec676fd73745a25c30cdd8dd563027d1c2cf2a922433",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "a734ffb129f806e762f0c21ed7a49b51e3eca7085dc90b331d5fe092cd5eb002": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "45",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "1605242f3b34771ca2fd05db86423999972cba964c5e820fc4dddb6b5a7a77a2",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "2f6afeaf8095025f3acc85d3e571351b2bc65f2119f3eed75eb4da5a0c782be9": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "53",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "5abec99a95dab06756d56a0caf364c1f25084598562e7a4e0706b4e506f18258",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "b13ccaf15ca8baeefdac9af94dcfd72176933a696df59f1c39ca59f768ff68e7": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "54",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "820f936523784c164ee676baddd36610b5abc500f5f48cbe790023fcf7ba326a",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "9f6f0e0c6d8697855922a58fcb9a692ebb8e1237a520fed6ae4e592de3b7e752": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "56",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "19c581f01cf41fac55d4ab1dd2fd20e0bb1fb305fefb0ba24480a1c6ccab539a",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "d13056b45641b8ceb25e9574b592a527991ddc4c47ab9107e999fa37ff4029d4": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "58",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "72dbbad68d8f43096cb5b63b44b47581223fa3b31b7de82ebab0f14bf2c4bcb8",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "ddf73e3aa6055e14ec888dbe71079149749d702d3738affe45b576da819b5fa9": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "58",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "8df340c590f96f6eb546b7f66f7d3d37b1fbca1ec6fa151edf39c37145090a45",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "37c470b17d6ac9da4ccb1348275c6b36573d9c092de544652f940a330fa45c4b": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "59",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "98908f9c8dc4f790ecfecc3a272684e5b81b164654f81f111228cae7bf05dbc6",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "5fdf22fdfd410845129ad777063776ad213f41df05928e37648cf0ea78225c4d": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "61",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "5c342c96aaead10023916d2968cccc2c45e22f6c61af01a888584e6b13427922",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "2b3e4ec8d646ad7dfffee2945a53a768d64b34f28b4e663cda8accf3e669cf81": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "68",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "01bf61f3d8236941d10447c6c9170bad19f259860710873827e143821cf56d7c",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "7d8e1b92071e529fcb72f033809ac8d849830369508ec1df0253389c15883065": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "69",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "1bcb938d3c899cd4e053baa303131d46b71aeaa5ccfa1f273785a9c944edd1d0",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "c0cba3e72eadf9f76a2128b058a7b90b03ed0bcab9347201a0f28831240f6a7d": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "82",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "55cbcd1529641909f1672a573b1a492163be0c15f20d3af3de438d341e75c266",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "05e400981b40c2620dd7886aac394bcb9f4e2c2d71cd7d116590acc96f751bbe": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "89",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "ef0ca61fb3918f4b21bf67e83b39c246c20fc2a2e53a56e9129f9d52f7f893f0",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "36b0498a3a2eb80100a6491dc0dc49061443f823b121afdeeb9d1366c1debffa": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "92",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "0a62d109231f0eda515927954a8fdf05bdcb4eb48be3e6cddfa84367b1a61e08",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "81d9281b25dbb6b4995f0f7db63e341eb9a9a15ceed44f2404d099fa3a7ac250": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "104",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "da9d265327fcf709d9f53d4cb13ed739644398d8a4f2e2d3203e9f15a9170c91",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
     }
   }
 }

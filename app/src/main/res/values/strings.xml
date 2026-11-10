@@ -237,7 +237,7 @@
     <string name="ui_no_reliable_estimate">"no reliable estimate"</string>
     <string name="ui_exploratory_difference_from_the_first_simulated_resonance_hz">"Exploratory difference from the first simulated resonance: %1$+.2f Hz"</string>
     <string name="ui_measured_components_of_the_analyzed_wav">"Measured components of the analyzed WAV: "</string>
-    <string name="ui_bore_impedance_resonances_and_emitted_harmonics_are_different_quantities_they">"Bore impedance resonances and emitted harmonics are different quantities. They are not matched by order. The player, temperature and actual geometry affect them; the model is not equivalent to CADSD."</string>
+    <string name="ui_bore_impedance_resonances_and_emitted_harmonics_are_different_quantities_they">Bore impedance resonances and emitted harmonics are different quantities. They are not matched by order. The player, temperature and actual geometry affect them; this model is not a calibrated physical prediction.</string>
     <string name="ui_what_does_each_term_mean">"What does each term mean?"</string>
     <string name="ui_short_acoustic_glossary">"Short acoustic glossary"</string>
     <string name="ui_number_of_cycles_per_second_a_higher_frequency_corresponds_to_a_higher_pitched">"Number of cycles per second. A higher frequency corresponds to a higher-pitched sound."</string>
@@ -313,7 +313,7 @@
     <string name="ui_fundamental_harmonics_and_toots">"Fundamental, harmonics and toots"</string>
     <string name="ui_spectrum_playing_modes_help">Chart peaks are sound components. Toots are playing modes that you need to play separately to measure them. The highest peak is not necessarily the fundamental.</string>
     <string name="ui_design_workshop">"DESIGN WORKSHOP"</string>
-    <string name="ui_educational_1d_prediction_does_not_replace_cadsd_didgelab_or_a_real_test">"Educational 1D prediction. Does not replace CADSD, DidgeLab or a real test."</string>
+    <string name="ui_educational_1d_prediction_does_not_replace_cadsd_didgelab_or_a_real_test">Educational 1D prediction. Validate with physical measurements before construction.</string>
     <string name="ui_0_mm_mouthpiece_mm_mm_bell_mm">"0 mm · mouthpiece %1$s mm → %2$s mm · bell %3$s mm"</string>
     <string name="ui_schematic_bore_profile_not_a_construction_drawing">"Schematic bore profile; not a construction drawing."</string>
     <string name="ui_bore_points">"BORE POINTS"</string>
@@ -340,7 +340,7 @@
     <string name="ui_name">"Name"</string>
     <string name="ui_save">"Save"</string>
     <string name="ui_inverse_design">"INVERSE DESIGN"</string>
-    <string name="ui_search_for_a_geometry_from_three_target_frequencies_as_in_didgelab">"Search for a geometry from three target frequencies, as in DidgeLab."</string>
+    <string name="ui_search_for_a_geometry_from_three_target_frequencies_as_in_didgelab">Search for an internal bore geometry from three target resonances.</string>
     <string name="ui_1_choose_the_desired_resonances_2_tap_search_3_compare_and_test_the_result">"1. Choose the desired resonances. 2. Tap Search. 3. Compare and test the result."</string>
     <string name="ui_fundamental_drone">"Fundamental / drone"</string>
     <string name="ui_second_resonance">"Second resonance"</string>
@@ -358,7 +358,7 @@
     <string name="ui_length_mm_mouthpiece_mm_bell_mm">"Length: %1$s mm · Mouthpiece: %2$s mm · Bell: %3$s mm"</string>
     <string name="ui_apply_profile_to_designer">"Apply profile to Designer"</string>
     <string name="ui_scope_and_reproducibility">"SCOPE AND REPRODUCIBILITY"</string>
-    <string name="ui_evolutionary_method_help">Evolutionary search is implemented in Kotlin for this project. It does not use DidgeLab Python code; it uses classical 1D propagation equations, approximate losses and a pitch-based error function.</string>
+    <string name="ui_evolutionary_method_help">Didge Taller implements evolutionary search in Kotlin using classical 1D propagation equations, approximate losses and a pitch-based error function.</string>
     <string name="ui_the_search_is_reproducible_with_a_fixed_seed_its_accuracy_must_be_validated_wi">"The search is reproducible with a fixed seed. Its accuracy must be validated with physical measurements."</string>
     <string name="ui_legacy_readings">"Legacy readings"</string>
     <string name="ui_oldest_first">"Oldest first"</string>
@@ -419,7 +419,7 @@
     <string name="ui_to_carve_a_wooden_instrument_start_with_dry_wood_test_the_bore_before_gluing_a">"To carve a wooden instrument, start with dry wood, test the bore before gluing and do not use fire indoors."</string>
     <string name="ui_privacy_and_scope">"PRIVACY AND SCOPE"</string>
     <string name="ui_privacy_offline_help">No Internet access, advertising, accounts or audio uploads. Measure requests microphone permission when starting and saves each session as a private WAV when stopped. Export creates a copy wherever you choose.</string>
-    <string name="ui_design_method_help">The acoustic transmission simulation and evolutionary search are original Kotlin implementations inspired by the public ideas of DidgeLab and CADSD, not their original engines.</string>
+    <string name="ui_design_method_help">Didge Taller uses independent Kotlin implementations for acoustic transmission simulation and evolutionary search. Predictions are exploratory, not validated construction specifications.</string>
     <string name="app_name">Didge Taller</string>
     <string name="instrument_didgeridoo">Didgeridoo</string>
     <string name="instrument_native_flute">Native American flute</string>

@@ -1209,3 +1209,8 @@ Back/transport ownership case on a fresh API35 emulator. Logs are required artif
 failed or incomplete instrumentation fails the job. Actual remote outcomes are
 linked from the fix PR, not inferred from APK compilation. No physical-device or
 private-recording access; PR3 remains separate (already merged by the owner).
+
+
+### Workshop domain checkpoint ? IN PROGRESS
+
+See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,561 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.
