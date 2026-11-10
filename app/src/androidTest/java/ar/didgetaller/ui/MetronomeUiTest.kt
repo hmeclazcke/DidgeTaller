@@ -86,7 +86,7 @@ class MetronomeUiTest {
         compose.onNodeWithTag("metronome-transport").performScrollTo().performClick()
         compose.waitUntil { metronome.state.pulse != null }
         compose.onNodeWithTag("metronome-beats").assertExists()
-        compose.onNodeWithTag("metronome-pause").performClick()
+        compose.onNodeWithTag("metronome-pause").performScrollTo().performClick()
         compose.waitUntil { metronome.state.mode == MetronomeMode.PAUSED }
         compose.onNodeWithTag("metronome-edit").performScrollTo().performClick()
         compose.onNodeWithTag("metronome-bpm").performTextReplacement("0")
@@ -133,7 +133,7 @@ class MetronomeUiTest {
         val tempo = layouts.single()
         assertFalse("Tempo must not be ellipsized", tempo.isLineEllipsized(0))
         assertFalse("Tempo height must fit", tempo.didOverflowHeight)
-        assertTrue("All tempo digits must fit", tempo.getLineRight(0) <= tempo.size.width + 1f)
+        assertTrue("All tempo digits must fit: right=${tempo.getLineRight(0)}, width=${tempo.size.width}", tempo.getLineRight(0) <= tempo.size.width + 1f)
         screenshot()
         captureTransportFailure = false
     }

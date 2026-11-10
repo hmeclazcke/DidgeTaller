@@ -5552,33 +5552,33 @@
     },
     "894e682eeed7d9f2950ddd6d57ddbb5872090d9150f22947e270397aac9868ce": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
-      "line": 62,
+      "line": 61,
       "kind": "function",
       "name": "MetronomeScreen",
-      "semanticHash": "ee136f1cf7dacbcf675b19c6ca6393d26a311a9149cd9514f5001192021015eb",
-      "reason": "Uses the actual Android orientation, not the remaining body aspect ratio, so a short portrait never becomes two narrow columns. Landscape has independent scrollable controls. Native compact EN/ES and landscape captures are required. Compose JVM correspondence remains unsupported.",
+      "semanticHash": "fcb1cae80e623de519b17a1dcf3d74222f9da875f20f8524a8cfae63e209b3c6",
+      "reason": "Uses actual Android orientation and a plain Box; no wasted constraint subcomposition and no false landscape in a short portrait. Native real locale/font/landscape captures required. Compose JVM correspondence remains unsupported.",
       "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+      "reviewed_source": "8956fc0c25c3fa55b1ae3a24259a40e4ee29a5ee + measured viewport correction"
     },
     "aa9c77932bba65679cc501ea2603d9bb3350ca776731b267d233cf439510c9e9": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
-      "line": 81,
+      "line": 80,
       "kind": "function",
       "name": "MetronomeTempo",
-      "semanticHash": "80a9d97d658d81f6b8692497f6816cf1a57ab49ebae75e8fb731b336b46d5602",
-      "reason": "Tempo font is bounded by the actual three-digit slot and system font scale, retaining a large number without clipping or disabling font scaling. Explicit editor and bounded buttons delegate to the existing engine. Native tests inspect all digits. No independently reliable Compose JVM correspondence.",
+      "semanticHash": "e507228e5d553fd0ae5d7dd3c89bebfb302b3692bfe57b91d30a7a1b180c9c75",
+      "reason": "One alignment owner centers the three-digit tempo slot. Font size follows actual width and system scale; text metrics reject clipping with the existing integer-pixel rounding allowance. No independently reliable Compose JVM correspondence.",
       "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "46d841f3a77d3906e52332694cdd80e4282a1bac + responsive correction"
+      "reviewed_source": "8956fc0c25c3fa55b1ae3a24259a40e4ee29a5ee + measured viewport correction"
     },
     "2c13ae93d7c8d75ed4a20f87edc7052fd5e3a8bfc37d2db29e3b4965f97ef5c9": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
@@ -5689,15 +5689,15 @@
       "line": 127,
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "c542393ccd1252acfb5ef4e059d805ea0801dd9d89d058ff4dc448b35adf3b7f",
-      "reason": "Host delegates navigation and header presentation to cohesive components, reduces its existing complexity, and uses a compact navigation height on short viewports. No existing numeric debt ceiling was increased; full native acceptance remains required.",
+      "semanticHash": "610b1078c575d8ba44be7ab887a761a1b3c71b33e87e54c2034237b7c9581619",
+      "reason": "Host passes the measured navigation width to its cohesive renderer and preserves all routes. Existing complexity ceilings stay unchanged; full native regression acceptance remains required. Existing Compose correspondence limitation remains.",
       "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+      "reviewed_source": "8956fc0c25c3fa55b1ae3a24259a40e4ee29a5ee + measured viewport correction"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
@@ -5727,21 +5727,6 @@
       ],
       "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
     },
-    "62ff3f35dedd6ea9f6ede82711c677111c666d35b7dc9839c5138587e2d231a6": {
-      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 87,
-      "kind": "function",
-      "name": "NavigationSections",
-      "semanticHash": "e50f08e0a2aa2be176a049a282a88a69b620af2ef55e8b78c579c0199e0719a7",
-      "reason": "Four localized labels use the complete item width, a shared bounded line height and short captions only when width/font budget needs them; full titles remain accessible. Native tests reject actual clipping, ellipsis and overlap, retaining the existing one-pixel glyph rounding allowance. Compose JVM correspondence remains unsupported.",
-      "metric_status": "compose-transformation",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
-      ],
-      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
-    },
     "6fb537759ceaad7c363d55656bc7ffef5e25a801bff1dfff3a89f02d3a0de561": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
       "line": 113,
@@ -5756,6 +5741,21 @@
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
       "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+    },
+    "01071b4eb933c704fc76d05a8eadfc9e4f4f121703f8a514dae3a90e81febca6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 87,
+      "kind": "function",
+      "name": "NavigationSections",
+      "semanticHash": "92fe6ee61d8f4161deedd566ef6245fca0c1467e8faa3aa41741ec684cd2005a",
+      "reason": "Width is an explicit measured layout input, not global configuration width; this supports constrained panes as well as real phone windows. Four localized captions have full accessible titles and no clipping/overlap in native tests. Compose JVM correspondence remains unsupported.",
+      "metric_status": "compose-transformation",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+      ],
+      "reviewed_source": "8956fc0c25c3fa55b1ae3a24259a40e4ee29a5ee + measured viewport correction"
     }
   }
 }

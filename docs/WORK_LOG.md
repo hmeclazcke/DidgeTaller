@@ -1,3 +1,15 @@
+# Measured viewport follow-up - 2026-11-10
+
+Focused 42833806307 confirms the portrait structure and actual tempo display are
+restored. Its remaining diagnostics exposed a constrained-pane test using global
+configuration width, a pause click below the viewport, and redundant centered text
+alignment in a glyph-bound assertion. Pass measured navigation width, scroll to
+the secondary action before tapping, and keep a single tempo alignment owner.
+Remove the outer unused BoxWithConstraints flagged by Lint; retain the actually
+needed width scopes. Local native APK compilation/Lint pass before publication.
+No pure timing/audio/PIT inputs changed; next validate the short native scope,
+then run complete instrumentation once on the accepted implementation.
+
 # Captured portrait/landscape correction - 2026-11-10
 
 Focused run 42830157254 retained four real failure images. They revealed that

@@ -29,7 +29,6 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -60,7 +59,7 @@ internal fun MetronomeMediaControls(controller: PracticeMetronome, active: Boole
 /** Practice controls share a viewport; only explicitly requested editing opens an IME. */
 @Composable
 fun MetronomeScreen(controller: PracticeMetronome) {
-    BoxWithConstraints(Modifier.fillMaxSize().testTag("metronome-screen")) {
+    Box(Modifier.fillMaxSize().testTag("metronome-screen")) {
         val landscape = androidx.compose.ui.platform.LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
         if (landscape) Row(Modifier.fillMaxSize().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -92,7 +91,7 @@ private fun MetronomeTempo(controller: PracticeMetronome, compact: Boolean) {
         Column(Modifier.weight(1f).clickable { editing = true }.testTag("metronome-edit").semantics { contentDescription = editLabel },
             horizontalAlignment = Alignment.CenterHorizontally) {
             Text(bpm.toString(), fontSize = tempoSize, lineHeight = tempoSize * 1.1f, fontWeight = FontWeight.Bold, modifier = Modifier.testTag("metronome-tempo-value"),
-                textAlign = TextAlign.Center, maxLines = 1)
+                maxLines = 1)
             Text(stringResource(R.string.metronome_bpm), style = MaterialTheme.typography.labelMedium)
         }
         FilledTonalButton(onClick = { controller.update(controller.state.settings.copy(bpm = bpm + 1)) }, enabled = bpm < 240,
