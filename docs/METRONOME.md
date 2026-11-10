@@ -68,6 +68,11 @@ and is not replaced with Android coverage in the JVM report.
 No physical-device test or installation is part of this feature delivery. Existing
 acoustic equations, WAV/session formats and private recordings remain unchanged.
 
+Transport actions clear tempo-editor focus, and the numeric keyboard offers Done.
+This keeps the keyboard from covering the practice settings after stopping. The
+native transport test asserts that focus was released before its screenshot; the
+component-test host also respects system drawing insets.
+
 ## Source-bound review decisions
 
 The strict JVM ratchet originally rejected branching audio-focus policy embedded in

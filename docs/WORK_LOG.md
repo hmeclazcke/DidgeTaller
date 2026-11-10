@@ -9,6 +9,12 @@ See [design and reproducible checks](METRONOME.md). Physical-device access and
 installation are outside this task; only a new synthetic emulator data directory
 is used. Existing rebuild tools/gates are retained.
 
+Actual API35 captures from source `5f706ba` prompted an IME usability correction:
+transport/Done end tempo editing, the native case asserts focus/keyboard release,
+and screenshots use safe insets and a stable scrolled view. This changes UI inputs;
+its CI is revalidated while unchanged domain/PIT evidence is reused. PR2 remains
+draft and main remains unchanged.
+
 # 2026-11-08 workspace continuation handoff
 
 ## Verified comparison/rendering delivery - 2026-11-09

@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.ViewModelStore
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import ar.didgetaller.TallerViewModel
 import ar.didgetaller.audio.PracticeMetronome
@@ -48,7 +51,7 @@ class MetronomeUiTest {
         if (::app.isInitialized) app.clean()
     }
     @Test fun transportSettingsAndVisualCaptureInterlock() {
-        compose.setContent { MaterialTheme { Column(Modifier.verticalScroll(rememberScrollState())) { MetronomePanel(metronome) } } }
+        compose.setContent { MaterialTheme { Column(Modifier.safeDrawingPadding().verticalScroll(rememberScrollState())) { MetronomePanel(metronome) } } }
         compose.onNodeWithTag("metronome-start").performClick()
         compose.waitUntil { metronome.state.pulse != null }
         compose.onNodeWithTag("metronome-pause").performClick()
@@ -68,9 +71,19 @@ class MetronomeUiTest {
         compose.onNodeWithTag("metronome-stop").performScrollTo().performClick()
         compose.waitUntil { metronome.state.mode == MetronomeMode.STOPPED }
         assertNull(metronome.state.pulse)
+        compose.onNodeWithTag("metronome-bpm").assertIsNotFocused()
+        compose.waitUntil(5000) {
+            var hidden = false
+            compose.runOnUiThread {
+                hidden = ViewCompat.getRootWindowInsets(compose.activity.window.decorView)
+                    ?.isVisible(WindowInsetsCompat.Type.ime()) != true
+            }
+            hidden
+        }
         val settings = MetronomePreferences(app).load()
         assertEquals(137, settings.bpm); assertEquals(3, settings.beatsPerBar)
         assertEquals(MetronomeSubdivision.TRIPLET, settings.subdivision)
+        compose.onNodeWithTag("metronome-expand").performScrollTo()
         screenshot()
     }
     @Test fun preferencesSurviveNewOwnerAndInvalidValuesAreBounded() {
@@ -119,6 +132,7 @@ class MetronomeUiTest {
         compose.runOnUiThread { vm.microphoneStop(); owners.clear() }
     }
     private fun screenshot() {
+        compose.waitForIdle()
         val label = InstrumentationRegistry.getArguments().getString("evidenceLabel") ?: "default"
         val file = File(compose.activity.getExternalFilesDir(null), "metronome-evidence/$label.png")
         file.parentFile!!.mkdirs()

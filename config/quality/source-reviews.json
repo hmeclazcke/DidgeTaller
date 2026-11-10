@@ -5496,10 +5496,10 @@
     },
     "785ff109ad71b36b6a6da8b8bc085ce1779ade2a365666c4d6ba6a02d9dfd0ba": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 43,
+      "line": 46,
       "kind": "function",
       "name": "MetronomeTransport",
-      "semanticHash": "6bae2ed37e66b21408d65bc4ebc06e48957aac6de67c9da0094ad35dfcfdf011",
+      "semanticHash": "fc32aa208395a06739947c579e22288d076ed3ba47019380493af9c8e3043ad1",
       "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
       "evidence": [
         "docs/METRONOME.md",
@@ -5508,7 +5508,7 @@
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
       "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
+      "reason": "Compose source/JVM transformation remains unsupported for independent CRAP-L. Native EN/ES 150% regression now verifies transport clears tempo editing focus and the IME is hidden before capture. Done also clears focus. No numerical threshold or method debt ceiling changed."
     },
     "1c16a598f882d03040a7b441cd35c5b26380c4d010d9c1aeb5651e3133b84a49": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
@@ -5544,10 +5544,10 @@
     },
     "93bea082dccbe4bcab0e449bd1c280c86e719dce5029c10b52f9e27a3c93dbf5": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 99,
+      "line": 103,
       "kind": "function",
       "name": "MetronomeTempo",
-      "semanticHash": "005e56c673645c49c14bacf1cba0a299cde1ebab3a4f8c21d1c97b44122dbf39",
+      "semanticHash": "9b651328d6452d35cb4dbe75514bd83b67957d279a53d4e661bf32230440d430",
       "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
       "evidence": [
         "docs/METRONOME.md",
@@ -5556,7 +5556,7 @@
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
       "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
+      "reason": "Compose source/JVM transformation remains unsupported for independent CRAP-L. Native EN/ES 150% regression now verifies transport clears tempo editing focus and the IME is hidden before capture. Done also clears focus. No numerical threshold or method debt ceiling changed."
     },
     "390375a3e29ba4202a936759cb41271068684e1f26c702237383e017e273c781": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",

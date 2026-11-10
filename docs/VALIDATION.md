@@ -8,7 +8,7 @@ Selected PIT: 154 mutants across six bytecode classes; 140 killed, 14 survived,
 zero uncovered/timeouts. Surviving redundant guards/Unit bridges are not all claimed
 equivalent; the score is 90.91% for this selection, not whole-app mutation coverage.
 
-JVM production line/branch coverage: 46.15%/44.26%; pure core: 99.10%/85.40%.
+JVM production line/branch coverage after the focus refinement: 46.12%/44.26%; pure core: 99.10%/85.40%.
 CRAP-L: 587 scored, 131 classified unscored, 64 above target; all 42 new measured
 metronome functions are below target (maximum MCC/CRAP-L 8). Existing numeric
 baselines are unchanged. CPD: zero groups of at least 100 tokens. Lint: zero errors,
@@ -21,6 +21,16 @@ the full suite plus actual compact EN/ES at 150% font, with metronome screenshot
 and strict log/result verification. Observed source-scoped CI runs are linked from
 the feature PR and delivery report. No physical Samsung access or installation is
 authorized by this feature task. See [metronome design](METRONOME.md).
+
+Source `5f706ba` has observed successful [fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42790012770)
+and [full API35 CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42790009056):
+174 native cases, 164 passed, 10 protected/configuration skips, zero failures;
+the separate compact EN/ES 150% metronome cases also passed. Inspection of those
+actual images exposed a keyboard left open after Stop. Transport/Done now release
+editor focus; native regression additionally checks IME visibility and captures a
+stable view with system insets. Latest-source CI is linked from PR2. Timing, focus
+lease code and PIT inputs did not change in this UI refinement, so their existing
+mutation evidence is reused rather than rerun.
 
 # 2026-11-08 workspace ownership integration
 

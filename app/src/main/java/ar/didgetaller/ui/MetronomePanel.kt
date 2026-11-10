@@ -4,15 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import ar.didgetaller.R
 import ar.didgetaller.audio.PracticeMetronome
@@ -42,14 +45,15 @@ fun MetronomePanel(controller: PracticeMetronome) {
 @Composable
 private fun MetronomeTransport(controller: PracticeMetronome) {
     val mode = controller.state.mode
+    val focus = LocalFocusManager.current
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Button(onClick = controller::start, enabled = mode != MetronomeMode.RUNNING, modifier = Modifier.testTag("metronome-start")) {
+        Button(onClick = { focus.clearFocus(); controller.start() }, enabled = mode != MetronomeMode.RUNNING, modifier = Modifier.testTag("metronome-start")) {
             Text(stringResource(if (mode == MetronomeMode.PAUSED) R.string.metronome_resume else R.string.metronome_start))
         }
-        OutlinedButton(onClick = controller::pause, enabled = mode == MetronomeMode.RUNNING, modifier = Modifier.testTag("metronome-pause")) {
+        OutlinedButton(onClick = { focus.clearFocus(); controller.pause() }, enabled = mode == MetronomeMode.RUNNING, modifier = Modifier.testTag("metronome-pause")) {
             Text(stringResource(R.string.metronome_pause))
         }
-        TextButton(onClick = controller::stop, enabled = mode != MetronomeMode.STOPPED, modifier = Modifier.testTag("metronome-stop")) {
+        TextButton(onClick = { focus.clearFocus(); controller.stop() }, enabled = mode != MetronomeMode.STOPPED, modifier = Modifier.testTag("metronome-stop")) {
             Text(stringResource(R.string.metronome_stop))
         }
     }
@@ -97,6 +101,7 @@ private fun MetronomeSettingsPanel(controller: PracticeMetronome) {
 
 @Composable
 private fun MetronomeTempo(bpm: Int, changed: (Int) -> Unit) {
+    val focus = LocalFocusManager.current
     var draft by remember(bpm) { mutableStateOf(bpm.toString()) }
     val invalid = draft.toIntOrNull()?.let { it !in 30..240 } ?: true
     OutlinedTextField(value = draft, onValueChange = { value ->
@@ -104,7 +109,9 @@ private fun MetronomeTempo(bpm: Int, changed: (Int) -> Unit) {
         value.toIntOrNull()?.takeIf { it in 30..240 }?.let(changed)
     }, label = { Text(stringResource(R.string.metronome_bpm)) }, isError = invalid,
         supportingText = { Text(stringResource(R.string.metronome_bpm_range)) }, singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth().testTag("metronome-bpm"))
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { focus.clearFocus() }),
+        modifier = Modifier.fillMaxWidth().testTag("metronome-bpm"))
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         OutlinedButton(onClick = { changed(bpm - 1) }, enabled = bpm > 30, modifier = Modifier.testTag("metronome-slower")) { Text("−1 BPM") }
         OutlinedButton(onClick = { changed(bpm + 1) }, enabled = bpm < 240, modifier = Modifier.testTag("metronome-faster")) { Text("+1 BPM") }
