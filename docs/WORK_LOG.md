@@ -1171,3 +1171,25 @@ recording actions likewise wrap by real available width and system font scale.
 Keep normal simultaneous controls, geometry stability and min48dp assertions.
 Owner confirmed the pre-existing 31-session/31-WAV Samsung baseline; signatures
 and package/code13 match. Install remains gated on passing final native verification.
+
+### Verified UI delivery at 89cd201
+
+Fast CI42865043802 and focused API35 CI42865033307 pass: 29/29 native
+executions, 542 passed/8 protected skips per JVM variant, no failures. Final
+screenshots were visually inspected and the EN/ES live showcase refreshed;
+metronome captures link from both README files. No full instrumentation or fresh
+mutation claim is made for this focused presentation revision. VALIDATION.md
+records exact scope and the acknowledged Compose mapping limitation.
+
+The authorized Samsung install-r succeeded with the original compatible
+package/signature and code13. Owner confirmed 31 sessions/31 WAV, 19 active/12
+trashed. Protected metadata and app-owned preferences match after installation,
+startup and visual checks. No private audio was read or played. No recording or
+instrumentation ran on the phone. Inspected idle Measure, stopped metronome,
+four icon-only destinations and scrolling advanced controls; collapsed metronome
+positions remain unchanged after a vertical swipe. Returned to idle Measure.
+
+No pending implementation or installation step remains for this UI task. PR2
+stays draft, main remains unchanged. Documentation/screenshot-only follow-ups
+reuse unchanged 89cd201 executable evidence; do not rebuild or reinstall for
+those files. Physical imagery/metadata stays ignored and must never be published.

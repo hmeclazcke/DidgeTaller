@@ -2313,3 +2313,45 @@ fixture produces actual RED before fractional selection is restored. Final local
 JVM cases per variant and170 native cases plus five configurations pass; gate0.
 Current exact-source remote runs are recorded in PR1; prior f721 results do not
 substitute for changed-input validation. WAV/detector/layout semantics are preserved.
+
+### Measure/metronome UI delivery — 89cd201 (2026-11-10)
+
+- [Fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42865043802)
+  passed: 550 app JVM cases per variant, 542 passed/8 protected skips each,
+  no failures; resources, differential reference comparison, APK/test compilation,
+  Lint, Detekt, CPD, source accountability and quality-tool failure tests passed.
+- [Focused API35 UI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42865033307)
+  passed: 29 executions across nine selections/configurations, no failures/skips.
+  This is not the complete instrumentation suite. It covers normal EN/ES,
+  narrow EN/ES150, landscape150, synthetic didgeridoo/flute/strong harmonics,
+  silence/uncertainty, recording confirmations, accessible tabs/Back, metronome
+  states/audio isolation and the unchanged strict playback scrubbing test.
+- Actual final PNGs were inspected for idle/active Measure, pending/accepted
+  readings, stopped/running/paused/expanded metronome and constrained layouts.
+  Primary information/actions fit together at normal size; constrained or expanded
+  content scrolls. A real localized header-width defect found during visual review
+  was fixed with intrinsic-width wrapping. Controls wrap at larger system font
+  sizes without shrinking accessibility scaling or touch targets.
+- No numeric threshold changed. Gate: 592 scored/137 unscored functions,
+  64 existing above-target JVM methods, zero CPD groups and source violations.
+  Compose remains technically unscored and explicitly reviewed. MeasureScreen
+  MCC 105 ->95, detail boundaries 7/8, metronome root 2. Lint: zero errors,
+  62 warnings/7 hints. No fresh mutation or Android-coverage claim is made for
+  this presentation-only revision.
+- Authorized Samsung install-r succeeded: compatible `ar.didgetaller` package
+  and certificate, version/code `3.3.0-beta1`/13. The owner confirmed the fresh
+  pre-existing 31 sessions/31 WAV baseline, 19 active/12 trashed, replacing 30/30.
+  UID, index, WAV filename/size/mtime membership and app-owned preferences match
+  before installation, after startup and after safe visual navigation. No private
+  WAV contents were read, copied, hashed or played. No microphone or physical
+  instrumentation was started. No crash was observed at startup.
+- Physical screenshots were inspected: idle Measure and stopped metronome fit
+  above navigation. A vertical swipe leaves collapsed metronome bounds unchanged;
+  expanded settings scroll to subdivisions, accent and volume. The app was left
+  in idle Measure. Recording and altered font/orientation states were verified
+  on the clean emulator rather than by recording on the phone.
+
+Ignored full evidence: `checkpoints/metronome-redesign/42865033307/`,
+`checkpoints/metronome-redesign/42865043802/` and
+`checkpoints/measure-metronome-ui/samsung/`. Published clean-emulator images
+and individual provenance are in `docs/screenshots/showcase/` and `showcase-es/`.
