@@ -5555,15 +5555,15 @@
       "line": 62,
       "kind": "function",
       "name": "MetronomeScreen",
-      "semanticHash": "978e3cd3ab696875879eef1f0b0b52b8c950b714f9ac03623a85688d3f595dbf",
-      "reason": "Responsive portrait/landscape presentation follows actual available viewport, including narrow landscape. Scroll supports constrained accessibility viewports. No independently reliable Compose JVM correspondence.",
+      "semanticHash": "ee136f1cf7dacbcf675b19c6ca6393d26a311a9149cd9514f5001192021015eb",
+      "reason": "Uses the actual Android orientation, not the remaining body aspect ratio, so a short portrait never becomes two narrow columns. Landscape has independent scrollable controls. Native compact EN/ES and landscape captures are required. Compose JVM correspondence remains unsupported.",
       "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "46d841f3a77d3906e52332694cdd80e4282a1bac + responsive correction"
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
     },
     "aa9c77932bba65679cc501ea2603d9bb3350ca776731b267d233cf439510c9e9": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
@@ -5627,18 +5627,18 @@
     },
     "782eb00ccfce6125064de8709c599b82fbf06d63efb49c3061514d3bd8bbd6e8": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
-      "line": 149,
+      "line": 153,
       "kind": "function",
       "name": "MetronomeTransport",
-      "semanticHash": "416c1681a33c87057546eb5f390891b346fe41819c2ab6a3111f4a8ecc1b2e6f",
-      "reason": "Start/stop primary action and secondary pause/reset delegate to the existing transport; pure tested sound-status policy separates request from effective silence. No independently reliable Compose JVM method correspondence.",
+      "semanticHash": "ede245d2941bb8fc1b77f02f0e5bdaf1cdfe4761ef32e0b271877c7ab145f57d",
+      "reason": "Primary start/stop precedes secondary sound/pause controls so constrained practice viewports retain their main action. All decisions use the one existing engine and tested sound-status policy. Native pause/resume/stop/interlock regressions protect this Compose-only presentation.",
+      "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
-      "metric_status": "compose-transformation"
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
     },
     "3b80a142cc16107737d1a02e10a10c62c1b54810e191fea767bb38f212380360": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
@@ -5686,18 +5686,18 @@
     },
     "c7c20c886466a32843eb06cae5e4e1be68c58c2230fe95c3789065cb1b09e3d7": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 106,
+      "line": 127,
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "85adb22ac6d2477ae27667cb64860b2b6c7f107b94308c39561d4107fc5e65b0",
-      "reason": "Existing host delegates navigation presentation to NavigationSections and routes the dedicated metronome; no new numeric debt ceiling. The original three sections and Back are protected by full native navigation regressions. Existing Compose correspondence limitation remains.",
+      "semanticHash": "c542393ccd1252acfb5ef4e059d805ea0801dd9d89d058ff4dc448b35adf3b7f",
+      "reason": "Host delegates navigation and header presentation to cohesive components, reduces its existing complexity, and uses a compact navigation height on short viewports. No existing numeric debt ceiling was increased; full native acceptance remains required.",
       "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "46d841f3a77d3906e52332694cdd80e4282a1bac + responsive correction"
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
@@ -5732,15 +5732,30 @@
       "line": 87,
       "kind": "function",
       "name": "NavigationSections",
-      "semanticHash": "3ca245a5f99a6d3dfaf7a2df6f39365a8d21efbbd07ef802185729edbeb70298",
-      "reason": "Cohesive four-section rendering owns bounded line height, short label on very narrow screens, and full accessibility descriptions. Labels can use their full item width. Native English/Spanish tests assert no ellipsis, overflow or overlap at enlarged fonts. No independently reliable Compose JVM correspondence.",
+      "semanticHash": "e50f08e0a2aa2be176a049a282a88a69b620af2ef55e8b78c579c0199e0719a7",
+      "reason": "Four localized labels use the complete item width, a shared bounded line height and short captions only when width/font budget needs them; full titles remain accessible. Native tests reject actual clipping, ellipsis and overlap, retaining the existing one-pixel glyph rounding allowance. Compose JVM correspondence remains unsupported.",
       "metric_status": "compose-transformation",
       "evidence": [
         "docs/METRONOME.md",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
-      "reviewed_source": "46d841f3a77d3906e52332694cdd80e4282a1bac + responsive correction"
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+    },
+    "6fb537759ceaad7c363d55656bc7ffef5e25a801bff1dfff3a89f02d3a0de561": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 113,
+      "kind": "function",
+      "name": "TallerToolbar",
+      "semanticHash": "2c6ac8f1e08186a1fbb573c879bf2a88ea09a9c0b55e8f64cdb6011d579b6a6d",
+      "reason": "Cohesive platform header owns a declarative per-destination suppression policy: preserve viewer/measurement/fullscreen rules and free landscape practice space. MCC is below the unchanged complexity ceiling; real navigation/font/recording UI regressions protect this Compose-only boundary.",
+      "metric_status": "compose-transformation",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+      ],
+      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
     }
   }
 }

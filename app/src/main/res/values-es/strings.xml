@@ -622,12 +622,14 @@
     <string name="metronome_volume_label">Volumen del clic</string>
     <string name="metronome_tab">Metrónomo</string>
     <string name="ui_lab_short">Lab</string>
+    <string name="metronome_tab_short">Metr.</string>
+    <string name="ui_library_short">Biblio</string>
     <string name="metronome_edit">Editar tempo</string>
     <string name="metronome_slower">Bajar tempo</string>
     <string name="metronome_faster">Subir tempo</string>
     <string name="metronome_ready">Listo</string>
-    <string name="metronome_sound_on">Sonido activado</string>
-    <string name="metronome_sound_off">Sonido apagado</string>
+    <string name="metronome_sound_on">Sonido: sí</string>
+    <string name="metronome_sound_off">Sonido: no</string>
     <string name="metronome_reset">Reiniciar</string>
     <string name="metronome_apply">Aplicar</string>
     <string name="metronome_cancel">Cancelar</string>

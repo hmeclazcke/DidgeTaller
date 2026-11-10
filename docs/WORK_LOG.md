@@ -1,3 +1,25 @@
+# Captured portrait/landscape correction - 2026-11-10
+
+Focused run 42830157254 retained four real failure images. They revealed that
+remaining body width/height misclassified a short portrait as landscape. Use
+Android orientation, a width/font budget for short captions and the normal single
+portrait column. The header owns per-destination suppression and frees landscape
+practice space; the primary transport action precedes sound/pause. The old image
+also demonstrated subpixel width rounding: preserve the project's existing
+one-pixel glyph allowance, explicit no-ellipsis/height checks and nonoverlap checks.
+
+The selected paused-scrubbing scenario passed in isolation. Read its pause assertion
+on main after the callback finishes publishing id and pause intent, avoiding an
+instrumentation-thread observation between the two assignments. The 80ms seek
+contract and pause assertion are unchanged; no playback production code changed.
+
+Local compilation, resources and gate pass: 592 measured/135 explicitly unscored,
+64 historical above-target functions, no new numerical exceptions. TallerApp MCC
+40, window toolbar 6 and navigation renderer 3 (original host 48). Existing timing,
+PCM and 177-mutant evidence is unchanged. Revalidate the captured UI configurations
+before the final complete native run. PR2 remains draft; no physical device/data
+operation is part of this correction.
+
 # Focused native diagnostics - 2026-11-10
 
 The full run on 2a9d806 still found label overflow and a paused-scrubbing failure.

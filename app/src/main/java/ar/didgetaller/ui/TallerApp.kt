@@ -87,7 +87,13 @@ private val sectionIcons=listOf(R.drawable.nav_measure, R.drawable.nav_metronome
 private fun RowScope.NavigationSections(sections: List<String>, selected: Int, navigate: (Int) -> Unit) {
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val navigationTextFactor=(1.2f/configuration.fontScale).coerceAtMost(1f)
-    val navigationLabels=sections.toMutableList().apply { if(configuration.screenWidthDp<320)set(2,stringResource(R.string.ui_lab_short)) }
+    val navigationLabels=sections.toMutableList().apply {
+        if(configuration.screenWidthDp<340*minOf(configuration.fontScale,1.2f)) {
+            set(1,stringResource(R.string.metronome_tab_short))
+            set(2,stringResource(R.string.ui_lab_short))
+            set(3,stringResource(R.string.ui_library_short))
+        }
+    }
                         sections.forEachIndexed { idx,title ->
                             NavigationBarItem(
                                 selected=selected==idx,
@@ -101,6 +107,21 @@ private fun RowScope.NavigationSections(sections: List<String>, selected: Int, n
                         }
 }
 
+/** Preserve header behavior while leaving short practice viewports to their primary controls. */
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun TallerToolbar(route: String?, detail: Boolean, fullscreen: Boolean, capturing: Boolean,
+    title: @Composable () -> Unit, navigationIcon: @Composable () -> Unit) {
+    val configuration=androidx.compose.ui.platform.LocalConfiguration.current
+    val shortLarge=configuration.screenHeightDp<500 && configuration.fontScale>=1.5f
+    val suppressed=mapOf(
+        TallerRoutes.Viewer to true,
+        TallerRoutes.Measure to (shortLarge || capturing),
+        TallerRoutes.Metronome to (configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE))
+    if((detail || !fullscreen) && suppressed[route]!=true)
+        TopAppBar(title=title,navigationIcon=navigationIcon,colors=TopAppBarDefaults.topAppBarColors(containerColor=background))
+}
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
@@ -111,7 +132,6 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
     val sections=listOf(stringResource(R.string.ui_measure),stringResource(R.string.metronome_tab),stringResource(R.string.ui_laboratory),stringResource(R.string.ui_library))
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val fontScale=configuration.fontScale
-    val shortLandscapeWithLargeText=configuration.screenHeightDp<500 && fontScale>=1.5f
     var confirmDiscard by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(vm.sessionPhase) { if(vm.sessionPhase!=SessionPhase.CAPTURING)confirmDiscard=false }
     MaterialTheme(colorScheme=appColors) {
@@ -155,7 +175,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         Scaffold(
             containerColor=background,
             topBar={
-                if(!inViewer && (inDetail || !vm.fullScreen) && !(route==TallerRoutes.Measure && (shortLandscapeWithLargeText || vm.sessionPhase==SessionPhase.CAPTURING))) TopAppBar(
+                TallerToolbar(route,inDetail,vm.fullScreen,vm.sessionPhase==SessionPhase.CAPTURING,
                     title={
                         if(inDetail)Text(if(inTool)listOf(stringResource(R.string.ui_design),stringResource(R.string.ui_spectrum),stringResource(R.string.ui_search),stringResource(R.string.ui_guide))[vm.labTab] else if(route==TallerRoutes.Compare)stringResource(R.string.ui_compare_sessions) else stringResource(R.string.ui_session_3cb186))
                         else Column {
@@ -166,13 +186,12 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                     navigationIcon={if(inDetail)IconButton(onClick={navController.popBackStack()}) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack,contentDescription=if(inTool)context.getString(R.string.ui_back_to_laboratory) else context.getString(R.string.ui_back_to_sessions))
                     }},
-                    colors=TopAppBarDefaults.topAppBarColors(containerColor=background)
                 )
             },
             bottomBar={
                 if(!inViewer && route!=TallerRoutes.Session)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
                     if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
-                    if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
+                    if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
                         NavigationSections(sections,section) {navController.navigateToSection(it)}
                     }
                 }

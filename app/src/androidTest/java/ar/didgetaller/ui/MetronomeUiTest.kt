@@ -56,17 +56,22 @@ class MetronomeUiTest {
         compose.setContent { TallerApp(vm, {}, {}, { _, _, _ -> }) }
         compose.onNodeWithTag("metronome-screen").assertDoesNotExist()
         val label = compose.activity.getString(ar.didgetaller.R.string.metronome_tab)
-        compose.onNode(hasText(label) and hasAnyAncestor(hasTestTag("main-navigation"))).performClick()
+        compose.onNode(hasContentDescription(label) and hasAnyAncestor(hasTestTag("main-navigation"))).performClick()
         compose.onNodeWithTag("metronome-screen").assertIsDisplayed()
-        val labels = listOf(ar.didgetaller.R.string.ui_measure, ar.didgetaller.R.string.metronome_tab,
-            if (compose.activity.resources.configuration.screenWidthDp < 320) ar.didgetaller.R.string.ui_lab_short else ar.didgetaller.R.string.ui_laboratory,
-            ar.didgetaller.R.string.ui_library)
+        val configuration = compose.activity.resources.configuration
+        val narrow = configuration.screenWidthDp < 340 * minOf(configuration.fontScale, 1.2f)
+        val labels = listOf(ar.didgetaller.R.string.ui_measure,
+            if (narrow) ar.didgetaller.R.string.metronome_tab_short else ar.didgetaller.R.string.metronome_tab,
+            if (narrow) ar.didgetaller.R.string.ui_lab_short else ar.didgetaller.R.string.ui_laboratory,
+            if (narrow) ar.didgetaller.R.string.ui_library_short else ar.didgetaller.R.string.ui_library)
         val labelBounds = labels.map { resource ->
             val node = compose.onNode(hasText(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")), useUnmergedTree = true)
             val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
             node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
             val layout = layouts.single()
-            assertFalse("Navigation label ${compose.activity.getString(resource)} must fit: size=${layout.size}, width=${layout.didOverflowWidth}, height=${layout.didOverflowHeight}, lines=${layout.lineCount}", layout.hasVisualOverflow)
+            assertFalse("Navigation label height must fit", layout.didOverflowHeight)
+            assertFalse("Navigation labels must not be ellipsized", layout.isLineEllipsized(0))
+            assertTrue("Navigation glyphs must fit (integer-pixel rounding)", layout.getLineRight(0) <= layout.size.width + 1f)
             node.fetchSemanticsNode().boundsInRoot
         }
         assertTrue("Four labels must not overlap", labelBounds.zipWithNext().all { (a, b) -> a.right <= b.left })
@@ -125,7 +130,10 @@ class MetronomeUiTest {
         compose.onNodeWithTag("metronome-edit").performScrollTo()
         val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
         compose.onNodeWithTag("metronome-tempo-value", useUnmergedTree = true).performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
-        assertFalse("All tempo digits must fit", layouts.single().hasVisualOverflow)
+        val tempo = layouts.single()
+        assertFalse("Tempo must not be ellipsized", tempo.isLineEllipsized(0))
+        assertFalse("Tempo height must fit", tempo.didOverflowHeight)
+        assertTrue("All tempo digits must fit", tempo.getLineRight(0) <= tempo.size.width + 1f)
         screenshot()
         captureTransportFailure = false
     }

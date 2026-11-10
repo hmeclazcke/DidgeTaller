@@ -61,7 +61,7 @@ internal fun MetronomeMediaControls(controller: PracticeMetronome, active: Boole
 @Composable
 fun MetronomeScreen(controller: PracticeMetronome) {
     BoxWithConstraints(Modifier.fillMaxSize().testTag("metronome-screen")) {
-        val landscape = maxWidth > maxHeight && maxHeight < 500.dp
+        val landscape = androidx.compose.ui.platform.LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
         if (landscape) Row(Modifier.fillMaxSize().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
                 MetronomeTempo(controller, true); MetronomeMeter(controller); MetronomeBeats(controller)
@@ -155,14 +155,6 @@ private fun MetronomeTransport(controller: PracticeMetronome) {
     val focus = LocalFocusManager.current
     val status = metronomeSoundStatus(state.settings, state.captureActive, state.audioFailed, controller.systemMuted)
     val soundLabel = stringResource(if (state.settings.audible) R.string.metronome_sound_on else R.string.metronome_sound_off)
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        FilterChip(selected = state.settings.audible, onClick = { controller.requestSound(!state.settings.audible) },
-            enabled = !state.captureActive, label = { Text(soundLabel) }, modifier = Modifier.weight(1f).testTag("metronome-sound"))
-        TextButton(onClick = { focus.clearFocus(); if (state.mode == MetronomeMode.RUNNING) controller.pause() else controller.stop() },
-            enabled = state.mode != MetronomeMode.STOPPED, modifier = Modifier.testTag("metronome-pause")) {
-            Text(stringResource(if (state.mode == MetronomeMode.PAUSED) R.string.metronome_reset else R.string.metronome_pause))
-        }
-    }
     val mainLabel = when (state.mode) {
         MetronomeMode.RUNNING -> R.string.metronome_stop
         MetronomeMode.PAUSED -> R.string.metronome_resume
@@ -171,6 +163,14 @@ private fun MetronomeTransport(controller: PracticeMetronome) {
     Button(onClick = { focus.clearFocus(); if (state.mode == MetronomeMode.RUNNING) controller.stop() else controller.start() },
         modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("metronome-transport")) {
         Text(stringResource(mainLabel), style = MaterialTheme.typography.titleLarge)
+    }
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FilterChip(selected = state.settings.audible, onClick = { controller.requestSound(!state.settings.audible) },
+            enabled = !state.captureActive, label = { Text(soundLabel) }, modifier = Modifier.weight(1f).testTag("metronome-sound"))
+        TextButton(onClick = { focus.clearFocus(); if (state.mode == MetronomeMode.RUNNING) controller.pause() else controller.stop() },
+            enabled = state.mode != MetronomeMode.STOPPED, modifier = Modifier.testTag("metronome-pause")) {
+            Text(stringResource(if (state.mode == MetronomeMode.PAUSED) R.string.metronome_reset else R.string.metronome_pause))
+        }
     }
     MetronomeSoundNotice(status)
 }

@@ -215,7 +215,8 @@ class SessionEvidenceUiTest {
                 androidx.compose.ui.geometry.Offset(currentArea.left+currentArea.width*.75f,currentArea.center.y),500)
         }
         compose.waitUntil(5000){vm.playingId==item.id && abs(vm.playbackPositionMs()-target)<=80}
-        assertTrue("Scrubbing before playback must stay paused",vm.playbackPaused)
+        // The callback publishes id and pause intent on main; inspect the completed UI transaction.
+        compose.runOnIdle { assertTrue("Scrubbing before playback must stay paused",vm.playbackPaused) }
         assertEquals(target,graph.fetchSemanticsNode().config[PlotPlaybackMs].toDouble(),80.0)
         assertEquals("Scrubbing must not pan",panned,graph.fetchSemanticsNode().config[PlotWindow])
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)

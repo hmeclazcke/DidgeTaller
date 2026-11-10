@@ -622,6 +622,8 @@
     <string name="metronome_volume_label">Click volume</string>
     <string name="metronome_tab">Metronome</string>
     <string name="ui_lab_short">Lab</string>
+    <string name="metronome_tab_short">Metr.</string>
+    <string name="ui_library_short">Library</string>
     <string name="metronome_edit">Edit tempo</string>
     <string name="metronome_slower">Decrease tempo</string>
     <string name="metronome_faster">Increase tempo</string>

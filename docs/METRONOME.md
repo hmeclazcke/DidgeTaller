@@ -5,7 +5,9 @@ controls, a tap-to-edit numeric dialog, visible meter and beat indicators keep
 transport and sound within reach. Rhythm, accent and gain options expand only on
 request. Narrow portrait uses one scrollable column; short landscape uses two. Tempo glyphs
 fit their actual slot without disabling font scaling. Navigation keeps complete
-accessible titles and uses Lab only below 320dp.
+accessible titles and chooses short captions from the actual width/text-scale
+budget. Landscape practice omits the redundant toolbar; short viewports use a
+compact navigation height. Start/stop precedes the secondary sound/pause row.
 
 Tempo is 30-240 BPM; meters are 2/4, 3/4 and 4/4. Each quarter-note beat has one,
 two, three or four pulses. Only the first subdivision of the first beat receives
@@ -123,3 +125,9 @@ UI regressions cover all four destinations and Back, tempo buttons/editor, meter
 subdivisions, sound interlock, pause/resume/stop and keyboard dismissal. The clean
 emulator workflow captures the real app in English and Spanish at 150% font,
 including short landscape, without opening private sessions.
+
+For fast native diagnosis, dispatch the existing deep workflow with scope
+`metronome`. It runs 11 selected native scenarios and three real font/locale
+configurations, preserves failure screenshots and reports a focused result. It
+never represents the complete suite or produces an invented Android coverage
+measurement. Full acceptance still uses scope `instrumentation`.
