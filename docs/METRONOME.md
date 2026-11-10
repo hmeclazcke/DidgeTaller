@@ -1,12 +1,20 @@
 # Practice metronome
 
-The expandable panel in Measure supplies a visual rhythm without opening another
-destination. Tempo is 30–240 BPM; meters are 2/4, 3/4 and 4/4. Each quarter-note
-beat has one, two, three or four pulses. Only the first subdivision of the first
-beat receives the configurable accent. Sound defaults off; click gain is separate
-from the system media volume. Start/resume, pause and stop have distinct behavior.
-Pause retains the next pulse; stop resets the bar. Runtime state never autostarts
-after recreation or process restart. Settings use a separate preference file.
+The dedicated Metronome tab sits between Measure and Laboratory. Large tempo
+controls, a tap-to-edit numeric dialog, visible meter and beat indicators keep
+transport and sound within reach. Rhythm, accent and gain options expand only on
+request. Narrow portrait uses one scrollable column; short landscape uses two.
+
+Tempo is 30-240 BPM; meters are 2/4, 3/4 and 4/4. Each quarter-note beat has one,
+two, three or four pulses. Only the first subdivision of the first beat receives
+the configurable accent. Sound defaults off; its visible switch distinguishes
+requested sound from capture blocking, zero click gain, muted system media and
+output failure. Hardware volume keys address media on this tab; the Android volume
+panel is available when muted. The app never forces a system volume or audio route.
+
+Start/resume, pause and stop have distinct behavior. Pause retains the next pulse;
+stop resets the bar. Runtime state never autostarts after recreation or process
+restart. Settings keep the same separate preference file and keys.
 
 ## Timing and ownership
 
@@ -23,7 +31,7 @@ only when needed. It sleeps until each absolute deadline; there is no polling.
 Visual snapshots are posted to the main thread and stale snapshots are rejected.
 Two reusable 12 ms static PCM clicks use `AudioTrack`. PCM is generated once per
 owner, not per beat. Pause/stop release tracks and audio focus. ViewModel disposal
-also closes the queue. Navigation out of Measure and Activity backgrounding pause
+also closes the queue. Navigation out of the metronome and Activity backgrounding pause
 the transport; returning does not restart it. Audio-focus loss pauses it as well.
 These are drift controls, not a hard-real-time/sample-accurate audio guarantee:
 Android dispatch, cold audio startup and speaker latency still apply.
@@ -35,7 +43,7 @@ opening `AudioRecord`. The same engine monitor serializes tick effects and this
 admission, so a concurrent tick cannot reopen an output after the mute returns.
 Recording/monitor state keeps that interlock active through capture/finalization.
 The sound control is disabled while blocked and settings cannot bypass it.
-Visual pulses continue. Leaving Measure pauses the metronome before saved-session
+Visual pulses continue. Changing sections pauses the metronome before saved-session
 playback/analysis. The metronome never writes audio, session indexes or WAV files.
 
 ## Verification and measurement limits
@@ -56,8 +64,8 @@ Reproducible commands (canonical quality compilation):
 .\gradlew.bat -Pkotlin.incremental=false :app:qualityMutationMetronome
 ```
 
-The selected PIT scope is the engine, grid, settings, focus owner and foreground
-screen policy, also included in the
+The selected PIT scope is the engine, grid, settings, focus owner, PCM generation,
+sound-status policy and foreground screen policy. The original domain components are included in the
 existing manual domain mutation job. It does not measure Android audio hardware or
 all application code. Existing source/coverage/CRAP-L gates remain unchanged.
 Compose transformations and constructors have explicit source-bound technical
@@ -95,3 +103,21 @@ the other two add an unconditional transport pause without new branches. Their
 existing numeric debt ceilings are not increased. Native navigation, background
 and ViewModel disposal regressions protect those Android boundaries. All new
 ordinary functions still have to pass the unchanged numerical/source gates.
+
+## Audio evidence and limits of this correction
+
+The previous Samsung verification left the intentional `audible=false` preference
+in place. The old collapsed panel obscured this control, and media mute/zero gain
+were not exposed. This establishes a silent configuration, not a proven Samsung
+AudioTrack defect. The redesign retains the valid non-silent PCM waveform, extracts
+it for RMS/peak tests and now checks gain acceptance and track playback state.
+Native emulator tests additionally require all 576 frames of both accent and
+normal clicks to be consumed, report the output device types, exercise media mute
+and verify track release. They do not prove physical speaker audibility or latency.
+A Samsung listening check still needs separate authorization; this task does not
+access the phone, private WAVs, or session metadata.
+
+UI regressions cover all four destinations and Back, tempo buttons/editor, meter,
+subdivisions, sound interlock, pause/resume/stop and keyboard dismissal. The clean
+emulator workflow captures the real app in English and Spanish at 150% font,
+including short landscape, without opening private sessions.

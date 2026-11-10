@@ -6,13 +6,14 @@ import androidx.navigation.NavHostController
 internal object TallerRoutes {
     const val Measure = "measure"
     const val MeasureWide = "measure/wide"
+    const val Metronome = "metronome"
     const val Lab = "lab"
     const val Library = "library"
     const val Compare = "compare"
     const val Session = "session/{id}"
     const val Viewer = "viewer/{id}/{plot}"
     const val LabTool = "lab/tool/{tool}"
-    val sections = listOf(Measure, Lab, Library)
+    val sections = listOf(Measure, Metronome, Lab, Library)
     fun session(id: String) = "session/$id"
     fun viewer(id:String,plot:AcousticPlot)="viewer/$id/${plot.name}"
     fun tool(index:Int)="lab/tool/$index"

@@ -620,4 +620,18 @@
     <string name="metronome_sound">Audible click</string>
     <string name="metronome_volume">Click volume: %1$d%%</string>
     <string name="metronome_volume_label">Click volume</string>
+    <string name="metronome_tab">Metronome</string>
+    <string name="metronome_edit">Edit tempo</string>
+    <string name="metronome_slower">Decrease tempo</string>
+    <string name="metronome_faster">Increase tempo</string>
+    <string name="metronome_ready">Ready</string>
+    <string name="metronome_sound_on">Sound on</string>
+    <string name="metronome_sound_off">Sound off</string>
+    <string name="metronome_reset">Reset</string>
+    <string name="metronome_apply">Apply</string>
+    <string name="metronome_cancel">Cancel</string>
+    <string name="metronome_advanced">Rhythm and volume</string>
+    <string name="metronome_system_muted">Media volume is muted. Raise it to hear the click.</string>
+    <string name="metronome_gain_zero">Click volume is zero. Adjust it in Rhythm and volume.</string>
+    <string name="metronome_media_settings">Media volume</string>
 </resources>

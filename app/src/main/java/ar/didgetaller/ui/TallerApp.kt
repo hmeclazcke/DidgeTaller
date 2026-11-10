@@ -80,7 +80,7 @@ private val appColors=darkColorScheme(
     surfaceContainerLow=cardColor,surfaceContainer=cardColor,
     surfaceContainerHigh=Color(0xFF263D42),surfaceContainerHighest=Color(0xFF2F484B),surfaceTint=accent
 )
-private val symbols=listOf("♪","◇","▣")
+private val sectionIcons=listOf(R.drawable.nav_measure, R.drawable.nav_metronome, R.drawable.nav_lab, R.drawable.nav_library)
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +89,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
               navController:NavHostController=rememberNavController(),
               exportRecording:(RecordingStore.Session)->Unit={}) {
     val context = androidx.compose.ui.platform.LocalContext.current
-    val sections=listOf(stringResource(R.string.ui_measure),stringResource(R.string.ui_laboratory),stringResource(R.string.ui_library))
+    val sections=listOf(stringResource(R.string.ui_measure),stringResource(R.string.metronome_tab),stringResource(R.string.ui_laboratory),stringResource(R.string.ui_library))
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val fontScale=configuration.fontScale
     val shortLandscapeWithLargeText=configuration.screenHeightDp<500 && fontScale>=1.5f
@@ -110,10 +110,11 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
         val hostActivity=androidx.compose.ui.platform.LocalContext.current.activity()
         val entry by navController.currentBackStackEntryAsState()
         val route=entry?.destination?.route
+        MetronomeMediaControls(vm.metronome, route==TallerRoutes.Metronome)
         val inViewer=route==TallerRoutes.Viewer
         val inTool=route==TallerRoutes.LabTool
         val inDetail=route==TallerRoutes.Session || route==TallerRoutes.Compare || inViewer || inTool
-        val section=if(inTool)1 else if(inDetail)2 else TallerRoutes.sections.indexOf(route).coerceAtLeast(0)
+        val section=if(inTool)2 else if(inDetail)3 else TallerRoutes.sections.indexOf(route).coerceAtLeast(0)
         // The same destination change handles system Back, the toolbar arrow and section changes.
         DisposableEffect(navController,vm) {
             val listener=NavController.OnDestinationChangedListener { _,destination,args ->
@@ -158,9 +159,9 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                             NavigationBarItem(
                                 selected=section==idx,
                                 onClick={navController.navigateToSection(idx)},
-                                icon={Text(symbols[idx],Modifier.clearAndSetSemantics {},fontSize=(21f*navigationTextFactor).sp)},
+                                icon={Icon(androidx.compose.ui.res.painterResource(sectionIcons[idx]),contentDescription=null)},
                                 label={Text(title,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                                    fontSize=(14f*navigationTextFactor).sp)},
+                                    fontSize=(12f*navigationTextFactor).sp)},
                                 alwaysShowLabel=true
                             )
                         }
@@ -179,6 +180,9 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                     DestinationFrame(padding,route==TallerRoutes.MeasureWide) {
                         DestinationContent("measure-wide-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
                     }
+                }
+                composable(TallerRoutes.Metronome) {
+                    DestinationFrame(padding,route==TallerRoutes.Metronome) { MetronomeScreen(vm.metronome) }
                 }
                 composable(TallerRoutes.Lab) {
                     DestinationFrame(padding,route==TallerRoutes.Lab) {
@@ -208,7 +212,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                             key(vm.libraryTab){DestinationContent("library-list"){
                                 LibraryScreen(vm,exportFile,
                                     onOpen={navController.navigate(TallerRoutes.session(it.id))},
-                                    onOpenDesign={vm.selectDesign(it);navController.navigateToSection(1);navController.navigate(TallerRoutes.tool(0))},
+                                    onOpenDesign={vm.selectDesign(it);navController.navigateToSection(2);navController.navigate(TallerRoutes.tool(0))},
                                     onCompare={navController.navigate(TallerRoutes.Compare)})
                             }}
                         }
@@ -441,7 +445,6 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
         Text(if(vm.maxHz==140)stringResource(R.string.ui_range_35_140_hz_extend_to_220) else stringResource(R.string.ui_range_35_220_hz_return_to_140))
     }
-    MetronomePanel(vm.metronome)
 }
 
 @Composable

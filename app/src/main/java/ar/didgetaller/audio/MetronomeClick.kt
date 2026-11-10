@@ -4,25 +4,24 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import ar.didgetaller.core.MetronomeClick
-import kotlin.math.PI
-import kotlin.math.sin
+import ar.didgetaller.core.MetronomePcm
 
 /** Two reusable 12 ms PCM clicks. No PCM generation/allocation on the pulse path. */
 internal class AndroidMetronomeClick : MetronomeClick {
-    private val samples = mapOf(false to pcm(1100.0), true to pcm(1800.0))
+    private val samples = mapOf(false to MetronomePcm.generate(false), true to MetronomePcm.generate(true))
     private val tracks = mutableMapOf<Boolean, AudioTrack>()
     override fun play(accent: Boolean, volume: Float): Boolean {
         val track = tracks.getOrPut(accent) { create(samples.getValue(accent)) }
         track.stop()
         check(track.reloadStaticData() == AudioTrack.SUCCESS)
-        track.setVolume(volume)
+        check(track.setVolume(volume) == AudioTrack.SUCCESS)
         track.play()
-        return true
+        return track.playState == AudioTrack.PLAYSTATE_PLAYING
     }
     private fun create(samples: ShortArray): AudioTrack {
         val track = AudioTrack.Builder().setAudioAttributes(AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
-            .setAudioFormat(AudioFormat.Builder().setSampleRate(RATE).setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+            .setAudioFormat(AudioFormat.Builder().setSampleRate(MetronomePcm.RATE).setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT).build())
             .setTransferMode(AudioTrack.MODE_STATIC).setBufferSizeInBytes(samples.size * 2).build()
         try {
@@ -36,9 +35,6 @@ internal class AndroidMetronomeClick : MetronomeClick {
         tracks.clear()
     }
     override fun close() = silence()
-    private fun pcm(frequency: Double): ShortArray = ShortArray(576) { sample ->
-        val envelope = (1.0 - sample / 576.0) * (1.0 - sample / 576.0)
-        (sin(2 * PI * frequency * sample / RATE) * envelope * 22000).toInt().toShort()
-    }
-    private companion object { const val RATE = 48000 }
+    internal fun renderedFrames(): Int = tracks.values.sumOf { it.playbackHeadPosition }
+    internal fun routedDeviceTypes(): List<Int> = tracks.values.mapNotNull { it.routedDevice?.type }.distinct()
 }

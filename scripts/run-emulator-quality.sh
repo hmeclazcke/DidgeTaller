@@ -61,3 +61,9 @@ timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
   ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
   > build/reports/quality/workspace-configuration-landscape.txt
 python3 tools/run_instrumentation.py --verify-log build/reports/quality/workspace-configuration-landscape.txt
+timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
+  -e class 'ar.didgetaller.ui.MetronomeUiTest#transportSettingsAndVisualCaptureInterlock' \
+  -e evidenceLabel 'landscape-metronome150' \
+  ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
+  > build/reports/quality/metronome-configuration-landscape.txt
+python3 tools/run_instrumentation.py --verify-log build/reports/quality/metronome-configuration-landscape.txt

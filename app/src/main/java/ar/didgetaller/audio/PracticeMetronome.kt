@@ -3,6 +3,7 @@ package ar.didgetaller.audio
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.media.AudioManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,10 +11,13 @@ import ar.didgetaller.core.FocusedMetronomeClick
 import ar.didgetaller.core.MetronomeEngine
 import ar.didgetaller.core.MetronomeSettings
 import ar.didgetaller.core.MetronomeState
+import ar.didgetaller.core.mediaIsMuted
 import ar.didgetaller.data.MetronomePreferences
 
 /** Android presentation adapter; timing, focus ownership and transport decisions live in the domain. */
 class PracticeMetronome(context: Context) {
+    private val audio = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    var systemMuted by mutableStateOf(false); private set
     private val main = Handler(Looper.getMainLooper())
     private val preferences = MetronomePreferences(context)
     private val clock = AndroidMetronomeClock()
@@ -25,7 +29,7 @@ class PracticeMetronome(context: Context) {
     private fun publish(next: MetronomeState) {
         main.post { if (engine.state === next) state = next }
     }
-    fun start() = engine.start()
+    fun start() { refreshAudioEnvironment(); engine.start() }
     fun pause() = engine.pause()
     fun stop() = engine.stop()
     fun update(settings: MetronomeSettings) {
@@ -35,7 +39,8 @@ class PracticeMetronome(context: Context) {
     }
     /** Synchronous admission before AudioRecord, not a deferred Compose effect. */
     fun captureActive(active: Boolean) = engine.captureActive(active)
-    fun requestSound(enabled: Boolean) = update(engine.state.settings.copy(audible = enabled))
+    fun requestSound(enabled: Boolean) { refreshAudioEnvironment(); update(engine.state.settings.copy(audible = enabled)) }
+    fun refreshAudioEnvironment() { systemMuted = mediaIsMuted(audio.isStreamMute(AudioManager.STREAM_MUSIC), audio.getStreamVolume(AudioManager.STREAM_MUSIC)) }
     fun close() {
         if (closed) return
         closed = true

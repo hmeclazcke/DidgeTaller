@@ -19,7 +19,8 @@ class MetronomeOutputTest {
         var closed = 0
         var failSilence = false
         var playable = true
-        override fun play(accent: Boolean, volume: Float): Boolean { clicks++; return playable }
+        var lastGain = 0f
+        override fun play(accent: Boolean, volume: Float): Boolean { clicks++; lastGain = volume; return playable }
         override fun silence() { silenced++; if (failSilence) error("synthetic stop failure") }
         override fun close() { closed++ }
     }
@@ -27,6 +28,7 @@ class MetronomeOutputTest {
         val focus = Focus(); val output = Output(); var losses = 0
         val owner = FocusedMetronomeClick(output, focus) { losses++ }
         assertTrue(owner.play(true, .5f)); assertTrue(owner.play(false, .7f))
+        assertEquals(.7f, output.lastGain)
         assertEquals(1, focus.callbacks.size); assertEquals(2, output.clicks)
         focus.callbacks[0](1); assertEquals(0, losses)
         focus.callbacks[0](-1); assertEquals(1, losses)

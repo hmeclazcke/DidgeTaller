@@ -4831,18 +4831,17 @@
     },
     "eb0593992d9507ea58e85d43df77d758bac5f88bd30fd342dcd45c3b4520400a": {
       "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClick.kt",
-      "line": 12,
+      "line": 11,
       "kind": "initializer",
       "name": null,
-      "semanticHash": "39fee69bf43c795f8e85d4f9de05c4716a6ff5c8762e3faaf80fdfb950c4b53c",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "semanticHash": "0a9c8c2c766feffaabec00b541ca2a28fe024b8f98b3dcd9ce0c267f4c262c4f",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
       "evidence": [
         "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
       ],
-      "reason": "Explicit construction, fixed click buffers, immutable/value defaults or restricted state access; not a standalone named Detekt/JVM function. Reviewed ownership and initialization against metronome domain and native lifecycle tests. No invented constructor/initializer score or source exclusion."
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
     },
     "7dc70d3e94023a01e164469085710deab1f1a702d9d78e07b3f1ad00fcede813": {
       "file": "app/src/main/java/ar/didgetaller/audio/MetronomeClick.kt",
@@ -5478,118 +5477,6 @@
       "max_crap_line": 20.0,
       "reason": "Existing Android host boundary: pure screen policy or unconditional metronome pause added. Numeric complexity/debt ceilings do not increase. Native navigation/background/disposal tests protect the new effect; Android coverage is never substituted for zero JVM execution. See the method-specific review in docs/METRONOME.md."
     },
-    "39a71e814d331e86d78460081d161842893fedbeffbe0d11c28f2e4c4427020a": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 25,
-      "kind": "function",
-      "name": "MetronomePanel",
-      "semanticHash": "82e18e720fd4b5f1a2850ea97f149c28fa554e1fa6bf9413d2a9fcf0da8122fb",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
-    },
-    "785ff109ad71b36b6a6da8b8bc085ce1779ade2a365666c4d6ba6a02d9dfd0ba": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 46,
-      "kind": "function",
-      "name": "MetronomeTransport",
-      "semanticHash": "fc32aa208395a06739947c579e22288d076ed3ba47019380493af9c8e3043ad1",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM transformation remains unsupported for independent CRAP-L. Native EN/ES 150% regression now verifies transport clears tempo editing focus and the IME is hidden before capture. Done also clears focus. No numerical threshold or method debt ceiling changed."
-    },
-    "1c16a598f882d03040a7b441cd35c5b26380c4d010d9c1aeb5651e3133b84a49": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 59,
-      "kind": "function",
-      "name": "MetronomeBeats",
-      "semanticHash": "b13f90fc47b60589e0767c9a3acdebd515fdfd34c078bfd1e4008257912e19bb",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
-    },
-    "1a9b850a02906bb7293a75efbe9af088f60311c39d96422aaf8302c6e61cc48d": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 76,
-      "kind": "function",
-      "name": "MetronomeSettingsPanel",
-      "semanticHash": "e44064ad2799c6b928c8bfbf80d5f83a2a3b3e431c24cfec3d12e6708b8a640c",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
-    },
-    "93bea082dccbe4bcab0e449bd1c280c86e719dce5029c10b52f9e27a3c93dbf5": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 103,
-      "kind": "function",
-      "name": "MetronomeTempo",
-      "semanticHash": "9b651328d6452d35cb4dbe75514bd83b67957d279a53d4e661bf32230440d430",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Compose source/JVM transformation remains unsupported for independent CRAP-L. Native EN/ES 150% regression now verifies transport clears tempo editing focus and the IME is hidden before capture. Done also clears focus. No numerical threshold or method debt ceiling changed."
-    },
-    "390375a3e29ba4202a936759cb41271068684e1f26c702237383e017e273c781": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 115,
-      "kind": "function",
-      "name": "MetronomeSubdivisions",
-      "semanticHash": "a09e0487c4a586ae30fe78119dbbf358ba47bb41dc2aab72c024230a99b54a7d",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
-    },
-    "ced1a10e9e0930a2ba86886112ed146c285db0c822595cd1d67c6d083218eebb": {
-      "file": "app/src/main/java/ar/didgetaller/ui/MetronomePanel.kt",
-      "line": 127,
-      "kind": "function",
-      "name": "MetronomeToggle",
-      "semanticHash": "15e5bb7fca843ebcfed8f51a505f907dd30908e4a0dfc413c23688845a71149a",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
-      "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
-      ],
-      "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
-    },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
       "line": 294,
@@ -5605,6 +5492,240 @@
       ],
       "metric_status": "compose-transformation",
       "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
+    },
+    "d4472273b926e36faa07c393eb7a62c57ec6f11da1b9b88f36881db20e00fd2b": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 19,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fb473bce7b1816811e3dd4f1b0b920b8ae023143838fb1704e3395b7639e8851",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "e7ebb2efacd006756b04a8833bac5dfce5145448a37e496ccc7f0ffad8e8ff4a": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 20,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "9d7b2610e2c5fc5d1ecbfe1a2acac261c7d8ce52e0e1b34eafaeee2bde1cd339": {
+      "file": "app/src/main/java/ar/didgetaller/core/MetronomeAudio.kt",
+      "line": 8,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f46181037c659975c0e278e6729120bfc498e80a0d4ebe49457a7006dac8e0ca",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "95acebec2ab6b1782586e0177de703cc5feb2d4d4b8b04a04f9d874fc98c5c1e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 43,
+      "kind": "function",
+      "name": "MetronomeMediaControls",
+      "semanticHash": "f1d3b096045fc042f8b076b8bde243bcfd8b91036315b572f338f055f34ed90d",
+      "reason": "Compose-owned media-key and resume lifecycle boundary: restores the prior stream and removes its observer on disposal. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "894e682eeed7d9f2950ddd6d57ddbb5872090d9150f22947e270397aac9868ce": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 61,
+      "kind": "function",
+      "name": "MetronomeScreen",
+      "semanticHash": "7114c12b3bd2474dd68ed2b46fbb63e35c155753fa93cee871efeb87a82ba9d7",
+      "reason": "Responsive presentation only: portrait/short-landscape viewport selection, one authoritative controller state, scrollable advanced options. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "aa9c77932bba65679cc501ea2603d9bb3350ca776731b267d233cf439510c9e9": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 80,
+      "kind": "function",
+      "name": "MetronomeTempo",
+      "semanticHash": "2970252e1c623a189f5d5276fdbdb27e8d783fdec1ae9db638a7a935384ed86b",
+      "reason": "Tempo presentation and explicit edit intent; bounded buttons delegate validation to settings. Localized accessibility labels. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "2c13ae93d7c8d75ed4a20f87edc7052fd5e3a8bfc37d2db29e3b4965f97ef5c9": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 104,
+      "kind": "function",
+      "name": "MetronomeTempoDialog",
+      "semanticHash": "ecdd998e2e784b5e2cab1b29f1fcab2116aeab414b89b26e0e37efc23928ce3f",
+      "reason": "User-requested numeric editor; invalid and out-of-range values disable Apply; dismissal clears editing state. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "14e5eaa9cd175f05684154a81df0e1e09384a0425129061e721f6371ed01f004": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 118,
+      "kind": "function",
+      "name": "MetronomeMeter",
+      "semanticHash": "84184be1c0fbbbc58d5eed931a9cbc663a2ede3cbf27895e5d59e7aa873a9eac",
+      "reason": "Meter chips delegate to the existing engine; no independent timing state. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "1e8cbdb119abd3c2e93468458d701d89e046daccda4d84e7fe8ecde78470dd8b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 128,
+      "kind": "function",
+      "name": "MetronomeBeats",
+      "semanticHash": "ed886024c5568997524e9a22aeb034bcd3a5459d2efeaf01ea37dc0fcfbde810",
+      "reason": "Indicators derive only from engine pulse ordinal, including first-beat styling; animation does not schedule musical events. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "782eb00ccfce6125064de8709c599b82fbf06d63efb49c3061514d3bd8bbd6e8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 149,
+      "kind": "function",
+      "name": "MetronomeTransport",
+      "semanticHash": "416c1681a33c87057546eb5f390891b346fe41819c2ab6a3111f4a8ecc1b2e6f",
+      "reason": "Start/stop primary action and secondary pause/reset delegate to the existing transport; pure tested sound-status policy separates request from effective silence. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "3b80a142cc16107737d1a02e10a10c62c1b54810e191fea767bb38f212380360": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 175,
+      "kind": "function",
+      "name": "MetronomeSoundNotice",
+      "semanticHash": "8586af1894adec2594694f0bce1608275b5d88518c4959d9aa9cb3084842a97a",
+      "reason": "Localized status presentation and user-requested Android volume panel; never forces gain or route. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "d9c1a99414fe464cfc33304387274b0c0af8b8630d81637b8c3079ed8a4bd3ee": {
+      "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
+      "line": 187,
+      "kind": "function",
+      "name": "MetronomeAdvanced",
+      "semanticHash": "860ddd890f81984f6c0aeb0534072f353db1d0d1ef976be10d4afa1ae1c92ff2",
+      "reason": "Expandable rhythm/gain presentation; updates the same settings owner without duplicated controls. No independently reliable Compose JVM method correspondence.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "902b2573a5ecf83aa691a5b86d6a29b9c5e55cf5b414f33742ef361efe2c3a99": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 83,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "016fa6b8a4feef1c8b66c45c04514cd7d2fe9c213d896c4ee97269dfb622e9ad",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "c7c20c886466a32843eb06cae5e4e1be68c58c2230fe95c3789065cb1b09e3d7": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 87,
+      "kind": "function",
+      "name": "TallerApp",
+      "semanticHash": "d3b00e0216536c4dce9575805ed8ae2422681a8b02f249063fea6325f8cccf4f",
+      "reason": "Existing Compose host now routes four sections and removes the measurement panel. Explicit section indices preserve library/design navigation. Existing mapping limitation remains; full navigation/emulator regressions required.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision",
+      "metric_status": "compose-transformation"
+    },
+    "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "line": 9,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "0c35d0e04c52609498dc4bc9c343da86e69aeb7ffe8637178e642f22d911d6c7",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
+    },
+    "5938a19a994638d7c4607c4c70cabee29586de73a537a67b7073ca35c07456a3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5b7601691645e1537b5a62ef56b9ef2f6990eb1768ee2c53bc023d46b5aa0c8f",
+      "reason": "Explicit static presentation/platform initialization or restricted setter; no independent named-function metric. Reviewed reusable PCM ownership, single-owner mute state and navigation resources. No fabricated constructor/accessor/initializer CRAP-L.",
+      "evidence": [
+        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/MetronomeAudioTest.kt"
+      ],
+      "reviewed_source": "fa4f32b06a95aaffa17bec4fef808e84bef3991a + UX/audio revision"
     }
   }
 }

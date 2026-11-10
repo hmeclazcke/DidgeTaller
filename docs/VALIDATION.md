@@ -1,3 +1,30 @@
+# Metronome UX/audio correction - 2026-11-10
+
+From feature HEAD `fa4f32b`, the metronome moves into its own section. Timing,
+capture interlock, persistence formats and version 3.3.0-beta1 (13) are unchanged.
+Local JVM debug/release: 1,100 discovered, 1,084 passed, 16 protected skips, zero
+failures. The three new audio cases run in both variants. PCM energy/peak tests,
+media mute/status cases and gain forwarding assertions pass. Selected PIT expands
+to eight bytecode classes: 177 generated, 163 killed, 14 survived, zero uncovered
+or other outcomes. All 23 mutations in the added PCM/status logic are killed.
+The initial child-process connection reset was rejected as incomplete; one bounded
+retry completed, with no policy relaxation.
+
+CRAP-L: 592 scored, 133 explicitly unscored, 64 above target; zero gate violations
+and no numeric baseline changes. PCM/status policy is 100% method-line covered,
+MCC/CRAP-L 2/2/7. Separate Android platform methods retain honest zero JVM coverage.
+Compose/auxiliary declarations have narrow semantic-hash reviews, not invented
+scores. JVM line/branch: 45.87%/44.26%; pure core: 99.10%/85.50%. The UI denominator
+changed, so the overall percentage is not a behavior-regression measurement.
+
+Debug APK and instrumentation APK compile. Detekt: 2,093 informational findings;
+CPD: zero groups >=100 tokens. Lint: zero errors, 57 warnings, 7 hints; four added
+warnings identify retained, now-unused localized labels from the removed panel.
+Localization parity and 46 Python quality-tool tests pass. Full emulator execution,
+real screenshots and remote CI must still be observed for this correction.
+No phone or private recording was accessed. Physical audibility is not established
+by PCM/API success: see [audio evidence](METRONOME.md).
+
 # Metronome feature verification
 
 From merged main `bc2df23`, feature `3.3.0-beta1` (versionCode 13) adds a separate

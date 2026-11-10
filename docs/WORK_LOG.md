@@ -1,3 +1,19 @@
+# Metronome UX/audio correction - 2026-11-10
+
+Replace the large Measure panel with a dedicated second section. Four destination
+icons, a central explicit tempo editor, beat-derived animation and compact advanced
+options preserve the existing transport and capture interlock. Media keys target
+the media stream on that tab; requested sound and muted/zero-gain/failed output are
+visibly distinguished. Do not infer a Samsung hardware cause from the earlier
+persisted off preference. Extract unchanged PCM generation for energy tests and
+validate native gain/play state; require frame-consumption evidence in the clean
+emulator. Native tests additionally cover four sections, Back, all meter indicator
+counts, invalid tempo and keyboard dismissal at real compact EN/ES 150% settings.
+VersionCode stays 13 because this is a correction on the same unmerged beta branch;
+no phone installation or new release is performed. Local evidence is in VALIDATION;
+remote/native acceptance remains pending until the actual runs complete. Keep PR2
+draft, preserve main and private data.
+
 # Metronome feature — 2026-11-09
 
 Branch `feature/metronome` starts at merged main `bc2df23`. The rhythm model and
