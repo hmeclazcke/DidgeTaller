@@ -115,7 +115,8 @@ class LocalizationUiTest {
         Assert.assertEquals("73,4 Hz", hzLabel(73.4))
         Assert.assertEquals("18,5", axisLabel(18.5, 5.0))
         compose.onNodeWithText("Iniciar medición").assertIsDisplayed()
-        compose.onNodeWithText("Biblioteca").performClick()
+        compose.onNode(hasContentDescription("Biblioteca") and hasAnyAncestor(hasTestTag("main-navigation")))
+            .assertIsDisplayed().assertHasClickAction().performClick().assertIsSelected()
         compose.onNodeWithText("Todavía no hay sesiones").assertIsDisplayed()
     }
 
@@ -249,10 +250,16 @@ class LocalizationUiTest {
         compose.onNodeWithContentDescription("Library").performClick()
         compose.onNodeWithText("Mi sesión personal · preserve").assertExists()
         compose.runOnUiThread { changeLanguage("es-AR") }
-        compose.onAllNodesWithText("Biblioteca").assertCountEquals(2)
+        compose.onAllNodesWithText("Biblioteca").assertCountEquals(1)
+        compose.onNode(hasContentDescription("Biblioteca") and hasAnyAncestor(hasTestTag("main-navigation")))
+            .assertIsDisplayed().assertHasClickAction().assertIsSelected()
+        compose.onAllNodes(hasText("Biblioteca") and hasAnyAncestor(hasTestTag("main-navigation")), useUnmergedTree = true).assertCountEquals(0)
         compose.onNodeWithText("Mi sesión personal · preserve").assertExists()
         compose.runOnUiThread { changeLanguage("de-DE") }
-        compose.onAllNodesWithText("Library").assertCountEquals(2)
+        compose.onAllNodesWithText("Library").assertCountEquals(1)
+        compose.onNode(hasContentDescription("Library") and hasAnyAncestor(hasTestTag("main-navigation")))
+            .assertIsDisplayed().assertHasClickAction().assertIsSelected()
+        compose.onNodeWithContentDescription("Biblioteca").assertDoesNotExist()
         Assert.assertEquals(index, app.getSharedPreferences("local_data", 0).getString("recordings", null))
         Assert.assertEquals(extras, app.getSharedPreferences("session_tools", 0).getString("extras", null))
         Assert.assertArrayEquals(pcm, RecordingStore(app).file(session.id).readBytes())

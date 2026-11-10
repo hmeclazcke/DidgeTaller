@@ -1193,3 +1193,19 @@ No pending implementation or installation step remains for this UI task. PR2
 stays draft, main remains unchanged. Documentation/screenshot-only follow-ups
 reuse unchanged 89cd201 executable evidence; do not rebuild or reinstall for
 those files. Physical imagery/metadata stays ignored and must never be published.
+
+
+### Localization icon-navigation regression (from origin/main383e6ce)
+
+Known RED: full emulator run42873034926 fails Spanish Library click and dynamic
+locale node counts after icon-only navigation. Use localized content descriptions
+within main-navigation, require click/selection semantics, one visible heading and
+no visible Spanish tab caption. Preserve English/fallback locale checks and all
+session-name/index/association/WAV-byte and explorer-state integrity assertions.
+Production UI is unchanged. App/test APK compilation passes locally. The existing
+manual deep workflow adds a clearly labeled localization scope: two regressions
+must pass first, then the complete LocalizationUiTest plus the four-destination
+Back/transport ownership case on a fresh API35 emulator. Logs are required artifacts;
+failed or incomplete instrumentation fails the job. Actual remote outcomes are
+linked from the fix PR, not inferred from APK compilation. No physical-device or
+private-recording access; PR3 remains separate (already merged by the owner).
