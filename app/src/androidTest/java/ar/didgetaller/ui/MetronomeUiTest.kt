@@ -123,7 +123,7 @@ class MetronomeUiTest {
         screenshot("-transport")
         compose.onNodeWithTag("metronome-edit").performScrollTo()
         val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
-        compose.onNodeWithTag("metronome-tempo-value").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
+        compose.onNodeWithTag("metronome-tempo-value", useUnmergedTree = true).performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
         assertFalse("All tempo digits must fit", layouts.single().hasVisualOverflow)
         screenshot()
         captureTransportFailure = false
