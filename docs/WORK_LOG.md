@@ -1,3 +1,15 @@
+# Responsive metronome follow-up - 2026-11-10
+
+Real API35 acceptance exposed a four-tab Spanish label constraint and a test's
+incorrect initial-tempo assumption. Correct line height/full item label width,
+shorten only the very narrow laboratory label, and keep full accessible titles.
+NavigationSections owns this presentation; TallerApp stays within its existing
+complexity ceiling. Bound tempo glyph size to the available slot and choose the
+landscape layout from actual constraints. Strengthen four-label/digit overflow
+checks; allow deliberate scrolling on extremely short 150% viewports. Retain
+failure/top/transport captures. Revalidate affected UI and gates, reuse unchanged
+pure-engine/PIT results. Latest remote outcome and screenshot evidence live on PR2.
+
 # Metronome UX/audio correction - 2026-11-10
 
 Replace the large Measure panel with a dedicated second section. Four destination

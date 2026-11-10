@@ -3,7 +3,9 @@
 The dedicated Metronome tab sits between Measure and Laboratory. Large tempo
 controls, a tap-to-edit numeric dialog, visible meter and beat indicators keep
 transport and sound within reach. Rhythm, accent and gain options expand only on
-request. Narrow portrait uses one scrollable column; short landscape uses two.
+request. Narrow portrait uses one scrollable column; short landscape uses two. Tempo glyphs
+fit their actual slot without disabling font scaling. Navigation keeps complete
+accessible titles and uses Lab only below 320dp.
 
 Tempo is 30-240 BPM; meters are 2/4, 3/4 and 4/4. Each quarter-note beat has one,
 two, three or four pulses. Only the first subdivision of the first beat receives

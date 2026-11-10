@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.*
@@ -60,7 +61,7 @@ internal fun MetronomeMediaControls(controller: PracticeMetronome, active: Boole
 @Composable
 fun MetronomeScreen(controller: PracticeMetronome) {
     BoxWithConstraints(Modifier.fillMaxSize().testTag("metronome-screen")) {
-        val landscape = maxWidth > 500.dp && maxHeight < 500.dp
+        val landscape = maxWidth > maxHeight && maxHeight < 500.dp
         if (landscape) Row(Modifier.fillMaxSize().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
                 MetronomeTempo(controller, true); MetronomeMeter(controller); MetronomeBeats(controller)
@@ -83,17 +84,20 @@ private fun MetronomeTempo(controller: PracticeMetronome, compact: Boolean) {
     val editLabel = stringResource(R.string.metronome_edit)
     val slower = stringResource(R.string.metronome_slower)
     val faster = stringResource(R.string.metronome_faster)
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+      val tempoSize = minOf(if (compact) 60f else 76f, (maxWidth.value - 96f) / 1.8f / LocalDensity.current.fontScale).coerceAtLeast(24f).sp
+      Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         FilledTonalButton(onClick = { controller.update(controller.state.settings.copy(bpm = bpm - 1)) }, enabled = bpm > 30,
             contentPadding = PaddingValues(0.dp), modifier = Modifier.size(48.dp).testTag("metronome-slower").semantics { contentDescription = slower }) { Text("−", fontSize = 26.sp) }
         Column(Modifier.weight(1f).clickable { editing = true }.testTag("metronome-edit").semantics { contentDescription = editLabel },
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(bpm.toString(), fontSize = if (compact) 60.sp else 76.sp, fontWeight = FontWeight.Bold,
+            Text(bpm.toString(), fontSize = tempoSize, lineHeight = tempoSize * 1.1f, fontWeight = FontWeight.Bold, modifier = Modifier.testTag("metronome-tempo-value"),
                 textAlign = TextAlign.Center, maxLines = 1)
             Text(stringResource(R.string.metronome_bpm), style = MaterialTheme.typography.labelMedium)
         }
         FilledTonalButton(onClick = { controller.update(controller.state.settings.copy(bpm = bpm + 1)) }, enabled = bpm < 240,
             contentPadding = PaddingValues(0.dp), modifier = Modifier.size(48.dp).testTag("metronome-faster").semantics { contentDescription = faster }) { Text("+", fontSize = 26.sp) }
+      }
     }
     if (editing) MetronomeTempoDialog(bpm, onDismiss = { editing = false }) {
         controller.update(controller.state.settings.copy(bpm = it)); editing = false

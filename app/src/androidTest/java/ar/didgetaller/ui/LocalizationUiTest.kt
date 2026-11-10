@@ -127,19 +127,19 @@ class LocalizationUiTest {
     }
 
     @Test fun largeEnglishNavigationFitsAtDoubleFontScale() {
-        assertLargeFontNavigation("en", listOf("Measure", "Laboratory", "Library"))
+        assertLargeFontNavigation("en", listOf("Measure", "Metronome", "Laboratory", "Library"))
     }
 
     @Test fun largeSpanishNavigationFitsAtDoubleFontScale() {
-        assertLargeFontNavigation("es-AR", listOf("Medir", "Laboratorio", "Biblioteca"))
+        assertLargeFontNavigation("es-AR", listOf("Medir", "Metrónomo", "Laboratorio", "Biblioteca"))
     }
 
     @Test fun compactEnglishNavigationKeepsEveryLabelAtLargeFontScale() {
-        assertCompactNavigation("en", listOf("Measure", "Laboratory", "Library"))
+        assertCompactNavigation("en", listOf("Measure", "Metronome", "Laboratory", "Library"))
     }
 
     @Test fun compactSpanishNavigationKeepsEveryLabelAtLargeFontScale() {
-        assertCompactNavigation("es-AR", listOf("Medir", "Laboratorio", "Biblioteca"))
+        assertCompactNavigation("es-AR", listOf("Medir", "Metrónomo", "Laboratorio", "Biblioteca"))
     }
 
     private fun assertCompactNavigation(language:String, labels:List<String>) {

@@ -34,17 +34,20 @@ class MetronomeUiTest {
     private lateinit var app: IsolatedApp
     private lateinit var metronome: PracticeMetronome
     private val stores = mutableListOf<ViewModelStore>()
+    private var captureTransportFailure = false
     @Before fun setup() {
         assumeTrue(Build.HARDWARE in listOf("ranchu", "goldfish"))
         app = IsolatedApp(InstrumentationRegistry.getInstrumentation().targetContext)
         compose.runOnUiThread { metronome = PracticeMetronome(app) }
     }
     @After fun cleanup() {
+        if (captureTransportFailure) screenshot("-failure")
         compose.runOnUiThread { stores.forEach { it.clear() } }
         if (::metronome.isInitialized) compose.runOnUiThread { metronome.close() }
         if (::app.isInitialized) app.clean()
     }
     @Test fun transportSettingsAndVisualCaptureInterlock() {
+        captureTransportFailure = true
         val owners = ViewModelStore().also { stores += it }
         lateinit var vm: TallerViewModel
         compose.runOnUiThread {
@@ -55,19 +58,31 @@ class MetronomeUiTest {
         val label = compose.activity.getString(ar.didgetaller.R.string.metronome_tab)
         compose.onNode(hasText(label) and hasAnyAncestor(hasTestTag("main-navigation"))).performClick()
         compose.onNodeWithTag("metronome-screen").assertIsDisplayed()
-        compose.onNodeWithTag("metronome-transport").assertIsDisplayed()
-        compose.onNodeWithTag("metronome-sound").assertIsDisplayed()
+        val labels = listOf(ar.didgetaller.R.string.ui_measure, ar.didgetaller.R.string.metronome_tab,
+            if (compose.activity.resources.configuration.screenWidthDp < 320) ar.didgetaller.R.string.ui_lab_short else ar.didgetaller.R.string.ui_laboratory,
+            ar.didgetaller.R.string.ui_library)
+        val labelBounds = labels.map { resource ->
+            val node = compose.onNode(hasText(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")), useUnmergedTree = true)
+            val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+            node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
+            assertFalse("Navigation labels must fit", layouts.single().hasVisualOverflow)
+            node.fetchSemanticsNode().boundsInRoot
+        }
+        assertTrue("Four labels must not overlap", labelBounds.zipWithNext().all { (a, b) -> a.right <= b.left })
+        compose.onNodeWithTag("metronome-transport").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("metronome-sound").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("metronome-bpm").assertDoesNotExist()
-        compose.onNodeWithTag("metronome-faster").performClick()
-        compose.waitUntil { metronome.state.settings.bpm == 121 }
-        compose.onNodeWithTag("metronome-slower").performClick()
-        compose.waitUntil { metronome.state.settings.bpm == 120 }
-        compose.onNodeWithTag("metronome-transport").performClick()
+        val initialTempo = metronome.state.settings.bpm
+        compose.onNodeWithTag("metronome-faster").performScrollTo().performClick()
+        compose.waitUntil { metronome.state.settings.bpm == initialTempo + 1 }
+        compose.onNodeWithTag("metronome-slower").performScrollTo().performClick()
+        compose.waitUntil { metronome.state.settings.bpm == initialTempo }
+        compose.onNodeWithTag("metronome-transport").performScrollTo().performClick()
         compose.waitUntil { metronome.state.pulse != null }
         compose.onNodeWithTag("metronome-beats").assertExists()
         compose.onNodeWithTag("metronome-pause").performClick()
         compose.waitUntil { metronome.state.mode == MetronomeMode.PAUSED }
-        compose.onNodeWithTag("metronome-edit").performClick()
+        compose.onNodeWithTag("metronome-edit").performScrollTo().performClick()
         compose.onNodeWithTag("metronome-bpm").performTextReplacement("0")
         compose.onNodeWithTag("metronome-apply").assertIsNotEnabled()
         compose.onNodeWithTag("metronome-bpm").performTextReplacement("137")
@@ -87,7 +102,7 @@ class MetronomeUiTest {
         compose.onNodeWithTag("metronome-notice").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("metronome-transport").performScrollTo().performClick()
         compose.waitUntil { metronome.state.mode == MetronomeMode.RUNNING }
-        compose.onNodeWithTag("metronome-transport").performClick()
+        compose.onNodeWithTag("metronome-transport").performScrollTo().performClick()
         compose.waitUntil { metronome.state.mode == MetronomeMode.STOPPED }
         assertNull(metronome.state.pulse)
         compose.waitUntil(5000) {
@@ -104,8 +119,14 @@ class MetronomeUiTest {
         compose.runOnUiThread { metronome.captureActive(false); metronome.requestSound(false) }
         compose.onNodeWithTag("metronome-expand").performScrollTo().performClick()
         compose.onNodeWithTag("metronome-edit").performScrollTo()
-        compose.onNodeWithTag("metronome-transport").assertIsDisplayed()
+        compose.onNodeWithTag("metronome-transport").performScrollTo().assertIsDisplayed()
+        screenshot("-transport")
+        compose.onNodeWithTag("metronome-edit").performScrollTo()
+        val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+        compose.onNodeWithTag("metronome-tempo-value").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
+        assertFalse("All tempo digits must fit", layouts.single().hasVisualOverflow)
         screenshot()
+        captureTransportFailure = false
     }
     @Test fun fourSectionsAndBackPreserveNavigationAndPauseMetronome() {
         val owners = ViewModelStore().also { stores += it }
@@ -113,9 +134,9 @@ class MetronomeUiTest {
         lateinit var nav: androidx.navigation.NavHostController
         compose.runOnUiThread { vm = TallerViewModel(app); owners.put("navigation", vm) }
         compose.setContent { nav = androidx.navigation.compose.rememberNavController(); TallerApp(vm, {}, {}, { _, _, _ -> }, nav) }
-        fun section(resource: Int) = compose.onNode(hasText(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")))
+        fun section(resource: Int) = compose.onNode(hasContentDescription(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")))
         section(ar.didgetaller.R.string.metronome_tab).performClick()
-        compose.onNodeWithTag("metronome-transport").performClick()
+        compose.onNodeWithTag("metronome-transport").performScrollTo().performClick()
         compose.waitUntil { vm.metronome.state.mode == MetronomeMode.RUNNING }
         section(ar.didgetaller.R.string.ui_laboratory).performClick()
         compose.waitUntil { nav.currentDestination?.route == TallerRoutes.Lab }
@@ -202,10 +223,10 @@ class MetronomeUiTest {
         assertTrue(vm.metronome.state.captureActive)
         compose.runOnUiThread { vm.microphoneStop(); owners.clear() }
     }
-    private fun screenshot() {
+    private fun screenshot(suffix: String = "") {
         compose.waitForIdle()
         val label = InstrumentationRegistry.getArguments().getString("evidenceLabel") ?: "default"
-        val file = File(compose.activity.getExternalFilesDir(null), "metronome-evidence/$label.png")
+        val file = File(compose.activity.getExternalFilesDir(null), "metronome-evidence/$label$suffix.png")
         file.parentFile!!.mkdirs()
         InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().let { image ->
             file.outputStream().use { image.compress(Bitmap.CompressFormat.PNG, 100, it) }; image.recycle()

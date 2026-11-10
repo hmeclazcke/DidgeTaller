@@ -1,3 +1,28 @@
+# Responsive metronome follow-up - 2026-11-10
+
+[Fast CI on 46d841f](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42809274276)
+passed, including 1,100 JVM cases and unchanged differential contracts.
+[API35 on that revision](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42809281908)
+executed 176 cases: 164 passed, 10 protected/configuration skips, 2 failures.
+Native PCM consumption/media mute and resource/lifecycle cases passed. The failures
+were Spanish navigation text clipping and a new test incorrectly assuming a
+120 BPM default instead of the existing 90 BPM.
+
+The correction keeps all four labels legible, adds full accessibility descriptions,
+uses Lab only below 320dp and separates navigation rendering from the host. Tempo
+text fits its actual three-digit slot; short landscape uses two columns. Tests
+now check all four localized labels and all tempo digits, retain strict overflow
+assertions and scroll constrained viewports to reachable controls. Failure captures
+and separate transport captures prevent future missing visual evidence.
+
+Local APK/test compilation and the unchanged gate pass: 592 scored, 134 explicitly
+unscored, 64 existing above target, zero violations. The extra unscored declaration
+is the Compose navigation renderer, with a source-bound technical review. No
+numeric baseline was relaxed. Pure timing/audio/PIT inputs did not change; their
+successful 177-mutant evidence is reused. Latest implementation CI and authentic
+configuration captures are recorded on [PR2](https://github.com/hmeclazcke/DidgeTaller/pull/2);
+a cancelled or failed run is never counted as passing acceptance.
+
 # Metronome UX/audio correction - 2026-11-10
 
 From feature HEAD `fa4f32b`, the metronome moves into its own section. Timing,

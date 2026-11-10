@@ -82,6 +82,25 @@ private val appColors=darkColorScheme(
 )
 private val sectionIcons=listOf(R.drawable.nav_measure, R.drawable.nav_metronome, R.drawable.nav_lab, R.drawable.nav_library)
 
+/** Navigation presentation owns short labels and readable text independently from destination content. */
+@Composable
+private fun RowScope.NavigationSections(sections: List<String>, selected: Int, navigate: (Int) -> Unit) {
+    val configuration=androidx.compose.ui.platform.LocalConfiguration.current
+    val navigationTextFactor=(1.2f/configuration.fontScale).coerceAtMost(1f)
+    val navigationLabels=sections.toMutableList().apply { if(configuration.screenWidthDp<320)set(2,stringResource(R.string.ui_lab_short)) }
+                        sections.forEachIndexed { idx,title ->
+                            NavigationBarItem(
+                                selected=selected==idx,
+                                modifier=Modifier.semantics { contentDescription=title },
+                                onClick={navigate(idx)},
+                                icon={Icon(androidx.compose.ui.res.painterResource(sectionIcons[idx]),contentDescription=null)},
+                                label={Text(navigationLabels[idx],modifier=Modifier.wrapContentWidth(unbounded=true),maxLines=1,
+                                    fontSize=(12f*navigationTextFactor).sp,lineHeight=(16f*navigationTextFactor).sp)},
+                                alwaysShowLabel=true
+                            )
+                        }
+}
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
@@ -93,7 +112,6 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val fontScale=configuration.fontScale
     val shortLandscapeWithLargeText=configuration.screenHeightDp<500 && fontScale>=1.5f
-    val navigationTextFactor=(1.2f/fontScale).coerceAtMost(1f)
     var confirmDiscard by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(vm.sessionPhase) { if(vm.sessionPhase!=SessionPhase.CAPTURING)confirmDiscard=false }
     MaterialTheme(colorScheme=appColors) {
@@ -155,16 +173,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 if(!inViewer && route!=TallerRoutes.Session)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
                     if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
                     if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
-                        sections.forEachIndexed { idx,title ->
-                            NavigationBarItem(
-                                selected=section==idx,
-                                onClick={navController.navigateToSection(idx)},
-                                icon={Icon(androidx.compose.ui.res.painterResource(sectionIcons[idx]),contentDescription=null)},
-                                label={Text(title,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                                    fontSize=(12f*navigationTextFactor).sp)},
-                                alwaysShowLabel=true
-                            )
-                        }
+                        NavigationSections(sections,section) {navController.navigateToSection(it)}
                     }
                 }
             },contentWindowInsets=if(inViewer)WindowInsets(0,0,0,0) else ScaffoldDefaults.contentWindowInsets,
