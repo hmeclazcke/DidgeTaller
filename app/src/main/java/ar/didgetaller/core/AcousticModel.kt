@@ -92,15 +92,30 @@ object AcousticModel {
      */
     fun evaluate(shape: Shape, stepHz: Int = 1, maxHz: Int = 650, segments: Int = 72): Simulation {
         require(stepHz in 1..12 && maxHz in 150..1200 && segments in 12..256)
-        val low = 30
-        val rho = 1.20; val speed = 343.0; val viscosity = 1.81e-5
         val spacing = shape.lengthMm / 1000.0 / segments
         val radii = DoubleArray(segments) { n ->
             shape.diameter(((n + 0.5) * shape.lengthMm / segments).roundToInt()) / 2000.0
         }
+        return solve(radii,DoubleArray(segments){spacing},shape.diameter(shape.lengthMm)/2000.0,stepHz,maxHz)
+    }
+
+    data class Cylinder(val lengthMm:Double,val diameterMm:Double)
+
+    /** Exact cylindrical junctions retain discontinuous areas; no artificial smooth transition. */
+    fun evaluateCylinders(sections:List<Cylinder>,stepHz:Int=1,maxHz:Int=650):Simulation {
+        require(sections.size in 1..2048)
+        require(stepHz in 1..12 && maxHz in 150..1200)
+        require(sections.all {it.lengthMm.isFinite() && it.lengthMm>0 && it.diameterMm in 15.0..220.0})
+        require(sections.sumOf {it.lengthMm} in 500.0..3000.0)
+        return solve(sections.map {it.diameterMm/2000}.toDoubleArray(),sections.map {it.lengthMm/1000}.toDoubleArray(),sections.last().diameterMm/2000,stepHz,maxHz)
+    }
+
+    private fun solve(radii:DoubleArray,lengths:DoubleArray,bellR:Double,stepHz:Int,maxHz:Int):Simulation {
+        val segments=radii.size
+        val low=30
+        val rho=1.20; val speed=343.0; val viscosity=1.81e-5
         val zc = DoubleArray(segments) { n -> rho * speed / (PI * radii[n] * radii[n]) }
         val mouthZ = zc[0]
-        val bellR = shape.diameter(shape.lengthMm) / 2000.0
         val bellZ = rho * speed / (PI * bellR * bellR)
         val frequencies = IntArray((maxHz - low) / stepHz + 1) { low + it * stepHz }
         val raw = DoubleArray(frequencies.size)
@@ -115,8 +130,8 @@ object AcousticModel {
             for (segment in segments - 1 downTo 0) {
                 val delta = sqrt(viscosity / (2.0 * rho * omega))
                 val alpha = wave * delta * (1.0 + (1.4 - 1.0) / sqrt(0.71)) / radii[segment]
-                val a = (alpha * spacing).coerceAtMost(3.0)
-                val b = wave * spacing
+                val a = (alpha * lengths[segment]).coerceAtMost(3.0)
+                val b = wave * lengths[segment]
                 // cosh(alpha*L + i*k*L), sinh(alpha*L + i*k*L)
                 val ch = Complex(cosh(a) * cos(b), sinh(a) * sin(b))
                 val sh = Complex(sinh(a) * cos(b), cosh(a) * sin(b))

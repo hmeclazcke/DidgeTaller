@@ -69,7 +69,7 @@ private val orange=Color(0xFFE9BD87)
 private val blue=Color(0xFF91C8DC)
 private val background=Color(0xFF0D171B)
 private val cardColor=Color(0xFF192D31)
-private val appColors=darkColorScheme(
+internal val appColors=darkColorScheme(
     primary=accent,onPrimary=background,secondary=orange,onSecondary=background,
     background=background,onBackground=ink,surface=cardColor,onSurface=ink,
     surfaceVariant=Color(0xFF263D42),onSurfaceVariant=muted,
@@ -211,7 +211,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                                     if(i!=index)navController.navigate(TallerRoutes.tool(i)){popUpTo(TallerRoutes.Lab);launchSingleTop=true}
                                 },text={Text(context.presetLabel(label),maxLines=1)})}
                             }
-                            key(index){DestinationContent("lab-screen"){when(index){0->DesignerScreen(vm,exportFile);1->SpectrumScreen(vm,toggleMic);2->EvolutionScreen(vm);else->GuideScreen()}}}
+                            key(index){DestinationContent("lab-screen"){when(index){0->DesignerScreen(vm,exportFile);1->SpectrumScreen(vm,toggleMic);2->EvolutionScreen(vm,exportFile);else->GuideScreen()}}}
                         }
                     }
                 }
@@ -750,7 +750,10 @@ private fun BoreGraph(shape:AcousticModel.Shape,modifier:Modifier=Modifier) {
 }
 
 @Composable
-private fun EvolutionScreen(vm:TallerViewModel) {
+private fun EvolutionScreen(vm:TallerViewModel,export:(String,String,ByteArray)->Unit) {
+    var construction by remember {mutableStateOf<LocalStore.Design?>(null)}
+    Button(onClick={construction=LocalStore.Design("inverse-workspace","Didge Taller",vm.shape)},modifier=Modifier.testTag("construction-open")){Text(stringResource(R.string.construction_open))}
+    construction?.let {item->ConstructionWorkspace(item,export,vm.getApplication<android.app.Application>()){construction=null}}
     val context = androidx.compose.ui.platform.LocalContext.current
     Panel(context.getString(R.string.ui_inverse_design), context.getString(R.string.ui_search_for_a_geometry_from_three_target_frequencies_as_in_didgelab)) {
         Text(stringResource(R.string.ui_1_choose_the_desired_resonances_2_tap_search_3_compare_and_test_the_result),
@@ -813,7 +816,7 @@ private fun LibraryScreen(vm:TallerViewModel,export:(String,String,ByteArray)->U
             SessionsLibrary(vm,onOpen=onOpen)
             if(vm.measurements.isNotEmpty())MeasurementsLibrary(vm,export)
         }
-        else -> DesignsLibrary(vm,onOpenDesign)
+        else -> DesignsLibrary(vm,onOpenDesign,export)
     }
 }
 
@@ -979,7 +982,9 @@ private fun stabilityLabel(percent:Int)=when {
 }
 
 @Composable
-private fun DesignsLibrary(vm:TallerViewModel,onOpen:(LocalStore.Design)->Unit) {
+private fun DesignsLibrary(vm:TallerViewModel,onOpen:(LocalStore.Design)->Unit,export:(String,String,ByteArray)->Unit) {
+    var construction by remember {mutableStateOf<LocalStore.Design?>(null)}
+    construction?.let {item->ConstructionWorkspace(item,export,vm.getApplication<android.app.Application>()){construction=null}}
     val context = androidx.compose.ui.platform.LocalContext.current
     var delete by remember {mutableStateOf<LocalStore.Design?>(null)}
     Text(stringResource(R.string.ui_saved_bore_profiles),color=muted)
@@ -991,6 +996,7 @@ private fun DesignsLibrary(vm:TallerViewModel,onOpen:(LocalStore.Design)->Unit) 
                 context.getString(R.string.ui_mouthpiece_mm_bell_mm, item.shape.mouthMm, item.shape.bellMm),color=muted,fontSize=12.sp)
             FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                 TextButton(onClick={onOpen(item)}) {Text(stringResource(R.string.ui_open))}
+                TextButton(onClick={construction=item},modifier=Modifier.testTag("construction-design-${item.id}")){Text(stringResource(R.string.construction_open))}
                 TextButton(onClick={vm.duplicateDesign(item)}) {Text(stringResource(R.string.ui_duplicate))}
                 TextButton(onClick={delete=item}) {Text(stringResource(R.string.ui_delete))}
             }

@@ -173,7 +173,9 @@ fun registerMutation(name: String, directory: String, targets: String, testTarge
     }
 }
 registerMutation("qualityMutation", "pit", "ar.didgetaller.core.PlotTouchKt", "ar.didgetaller.core.PlotTouchTest", qualityPolicy.getProperty("mutationThreshold"))
-registerMutation("qualityMutationWorkshop", "pit-workshop", "ar.didgetaller.core.WorkshopPlans,ar.didgetaller.core.WorkshopPlans\$*,ar.didgetaller.core.WorkshopExports", "ar.didgetaller.core.Workshop*Test", null)
+registerMutation("qualityMutationWorkshop", "pit-workshop",
+    "ar.didgetaller.core.WorkshopPlans,ar.didgetaller.core.WorkshopPlans\$*,ar.didgetaller.core.WorkshopExports,ar.didgetaller.core.ConstructionProjects,ar.didgetaller.core.ConstructionCatalog,ar.didgetaller.core.ConstructionDrawing,ar.didgetaller.core.ConstructionForm,ar.didgetaller.core.ConstructionSearch,ar.didgetaller.core.ConstructionAnalysisKt",
+    "ar.didgetaller.core.Workshop*Test,ar.didgetaller.core.Construction*Test", null)
 registerMutation("qualityMutationMetronome", "pit-metronome",
     "ar.didgetaller.core.MetronomeEngine,ar.didgetaller.core.MetronomeGrid,ar.didgetaller.core.MetronomeSettings*,ar.didgetaller.core.FocusedMetronomeClick,ar.didgetaller.core.MetronomeOutputKt,ar.didgetaller.core.MetronomePcm,ar.didgetaller.core.MetronomeAudioKt",
     "ar.didgetaller.core.Metronome*Test", null)

@@ -5686,15 +5686,13 @@
       "line": "112",
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "2602f862129e634d1aec15ec25e8d74ade1fe98d05afc05836697e91c12d5eab",
-      "metric_status": "compose-transformation",
-      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen stays below its previous MCC 105. Idle and active actions now share the reading composition instead of a separated footer. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "semanticHash": "725b8523436bf22c9f476363b23573ee6960390a51624bead382be7449596412",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Passes the existing document exporter into Laboratory and Library without changing destinations or microphone ownership.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "7062629 + cohesive idle action placement"
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
@@ -5939,6 +5937,495 @@
         "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
       ],
       "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "4a80a55ec986221d7f0c434f1b34046030a96161720efda6d9e00d13b90b2ba9": {
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "line": "102",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d33f7e5235a88f720b51921231bd939a48630bfded8963471f4993eb4248b838",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Cylinder unit carrier. The executable input validation is measured in evaluateCylinders; uniform legacy equivalence and abrupt junction subdivision cover the boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopAcousticsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "e82eab0fa66ea0eecc204366df0cab3782d937d340a02e676b47113d7ea762f5": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionAnalysis.kt",
+      "line": "3",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "073582b04c2ae8f64a3ea2a7490e7d9903accaaa7e686c5d39970a9f69360089",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Immutable request/result carriers keep form snapshots and the chosen manufactured plan with one operation. Calculation, cancellation and numerical sensitivity are separately measured.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "918b23c26a83da354396d6dfc5f3db5b52c4c8cfdbd323f33e3e6bbea0898c9d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionAnalysis.kt",
+      "line": "4",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "4e204c223a0c0ddda916633eb1757dc94f97048937ba3c7e5012ee985ae768e8",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Immutable request/result carriers keep form snapshots and the chosen manufactured plan with one operation. Calculation, cancellation and numerical sensitivity are separately measured.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "10699fd95f51a65afa384aa0e58bc0b914d0f5a9423ed0707d0dab32d10dcb79": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionCatalog.kt",
+      "line": "5",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1e59fbbdd2142fb866720b74f9e50e1b2113066d7b7d4e12eb8b0094cb9280ae",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Measured fitting/profile carrier. Measured overlap, variable transition and rejected malformed-profile contracts exercise the enclosing catalog validation.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "b32a5d3fa7bf33bac35720b21320ae314a79b7e12dfff9c2061c272582aca340": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionDrawing.kt",
+      "line": "6",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fc13b1a3654dedf8d64343c9c9aa26f0a7979f0ad420a002a52c4734767d4d57",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Metric scale constant and station carrier. Independent unit conversion, two-sided junction and exported geometry assertions cover these values.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "496b8f7ba7b7b787ebfe8a2a2c40d751dabe5af7e2818442ab78b48d2ad8627f": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionDrawing.kt",
+      "line": "7",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2ec583a951b55bcf94e9d4e6dbc104d139a46b311d1c06904fbf023d9781b1ce",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Metric scale constant and station carrier. Independent unit conversion, two-sided junction and exported geometry assertions cover these values.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "faa224ce237ffc6f2b549a21e382f9f127154682684b06b971666c7275c926d4": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "4",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7d5119c90fe3641c76e006aa5bb2ef4e8e0bea854f58df5c5482757f6d8ccfe9",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "fd7bd2e865c6972855834a74083396ba9e56a7174608f003af8d20cd4b64ba4e": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "5",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "17a4a1dbd363d7458e43a4f1870a3e909a12c6088189d52906c145498488447f",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "024e6ccccc607df18188f89a93e3b75d464bf9cf491ebf2a7d96cc26b261ff26": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "13",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c6cd13ed04c6905b5ec4ee49f2f7daf6fa4d2014d49108c8859699f763683752",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "ac2ef8d772cd38179d5761a26aff6b21019490c3a1e6c4f0b13f3b9e4e079ced": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "18",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5d199f86c379ea0915a6cabd5034ef51b335aaad72bcdf81db6699794c693623",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "dee1f42b93e511f61e0b2e3f893bf1449a357271ee35f4431ebe398aeddab05d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "20",
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "9f4224a2e1693334febe5eb6c096667fd7ece1866234e4d84fa943c436dcbc11",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "7f339088a64905aee8633acf1f0cddb4d8b33d9e60513e795c24bbb1f0684c9b": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "20",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "7a426b942533d96f28f1bffbfb11bb065882fd4ad06e56495d8b61ca72b74c92",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "5a4a63944ce9364da342b9f2359ab62f55e74d9d9bcfb5c57af3114c40c8004d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "6",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2cf359de2721b3e3676e0b5ed707816711d674a120cf6121422cb58b6c8ef44f",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "f4303525e31525a122990c548e56594a279e4383e02dee38849ed7566a608ba1": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "9",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "3b82bd77fa1657542447a6c6d0682a304c36829f241faf1ec975b5edbd09dd18",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "282211c0239a391b03639eb20e3901bcbe09973dc9f1fdab3b3ae28f870eeae5": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "10",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "792c689aaacbfc024dbe4d3dbc41e14f98c732b9358397d197e73db4487ddefa",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "2044e39da838e2bfb2c18d8863c35a1b5c89612331a55a24c2b2a91e10901f34": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "17",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "aa2298eaea5939453c445c26f3399c29766da1ec1f50a8f8a0b85bbafc5c256a",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "f3e88d65d9c3d48dc955b4cb2c465475b9a4604c69b8e3e1e26f1430ffed5b9a": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "18",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2d5bd55734b42de68af4622a03e9150796533bf398e82ef3107508da1bc0531e",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "8166ac928bb4f892fedc3ba1d3acba05d5f650552d26452a7df2072a1e54e8bf": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionPdf.kt",
+      "line": "11",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c54281bf6ec8818c05de4c6e0f197a42c8d35465542b89844f680ec99ee8210f",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Localized label bundle has no independent PDF geometry or control flow. Native PDF rendering and metric ruler assertions exercise the document contract.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "ea56b507713f338881083bd7a86afec1a371d7ad857afe199ef62631d48c1c5d": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "8",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5ed13eba0a603a6e8158a089f6835f836ae80310ea83ff4af65f0b62bc2cffa9",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "61facdb11cd607c04dea8eb0f43b3a5744727de13b3c5567a73e8ffb0654b326": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "9",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bc65da7c772171803a56bb573698b6fb6312a8e4c4b6c80c7d4744499b6a5bbf",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "23ce98d49975f3e8d0ddc280e88064c75457bcc8f589a5a21fd36f6dafab43d9": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "10",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "98ea369d235bc51dd8751699462658ff3d74f6291f6e0702e7268960b28e0b58",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "83e7e857c73c2ce1a9ca68ad4cad39fce332d3aa11905e9241738facbdc856a3": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "11",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6e131593d840001461cea3512850676a461475e39a2d0f8a959293a4e7e41977",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "6542638f4953465a0d1197f69707f0c171ad1e1f479ee52bfd5ef22e31979a66": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "27",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "3c6388ad06dba46db1468e17da2b9efb5d030b7da96d9e164bc0c9a0cddea256",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Immutable export request owns the selected plan, format and localized labels. Text export tests and the Android workspace contract cover the publication boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/ui/ConstructionExportsTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "4ec62b1a6d75dc89b7fbbbf56b72fc8719f9658bbbd875493c728ae839e4889b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "37",
+      "kind": "function",
+      "name": "ConstructionWorkspace",
+      "semanticHash": "a7a108c67031d045f89ce31debba42a969f53756f8f727e2f4bbe1394db9d2eb",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. One dialog owns revocable analysis/export workers, form snapshots and stages. Editing or closing revokes old publication.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "c6a82ba678a51bcba862f9ddee2150ade41810bd693498b62b58254c83aa260c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "102",
+      "kind": "function",
+      "name": "ConstructionExportEffect",
+      "semanticHash": "5fda68fa75b9eb3fe132ff408d8e567e3b409f5ad09bf74840787e98fbe82a95",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Only a ready result can hand bytes to the existing document callback; it is acknowledged before invoking the picker.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "b3fd468079d6d80c179ff5fe1be105fddd3409030499b4464c264b8a9e44cd90": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "116",
+      "kind": "function",
+      "name": "ConstructionStatus",
+      "semanticHash": "b11d5ad994786547597aca350f996bec0ff5de8d584dac3223b1aaefbef4e479",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Localizes rejected storage/input and saved status without authorizing writes from damaged documents.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "b1049c55fac6b02327d2044ba47c55ccb39aabc8643877e91737108bed213106": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "123",
+      "kind": "function",
+      "name": "ConstructionWorkers",
+      "semanticHash": "81b467761e77c8e100f453665c08a19e8b7123855c7fc248b4baf4c57edee423",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Loading/cancel controls forward to the existing revocable operation owners.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "7d3b3164546f52e5aceb0264bc0052c11f9cf9b26e3a1e8e0d198307aad3ec16": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "131",
+      "kind": "function",
+      "name": "ConstructionCandidates",
+      "semanticHash": "dd8cd9844000e9b788c7226cb7679c00d90e494866a6c5d6e0c31108d51fb007",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Selection callbacks present only the ranked immutable candidates and explicit current geometry choice.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "f3d12845ed078453161b7d19bb171beb9d4a4283c7d796226331e4211e21b9c2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "138",
+      "kind": "function",
+      "name": "ConstructionPlanActions",
+      "semanticHash": "6e54a023bc29d396c1948ade12da02c952e170d684d01b1b5c2a785d4f61ed3e",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Save and export actions exist only for a ready generated plan; a search result is not a saved plan.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "6fe892a00a78265d2a672e22ffa12c7cc2c75f0c70f848015acaef1486ca2f48": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "155",
+      "kind": "function",
+      "name": "ConstructionField",
+      "semanticHash": "244d4745bba7e5e0df982dc6509b79c4ee54138de73963462b78e16a2f2395a5",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Labeled bounded form field with semantic test identity; numeric parsing remains in the domain boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "eb1b13a823cb39b677dca503cfb4d374a66773ed21f8e5654a4983161dcbaa2c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "161",
+      "kind": "function",
+      "name": "ConstructionTargetFields",
+      "semanticHash": "84b9eede4865ebbb950729d149a2580a7e85bd5a47038788d0f23bb901bc7d63",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Accessible target/notes and advanced geometry fields forward form changes; no acoustic calculation in composition.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "9f21390daa155b39408b0463d04df69d4372dcced69b14d7842e85b5954a0abc": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "184",
+      "kind": "function",
+      "name": "ConstructionMethodFields",
+      "semanticHash": "97624edf04b825b1e24ba9c61f040148f84e92f341d9f91acddddac615c6c9ca",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Measured catalog edits and explicit save/load callbacks; wood and PVC options are shown only where applicable.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "210",
+      "kind": "function",
+      "name": "ConstructionCandidateCard",
+      "semanticHash": "3c466c0ccdba3291efee3d87d96199a2bea528fbf7fc61ea8dc472a47de0cf7c",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Predicted resonance, error, dimensions and profile comparison share the exact candidate selected by the action.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "11aeefc4ba94c4479d3dac4607edf6a3cad604aa05dd659f4dbfa64097cf1bac": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "223",
+      "kind": "function",
+      "name": "ConstructionPlanView",
+      "semanticHash": "3d787aae22f32dd9248473d7c6fbd9cb1705a341fc289502a9fcb728af92fe11",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Manufactured summary, optional station/parts preview and numerical sensitivity use the same plan as export.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "fab9efa1702f4fa84afc6933233099cf868ad216d108f7fec10e383a9322c488": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "241",
+      "kind": "function",
+      "name": "ConstructionProfile",
+      "semanticHash": "ffe620f5e37a6fa95eb575ebb4cc79ec343373e90683026807cfbc561cb979aa",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Accessible ideal/manufactured plot delegates physical outline geometry to the measured domain helper.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "8b5ccf12ad73b2944b81215c50de688b963aeef5676170d5d04cda15257fb686": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "753",
+      "kind": "function",
+      "name": "EvolutionScreen",
+      "semanticHash": "96143193fbcd95313a47251f402c1a2a65b0161b6b01f475fab5d774308e14d1",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Opens the scoped construction workspace while retaining the legacy three-resonance search.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "dbaf13ede01bb97f977a9fe9addda021613d11355db90ce429e3dfc73c194c29": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "811",
+      "kind": "function",
+      "name": "LibraryScreen",
+      "semanticHash": "45cfef65f4eaed677e6e7f48147bbfdbed247fe37f3f455f911f07e3932e589e",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Forwards the existing exporter to saved design cards; no recording or navigation changes.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "b2d7df8cf954780784f5404585be596628751ca50de3fd61ef767d1a697d390f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "985",
+      "kind": "function",
+      "name": "DesignsLibrary",
+      "semanticHash": "efa4259e608a4145ec7bf7c04b75251767a1ec90cf7ed7a2060be82d2fd98aaa",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Opens a construction project for the selected design ID without altering the original design.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
     }
   }
 }

@@ -141,7 +141,17 @@ Estos comandos ejecutan suites JVM y verifican formatos de recursos, no instrume
 
 La app sigue siendo una beta personal distribuida desde el código fuente. La respuesta del micrófono y la latencia de audio dependen del dispositivo; no se afirma precisión calibrada, temporización universal, cobertura completa ni un puntaje de mutaciones de toda la app. Conservá las grabaciones originales y la compatibilidad de firma al actualizar.
 
-La planificación de construcción está en desarrollo en una rama dedicada; su base geométrica probada todavía no está disponible en la app. El [checkpoint de implementación](docs/engineering/CONSTRUCTION_PROGRESS.md), en inglés, distingue métodos y exportaciones implementados de las limitaciones pendientes.
+### Del objetivo acústico al plano de taller
+
+Abrí **Laboratorio → Buscar → Plano de construcción**, o elegí **Plano de construcción** en un diseño guardado de la Biblioteca. Definí una resonancia pasiva objetivo, compará candidatos de una búsqueda acotada, seleccioná un método constructivo y generá el perfil fabricable. Los diseños originales y las grabaciones no cambian: los proyectos constructivos y el catálogo medido compartido se guardan por separado.
+
+- **Madera partida:** mitades longitudinales espejadas, diámetros por estación, profundidades semicirculares de ahuecado, dimensiones mínimas del bloque y margen radial de sobrecorte.
+- **Madera laminada:** capas transversales, cortes y aberturas ordenados y aproximación escalonada explícita del perfil ideal.
+- **PVC modular:** catálogo editable de tubos, encastres y reductores medidos, largos de corte, solapamientos por inserción, transiciones interiores variables y largo ensamblado. No se suponen medidas comerciales ni disponibilidad.
+- **Exportaciones:** PDF A4 paginado con medidas y piezas, mosaicos opcionales del perfil interior a escala 1:1, CSV de medidas y piezas y SVG métrico. Medí la referencia de 100 mm antes de confiar en la escala de impresión.
+- **Sensibilidad:** recalculá variaciones de diámetro, longitud e inserción mediante el modelo acústico existente. Son predicciones, no calibración física ni garantía del bordón o toot interpretado.
+
+El [registro de implementación y verificación constructiva](docs/engineering/CONSTRUCTION_PROGRESS.md), en inglés, documenta alcance, comprobaciones numéricas, evidencia Android y límites pendientes. La búsqueda es acotada y no demuestra un óptimo global; los intervalos cónicos se discretizan y se mantienen los supuestos de conducto circular.
 
 ## Licencia y colaboración
 

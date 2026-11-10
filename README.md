@@ -142,7 +142,17 @@ These run JVM suites and resource-format parity, not Android instrumentation. Fo
 
 The app remains a personal beta distributed from source. Hardware microphone response and audio output latency vary; no calibrated accuracy, universal timing guarantee, full coverage or whole-app mutation score is claimed. Preserve original recordings and signing compatibility when updating.
 
-Workshop construction planning is under development on a dedicated branch; its tested geometry foundation is not yet available in the app. See the [implementation checkpoint](docs/engineering/CONSTRUCTION_PROGRESS.md) for implemented methods, exports and remaining limitations.
+### From acoustic targets to workshop plans
+
+Open **Laboratory → Search → Construction plan**, or choose **Construction plan** on a saved design in the Library. Define a passive resonance target, compare bounded candidate searches, select a construction method and generate the manufactured profile. Original designs and recordings remain unchanged; construction projects and the shared measured catalog are saved separately.
+
+- **Split wood:** mirrored longitudinal halves, station diameters, semicircular hollowing depths, minimum blank dimensions and radial overcut allowance.
+- **Laminated wood:** transverse layers, ordered cuts/openings and explicit stepped approximation of the ideal bore.
+- **Modular PVC:** editable measured tube/socket/reducer catalog, cut lengths, insertion overlaps, variable internal transitions and assembled length. No commercial sizes or availability are assumed.
+- **Exports:** paginated A4 PDF with dimensions and parts, optional overlapping 1:1 inner-profile tiles, measurement/parts CSV and metric SVG. Measure the 100 mm reference before trusting printer scale.
+- **Sensitivity:** recompute diameter, length and insertion variations with the existing acoustic model. These are predictions, not physical calibration or a guarantee of the played drone/toot.
+
+The [construction implementation and verification record](docs/engineering/CONSTRUCTION_PROGRESS.md) documents scope, numerical checks, Android evidence and remaining limitations. Search is bounded, not a proof of global optimality; tapered intervals are discretized and circular-bore assumptions remain applicable.
 
 ## License and contributions
 

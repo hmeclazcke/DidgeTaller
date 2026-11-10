@@ -1,74 +1,110 @@
-# Inverse design and construction ? IN PROGRESS
+# Inverse design and workshop construction
 
-Branch: feature/inverse-design-construction. Baseline origin/main b411bb8.
-No workshop feature is exposed in the application yet. Do not present this branch
-as a complete construction tool or merge it as one.
+Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
+Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
+Current status: **IN VERIFICATION**. Observe Android execution, screenshots and
+exact-source CI before declaring the complete workflow ready.
 
-## Reused implementation
+## Implemented application workflow
 
-AcousticModel.Shape remains the immutable ideal piecewise-linear bore, including
-legacy three-diameter shapes. Its lossy transmission-line model, BoreOptimizer,
-LocalStore design format and existing UI remain unchanged. Existing search still
-has three required targets and returns one best candidate. Historical scientific
-and licensing references are retained; five EN/ES visible help strings now describe
-Didge Taller independently rather than branding another application.
+Laboratory > Search > Construction plan, or the same action on a saved Library
+design, opens acoustic target, candidates, construction method and plan/export.
+Original bore editing, three-target evolutionary search, four bottom destinations
+and historical design serialization remain available. Construction schema-1 JSON
+is separate (`construction_v1`), keyed by design ID; Laboratory has one draft.
+A shared measured catalog supplies defaults; saved projects retain their snapshot.
+Corrupt or unknown-schema documents block saving and preserve their originals.
+No legacy design/session/recording metadata is rewritten.
 
-## Implemented, independently testable boundary
+Targets accept Hz or a note, two optional higher resonances, mouth ID, preferred/
+maximum length and bore/bell bounds. Bounded deterministic search ranks feasible
+candidates by cents error, optional resonances and piece count. Cards compare
+resonance, cents, dimensions, components and ideal/manufactured profiles. Equivalent
+manufactured candidates are deduplicated. No global optimum/playability is claimed.
 
-- WorkshopPlans: interval stations plus mandatory transitions/endpoints; mirrored
-  semicircular split depths; blank stock includes minimum wall and radial overcut
-  allowance. Units are mm, tolerance is radial, not diametral.
-- Axial laminated layers: positive thicknesses must sum to the ideal length.
-  Constant openings enclose every piecewise-linear extremum within each layer;
-  maximum diameter excess makes the approximation explicit. These are transverse
-  stacked layers, not longitudinal sandwich halves. Up to256 layers.
-- PVC: user-measured tube ID/OD and stock lengths; explicit cuts; user-measured
-  sockets/insertion depths/body length/constant central passage. Validate socket
-  fit against a caller-specified clearance and both insertions on middle tubes.
-  Assembled length is sum(cuts)+sum(body-leftInsertion-rightInsertion). Include
-  only unoccupied central passage in addition to each full tube bore. Fitting
-  start coordinates include their physical socket overlap. Up to100 cuts.
-- This fitting model supports a measured constant central passage, not an arbitrary
-  tapered commercial reducer. No catalog availability, nominal sizes, costs or
-  manufactured acoustic equivalence are invented.
-- WorkshopExports: locale-independent ideal station/depth CSV and metric SVG of
-  mirrored split profiles, stock allowances, station marks and100mm print reference.
-  Coordinates round to0.001mm; this is numerical formatting, not physical accuracy.
-  No automatic printer calibration, tiled PDF or workshop UI export exists yet.
+## Manufacturing methods
 
-## Verification at this checkpoint
+- Split wood: mirrored semicircular hollows, regular and mandatory transition
+  stations, two prepared halves A/B, minimum stock width/thickness, wall and radial
+  overcut reserve. Add saw kerf separately to the unsplit blank.
+- Transverse laminated layers: exact thickness list or nominal thickness with final
+  remainder; constant openings enclose ideal extrema, report excess/stock dimensions.
+  Search reserves a cylindrical first layer to preserve the requested mouth ID.
+- PVC: user-measured tube ID/OD/stock length, cuts, socket dimensions, insertions,
+  full fitting body and variable central passage. Cuts include inserted material;
+  only the unoccupied fitting web adds assembled length. Stock, socket fit and
+  overlap validation reject impossible combinations. No invented commercial catalog.
 
-12 new JVM contracts. Full debug run:562 discovered,554 passed,8 protected skips,
-zero failures. Initial new-interface test compilation failed before implementation;
-a separate behavioral RED reproduced nonfinite stock output before overflow bounds
-were added. XML-parsed SVG vertex/axis/ruler/station assertions strengthen tests
-against real surviving arithmetic mutations. Local debug APK, coverage/inventories,
-Detekt and CPD completed; source-bound constructor/initializer/getter reviews are
-explicit rather than fabricated CRAP-L scores. No numeric baseline was changed.
-PIT workshop selection:218 mutants,172 killed,43 surviving,3 uncovered; detected
-172/218=78.90%. Includes carrier/generated bytecode; it is not whole-app strength.
-Parts-list/catalog IDs and caller-list ownership now have explicit assertions.
-The three remaining uncovered mutations are compiler index-overflow checks,
-unreachable under the validated100-cut bound. Remaining constructor-boundary
-and generated-code survivors still need individual classification. Full logs are ignored under checkpoints/construction. Remote CI
-results are linked from the draft PR; local APK compilation is not instrumentation.
+Measured CSV entry (mm):
 
-## Exact next implementation sequence
+```text
+pipes:    id,ID,OD,stock_length
+fittings: id,left_socket_ID,right_socket_ID,left_insertion,right_insertion,body_length,minimum_passage_ID,0:ID|web_length:ID
+assembly: pipe_id,cut_length,next_fitting_id
+```
 
-1. Finish boundary/survivor review, including arbitrary export-name XML validity,
-   measured variable fitting profiles and user-facing constraint errors.
-2. Connect a controllable construction workspace to saved designs using the existing
-   export callback. Store manufacturing metadata separately, keyed by design ID,
-   with synthetic historical-design compatibility tests. Do not rewrite old shapes.
-3. Extend bounded inverse search with optional resonances and physical constraints,
-   multiple candidates and comparative ideal/manufactured predictions. Reuse the
-   acoustic engine; do not interpolate discontinuous PVC bores as a smooth shape.
-4. Add actual tolerance perturbation/recalculation, candidate comparison/overlays,
-   paginated PDF dimensions/parts and optional calibrated1:1 tiling. CSV/SVG must
-   describe the selected manufactured interpretation, not only the ideal profile.
-5. Exercise real EN/ES UI at normal/150%, portrait/landscape, inspect genuine clean
-   emulator screenshots, broaden final tests and obtain passing exact-source CI.
+Final assembly row ends in `-`. Add intermediate fitting points with `|`.
+Web length equals body minus both insertions; endpoints and minimum passage must
+agree. IDs use unique ASCII letters/digits/underscore/hyphen. Catalog starts empty.
 
-No PDF, UI integration, new workflow screenshots, candidate-comparison upgrade,
-acoustic tolerance analysis or persisted manufacturing options are claimed done.
-No Samsung, private WAV, stored session or original bore was accessed/modified.
+## Acoustic and export contracts
+
+The existing lossy transmission-line equations are reused by the original shape
+entry point and a cylinder-chain entry point. Discontinuous junctions stay abrupt;
+tapers use eight midpoint cylinders per interval. Uniform legacy/chain equivalence
+and subdivision invariance are tested. Search uses a 3 Hz grid, final plans 1 Hz
+with existing peak interpolation. These are passive model predictions, without
+physical calibration or guaranteed played drone/toot.
+
+Tolerance recalculates ID +/-1 mm, final-piece length +/-5 mm, bell ID +1 mm and
+first PVC insertion 1 mm short (an exposed socket gap, not a compressed reducer).
+Local sensitivity ranks up to 12 sections. Out-of-model cases are unavailable,
+never zero. Circular sections do not represent asymmetric hollowing or structure.
+
+- CSV: ideal/actual stations, both junction diameters, half depths, assembled length
+  and parts. Locale-independent numbers; textual spreadsheet prefixes escaped.
+- SVG: metric actual profile, discontinuities, stations, parts and 100 mm reference.
+- PDF: A4 overview, reduced scale, wood half cross-sections, paginated measurements,
+  parts/instructions and optional 1:1 inner-profile tiles. Tiles span 160 mm, start
+  every 150 mm (10 mm overlap), using exactly 72/25.4 points/mm. Every page includes
+  a 100 mm ruler. Print at 100% and measure; automatic calibration is not claimed.
+
+Exports use the existing Android document picker callback. Existing revocable
+analysis ownership prevents stale publication after editing or closing. No audio
+content is needed by this workflow. Numerical decimals are not physical precision.
+
+## Validation and exact continuation
+
+Historical `8cd0d14`: 562 debug cases, 554 passed, eight protected skips; 218 selected
+PIT mutants, 172 killed, 43 survived, three uncovered. Not expanded-feature totals.
+
+New tests cover manufactured geometry, measured reducers/overlaps, invalid catalogs,
+layer constraints, bounded search, sensitivity, metric exports, tile coverage,
+storage round trips/corruption and acoustic equivalence. A failing laminated-mouth
+regression was reproduced and corrected. Numeric quality baselines are unchanged.
+
+Local executable checkpoint: 580 debug JVM cases, 572 passed, eight protected skips,
+no failures; app and instrumented APKs compiled. JVM line/branch 47.02%/45.10%, core
+99.23%/81.84%. Source gate: 667 measured, 149 unscored by the numerical summary,
+64 historical above-target methods, zero new violations and zero CPD groups.
+Unsupported constructors/Compose are reviewed by source hash; no numeric exception
+or threshold change. EN/ES resource parity passes (668 strings).
+
+Selected `:app:qualityMutationWorkshop`: 647 mutants, 432 killed, 200 survived,
+15 uncovered, no timeout or runner errors (66.77% of generated mutants). Scope
+now includes measured catalog, actual exports, target search and tolerance logic;
+not comparable to the old 218-mutant scope. Earlier runs exposed weak dimensional
+assertions and two incomplete outcomes (child connection reset, then unbounded
+allocation under a loop-increment mutant). Independent station/depth/mesh/cut
+checks and fixed-cardinality mesh allocation address those findings. Logs remain
+ignored under `checkpoints/construction-complete/`.
+
+`ConstructionUiTest` covers search/selection, three methods, catalog/project save,
+tolerance, all exports, Android PDF rendering/ruler, legacy-key integrity, damaged
+storage and real Laboratory entry/close. Manual deep scope `construction` runs on
+clean API35 with EN/ES, normal/150%, portrait/landscape and screenshot artifacts.
+Compilation is not an executed Android test.
+
+Next: execute Android scope and inspect images/PDF; fix actual failures; observe
+final fast CI; replace pending status with exact evidence. Keep PR5 draft,
+main unchanged. No Samsung or private recording access.
