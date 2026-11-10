@@ -43,6 +43,8 @@ Las cinco imágenes destacadas son capturas originales de la app real en un emul
 
 ## Qué podés hacer
 
+- **Practicar con metrónomo.** Desplegá el panel Metrónomo en Medir: 30–240 BPM, iniciar/pausar/detener, compases de 2/4 a 4/4, negras/corcheas/tresillos/semicorcheas, acento inicial y volumen regulable. Los ajustes se conservan; el sonido comienza desactivado y se bloquea antes de abrir el micrófono. Navegar o pasar a segundo plano pausa el ritmo, sin reinicio automático. Los tiempos parten de una grilla monotónica absoluta; siguen sujetos a la latencia de Android y de la salida de audio. [Temporización y aislamiento](docs/METRONOME.md) (documentación técnica en inglés).
+
 - **Medir y grabar.** Elegí el perfil de didgeridoo o flauta nativa americana, seguí lecturas de frecuencia en vivo basadas en YIN con indicaciones de incertidumbre y guardá sesiones WAV PCM16 mono. El límite de grabación se configura entre 1 y 30 minutos.
 - **Volver a tus sesiones.** Biblioteca muestra grabaciones guardadas con vistas previas de la traza musical. Podés reproducir, buscar una posición, cambiar nombres, exportar WAV, comparar sesiones o fragmentos y recuperar elementos de la Papelera.
 - **Explorar el sonido.** Alterná entre Dron, Espectrograma, Onda y Armónicos. Analizá el WAV completo o un intervalo; usá la vista a pantalla completa para ampliar, desplazar e inspeccionar con el cursor. Herramientas reúne escalas, rangos, fragmentos y marcadores.

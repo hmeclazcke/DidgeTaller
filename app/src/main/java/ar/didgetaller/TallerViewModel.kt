@@ -91,6 +91,7 @@ class TallerViewModel internal constructor(
     optimizationLoader: AnalysisLoader<OptimizationRequest,OptimizationSnapshot>? = null,
 ): AndroidViewModel(application) {
     constructor(application: Application) : this(application, null)
+    val metronome = ar.didgetaller.audio.PracticeMetronome(application)
     private val store=LocalStore(application)
     private val recordingStore=RecordingStore(application)
     private val recoveredCount=recordingStore.recoverPending()
@@ -305,6 +306,7 @@ class TallerViewModel internal constructor(
     }
     private val recording=RecordingCoordinator(object:RecordingCoordinator.Observer {
         override fun changed(state:RecordingCoordinator.State) {
+            metronome.captureActive(state.listening || state.phase != RecordingPhase.IDLE)
             recordingState=state
         }
         override fun saved(){message=getApplication<Application>().getString(R.string.recording_saved)}
@@ -342,6 +344,7 @@ class TallerViewModel internal constructor(
     /** Navigation owns the back stack; audio must not outlive its destination. */
     private var inMeasurementDestination=false
     fun onDestinationChanged(sessionId:String?=null,measurement:Boolean=false){
+        metronome.pause()
         // Normal/wide are presentations of the SAME capture, including repeated entries.
         if(measurement && inMeasurementDestination)return
         inMeasurementDestination=measurement
@@ -364,6 +367,7 @@ class TallerViewModel internal constructor(
         else message=MIC_PERMISSION_NOTICE
     }
     fun microphoneStart() {
+        metronome.captureActive(true)
         stopPlayback()
         microphoneError=null;permissionDenied=false
         if(recording.startMonitor(mic::startOwned)) {permissionAvailable();reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0;clearAcousticDiagnostics()}
@@ -485,11 +489,13 @@ class TallerViewModel internal constructor(
         return "Medido ${Music.hzText(real)} · Modelo ${Music.hzText(simulated)} · Desvío $cents cents (aprox.)"
     }
     fun onAppStopped(changingConfiguration:Boolean=false){
+        metronome.pause()
         // The retained ViewModel owns capture across Activity recreation, not a background service.
         if(changingConfiguration)return
         microphoneStop()
         stopPlayback();activeDetail?.let {explorers[it]?.looping=false};if(recordingAnalysis.running)cancelRecordingAnalysis();cancelSavedEvidence();clearSwipeComparison();clearDroneComponent();clearSavedYinReplay();workspace.cancel();cancelComparison()}
     override fun onCleared(){
+        metronome.close()
         player.close()
         optimizationOwner.close()
         analysisOwner.close();simulationOwner.close();swipeOwner.close()

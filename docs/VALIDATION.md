@@ -1,3 +1,27 @@
+# Metronome feature verification
+
+From merged main `bc2df23`, feature `3.3.0-beta1` (versionCode 13) adds a separate
+practice timing/output owner without changing acoustic equations or session/WAV
+formats. Local final debug/release JVM runs: 1,094 discovered, 1,078 passed,
+16 protected skips, zero failures. Twenty new domain cases run in each variant.
+Selected PIT: 154 mutants across six bytecode classes; 140 killed, 14 survived,
+zero uncovered/timeouts. Surviving redundant guards/Unit bridges are not all claimed
+equivalent; the score is 90.91% for this selection, not whole-app mutation coverage.
+
+JVM production line/branch coverage: 46.15%/44.26%; pure core: 99.10%/85.40%.
+CRAP-L: 587 scored, 131 classified unscored, 64 above target; all 42 new measured
+metronome functions are below target (maximum MCC/CRAP-L 8). Existing numeric
+baselines are unchanged. CPD: zero groups of at least 100 tokens. Lint: zero errors,
+53 warnings, 7 hints. Localization parity and 46 Python quality-tool tests pass.
+
+Local API37 native evidence has three passing metronome cases; the transport UI
+case was obstructed by a System UI ANR dialog, confirmed in the actual screenshot.
+It is not counted as passing. Native acceptance uses the existing API35 CI workflow:
+the full suite plus actual compact EN/ES at 150% font, with metronome screenshots
+and strict log/result verification. Observed source-scoped CI runs are linked from
+the feature PR and delivery report. No physical Samsung access or installation is
+authorized by this feature task. See [metronome design](METRONOME.md).
+
 # 2026-11-08 workspace ownership integration
 
 ## Verified comparison/rendering delivery - 2026-11-09

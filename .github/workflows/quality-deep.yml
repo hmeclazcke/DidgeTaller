@@ -97,6 +97,8 @@ jobs:
             build/reports/quality/library-configuration-*.txt
             build/reports/quality/session-screenshots/
             build/reports/quality/workspace-configuration-*.txt
+            build/reports/quality/metronome-screenshots/
+            build/reports/quality/metronome-configuration-*.txt
             build/reports/quality/android-function-mapping.json
             build/reports/quality/source-inventory.xml
             build/reports/quality/jvm-method-inventory.xml

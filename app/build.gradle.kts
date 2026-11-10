@@ -86,8 +86,8 @@ android {
         applicationId = "ar.didgetaller"
         minSdk = 26
         targetSdk = 35
-        versionCode = 12
-        versionName = "3.2.6-beta1"
+        versionCode = 13
+        versionName = "3.3.0-beta1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -173,9 +173,12 @@ fun registerMutation(name: String, directory: String, targets: String, testTarge
     }
 }
 registerMutation("qualityMutation", "pit", "ar.didgetaller.core.PlotTouchKt", "ar.didgetaller.core.PlotTouchTest", qualityPolicy.getProperty("mutationThreshold"))
+registerMutation("qualityMutationMetronome", "pit-metronome",
+    "ar.didgetaller.core.MetronomeEngine,ar.didgetaller.core.MetronomeGrid,ar.didgetaller.core.MetronomeSettings*,ar.didgetaller.core.FocusedMetronomeClick,ar.didgetaller.core.MetronomeOutputKt",
+    "ar.didgetaller.core.Metronome*Test", null)
 
 // The expanded domain report is informational until survivors have been individually reviewed.
-val domainTargets=listOf("PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$Companion", "PitchTrace", "PitchTrace\$Builder",
+val domainTargets=listOf("MetronomeEngine", "MetronomeGrid", "MetronomeSettings*", "FocusedMetronomeClick", "MetronomeOutputKt", "PitchDetector", "YinPeriodSearch", "YinPeriodSearch\$Companion", "PitchTrace", "PitchTrace\$Builder",
     "Music", "LivePitch", "SessionAnalysis", "AxisDomain", "PlotProjection", "PlotTouchKt", "PlaybackController",
     "PlaybackController\$events\$1", "WavCodec", "ProgressiveWavWriter", "ProgressiveWavWriter\$Companion", "Pcm16WavReader", "RecordingCapture", "CaptureHandoff", "RecordingCoordinator", "SpectrogramRaster", "PlotReduction", "TraceDrawing", "WaveGeometry\$Companion", "RasterPlacement\$Companion")
 val syntheticTests=fileTree("src/test/java/ar/didgetaller/core").matching {include("*Test.kt");exclude("Real*Test.kt")}

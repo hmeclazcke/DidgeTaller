@@ -1,3 +1,14 @@
+# Metronome feature — 2026-11-09
+
+Branch `feature/metronome` starts at merged main `bc2df23`. The rhythm model and
+absolute rational grid live outside Android. A single engine monitor owns click
+effects, capture admission, cancellation and terminal disposal. Measure hosts one
+expandable panel; navigation/backgrounding pause without automatic restart.
+Separate preferences preserve settings without changing session/WAV formats.
+See [design and reproducible checks](METRONOME.md). Physical-device access and
+installation are outside this task; only a new synthetic emulator data directory
+is used. Existing rebuild tools/gates are retained.
+
 # 2026-11-08 workspace continuation handoff
 
 ## Verified comparison/rendering delivery - 2026-11-09

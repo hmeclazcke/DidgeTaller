@@ -16,6 +16,9 @@ collect_and_restore() {
   if ! adb -s "$emulator_serial" pull \
     /sdcard/Android/data/ar.didgetaller/files/session-evidence \
     build/reports/quality/session-screenshots; then result=1; fi
+  if ! adb -s "$emulator_serial" pull \
+    /sdcard/Android/data/ar.didgetaller/files/metronome-evidence \
+    build/reports/quality/metronome-screenshots; then result=1; fi
   if ! adb -s "$emulator_serial" shell wm size reset; then result=1; fi
   if ! adb -s "$emulator_serial" shell settings put system font_scale 1.0; then result=1; fi
   if ! adb -s "$emulator_serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales en; then result=1; fi
@@ -43,6 +46,12 @@ for language in en es; do
     ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
     > "build/reports/quality/workspace-configuration-$language.txt"
   python3 tools/run_instrumentation.py --verify-log "build/reports/quality/workspace-configuration-$language.txt"
+  timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \
+    -e class 'ar.didgetaller.ui.MetronomeUiTest#transportSettingsAndVisualCaptureInterlock' \
+    -e evidenceLabel "$language-metronome150" \
+    ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner \
+    > "build/reports/quality/metronome-configuration-$language.txt"
+  python3 tools/run_instrumentation.py --verify-log "build/reports/quality/metronome-configuration-$language.txt"
 done
 adb -s "$emulator_serial" shell wm size 1280x720
 timeout 180s adb -s "$emulator_serial" shell am instrument -w -r \

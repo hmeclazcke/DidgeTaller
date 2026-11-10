@@ -1,5 +1,15 @@
 # Quality guide
 
+## Metronome feature
+
+`:app:qualityMutationMetronome` executes real selected PIT mutations for timing,
+focus/output ownership, settings and foreground-screen policy. Its targets also
+join the existing manual domain mutation job. The score is informational; report
+validity, source-bound mapping, numerical debt ratchets and required test failures
+remain enforced. No thresholds or numeric baselines were relaxed. The full emulator
+workflow additionally retains compact EN/ES 150% metronome interaction logs and
+screenshots. See [design and validation](../METRONOME.md).
+
 ## Final rebuild commands and evidence - 2026-11-09
 
 Current production boundaries, measured local scorecard and technical acceptance are

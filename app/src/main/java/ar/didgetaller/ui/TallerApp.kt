@@ -441,6 +441,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
         Text(if(vm.maxHz==140)stringResource(R.string.ui_range_35_140_hz_extend_to_220) else stringResource(R.string.ui_range_35_220_hz_return_to_140))
     }
+    MetronomePanel(vm.metronome)
 }
 
 @Composable

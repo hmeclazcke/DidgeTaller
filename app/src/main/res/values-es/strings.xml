@@ -598,4 +598,26 @@
     <string name="recording_empty">No se capturó audio. Intentá de nuevo.</string>
     <string name="recording_saved">Sesión guardada en Biblioteca.</string>
     <string name="recording_save_failed">No se pudo guardar la sesión: %1$s</string>
+
+    <!-- Practice metronome -->
+    <string name="metronome_title">Metrónomo · %1$d BPM</string>
+    <string name="metronome_start">Iniciar ritmo</string>
+    <string name="metronome_resume">Reanudar ritmo</string>
+    <string name="metronome_pause">Pausar</string>
+    <string name="metronome_stop">Detener</string>
+    <string name="metronome_visual_only">Solo visual: el sonido está bloqueado mientras el micrófono o la grabación estén activos.</string>
+    <string name="metronome_audio_failed">Audio no disponible. El ritmo visual continúa.</string>
+    <string name="metronome_beat">Pulso %1$d/%2$d · subdivisión %3$d/%4$d</string>
+    <string name="metronome_bpm">Tempo (BPM)</string>
+    <string name="metronome_bpm_range">30–240 pulsos por minuto</string>
+    <string name="metronome_meter">Compás</string>
+    <string name="metronome_subdivision">Subdivisión</string>
+    <string name="metronome_quarter">Negras</string>
+    <string name="metronome_eighth">Corcheas</string>
+    <string name="metronome_triplet">Tresillos</string>
+    <string name="metronome_sixteenth">Semicorcheas</string>
+    <string name="metronome_accent">Acentuar el primer pulso</string>
+    <string name="metronome_sound">Clic audible</string>
+    <string name="metronome_volume">Volumen del clic: %1$d%%</string>
+    <string name="metronome_volume_label">Volumen del clic</string>
 </resources>

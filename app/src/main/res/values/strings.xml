@@ -598,4 +598,26 @@
     <string name="recording_empty">No audio was captured. Try again.</string>
     <string name="recording_saved">Session saved to Library.</string>
     <string name="recording_save_failed">Could not save the session: %1$s</string>
+
+    <!-- Practice metronome -->
+    <string name="metronome_title">Metronome · %1$d BPM</string>
+    <string name="metronome_start">Start rhythm</string>
+    <string name="metronome_resume">Resume rhythm</string>
+    <string name="metronome_pause">Pause</string>
+    <string name="metronome_stop">Stop</string>
+    <string name="metronome_visual_only">Visual only: sound is blocked while the microphone or recording is active.</string>
+    <string name="metronome_audio_failed">Audio unavailable. The visual rhythm continues.</string>
+    <string name="metronome_beat">Beat %1$d/%2$d · subdivision %3$d/%4$d</string>
+    <string name="metronome_bpm">Tempo (BPM)</string>
+    <string name="metronome_bpm_range">30–240 beats per minute</string>
+    <string name="metronome_meter">Time signature</string>
+    <string name="metronome_subdivision">Subdivision</string>
+    <string name="metronome_quarter">Quarter</string>
+    <string name="metronome_eighth">Eighth</string>
+    <string name="metronome_triplet">Triplet</string>
+    <string name="metronome_sixteenth">Sixteenth</string>
+    <string name="metronome_accent">Accent the first beat</string>
+    <string name="metronome_sound">Audible click</string>
+    <string name="metronome_volume">Click volume: %1$d%%</string>
+    <string name="metronome_volume_label">Click volume</string>
 </resources>
