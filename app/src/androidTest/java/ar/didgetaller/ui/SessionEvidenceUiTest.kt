@@ -60,7 +60,7 @@ class SessionEvidenceUiTest {
         item=RecordingStore(app).save(bytes,points,if(args.getString("evidenceLabel")?.startsWith("current-")==true)1793923200000L else 1000000)
         compose.runOnUiThread {vm=TallerViewModel(app);owners.put("evidence",vm)}
         compose.setContent {TallerApp(vm,{}, {}, {_,_,_->})}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         compose.waitUntil(20000){!vm.workspace.state.loading && vm.workspace.state.frames>0}
     }

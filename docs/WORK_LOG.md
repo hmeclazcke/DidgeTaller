@@ -1,3 +1,17 @@
+# Full native suite and caption-independent configuration checks - 2026-11-10
+
+Full run 42837217775 on production source 4e30174 executed 176 cases: 166 passed,
+10 protected/configuration skips, zero failures. Its later Spanish 150% library
+configuration case still selected the old visible Biblioteca caption, now Biblio
+at that extreme width. Navigation tests select the unchanged full accessible title
+instead of the abbreviated rendering. No assertions, seek tolerances, application
+behavior or production inputs change. Keep the existing complete-suite acceptance
+and rerun the final workflow to observe all configuration cases together.
+
+The owner separately authorized installing this correction on Samsung. Use only
+the specified serial, package/signature checks and read-only current metadata;
+never read private audio or perform destructive application operations.
+
 # Measured viewport follow-up - 2026-11-10
 
 Focused 42833806307 confirms the portrait structure and actual tempo display are
