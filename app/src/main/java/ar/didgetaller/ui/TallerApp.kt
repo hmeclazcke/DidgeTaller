@@ -286,10 +286,11 @@ private fun Panel(title:String?=null,subtitle:String?=null,content:@Composable C
 private fun RecordingActions(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard:()->Unit) {
     val configuration=androidx.compose.ui.platform.LocalConfiguration.current
     val largeText=configuration.fontScale>=1.3f
-    Row(Modifier.fillMaxWidth().background(background).padding(horizontal=if(vm.sessionPhase==SessionPhase.CAPTURING)0.dp else 16.dp,vertical=if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)0.dp else 6.dp),
-        horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+    val fontScale=androidx.compose.ui.platform.LocalDensity.current.fontScale
+    FlowRow(Modifier.fillMaxWidth().background(background).padding(vertical=if(vm.sessionPhase==SessionPhase.CAPTURING && configuration.screenHeightDp<500)0.dp else 6.dp),
+        horizontalArrangement=Arrangement.spacedBy(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Button(onClick={if(vm.sessionPhase==SessionPhase.CAPTURING)vm.finishSession() else startMeasurement()},
-            modifier=Modifier.weight(1f).heightIn(min=48.dp).testTag("recording-primary"),
+            modifier=Modifier.widthIn(min=184.dp*fontScale).weight(2f).heightIn(min=48.dp).testTag("recording-primary"),
             enabled=!vm.requestingPermission && vm.sessionPhase in listOf(SessionPhase.IDLE,SessionPhase.CAPTURING),
             colors=ButtonDefaults.buttonColors(containerColor=if(vm.sessionPhase==SessionPhase.CAPTURING)orange else accent)) {
             Text(when(vm.sessionPhase){
@@ -300,7 +301,7 @@ private fun RecordingActions(vm:TallerViewModel,startMeasurement:()->Unit,onDisc
             },textAlign=TextAlign.Center,fontWeight=FontWeight.Bold,fontSize=if(largeText)14.sp else 17.sp)
         }
         if(vm.sessionPhase==SessionPhase.CAPTURING) OutlinedButton(onClick=onDiscard,
-            modifier=Modifier.heightIn(min=48.dp).testTag("discard-recording")) {
+            modifier=Modifier.widthIn(min=104.dp*fontScale).weight(1f).heightIn(min=48.dp).testTag("discard-recording")) {
             Text(stringResource(R.string.recording_discard_action),textAlign=TextAlign.Center)
         }
     }
@@ -356,8 +357,8 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
         }
     }
     @Composable fun measurementHeader() {
-        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
+        FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
+            Column(Modifier.heightIn(min=48.dp),verticalArrangement=Arrangement.Center) {
                 if(compactWide && !capturing)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
                 Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
                     color=if(capturing)orange else muted,fontSize=if(capturing && configuration.fontScale>=1.3f)10.sp else 12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)

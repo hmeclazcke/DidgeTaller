@@ -1160,3 +1160,14 @@ Samsung metadata preflight, before installation/launch: 31 sessions /31 WAV file
 19 active /12 trashed; index membership is consistent, no partial capture. This differs
 from the supplied previous 30/30 reference. Physical operations are paused pending
 owner confirmation of the additional session. No WAV contents accessed.
+
+
+Second native run 42862160962: 28/29 pass. The remaining assertion targets a blank
+scientific-note placeholder; replace it with an explicit blank-text assertion and
+assert independent C#2/A4 scientific labels for accepted synthetic tones. Actual
+ES150 screenshots also expose the wide-view button squeezing the header to one
+letter per line. Correct the production header with intrinsic-width wrapping;
+recording actions likewise wrap by real available width and system font scale.
+Keep normal simultaneous controls, geometry stability and min48dp assertions.
+Owner confirmed the pre-existing 31-session/31-WAV Samsung baseline; signatures
+and package/code13 match. Install remains gated on passing final native verification.

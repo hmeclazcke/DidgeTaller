@@ -159,10 +159,10 @@ class MeasureDiscardUiTest {
         start()
         if (limited) compose.onNodeWithTag("measurement-frequency").performScrollTo()
         compose.onNodeWithTag("measurement-frequency").assertIsDisplayed()
-        compose.onNodeWithTag("measurement-note-name").assertIsDisplayed()
+        compose.onNodeWithTag("measurement-note-name").assertTextEquals(" ")
         compose.onNodeWithText(uiText(R.string.recording_waiting_stable)).assertIsDisplayed()
         compose.onNodeWithTag("acoustic-signal-status").assertIsDisplayed()
-        if (limited) compose.onNodeWithTag("recording-primary").performScrollTo()
+        if (limited) compose.onNodeWithTag("discard-recording").performScrollTo()
         compose.onNodeWithTag("recording-primary").assertIsDisplayed().assertHasClickAction()
         compose.onNodeWithTag("discard-recording").assertIsDisplayed().assertHasClickAction()
         val reading = compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode().boundsInRoot
@@ -172,7 +172,8 @@ class MeasureDiscardUiTest {
         val density = compose.activity.resources.displayMetrics.density
         assertTrue(reading.bottom <= primary.top)
         assertTrue(primary.height >= 48 * density && discard.height >= 48 * density)
-        assertTrue(primary.right < discard.left)
+        if(limited)assertTrue(primary.right < discard.left || primary.bottom <= discard.top)
+        else assertTrue(primary.right < discard.left)
         assertTrue(primary.bottom <= navigation.top)
         compose.onNodeWithText(uiText(R.string.ui_live_reading)).assertDoesNotExist()
         capture("pending")

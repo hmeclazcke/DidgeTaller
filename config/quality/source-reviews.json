@@ -5479,18 +5479,17 @@
     },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "310",
+      "line": "311",
       "kind": "function",
       "name": "MeasureScreen",
-      "semanticHash": "ad863aec16e31029d9f087bc5f56a6ed2ef6e3e0cd880ab58d4148c9a87fe267",
+      "semanticHash": "2f6b6839612b685dda38849d76647af467304aeef58cb5021f365d7b8b67c9d1",
       "metric_status": "compose-transformation",
-      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen stays below its previous MCC 105. Idle and active actions now share the reading composition instead of a separated footer. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
       ],
-      "reviewed_source": "7062629 + cohesive idle action placement"
+      "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
     },
     "d4472273b926e36faa07c393eb7a62c57ec6f11da1b9b88f36881db20e00fd2b": {
       "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
@@ -5783,6 +5782,20 @@
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
       "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+    },
+    "dfb9df52f9307bb7cd99c7048e9c69c9c7bf6b9abfb11ea81d5bcca0fcc6f93f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "286",
+      "kind": "function",
+      "name": "RecordingActions",
+      "semanticHash": "f5e409ffd4c2158238fbe71c87c25a9a4dfaeeb813f6490ff69c9c61b8c8a73e",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
+      ],
+      "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
     }
   }
 }
