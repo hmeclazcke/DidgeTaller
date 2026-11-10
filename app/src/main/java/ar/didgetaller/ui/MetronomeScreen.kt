@@ -61,19 +61,26 @@ internal fun MetronomeMediaControls(controller: PracticeMetronome, active: Boole
 fun MetronomeScreen(controller: PracticeMetronome) {
     BoxWithConstraints(Modifier.fillMaxSize().testTag("metronome-screen")) {
         val compact = maxHeight < 560.dp
-        val gap = (maxHeight.value / 130f).coerceIn(4f, 8f).dp
+        val contentHeight = (maxHeight - 32.dp).coerceAtLeast(0.dp)
         val landscape = androidx.compose.ui.platform.LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
         if (landscape) Row(Modifier.fillMaxSize().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
-                MetronomeTempo(controller, true); MetronomeMeter(controller); MetronomeBeats(controller)
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).heightIn(min = contentHeight),
+                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) { MetronomeTempo(controller, true); MetronomeMeter(controller) }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) { MetronomeBeats(controller) }
             }
-            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                MetronomeTransport(controller); MetronomeAdvanced(controller)
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).heightIn(min = contentHeight), verticalArrangement = Arrangement.SpaceBetween) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { MetronomeTransport(controller) }
+                Column { MetronomeAdvanced(controller) }
             }
-        } else Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).testTag("metronome-scroll").padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(gap)) {
-            MetronomeTempo(controller, compact); MetronomeMeter(controller); MetronomeBeats(controller)
-            MetronomeTransport(controller); MetronomeAdvanced(controller)
+        } else Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).testTag("metronome-scroll").padding(16.dp)
+            .heightIn(min = contentHeight), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                MetronomeTempo(controller, compact); MetronomeMeter(controller)
+            }
+            Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)) { MetronomeBeats(controller) }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { MetronomeTransport(controller); MetronomeAdvanced(controller) }
         }
     }
 }

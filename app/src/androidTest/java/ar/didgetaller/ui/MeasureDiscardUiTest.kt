@@ -147,6 +147,12 @@ class MeasureDiscardUiTest {
     }
 
     @Test fun activeLayoutAndConfirmationAreAccessible() {
+        compose.onNodeWithTag("measurement-details").assertIsDisplayed().assertHasClickAction()
+        compose.onNodeWithText(uiText(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in)).assertDoesNotExist()
+        val configuration = compose.activity.resources.configuration
+        if (configuration.screenHeightDp >= 600 && configuration.fontScale <= 1.05f) {
+            assertEquals(0f, compose.onNodeWithTag("measure-screen").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue())
+        }
         capture("idle")
         start()
         compose.onNodeWithTag("measurement-frequency").assertIsDisplayed()
@@ -164,7 +170,13 @@ class MeasureDiscardUiTest {
         assertTrue(primary.height >= 48 * density && discard.height >= 48 * density)
         assertTrue(primary.right < discard.left)
         assertTrue(primary.bottom <= navigation.top)
+        compose.onNodeWithText(uiText(R.string.ui_live_reading)).assertDoesNotExist()
         capture("pending")
+        compose.onNodeWithTag("measurement-details").performScrollTo().performClick()
+        compose.onNodeWithText(uiText(R.string.ui_live_reading)).performScrollTo().assertIsDisplayed()
+        capture("details")
+        compose.onNodeWithTag("measurement-details").performScrollTo().performClick()
+        compose.onNodeWithTag("discard-recording").performScrollTo()
         compose.onNodeWithTag("discard-recording").performClick()
         compose.onNodeWithText(uiText(R.string.recording_discard_title)).assertIsDisplayed()
         compose.onNodeWithTag("continue-recording").assertHasClickAction()

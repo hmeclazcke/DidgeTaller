@@ -5479,19 +5479,18 @@
     },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 294,
+      "line": "311",
       "kind": "function",
       "name": "MeasureScreen",
-      "semanticHash": "d7ff23f6d21a19cf5e6ac32c1631e80ca2c0eb10dec63b979242e994d9160ab6",
-      "reviewed_base": "bc2df23051e764c6e3dee58ea32f15206bae7091",
+      "semanticHash": "2c34637c31092d240b780090c67b0750334c9656ebeeb028f890072b2677f2b2",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
       "evidence": [
-        "docs/METRONOME.md",
-        "app/src/test/java/ar/didgetaller/core/MetronomeTest.kt",
-        "app/src/test/java/ar/didgetaller/core/MetronomeOutputTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "metric_status": "compose-transformation",
-      "reason": "Authored Compose rendering or existing anonymous recording observer cannot be assigned independent source/JVM CRAP-L by the verified mapper. Reviewed event bindings, microphone interlock and accessible scrollable controls; deterministic domain tests plus actual native UI/admission tests protect behavior. Exact semantic hash expires after changes."
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
     },
     "d4472273b926e36faa07c393eb7a62c57ec6f11da1b9b88f36881db20e00fd2b": {
       "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
@@ -5552,17 +5551,18 @@
     },
     "894e682eeed7d9f2950ddd6d57ddbb5872090d9150f22947e270397aac9868ce": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
-      "line": 61,
+      "line": "61",
       "kind": "function",
       "name": "MetronomeScreen",
-      "semanticHash": "9a8bf7f57339fc40823412930ee6c6755d2014c48ea63537317698afe33bd279",
+      "semanticHash": "86b8b1cca4a9f11d0db2e3137fe397f3ee0939405bf7e54080ed410b373ec4e2",
       "metric_status": "compose-transformation",
-      "reason": "Reviewed icon-only Material tabs with complete localized icon descriptions, native Tab role/selection/click tests; viewport-dependent tempo density preserves system scaling and expanded scrolling. Compose JVM correspondence remains unsupported; no numeric ceiling changed.",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "reviewed_source": "bfc70c5 + icon-only/viewport correction"
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
     },
     "aa9c77932bba65679cc501ea2603d9bb3350ca776731b267d233cf439510c9e9": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
@@ -5684,17 +5684,18 @@
     },
     "c7c20c886466a32843eb06cae5e4e1be68c58c2230fe95c3789065cb1b09e3d7": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 112,
+      "line": "112",
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "c542393ccd1252acfb5ef4e059d805ea0801dd9d89d058ff4dc448b35adf3b7f",
+      "semanticHash": "c7ae06925212a8da344cb39895e3969597398c8e30a59873e35fb1242b7eb667",
       "metric_status": "compose-transformation",
-      "reason": "Reviewed icon-only Material tabs with complete localized icon descriptions, native Tab role/selection/click tests; viewport-dependent tempo density preserves system scaling and expanded scrolling. Compose JVM correspondence remains unsupported; no numeric ceiling changed.",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
       ],
-      "reviewed_source": "bfc70c5 + icon-only/viewport correction"
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
@@ -5752,6 +5753,36 @@
         "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
       ],
       "reviewed_source": "bfc70c5 + icon-only/viewport correction"
+    },
+    "30ec659422b8c152a39abd1d6ed1bcc333f0b4e7f81685b04ca454b4658722e3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "451",
+      "kind": "function",
+      "name": "MeasurementDetails",
+      "semanticHash": "98d3c672626db519c988feab7fa03ecf77257b4f080abbff9705d26d16682c8c",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
+    },
+    "8cb166f5225e7ee5ebf4662fa4d5478ffccc66fc9a2ce186d066ab217232bedc": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "462",
+      "kind": "function",
+      "name": "LiveReadingDetails",
+      "semanticHash": "07f9c33c28601377a02645284c2c5c1cae3b0190a673af948ad05cc2d86b2453",
+      "metric_status": "compose-transformation",
+      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen MCC decreases to 96. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+      ],
+      "reviewed_source": "4a28143 + Measure/metronome presentation redesign"
     }
   }
 }

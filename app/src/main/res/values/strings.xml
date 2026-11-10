@@ -637,4 +637,6 @@
     <string name="metronome_system_muted">Media volume is muted. Raise it to hear the click.</string>
     <string name="metronome_gain_zero">Click volume is zero. Adjust it in Rhythm and volume.</string>
     <string name="metronome_media_settings">Media volume</string>
+    <string name="measure_details">Measurement details</string>
+    <string name="measure_details_hide">Hide details</string>
 </resources>

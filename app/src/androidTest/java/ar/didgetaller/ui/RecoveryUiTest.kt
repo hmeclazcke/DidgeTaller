@@ -184,6 +184,7 @@ class RecoveryUiTest {
         val noise=ShortArray(20480){(random.nextInt(12000)-6000).toShort()}
         deliver(noise)
         compose.onNodeWithText(uiText(R.string.ui_signal_present_uncertain_frequency)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("measurement-details").performScrollTo().performClick()
         compose.onNodeWithTag("acoustic-diagnostics-toggle").performScrollTo().performClick()
         compose.onNodeWithTag("acoustic-diagnostic-candidate").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("acoustic-diagnostic-values").assertExists()

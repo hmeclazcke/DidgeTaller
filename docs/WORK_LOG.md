@@ -1125,3 +1125,23 @@ after removing an identity cast, so no redundant binary suite is invented. Publi
 one final source revision and observe its existing fast/native/manual mutation jobs.
 PR1 remains draft and is the current remote evidence table. Owner review follows
 successful required jobs; no automatic merge, Samsung access or metronome.
+
+
+### Measure and metronome presentation redesign (from 4a28143)
+
+Preserve approved icon-only navigation and all audio, capture, persistence and
+metronome engines. Measure uses compact setup/readout spacing and opt-in details
+instead of a second large live-explanation card. Reserved reading slots and
+Save/Discard confirmation remain intact. Metronome groups tempo, beat feedback
+and transport across the real available height; intrinsic overflow still scrolls.
+Normal and 150%-font ES/EN portrait/landscape native contracts and synthetic PCM
+screenshots are selected by the existing focused emulator workflow. This is a
+focused run, not the complete instrumentation suite.
+
+Local sequential Gradle build, 550 debug JVM cases (542 passed, 8 protected skips),
+app/test APK compilation, Lint (0 errors), coverage/complexity/CPD and 46 Python
+quality tests completed. Source-bound Compose reviews renewed without changing
+numeric baselines. Remote native screenshots/CI and the authorized Samsung update
+remain pending; do not describe them as passed before observing results. Next:
+publish for one focused API 35 run, inspect screenshots, then verify package,
+signature and metadata before Samsung install-r. No private audio access.

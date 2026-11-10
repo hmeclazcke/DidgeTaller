@@ -186,12 +186,12 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
             NavHost(navController,startDestination=TallerRoutes.Measure,modifier=Modifier.fillMaxSize()) {
                 composable(TallerRoutes.Measure) {
                     DestinationFrame(padding,route==TallerRoutes.Measure) {
-                        DestinationContent("measure-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
+                        DestinationContent("measure-screen",compact=true) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.navigate(TallerRoutes.MeasureWide){launchSingleTop=true}}}
                     }
                 }
                 composable(TallerRoutes.MeasureWide) {
                     DestinationFrame(padding,route==TallerRoutes.MeasureWide) {
-                        DestinationContent("measure-wide-screen",compact=vm.sessionPhase==SessionPhase.CAPTURING) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
+                        DestinationContent("measure-wide-screen",compact=true) {MeasureScreen(vm,startMeasurement,{confirmDiscard=true}){navController.popBackStack()}}
                     }
                 }
                 composable(TallerRoutes.Metronome) {
@@ -317,6 +317,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     val prioritizeReading=!capturing && !vm.fullScreen && (compactWide || configuration.screenHeightDp/configuration.fontScale<560f)
     var instruments by remember {mutableStateOf(false)}
     @Composable fun setupControls() {
+      FlowRow(Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(0.dp)) {
         if(!vm.fullScreen || !compactWide)Box {
             TextButton(onClick={instruments=true},enabled=!vm.listening && vm.sessionPhase==SessionPhase.IDLE,modifier=Modifier.testTag("instrument-selector")){
                 Text(stringResource(R.string.ui_instrument, context.instrumentLabel(vm.instrument)))
@@ -326,6 +327,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             }
         }
         RecordingSettings(vm)
+      }
     }
     if(!capturing && !prioritizeReading)setupControls()
     if(vm.permissionDenied){
@@ -367,9 +369,9 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
         }
     }
     if(!prioritizeReading)measurementHeader()
-    Surface(Modifier.fillMaxWidth().testTag("measurement-card"),shape=RoundedCornerShape(28.dp),color=cardColor) {
+    Surface(Modifier.fillMaxWidth().testTag("measurement-card"),shape=RoundedCornerShape(20.dp),color=cardColor) {
         Column(Modifier.background(Brush.verticalGradient(listOf(Color(0xFF1D3839),cardColor)))
-            .padding(horizontal=20.dp,vertical=if(compactWide && capturing)4.dp else if(compactWide)8.dp else if(capturing)12.dp else if(vm.fullScreen)28.dp else 20.dp),
+            .padding(horizontal=16.dp,vertical=if(compactWide && capturing)4.dp else if(compactWide)8.dp else if(vm.fullScreen)28.dp else 12.dp),
             horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(if(compactWide)0.dp else 8.dp)) {
             if(!compactCaptureHeader) Row(Modifier.fillMaxWidth().testTag("measurement-card-header"),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
                 Text(stringResource(R.string.ui_fundamental_base_note),Modifier.weight(1f),color=muted,fontSize=if(capturing && configuration.fontScale>=1.3f)10.sp else 12.sp)
@@ -379,12 +381,12 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             @Composable fun noteDisplay() { BoxWithConstraints(Modifier.fillMaxWidth(),contentAlignment=Alignment.Center) {
                 val label=if(hz>0)note.first().uppercase(Locale.getDefault()) else ""
                 val preferred=if(compactWide)(maxWidth.value*.3f).coerceIn(if(configuration.fontScale>=1.3f)28f else 32f,if(configuration.fontScale>=1.3f)28f else 44f)
-                    else (maxWidth.value*(if(vm.fullScreen)0.37f else 0.31f)).coerceIn(if(capturing && configuration.fontScale>=1.3f)48f else 74f,if(capturing && configuration.fontScale>=1.3f)48f else if(capturing)90f else 155f)
+                    else (maxWidth.value*(if(vm.fullScreen)0.37f else 0.25f)).coerceIn(if(capturing && configuration.fontScale>=1.3f)48f else 56f,if(capturing && configuration.fontScale>=1.3f)48f else if(vm.fullScreen)155f else 86f)
                 val measurer=androidx.compose.ui.text.rememberTextMeasurer()
                 val density=androidx.compose.ui.platform.LocalDensity.current
                 val width=measurer.measure(label,style=androidx.compose.ui.text.TextStyle(fontSize=preferred.sp,fontWeight=FontWeight.Bold),softWrap=false).size.width
                 val size=(preferred*(with(density){maxWidth.toPx()}/width.coerceAtLeast(1)).coerceAtMost(1f)).sp
-                val secondarySize=if(compactWide && configuration.fontScale>=1.3f)13.sp else if(compactWide)16.sp else if(vm.fullScreen)26.sp else 20.sp
+                val secondarySize=if(compactWide && configuration.fontScale>=1.3f)13.sp else if(compactWide)16.sp else if(vm.fullScreen)26.sp else 16.sp
                 Column(horizontalAlignment=Alignment.CenterHorizontally) {
                     if(capturing) Box(Modifier.fillMaxWidth().heightIn(min=with(density){preferred.sp.toDp()}*1.4f).testTag("measurement-note-slot"),contentAlignment=Alignment.Center) {
                         // Measure both alternatives so changing pitch never changes the reserved slot.
@@ -409,7 +411,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             @Composable fun readingDisplay() { Column(horizontalAlignment=Alignment.CenterHorizontally,
                 verticalArrangement=Arrangement.spacedBy(if(compactWide)0.dp else 8.dp)) {
             Box(contentAlignment=Alignment.Center) {
-                val frequencySize=if(compactWide && configuration.fontScale>=1.3f)24.sp else if(compactWide)28.sp else if(vm.fullScreen)46.sp else 36.sp
+                val frequencySize=if(compactWide && configuration.fontScale>=1.3f)24.sp else if(compactWide)28.sp else if(vm.fullScreen)46.sp else 30.sp
                 if(capturing) Text("888.8 Hz",Modifier.alpha(0f).clearAndSetSemantics {},fontSize=frequencySize,fontWeight=FontWeight.Bold)
                 Text(hzLabel(hz),modifier=Modifier.testTag("measurement-frequency"),fontSize=frequencySize,
                     fontWeight=FontWeight.Bold,color=accent)
@@ -436,27 +438,39 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     }
     if(prioritizeReading)measurementHeader()
     if(prioritizeReading && !capturing)setupControls()
-    if(capturing) {
-        RecordingActions(vm,startMeasurement,onDiscard)
-        Panel(context.getString(R.string.ui_live_reading),if(vm.stableReading)context.getString(R.string.ui_the_frequency_holds_between_readings) else context.getString(R.string.ui_the_note_may_still_change)) {
-            if(hz>0) {
-                val cents=Music.cents(hz)
-                Text(stringResource(R.string.ui_periodicity_26b035, vm.reading.confidence),color=muted,fontSize=12.sp)
-                Text(stringResource(R.string.ui_cents_relative_to, if(cents>0) "+" else "", cents, note.getOrElse(1){stringResource(R.string.ui_the_nearby_note)}),
-                    color=ink,fontSize=13.sp)
-                CentMeter(cents)
-            } else Text(stringResource(if(signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || vm.reading.rms>=.005)
-                R.string.acoustic_uncertain_help else R.string.ui_play_a_sustained_note_silence_is_preserved_as_a_pause_in_the_chart),color=muted,fontSize=13.sp)
-            if(!vm.fullScreen && vm.sessionTimeline.size>2)
-                SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true,instrument=vm.instrument)
-        }
-    } else if(!vm.fullScreen) {
-        Text(stringResource(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in),
-            color=muted,fontSize=14.sp,lineHeight=21.sp)
+    if(capturing) RecordingActions(vm,startMeasurement,onDiscard)
+    var details by rememberSaveable {mutableStateOf(false)}
+    if(!vm.fullScreen) TextButton(onClick={details=!details},modifier=Modifier.fillMaxWidth().testTag("measurement-details")) {
+        Text(stringResource(if(details)R.string.measure_details_hide else R.string.measure_details))
     }
+    if(details || vm.fullScreen) MeasurementDetails(vm,hz,elapsed)
+}
+
+/** Explanations and retained diagnostics are available without displacing live actions. */
+@Composable
+private fun MeasurementDetails(vm:TallerViewModel,hz:Double,elapsed:Int) {
+    if(vm.sessionPhase==SessionPhase.CAPTURING) LiveReadingDetails(vm,hz,elapsed)
+    else if(!vm.fullScreen) Text(stringResource(R.string.ui_one_action_starts_measurement_and_wav_recording_stopping_saves_the_session_in),
+        color=muted,fontSize=14.sp,lineHeight=21.sp)
     if(!vm.fullScreen)AcousticDiagnosticsPanel(vm.acousticSample,vm.recentAcousticDiagnostics.size)
-    if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=!capturing) {
+    if(!vm.fullScreen && vm.instrument==InstrumentProfile.DIDGERIDOO) TextButton(onClick={vm.setRange(vm.maxHz==140)},modifier=Modifier.fillMaxWidth(),enabled=vm.sessionPhase!=SessionPhase.CAPTURING) {
         Text(if(vm.maxHz==140)stringResource(R.string.ui_range_35_140_hz_extend_to_220) else stringResource(R.string.ui_range_35_220_hz_return_to_140))
+    }
+}
+
+@Composable
+private fun LiveReadingDetails(vm:TallerViewModel,hz:Double,elapsed:Int) {
+    val signal=vm.acousticSample?.signal
+    Panel(stringResource(R.string.ui_live_reading),stringResource(if(vm.stableReading)R.string.ui_the_frequency_holds_between_readings else R.string.ui_the_note_may_still_change)) {
+        if(hz>0) {
+            val cents=Music.cents(hz)
+            Text(stringResource(R.string.ui_periodicity_26b035,vm.reading.confidence),color=muted,fontSize=12.sp)
+            Text(stringResource(R.string.ui_cents_relative_to,if(cents>0)"+" else "",cents,Music.pitch(hz)?.note.orEmpty()),color=ink,fontSize=13.sp)
+            CentMeter(cents)
+        } else Text(stringResource(if(signal==ar.didgetaller.core.AcousticDiagnostics.Signal.UNCERTAIN_PITCH || vm.reading.rms>=.005)
+            R.string.acoustic_uncertain_help else R.string.ui_play_a_sustained_note_silence_is_preserved_as_a_pause_in_the_chart),color=muted,fontSize=13.sp)
+        if(!vm.fullScreen && vm.sessionTimeline.size>2)
+            SessionGraph(vm.sessionTimeline,elapsed*1000L,Modifier.fillMaxWidth().height(94.dp),compact=true,instrument=vm.instrument)
     }
 }
 

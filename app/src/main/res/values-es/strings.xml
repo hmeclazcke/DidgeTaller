@@ -637,4 +637,6 @@
     <string name="metronome_system_muted">El volumen multimedia está silenciado. Subilo para escuchar el clic.</string>
     <string name="metronome_gain_zero">El volumen del clic está en cero. Ajustalo en Ritmo y volumen.</string>
     <string name="metronome_media_settings">Volumen multimedia</string>
+    <string name="measure_details">Detalles de medición</string>
+    <string name="measure_details_hide">Ocultar detalles</string>
 </resources>

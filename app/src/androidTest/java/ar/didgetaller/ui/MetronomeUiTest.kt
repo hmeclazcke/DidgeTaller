@@ -71,6 +71,7 @@ class MetronomeUiTest {
         compose.onNode(hasContentDescription(label) and hasAnyAncestor(hasTestTag("main-navigation"))).assertIsSelected()
         compose.onNodeWithTag("metronome-transport").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("metronome-sound").performScrollTo().assertIsDisplayed()
+        screenshot("-stopped")
         compose.onNodeWithTag("metronome-bpm").assertDoesNotExist()
         val initialTempo = metronome.state.settings.bpm
         compose.onNodeWithTag("metronome-faster").performScrollTo().performClick()
@@ -80,8 +81,10 @@ class MetronomeUiTest {
         compose.onNodeWithTag("metronome-transport").performScrollTo().performClick()
         compose.waitUntil { metronome.state.pulse != null }
         compose.onNodeWithTag("metronome-beats").assertExists()
+        screenshot("-running")
         compose.onNodeWithTag("metronome-pause").performScrollTo().performClick()
         compose.waitUntil { metronome.state.mode == MetronomeMode.PAUSED }
+        screenshot("-paused")
         compose.onNodeWithTag("metronome-edit").performScrollTo().performClick()
         compose.onNodeWithTag("metronome-bpm").performTextReplacement("0")
         compose.onNodeWithTag("metronome-apply").assertIsNotEnabled()
@@ -95,6 +98,8 @@ class MetronomeUiTest {
         }
         compose.onNodeWithTag("metronome-expand").performScrollTo().performClick()
         compose.onNodeWithTag("metronome-subdivision-TRIPLET").performScrollTo().performClick()
+        compose.onNodeWithTag("metronome-volume").performScrollTo().assertIsDisplayed()
+        screenshot("-advanced")
         compose.onNodeWithTag("metronome-sound").performScrollTo().performClick()
         compose.waitUntil { metronome.state.settings.audible }
         compose.runOnUiThread { metronome.captureActive(true) }
@@ -209,6 +214,20 @@ class MetronomeUiTest {
         compose.onNodeWithTag("metronome-expand").performClick()
         assertTrue(scroll.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue() > 0f)
         compose.onNodeWithTag("metronome-volume").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test fun primaryGroupsUseAvailableViewportWithoutLosingReachability() {
+        compose.setContent {
+            androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.size(360.dp, 600.dp)) { MetronomeScreen(metronome) }
+        }
+        val viewport = compose.onNodeWithTag("metronome-screen").fetchSemanticsNode().boundsInRoot
+        val beats = compose.onNodeWithTag("metronome-beats").fetchSemanticsNode().boundsInRoot
+        val transport = compose.onNodeWithTag("metronome-transport").fetchSemanticsNode().boundsInRoot
+        assertTrue("Beats should occupy the middle, not join a top-compressed form", beats.top > viewport.top + viewport.height * .3f)
+        assertTrue(beats.bottom < viewport.top + viewport.height * .7f)
+        assertTrue("Actions should balance the lower portion", transport.top > viewport.top + viewport.height * .6f)
+        assertEquals(0f, compose.onNodeWithTag("metronome-scroll").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue())
+        compose.onNodeWithTag("metronome-expand").assertIsDisplayed()
     }
     @Test fun viewModelNavigationBackgroundAndClearOwnTheTransport() {
         val owners = ViewModelStore().also { stores += it }

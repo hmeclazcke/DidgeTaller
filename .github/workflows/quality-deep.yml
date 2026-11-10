@@ -47,7 +47,7 @@ jobs:
           retention-days: 7
           if-no-files-found: error
   instrumentation:
-    name: ${{ inputs.scope == 'metronome' && 'Focused metronome UI (not full suite)' || 'instrumentation' }}
+    name: ${{ inputs.scope == 'metronome' && 'Focused Measure and metronome UI (not full suite)' || 'instrumentation' }}
     if: github.event_name != 'workflow_dispatch' || inputs.scope != 'mutation'
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -99,6 +99,8 @@ jobs:
             build/reports/quality/session-screenshots/
             build/reports/quality/workspace-configuration-*.txt
             build/reports/quality/metronome-screenshots/
+            build/reports/quality/measure-screenshots/
+            build/reports/quality/measure-synthetic-screenshots/
             build/reports/quality/metronome-configuration-*.txt
             build/reports/quality/android-function-mapping.json
             build/reports/quality/source-inventory.xml
