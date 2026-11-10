@@ -83,4 +83,22 @@ class WorkshopPlansTest {
     @Test fun overflowingStockCannotProduceNonfiniteDimensions() {
         reject {WorkshopPlans.sandwich(shape,100,Double.MAX_VALUE,0.0)}
     }
+
+    @Test fun partsListRetainsMeasuredCatalogIdentityAndOwnsItsSequence() {
+        val left=WorkshopPlans.Pipe("tube A",32.0,40.0,500)
+        val right=WorkshopPlans.Pipe("tube B",45.0,50.0,1000)
+        val connector=WorkshopPlans.Fitting("coupling C",40.2,50.2,20,25,80,30.0)
+        val cuts=mutableListOf(WorkshopPlans.Cut(left,300),WorkshopPlans.Cut(right,400))
+        val fittings=mutableListOf(connector)
+        val plan=WorkshopPlans.pvc(cuts,fittings,.5)
+        cuts.clear();fittings.clear()
+        assertEquals(listOf("tube A","tube B"),plan.cuts.map {it.pipe.id})
+        assertEquals(listOf(300,400),plan.cuts.map {it.lengthMm})
+        assertEquals(listOf("coupling C"),plan.fittings.map {it.id})
+        assertEquals(20,plan.fittings.single().leftInsertionMm)
+        assertEquals(25,plan.fittings.single().rightInsertionMm)
+        assertEquals(735,plan.lengthMm)
+        assertEquals(listOf(280),plan.fittingStartsMm)
+        assertEquals(listOf(32.0,30.0,45.0),plan.bore.map {it.diameterMm})
+    }
 }

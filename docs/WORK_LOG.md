@@ -1213,4 +1213,4 @@ private-recording access; PR3 remains separate (already merged by the owner).
 
 ### Workshop domain checkpoint ? IN PROGRESS
 
-See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,561 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.
+See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,562 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.
