@@ -1,7 +1,6 @@
 package ar.didgetaller.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -59,26 +59,20 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
         context.getString(R.string.construction_ruler),context.getString(R.string.construction_uncertainty),context.getString(R.string.construction_stations),
         context.getString(R.string.construction_parts),context.getString(R.string.construction_instructions),
         context.getString(mapOf("SANDWICH" to R.string.construction_sandwich,"LAMINATED" to R.string.construction_laminated,"PVC" to R.string.construction_pvc).getOrDefault(fields["method"],R.string.construction_title)))
-    Dialog(onDismissRequest=dismiss,properties=DialogProperties(usePlatformDefaultWidth=false)) {
+    Dialog(onDismissRequest=dismiss,properties=DialogProperties(usePlatformDefaultWidth=false,decorFitsSystemWindows=false)) {
+        val focus=LocalFocusManager.current
+        val select:(Int)->Unit={focus.clearFocus();stage=it}
         Surface(Modifier.fillMaxSize().testTag("construction-workspace")) {
-            Column(Modifier.fillMaxSize().systemBarsPadding()) {
-                Row(Modifier.fillMaxWidth().padding(horizontal=16.dp)) {
-                    Text(stringResource(R.string.construction_title),Modifier.weight(1f),style=MaterialTheme.typography.titleLarge)
-                    TextButton(onClick=dismiss){Text(stringResource(R.string.ui_close))}
-                }
-                ScrollableTabRow(stage,edgePadding=0.dp) {
-                    listOf(R.string.construction_target,R.string.construction_candidates,R.string.construction_method,R.string.construction_plan).forEachIndexed {i,title->
-                        Tab(stage==i,{stage=i},text={Text(stringResource(title))},modifier=Modifier.testTag("construction-step-$i"))
-                    }
-                }
+            Column(Modifier.fillMaxSize().safeDrawingPadding()) {
+                ConstructionHeader(stage,select,dismiss)
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                     ConstructionStatus(load.isFailure,failed,saved,analysis,exported)
                     when(stage) {
                         0->ConstructionTargetFields(fields,::set)
                         1->ConstructionCandidates(analysis.value?.candidates.orEmpty(),{run("search")},{c->
                             set("geometry",ConstructionForm.defaults(c.plan.ideal).getValue("geometry"))
-                            set("assembly",c.plan.options.assembly);stage=2
-                        },{set("geometry",ConstructionForm.defaults(design.shape).getValue("geometry"));stage=2})
+                            set("assembly",c.plan.options.assembly);select(2)
+                        },{set("geometry",ConstructionForm.defaults(design.shape).getValue("geometry"));select(2)})
                         2->ConstructionMethodFields(fields,::set,{
                             runCatching {store.saveCatalog(fields.getValue("pipes"),fields.getValue("fittings"))}
                                 .onSuccess {saved=true}.onFailure {failed=true}
@@ -94,6 +88,19 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
                     Text(stringResource(R.string.construction_uncertainty),style=MaterialTheme.typography.bodySmall)
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ConstructionHeader(stage:Int,select:(Int)->Unit,dismiss:()->Unit) {
+    Row(Modifier.fillMaxWidth().padding(horizontal=16.dp)) {
+        Text(stringResource(R.string.construction_title),Modifier.weight(1f).testTag("construction-heading"),style=MaterialTheme.typography.titleLarge)
+        TextButton(onClick=dismiss){Text(stringResource(R.string.ui_close))}
+    }
+    ScrollableTabRow(stage,edgePadding=0.dp) {
+        listOf(R.string.construction_target,R.string.construction_candidates,R.string.construction_method,R.string.construction_plan).forEachIndexed {i,title->
+            Tab(stage==i,{select(i)},text={Text(stringResource(title))},modifier=Modifier.testTag("construction-step-$i"))
         }
     }
 }
@@ -211,7 +218,7 @@ private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->
     OutlinedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(12.dp),verticalArrangement=Arrangement.spacedBy(6.dp)) {
             Text("${index+1}: ${hzLabel(c.hz)} | ${ConstructionDrawing.number(c.cents)} cents")
-            Text("L=${c.plan.lengthMm} mm | ID=${c.plan.pieces.first().inletMm}/${c.plan.pieces.last().outletMm} mm | n=${c.plan.parts.size}")
+            Text("${constructionDimensions(c.plan)} | n=${c.plan.parts.size}")
             Text(c.higher.joinToString(" / "){hzLabel(it)},style=MaterialTheme.typography.bodySmall)
             ConstructionProfile(c.plan)
             TextButton(onClick=use,modifier=Modifier.testTag("construction-candidate-$index")){Text(stringResource(R.string.construction_choose))}
@@ -222,7 +229,7 @@ private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->
 @Composable
 private fun ConstructionPlanView(r:ConstructionResult) {
     val p=r.plan
-    Text("${p.name}\nL=${ConstructionDrawing.number(p.lengthMm)} mm | ID=${p.pieces.first().inletMm}/${p.pieces.last().outletMm} mm",modifier=Modifier.testTag("construction-plan-summary"))
+    Text("${p.name.substringAfter(" / ")}\n${constructionDimensions(p)}",modifier=Modifier.testTag("construction-plan-summary"))
     Text(r.prediction.frequenciesHz.take(5).joinToString(" / "){hzLabel(it)})
     ConstructionProfile(p)
     var details by remember {mutableStateOf(false)}
@@ -236,6 +243,9 @@ private fun ConstructionPlanView(r:ConstructionResult) {
     }
     r.sensitivity.forEach {Text("${it.dimension}: ${it.deltaHz?.let {hz->ConstructionDrawing.number(hz)+" Hz"} ?: stringResource(R.string.construction_unavailable)}",modifier=Modifier.testTag("construction-sensitivity"))}
 }
+
+private fun constructionDimensions(plan:ConstructionPlan):String =
+    "L=${ConstructionDrawing.number(plan.lengthMm)} mm | ID=${ConstructionDrawing.number(plan.pieces.first().inletMm)}/${ConstructionDrawing.number(plan.pieces.last().outletMm)} mm"
 
 @Composable
 private fun ConstructionProfile(plan:ConstructionPlan) {

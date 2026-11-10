@@ -41,7 +41,7 @@ class ConstructionDimensionsTest {
         val texts=xml.getElementsByTagName("text")
         val parts=(0 until texts.length).map {texts.item(it)}.filter {it.textContent.startsWith("A:") || it.textContent.startsWith("B:")}
         assertEquals(listOf("320","326"),parts.map {(it as org.w3c.dom.Element).getAttribute("y")})
-        assertTrue(parts.all {it.textContent.contains("W=98.0; H=49.0")})
+        assertTrue(parts.all {it.textContent.contains("W=98.000; H=49.000")})
     }
     @Test fun layerRemainderAndOpeningApproximationAreExplicit() {
         val plan=ConstructionProjects.create("layers",AcousticModel.Shape().withControlPoints(listOf(AcousticModel.BorePoint(0,32.0),AcousticModel.BorePoint(1500,80.0))),ConstructionOptions(method=ConstructionMethod.LAMINATED,layers="128"))

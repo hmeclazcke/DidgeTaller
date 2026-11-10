@@ -46,7 +46,6 @@ class ConstructionUiTest {
     private fun tab(index:Int) {compose.onNodeWithTag("construction-step-$index").performScrollTo().performClick()}
     private fun field(key:String,value:String) {
         compose.onNodeWithTag("construction-$key").performScrollTo().performTextReplacement(value)
-        compose.runOnUiThread {androidx.core.view.WindowCompat.getInsetsController(compose.activity.window,compose.activity.window.decorView).hide(androidx.core.view.WindowInsetsCompat.Type.ime())}
     }
     private fun ready() {compose.waitUntil(60000){compose.onAllNodesWithTag("construction-plan-summary").fetchSemanticsNodes().isNotEmpty()}}
     private fun export(format:String) {
@@ -62,6 +61,7 @@ class ConstructionUiTest {
         open();screenshot("target")
         field("target","73.42");tab(1);click("construction-search")
         compose.waitUntil(60000){compose.onAllNodesWithTag("construction-candidate-0").fetchSemanticsNodes().isNotEmpty()}
+        compose.onNodeWithTag("construction-candidate-0").performScrollTo().assertIsDisplayed()
         screenshot("candidates");click("construction-candidate-0")
         compose.onNodeWithTag("construction-method-SANDWICH").assertIsSelected()
         screenshot("wood-method");tab(3);click("construction-generate");ready()
@@ -69,8 +69,10 @@ class ConstructionUiTest {
         assertEquals("SANDWICH",ConstructionStore(app).project("synthetic-construction")["method"])
         export("csv");assertTrue(exports.getValue("csv").toString(Charsets.UTF_8).contains("station"))
         export("svg");assertTrue(exports.getValue("svg").toString(Charsets.UTF_8).contains("100 mm"))
-        export("pdf");verifyPdf(exports.getValue("pdf"),false)
-        export("tiles");verifyPdf(exports.getValue("pdf"),true)
+        export("pdf");val overviewPages=verifyPdf(exports.getValue("pdf"))
+        val selected=ConstructionForm.shape(ConstructionStore(app).project("synthetic-construction"))
+        export("tiles")
+        assertEquals(overviewPages+kotlin.math.ceil(selected.lengthMm/150.0).toInt(),verifyPdf(exports.getValue("pdf"),overviewPages))
         click("construction-tolerance")
         compose.waitUntil(60000){compose.onAllNodesWithTag("construction-sensitivity").fetchSemanticsNodes().isNotEmpty()}
         assertEquals(before,legacy.all)
@@ -80,6 +82,9 @@ class ConstructionUiTest {
         field("pipes","a,32,40,1500\nb,70,80,1500")
         field("fittings","c,40.2,80.2,30,25,90,32,0:32|35:70")
         field("assembly","a,800,c\nb,650,-")
+        compose.onNodeWithTag("construction-heading").assertIsDisplayed()
+        screenshot("pvc-editor")
+        tab(2);compose.onNodeWithTag("construction-pipes").performScrollTo().assertIsDisplayed()
         screenshot("pvc-catalog");click("construction-save-catalog")
         assertEquals("a,32,40,1500\nb,70,80,1500",ConstructionStore(app).catalog()["pipes"])
         tab(3);click("construction-generate");ready()
@@ -121,24 +126,31 @@ class ConstructionUiTest {
             compose.onNodeWithTag("lab-screen").assertExists()
         } finally {compose.runOnUiThread {owners.clear()}}
     }
-    private fun verifyPdf(bytes:ByteArray,tiled:Boolean) {
+    private fun verifyPdf(bytes:ByteArray,firstTile:Int?=null):Int {
         val file=File(app.filesDir,"test.pdf").apply {writeBytes(bytes)}
         ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->PdfRenderer(fd).use {renderer->
             assertTrue(renderer.pageCount>=2)
-            if(tiled)assertTrue(renderer.pageCount>=6)
-            renderer.openPage(0).use {page->
-                assertEquals(595,page.width);assertEquals(842,page.height)
-                val bitmap=Bitmap.createBitmap(1190,1684,Bitmap.Config.ARGB_8888)
-                bitmap.eraseColor(Color.WHITE);page.render(bitmap,null,null,PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
-                // PDF point geometry: reference endpoints 40 and 40+100*72/25.4, rasterized at 2x.
-                for(x in 82..644)assertTrue("Continuous 100 mm scale ruler",Color.red(bitmap.getPixel(x,1570))<180)
-                evidence("pdf",bitmap);bitmap.recycle()
-            }
+            pdfPage(renderer,0,"pdf")
+            if(firstTile!=null)pdfPage(renderer,firstTile,"pdf-tile")
+            return renderer.pageCount
         }}
+    }
+    private fun pdfPage(renderer:PdfRenderer,index:Int,name:String) {
+        renderer.openPage(index).use {page->
+            assertEquals(595,page.width);assertEquals(842,page.height)
+            val bitmap=Bitmap.createBitmap(1190,1684,Bitmap.Config.ARGB_8888)
+            bitmap.eraseColor(Color.WHITE);page.render(bitmap,null,null,PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
+            // Reference endpoints 40 and 40+100*72/25.4 points, rasterized at 2x.
+            for(x in 82..644)assertTrue("Continuous 100 mm scale ruler",Color.red(bitmap.getPixel(x,1570))<180)
+            if(index>0)assertTrue("Next tile registration at 150 mm",(929..931).any {Color.red(bitmap.getPixel(it,180))<180})
+            evidence(name,bitmap);bitmap.recycle()
+        }
     }
     private fun screenshot(name:String) {
         compose.waitForIdle()
-        InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().let {image->evidence(name,image);image.recycle()}
+        val automation=InstrumentationRegistry.getInstrumentation().uiAutomation
+        automation.waitForIdle(100,3000)
+        automation.takeScreenshot().let {image->evidence(name,image);image.recycle()}
     }
     private fun evidence(name:String,image:Bitmap) {
         val label=InstrumentationRegistry.getArguments().getString("evidenceLabel") ?: "default"

@@ -6237,7 +6237,7 @@
       "line": "37",
       "kind": "function",
       "name": "ConstructionWorkspace",
-      "semanticHash": "a7a108c67031d045f89ce31debba42a969f53756f8f727e2f4bbe1394db9d2eb",
+      "semanticHash": "20d898c98a1bb431a7c2f06491edccc16faf90e5e842246d43e6f85a4f0ee507",
       "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. One dialog owns revocable analysis/export workers, form snapshots and stages. Editing or closing revokes old publication.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
@@ -6351,10 +6351,10 @@
     },
     "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "210",
+      "line": "217",
       "kind": "function",
       "name": "ConstructionCandidateCard",
-      "semanticHash": "3c466c0ccdba3291efee3d87d96199a2bea528fbf7fc61ea8dc472a47de0cf7c",
+      "semanticHash": "9dfa6374bbca3c8a23c3070979510a85969233d61cd45d3764b386e95a916c9c",
       "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Predicted resonance, error, dimensions and profile comparison share the exact candidate selected by the action.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
@@ -6364,10 +6364,10 @@
     },
     "11aeefc4ba94c4479d3dac4607edf6a3cad604aa05dd659f4dbfa64097cf1bac": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "223",
+      "line": "230",
       "kind": "function",
       "name": "ConstructionPlanView",
-      "semanticHash": "3d787aae22f32dd9248473d7c6fbd9cb1705a341fc289502a9fcb728af92fe11",
+      "semanticHash": "affd0c8b6ac69d3a686d146cc2e51b98d01efeda817f9935c694d9c0e6685e07",
       "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Manufactured summary, optional station/parts preview and numerical sensitivity use the same plan as export.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
@@ -6421,6 +6421,19 @@
       "name": "DesignsLibrary",
       "semanticHash": "efa4259e608a4145ec7bf7c04b75251767a1ec90cf7ed7a2060be82d2fd98aaa",
       "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Opens a construction project for the selected design ID without altering the original design.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "6a50d29de8eb0abac991e4997c1046f1e95106513d3bbe1761d01be453ef6c22": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "96",
+      "kind": "function",
+      "name": "ConstructionHeader",
+      "semanticHash": "42f08f536ae49d4628a1fde45db21c9e71ca809d8dcccf43c0cb2e0bd192084c",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Close and four accessible step controls stay outside the scrollable editor and respect keyboard and system insets.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],

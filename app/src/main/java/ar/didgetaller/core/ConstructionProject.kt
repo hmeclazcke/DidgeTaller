@@ -37,7 +37,8 @@ object ConstructionProjects {
     private fun split(name:String,shape:AcousticModel.Shape,o:ConstructionOptions):ConstructionPlan {
         val stock=WorkshopPlans.sandwich(shape,o.intervalMm,o.wallMm,o.radialToleranceMm)
         val pieces=shape.controlPoints().zipWithNext().map {(a,b)->ConstructionPiece("${a.positionMm}-${b.positionMm}",(b.positionMm-a.positionMm).toDouble(),a.diameterMm,b.diameterMm)}
-        val parts=listOf("A: L=${shape.lengthMm}; W=${stock.minimumBlankWidthMm}; H=${stock.minimumHalfThicknessMm} mm", "B: L=${shape.lengthMm}; W=${stock.minimumBlankWidthMm}; H=${stock.minimumHalfThicknessMm} mm")
+        val dimensions="L=${shape.lengthMm}; W=${ConstructionDrawing.number(stock.minimumBlankWidthMm)}; H=${ConstructionDrawing.number(stock.minimumHalfThicknessMm)} mm"
+        val parts=listOf("A: $dimensions","B: $dimensions")
         return ConstructionPlan(name,shape,o,pieces,parts)
     }
 
@@ -46,7 +47,7 @@ object ConstructionProjects {
         val thicknesses=layerThicknesses(shape.lengthMm,requested)
         val layers=WorkshopPlans.laminated(shape,thicknesses,o.wallMm,o.radialToleranceMm)
         val pieces=layers.mapIndexed {i,l->ConstructionPiece("${i+1}",(l.endMm-l.startMm).toDouble(),l.openingMm,l.openingMm)}
-        val parts=layers.mapIndexed {i,l->"${i+1}: x=${l.startMm}-${l.endMm} mm; L=${l.endMm-l.startMm}; ID=${l.openingMm}; Wmin=${l.minimumStockWidthMm}; Emax=${l.maximumExcessMm} mm"}
+        val parts=layers.mapIndexed {i,l->"${i+1}: x=${l.startMm}-${l.endMm} mm; L=${l.endMm-l.startMm}; ID=${ConstructionDrawing.number(l.openingMm)}; Wmin=${ConstructionDrawing.number(l.minimumStockWidthMm)}; Emax=${ConstructionDrawing.number(l.maximumExcessMm)} mm"}
         return ConstructionPlan(name,shape,o,pieces,parts)
     }
 

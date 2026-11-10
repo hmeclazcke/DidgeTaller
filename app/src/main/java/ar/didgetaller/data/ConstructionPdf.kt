@@ -3,6 +3,8 @@ package ar.didgetaller.data
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.pdf.PdfDocument
+import android.text.StaticLayout
+import android.text.TextPaint
 import ar.didgetaller.core.*
 import java.io.ByteArrayOutputStream
 
@@ -30,14 +32,21 @@ object ConstructionPdf {
         c.drawText("${l.method} | L=${f(p.lengthMm)} mm | ID=${f(p.pieces.first().inletMm)} / ${f(p.pieces.last().outletMm)} mm",40f,84f,ink())
         c.drawText("Hz: "+s.frequenciesHz.take(5).joinToString(" / "){f(it)},40f,106f,ink())
         val scale=500f/p.lengthMm.toFloat()
-        c.save();c.translate(40f,320f);c.scale(scale,scale);drawProfile(c,p);c.restore()
+        c.save();c.translate(40f,320f);c.scale(scale,scale);drawProfile(c,p,.65f/scale);c.restore()
+        lengthDimension(c,p)
         c.drawText(l.overview+" 1:${f(ConstructionDrawing.POINTS_PER_MM/scale)}",40f,480f,ink())
         wrap(l.limitations).forEachIndexed {i,line->c.drawText(line,40f,520f+i*15,ink())}
         crossSection(c,p)
         ruler(c,l.ruler);doc.finishPage(page)
     }
-    private fun drawProfile(c:android.graphics.Canvas,p:ConstructionPlan) {
-        val paint=ink().apply {style=Paint.Style.STROKE;strokeWidth=.35f}
+    private fun lengthDimension(c:android.graphics.Canvas,p:ConstructionPlan) {
+        val paint=ink()
+        c.drawLine(40f,456f,540f,456f,paint)
+        c.drawLine(40f,452f,40f,460f,paint);c.drawLine(540f,452f,540f,460f,paint)
+        c.drawText("L=${f(p.lengthMm)} mm",40f,448f,paint)
+    }
+    private fun drawProfile(c:android.graphics.Canvas,p:ConstructionPlan,strokeMm:Float=.35f) {
+        val paint=ink().apply {style=Paint.Style.STROKE;strokeWidth=strokeMm}
         drawOutline(c,p,paint,-1)
         drawOutline(c,p,paint,1)
         c.drawLine(0f,0f,p.lengthMm.toFloat(),0f,paint)
@@ -82,10 +91,15 @@ object ConstructionPdf {
     }
     private fun tile(doc:PdfDocument,p:ConstructionPlan,l:Labels,start:Double) {
         val page=page(doc);val c=page.canvas;val factor=ConstructionDrawing.POINTS_PER_MM.toFloat()
-        c.drawText("1:1 | x=${f(start)}-${f(minOf(start+160,p.lengthMm))} mm | overlap=10 mm",40f,40f,ink())
+        c.drawText("1:1 | x=${f(start)}-${f(minOf(start+160,p.lengthMm))} mm",40f,40f,ink())
         c.save();c.clipRect(40f,80f,40+160*factor,760f);c.translate(40-start.toFloat()*factor,421f);c.scale(factor,factor);drawProfile(c,p);c.restore()
-        c.drawLine(40f,80f,40f,760f,ink().apply {strokeWidth=.5f})
-        c.drawText("x=${f(start)}",40f,70f,ink());ruler(c,l.ruler);doc.finishPage(page)
+        registration(c,40f,start)
+        if(start+150<p.lengthMm)registration(c,40+150*factor,start+150)
+        ruler(c,l.ruler);doc.finishPage(page)
+    }
+    private fun registration(c:android.graphics.Canvas,point:Float,xMm:Double) {
+        c.drawLine(point,80f,point,760f,ink().apply {strokeWidth=.5f})
+        c.drawText("x=${f(xMm)}",point,70f,ink())
     }
     private fun ruler(c:android.graphics.Canvas,label:String) {
         val end=(40+100*ConstructionDrawing.POINTS_PER_MM).toFloat()
@@ -94,12 +108,7 @@ object ConstructionPdf {
         wrap(label).forEachIndexed {i,line->c.drawText(line,40f,807f+i*12,ink(9f))}
     }
     private fun wrap(text:String):List<String> {
-        val result=mutableListOf<String>();var remaining=text
-        val paint=ink()
-        while(remaining.isNotEmpty()) {
-            val n=paint.breakText(remaining,true,510f,null).coerceAtLeast(1)
-            result+=remaining.take(n);remaining=remaining.drop(n)
-        }
-        return result
+        val layout=StaticLayout.Builder.obtain(text,0,text.length,TextPaint(ink()),510).setIncludePad(false).build()
+        return List(layout.lineCount){i->text.substring(layout.getLineStart(i),layout.getLineEnd(i)).trimEnd()}
     }
 }
