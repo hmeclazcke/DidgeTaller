@@ -10,7 +10,7 @@
 
 Didge Taller reúne lecturas de frecuencia en vivo, grabación WAV y análisis de sesiones guardadas. El audio y los análisis quedan en el dispositivo, salvo que decidas exportar un WAV. Es un proyecto personal, sin fines comerciales y todavía en beta: sus lecturas acústicas sirven como evidencia para practicar, no como mediciones físicas calibradas.
 
-## La app en uso
+## Capturas de pantalla
 
 <table>
 <tr>
@@ -34,14 +34,16 @@ Didge Taller reúne lecturas de frecuencia en vivo, grabación WAV y análisis d
 </td>
 </tr>
 <tr><td colspan="2" align="center">
-  <a href="docs/screenshots/showcase-es/library.png"><img src="docs/screenshots/showcase-es/library.png" alt="Biblioteca con un estudio sintético del dron y su vista previa canónica" width="420"></a>
-  <p>Biblioteca. Audio original, vista previa de la componente respaldada y acciones de sesión en un mismo lugar.</p>
+  <a href="docs/screenshots/showcase-es/metronome.png"><img src="docs/screenshots/showcase-es/metronome.png" alt="Metrónomo independiente con tempo, compás, indicadores de pulso y controles de sonido" width="420"></a>
+  <p><strong>Metrónomo.</strong> Tempo, pulsos y reproducción comparten el espacio disponible; ritmo y volumen se despliegan cuando los necesitás.</p>
 </td></tr>
 </table>
 
 Las cinco imágenes destacadas son capturas originales de la app real en un emulador configurado en español. Las vistas de sesión usan audio sintético procesado por la app; la lectura en vivo usa PCM sintético controlado. Ilustran el funcionamiento, no la precisión física. [Condiciones y procedencia de las capturas](docs/screenshots/showcase-es/README.md).
 
-## Qué podés hacer
+## Funciones y navegación
+
+Las cuatro pestañas usan solo iconos y conservan nombres completos localizados para accesibilidad: **Medir | Metrónomo | Laboratorio | Biblioteca**. Los controles principales se adaptan al espacio disponible; los detalles desplegados y las vistas reducidas permiten desplazarse sin desactivar la escala de fuente. Hay verificaciones dirigidas en emulador para español/inglés, pantallas compactas, horizontal y texto al 150%; no garantizan todas las configuraciones de dispositivos.
 
 - **Practicar con metrónomo.** Abrí la pestaña **Metrónomo**: 30–240 BPM, iniciar/pausar/detener, compases de 2/4 a 4/4, negras/corcheas/tresillos/semicorcheas, acento inicial y volumen regulable. El tempo grande se edita al tocarlo; los pulsos centrales y los controles de reproducción se distribuyen en el espacio disponible, con ritmo y volumen desplegables. Los ajustes se conservan; el interruptor de sonido visible comienza apagado, avisa si el volumen multimedia está silenciado y se bloquea antes de abrir el micrófono. Navegar o pasar a segundo plano pausa el ritmo, sin reinicio automático. Los tiempos parten de una grilla monotónica absoluta; siguen sujetos a la latencia de Android y de la salida de audio. [Temporización y aislamiento](docs/METRONOME.md) (documentación técnica en inglés). [Captura del metrónomo](docs/screenshots/showcase-es/metronome.png).
 
@@ -55,6 +57,8 @@ La interfaz está disponible en español e inglés mediante los ajustes de idiom
 
 Durante la grabación o reproducción activa en primer plano, la app solicita mantener la pantalla encendida. Al pausar o terminar libera esa solicitud; no habilita el micrófono en segundo plano.
 
+Biblioteca separa **Sesiones** y **Diseños**. Laboratorio contiene **Diseño**, **Espectro** en vivo, **Búsqueda** exploratoria y una **Guía**; es independiente del análisis de un WAV guardado.
+
 ## Una sesión habitual
 
 1. Elegí un instrumento en **Medir** e iniciá la medición y la grabación.
@@ -62,9 +66,15 @@ Durante la grabación o reproducción activa en primer plano, la app solicita ma
 3. Abrí la sesión para escucharla y seguir su gráfico. Usá las pestañas horizontales para explorar el espectrograma, la onda o el espectro armónico.
 4. Ejecutá el análisis WAV cuando necesites más detalle espectral y armónico. Abrí **Herramientas** para rangos, fragmentos, marcadores y diagnósticos avanzados.
 
+## Análisis acústico y algoritmos
+
+La periodicidad basada en YIN aporta frecuencia aceptada, nota musical y notación científica. Detalles de medición permite consultar cents respecto de la nota cercana, periodicidad y evidencia diagnóstica. Los espectros FFT describen el contenido de frecuencias; los espectrogramas STFT muestran su evolución temporal. SWIPE′ es una comparación experimental opcional sobre audio guardado, no el detector en vivo ni un reemplazo automático de la traza Dron.
+
 Para didgeridoo, la curva ordinaria de **Dron** sigue una componente espectral de baja frecuencia respaldada por armónicos. **No** es una fundamental de la oscilación labial confirmada físicamente, ni recibe automáticamente una nota musical. Las lecturas YIN en vivo y los diagnósticos avanzados YIN/SWIPE′ responden preguntas distintas; las lecturas históricas originales siguen disponibles. La [guía del explorador de sesiones](docs/SESSION_EXPLORER.md) y las [notas sobre incertidumbre acústica](docs/ACOUSTIC_UNCERTAINTY.md), en inglés, explican estas diferencias.
 
 ## Compilar desde el código fuente
+
+Beta actual: **3.3.0-beta1**, versionCode **13**, paquete `ar.didgetaller`. Android mínimo **8.0 (API 26)**; SDK de compilación y destino **35**. El mínimo es una restricción de compilación, no una afirmación de pruebas físicas en cada versión de Android.
 
 Necesitás Android Studio, un JDK 21 instalado para el daemon de Gradle, Android SDK Platform 35, Build Tools 36.0.0, NDK 27.0.12077973 y CMake 3.22.1. El repositorio fija Gradle 9.6.0 y AGP 9.4.1; el bytecode de la aplicación sigue apuntando a Java 17. La guía de calidad explica las opciones temporales de compatibilidad Kotlin/DSL.
 
@@ -85,15 +95,15 @@ sh ./gradlew :app:assembleDebug
 
 El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`. Es una compilación de depuración, no una versión de producción firmada ni una distribución en Google Play. Antes de actualizar una instalación con grabaciones, conservá sus datos y verificá la compatibilidad del paquete y la firma. Ejecutá pruebas instrumentadas solo en un emulador seleccionado explícitamente. La [guía de desarrollo](docs/DEVELOPMENT.md), en inglés, contiene los comandos de prueba y las reglas de protección de dispositivos.
 
-## Ingeniería y límites
+## Tecnología y límites acústicos
 
-La app usa Kotlin, Jetpack Compose/Material 3, `AudioRecord` y `MediaPlayer`. El procesamiento en Kotlin incluye estimación de periodicidad basada en YIN, FFT/STFT, análisis WAV y modelado acústico exploratorio; SWIPE′ usa un pequeño componente C/JNI con [avisos de licencia de origen](app/src/main/assets/third_party/SWIPE.txt). Para empezar por la parte técnica, consultá el [resumen de arquitectura](docs/ARCHITECTURE.md), el [análisis de audio](docs/AUDIO_ANALYSIS.md) y el [registro de validación](docs/VALIDATION.md), en inglés.
+La app usa Kotlin 2.2.21, Jetpack Compose/Material 3, `AudioRecord` y `MediaPlayer`. El procesamiento en Kotlin incluye estimación de periodicidad basada en YIN, FFT/STFT, análisis WAV y modelado acústico exploratorio; SWIPE′ usa un pequeño componente C/JNI con [avisos de licencia de origen](app/src/main/assets/third_party/SWIPE.txt). Para empezar por la parte técnica, consultá el [resumen de arquitectura](docs/ARCHITECTURE.md), el [análisis de audio](docs/AUDIO_ANALYSIS.md) y el [registro de validación](docs/VALIDATION.md), en inglés.
 
 Los micrófonos de los teléfonos, el ruido de la sala, los armónicos intensos, las vocalizaciones y los ataques breves pueden producir estimaciones inciertas o ausentes. La app conserva los huecos en lugar de inventar lecturas. Los niveles espectrales son valores digitales relativos, no niveles calibrados de presión sonora; las simulaciones son exploratorias. Las pruebas sintéticas y las capturas de emulador no establecen precisión acústica física ni compatibilidad universal con dispositivos.
 
 Los controles rápidos de GitHub Actions ejecutan ambas variantes JVM y controles medidos de regresión. Los cambios relevantes en main también ejecutan la suite completa de emulador con un informe separado de cobertura Android; compilar su APK no equivale a aprobarla. Consultá la [base de calidad](docs/quality/QUALITY_BASELINE.md), [Desarrollo](docs/DEVELOPMENT.md) y [comparación SWIPE](docs/SWIPE_COMPARISON.md).
 
-## Prácticas de ingeniería - ub-mode oficial de Uncle Bob
+## Arquitectura, pruebas y prácticas de ingeniería
 
 Didge Taller usa el [ub-mode](https://github.com/unclebob/ub-mode) original de Robert C. Martin, sin modificaciones, con licencia MIT y [procedencia fijada](.agents/skills/ub-mode/UPSTREAM.md). Es un conjunto de instrucciones de ingeniería; la seguridad del proyecto y su aplicación a Kotlin se definen aparte en [AGENTS.md](AGENTS.md) y la [guía de calidad](docs/quality/QUALITY_GUIDE.md), en inglés.
 
@@ -101,7 +111,7 @@ Didge Taller usa el [ub-mode](https://github.com/unclebob/ub-mode) original de R
 - **Then Make it Right:** refactorizar con pruebas de caracterización, reducir conocimiento duplicado (DRY) e investigar complejidad, cobertura, CRAP-L y mutaciones supervivientes. Los escenarios de aceptación de estilo BDD no implican una integración con Cucumber.
 - **Practice:** investigación focalizada, commits pequeños y revisables, evidencia reproducible y validación proporcional al riesgo; reutilizar evidencia vigente sin ocultar controles ausentes.
 
-El [caso de estudio](docs/engineering/REBUILD_CASE_STUDY.md) y el [informe finito de aceptación](docs/engineering/REBUILD_ACCEPTANCE.md), en inglés, explican la reconstrucción productiva en `refactor/uncle-bob-rebuild`. Main permanece como referencia de comportamiento; el [PR #1](https://github.com/hmeclazcke/DidgeTaller/pull/1) sigue en borrador para revisión del propietario. Su tabla de evidencia enlaza trabajos y artefactos de CI para la revisión exacta; un control obligatorio fallido o pendiente impide considerar lista la integración.
+El [caso de estudio](docs/engineering/REBUILD_CASE_STUDY.md) y el [informe de aceptación](docs/engineering/REBUILD_ACCEPTANCE.md), en inglés, documentan la reconstrucción completada e integrada mediante el [PR #1](https://github.com/hmeclazcke/DidgeTaller/pull/1). El metrónomo y el rediseño de Medir se integraron mediante el [PR #2](https://github.com/hmeclazcke/DidgeTaller/pull/2). Las pruebas diferenciales históricas usan una revisión fijada anterior a la reconstrucción, no el main actual que sigue avanzando. Son registros de ingeniería, no una certificación de Clean Code ni un aval de Robert C. Martin.
 
 Kotlin puro posee DSP, fases de grabación, intención de reproducción, solicitudes de sesión/análisis, geometría temporal y lecturas científicas. Los adaptadores Android poseen dispositivos, archivos y planificación; Compose presenta el estado. Las autorizaciones revocables impiden que operaciones reemplazadas o destruidas publiquen progreso o resultados. Las trazas canónicas mantienen ciclos de vida independientes y acotados por sesión. La publicación protegida de metadatos conserva índices dañados y sesiones históricas. El renderizado separa geometría preparada y dibujo de la cámara y los gestos; siguen protegidos la búsqueda directa sobre el gráfico y el contrato estricto de pausa de 80 ms.
 
@@ -117,6 +127,19 @@ Kotlin puro posee DSP, fases de grabación, intención de reproducción, solicit
 Estas integraciones para Kotlin persiguen los objetivos de Crapper/Dryer/Mutator sin afirmar que esos ejecutables originales estén instalados. CRAP-L usa cobertura de **líneas** del método, no cobertura de caminos base de Crapper. Los límites de Compose/compilador, contratos abstractos y declaraciones anónimas permanecen inventariados, sin puntajes fabricados. Las coberturas JVM y Android nunca se mezclan; una puntuación de mutaciones seleccionadas no representa toda la aplicación.
 
 Los pushes y PR relevantes ejecutan compilación rápida, ambas variantes JVM, localización, Lint, Detekt y controles medidos. Los pushes relevantes de main/rebuild y la ejecución manual lanzan el flujo completo de emulador; las mutaciones amplias se solicitan manualmente. Los filtros evitan trabajo ajeno, aunque el diff acumulado de un PR abierto puede volver a activar controles rápidos ante un commit documental. La [guía de calidad](docs/quality/QUALITY_GUIDE.md), en inglés, contiene comandos verificados, informes, frecuencia y límites técnicos. Se conservan las capturas reales y los límites acústicos de la versión beta.
+
+## Controles de desarrollo y estado del proyecto
+
+Desde la raíz del repositorio (usá `.\gradlew.bat` en PowerShell):
+
+```sh
+sh ./gradlew :app:testDebugUnitTest :app:testReleaseUnitTest
+python tools/check_localization.py
+```
+
+Estos comandos ejecutan suites JVM y verifican formatos de recursos, no instrumentación Android. Para ejecutar en un emulador limpio seleccionado explícitamente y consultar comandos de cobertura, CRAP-L, duplicación y mutaciones, usá la [guía de calidad](docs/quality/QUALITY_GUIDE.md). La auditoría general de Detekt es informativa; los controles medidos de regresión y de código modificado son obligatorios. El [registro de validación](docs/VALIDATION.md) indica revisiones, alcances ejecutados y límites exactos: las cifras históricas no son garantías actuales.
+
+La app sigue siendo una beta personal distribuida desde el código fuente. La respuesta del micrófono y la latencia de audio dependen del dispositivo; no se afirma precisión calibrada, temporización universal, cobertura completa ni un puntaje de mutaciones de toda la app. Conservá las grabaciones originales y la compatibilidad de firma al actualizar.
 
 ## Licencia y colaboración
 
