@@ -58,7 +58,7 @@ class GraphIntelligenceUiTest {
             vm.renameSession(a,"Drone estable · fixture");vm.renameSession(b,"Melodía · fixture");vm.renameSession(c,"Periodicidad ambigua · fixture")
         }
         compose.setContent {nav=rememberNavController();TallerApp(vm,{}, {},{_,_,_->},nav)}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
     }
     @After fun cleanup(){if(::vm.isInitialized)compose.runOnUiThread {owner.clear()};if(::app.isInitialized)app.clean()}
     private fun capture(name:String){

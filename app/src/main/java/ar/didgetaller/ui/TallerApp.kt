@@ -84,27 +84,12 @@ private val sectionIcons=listOf(R.drawable.nav_measure, R.drawable.nav_metronome
 
 /** Navigation presentation owns short labels and readable text independently from destination content. */
 @Composable
-private fun RowScope.NavigationSections(sections: List<String>, selected: Int, widthDp: Float, navigate: (Int) -> Unit) {
-    val configuration=androidx.compose.ui.platform.LocalConfiguration.current
-    val navigationTextFactor=(1.2f/configuration.fontScale).coerceAtMost(1f)
-    val navigationLabels=sections.toMutableList().apply {
-        if(widthDp<340*minOf(configuration.fontScale,1.2f)) {
-            set(1,stringResource(R.string.metronome_tab_short))
-            set(2,stringResource(R.string.ui_lab_short))
-            set(3,stringResource(R.string.ui_library_short))
-        }
+private fun RowScope.NavigationSections(sections: List<String>, selected: Int, navigate: (Int) -> Unit) {
+    sections.forEachIndexed { index, title ->
+        NavigationBarItem(selected=selected==index,onClick={navigate(index)},
+            icon={Icon(androidx.compose.ui.res.painterResource(sectionIcons[index]),contentDescription=title)},
+            alwaysShowLabel=false)
     }
-                        sections.forEachIndexed { idx,title ->
-                            NavigationBarItem(
-                                selected=selected==idx,
-                                modifier=Modifier.semantics { contentDescription=title },
-                                onClick={navigate(idx)},
-                                icon={Icon(androidx.compose.ui.res.painterResource(sectionIcons[idx]),contentDescription=null)},
-                                label={Text(navigationLabels[idx],modifier=Modifier.wrapContentWidth(unbounded=true),maxLines=1,
-                                    fontSize=(12f*navigationTextFactor).sp,lineHeight=(16f*navigationTextFactor).sp)},
-                                alwaysShowLabel=true
-                            )
-                        }
 }
 
 /** Preserve header behavior while leaving short practice viewports to their primary controls. */
@@ -191,11 +176,9 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
             bottomBar={
                 if(!inViewer && route!=TallerRoutes.Session)Column(Modifier.then(if(vm.fullScreen)Modifier.navigationBarsPadding() else Modifier)) {
                     if(section==0 && vm.sessionPhase!=SessionPhase.CAPTURING) RecordingActions(vm,startMeasurement) {confirmDiscard=true}
-                    if(!vm.fullScreen && route!=TallerRoutes.Session)BoxWithConstraints(Modifier.fillMaxWidth()) {
-                        val navigationWidth=maxWidth.value
-                        NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
-                        NavigationSections(sections,section,navigationWidth) {navController.navigateToSection(it)}
-                    }}
+                    if(!vm.fullScreen && route!=TallerRoutes.Session)NavigationBar(modifier=Modifier.navigationBarsPadding().then(if(configuration.screenHeightDp<500)Modifier.height(64.dp) else Modifier).testTag("main-navigation"),containerColor=cardColor,tonalElevation=0.dp) {
+                        NavigationSections(sections,section) {navController.navigateToSection(it)}
+                    }
                 }
             },contentWindowInsets=if(inViewer)WindowInsets(0,0,0,0) else ScaffoldDefaults.contentWindowInsets,
             snackbarHost={SnackbarHost(snackbars)}

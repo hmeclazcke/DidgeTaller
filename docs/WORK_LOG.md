@@ -1,3 +1,36 @@
+# Sequential validation checkpoint
+
+Old Gradle clients finished. One --no-daemon execution completed successfully in
+2m47s: debug JVM 550 discovered/542 passed/8 protected skips/0 failures, debug APK,
+androidTest APK, Lint, coverage, Detekt, PSI/JVM inventories and CPD. Historical
+NoClassDefFoundError output is invalid overlap evidence, not a production regression.
+Four changed Compose declarations received source-bound technical reviews; no numeric
+gate changes. Next: run focused native CI on this commit, inspect screenshots and
+collapsed-zero-scroll test; stop if it fails. Samsung update remains conditional on
+that result and fresh package/signature/read-only recording metadata checks.
+
+# Icon-only navigation and collapsed metronome viewport - IN PROGRESS
+
+Baseline bfc70c5, feature/metronome. Remove visual navigation captions; the icon
+supplies the complete localized description to Material NavigationBarItem's Tab
+selection/click semantics. Existing destinations and Back are unchanged. Adapt
+collapsed metronome density to available height, preserving scroll for expanded
+settings and constrained accessibility viewports. Add native role/click/selection
+checks and a 360x520dp, 150% font collapsed-zero-scroll/expanded-scroll regression.
+Navigation tests now address full accessible titles instead of removed captions.
+
+Validation is not complete. Overlapping local Gradle clients invalidated one JVM run with widespread NoClassDefFoundError; this is not accepted as regression evidence. Wait for every client to finish, then rebuild and run checks sequentially before using reports. Current ignored logs are checkpoints/metronome-icons/
+(build.log, test-build.log, final-build.log). Wait for running Gradle sessions to
+finish before a single canonical validation. Refresh only source-bound Compose
+reviews after inspecting current inventory/mapping; do not relax numeric gates.
+Then run the existing manual metronome emulator scope and inspect real EN/ES and
+landscape screenshots. Commit/push only validated changes to feature/metronome,
+update PR2, and install on R5CT21KTQ8W only after fresh signature/package and
+read-only data checks. Samsung installation is explicitly authorized for this
+iteration but has NOT been performed. Reuse metadata-only helpers under
+checkpoints/samsung-metronome-ux-4e30174 in a fresh evidence directory; no WAV
+contents, instrumentation, data clearing or uninstall on the phone. Main intact.
+
 # Full native suite and caption-independent configuration checks - 2026-11-10
 
 Full run 42837217775 on production source 4e30174 executed 176 cases: 166 passed,

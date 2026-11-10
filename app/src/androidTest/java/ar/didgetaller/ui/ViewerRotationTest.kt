@@ -39,7 +39,7 @@ class ViewerRotationTest {
         if(::item.isInitialized)store.delete(item.id) // Only the UUID this test created, never existing sessions.
     }
     @Test fun actualRecreationAndLandscapeKeepPlayerCameraSelectionAndBackStack(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         android.util.Log.i("ViewerRotationFlow","detail opened")
         compose.onNodeWithText(uiText(R.string.ui_play)).performScrollTo().performClick()
@@ -92,7 +92,7 @@ class ViewerRotationTest {
         compose.onNodeWithText(uiText(R.string.ui_start_measurement)).assertIsDisplayed()
     }
     @Test fun sessionChartSelectionAndPlaybackPositionSurviveRotation(){
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         compose.onNodeWithTag("plot-tab-spectrum").performScrollTo().assertIsDisplayed().performClick()
         compose.runOnIdle {assertEquals(AcousticPlot.SPECTRUM,vm.preview(item.id).plot)}

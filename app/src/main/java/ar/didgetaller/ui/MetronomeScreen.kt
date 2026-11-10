@@ -59,7 +59,9 @@ internal fun MetronomeMediaControls(controller: PracticeMetronome, active: Boole
 /** Practice controls share a viewport; only explicitly requested editing opens an IME. */
 @Composable
 fun MetronomeScreen(controller: PracticeMetronome) {
-    Box(Modifier.fillMaxSize().testTag("metronome-screen")) {
+    BoxWithConstraints(Modifier.fillMaxSize().testTag("metronome-screen")) {
+        val compact = maxHeight < 560.dp
+        val gap = (maxHeight.value / 130f).coerceIn(4f, 8f).dp
         val landscape = androidx.compose.ui.platform.LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
         if (landscape) Row(Modifier.fillMaxSize().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -68,9 +70,9 @@ fun MetronomeScreen(controller: PracticeMetronome) {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 MetronomeTransport(controller); MetronomeAdvanced(controller)
             }
-        } else Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            MetronomeTempo(controller, false); MetronomeMeter(controller); MetronomeBeats(controller)
+        } else Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).testTag("metronome-scroll").padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(gap)) {
+            MetronomeTempo(controller, compact); MetronomeMeter(controller); MetronomeBeats(controller)
             MetronomeTransport(controller); MetronomeAdvanced(controller)
         }
     }
@@ -84,7 +86,7 @@ private fun MetronomeTempo(controller: PracticeMetronome, compact: Boolean) {
     val slower = stringResource(R.string.metronome_slower)
     val faster = stringResource(R.string.metronome_faster)
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-      val tempoSize = minOf(if (compact) 60f else 76f, (maxWidth.value - 96f) / 1.8f / LocalDensity.current.fontScale).coerceAtLeast(24f).sp
+      val tempoSize = minOf(if (compact) 44f else 76f, (maxWidth.value - 96f) / 1.8f / LocalDensity.current.fontScale).coerceAtLeast(24f).sp
       Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         FilledTonalButton(onClick = { controller.update(controller.state.settings.copy(bpm = bpm - 1)) }, enabled = bpm > 30,
             contentPadding = PaddingValues(0.dp), modifier = Modifier.size(48.dp).testTag("metronome-slower").semantics { contentDescription = slower }) { Text("−", fontSize = 26.sp) }

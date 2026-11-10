@@ -52,7 +52,7 @@ class RecoveryUiTest {
         file.outputStream().use {bitmap.compress(Bitmap.CompressFormat.PNG,100,it)};bitmap.recycle()
     }
     private fun back(){Espresso.pressBackUnconditionally();compose.waitForIdle()}
-    private fun library(){compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()}
+    private fun library(){compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()}
     private fun open(item:RecordingStore.Session){compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick();compose.onNodeWithTag("time-chart").performScrollTo()}
 
     @Test fun allSurfacesRenderVariationAndPeriodicityWithOriginalDataIntact(){

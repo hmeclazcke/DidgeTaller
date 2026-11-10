@@ -130,10 +130,10 @@ class MeasureDiscardUiTest {
         assertEquals(index, app.getSharedPreferences("local_data", 0).getString("recordings", null))
         assertArrayEquals(original, store.file(existing.id).readBytes())
         assertEquals(listOf(existing.id), store.list().map { it.id })
-        compose.onNodeWithText(uiText(R.string.ui_library), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${existing.id}").assertIsDisplayed()
         compose.runOnIdle { assertEquals(listOf(existing.id), vm.sessions.map { it.id }) }
-        compose.onNodeWithText(uiText(R.string.ui_measure), useUnmergedTree = true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_measure)).performClick()
         start()
         confirmDiscard() // Immediate discard, including a possible header-only WAV.
         assertEquals(listOf(existing.id), store.list().map { it.id })
@@ -158,7 +158,7 @@ class MeasureDiscardUiTest {
         val reading = compose.onNodeWithTag("acoustic-signal-status").fetchSemanticsNode().boundsInRoot
         val primary = compose.onNodeWithTag("recording-primary").fetchSemanticsNode().boundsInRoot
         val discard = compose.onNodeWithTag("discard-recording").fetchSemanticsNode().boundsInRoot
-        val navigation = compose.onNodeWithText(uiText(R.string.ui_measure),useUnmergedTree=true).fetchSemanticsNode().boundsInRoot
+        val navigation = compose.onNodeWithContentDescription(uiText(R.string.ui_measure)).fetchSemanticsNode().boundsInRoot
         val density = compose.activity.resources.displayMetrics.density
         assertTrue(reading.bottom <= primary.top)
         assertTrue(primary.height >= 48 * density && discard.height >= 48 * density)

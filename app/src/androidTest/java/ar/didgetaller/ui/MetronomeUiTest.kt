@@ -1,5 +1,7 @@
 package ar.didgetaller.ui
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
 import android.Manifest
 import android.app.Application
 import android.content.Context
@@ -58,23 +60,15 @@ class MetronomeUiTest {
         val label = compose.activity.getString(ar.didgetaller.R.string.metronome_tab)
         compose.onNode(hasContentDescription(label) and hasAnyAncestor(hasTestTag("main-navigation"))).performClick()
         compose.onNodeWithTag("metronome-screen").assertIsDisplayed()
-        val configuration = compose.activity.resources.configuration
-        val narrow = configuration.screenWidthDp < 340 * minOf(configuration.fontScale, 1.2f)
-        val labels = listOf(ar.didgetaller.R.string.ui_measure,
-            if (narrow) ar.didgetaller.R.string.metronome_tab_short else ar.didgetaller.R.string.metronome_tab,
-            if (narrow) ar.didgetaller.R.string.ui_lab_short else ar.didgetaller.R.string.ui_laboratory,
-            if (narrow) ar.didgetaller.R.string.ui_library_short else ar.didgetaller.R.string.ui_library)
-        val labelBounds = labels.map { resource ->
-            val node = compose.onNode(hasText(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")), useUnmergedTree = true)
-            val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
-            node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
-            val layout = layouts.single()
-            assertFalse("Navigation label height must fit", layout.didOverflowHeight)
-            assertFalse("Navigation labels must not be ellipsized", layout.isLineEllipsized(0))
-            assertTrue("Navigation glyphs must fit (integer-pixel rounding)", layout.getLineRight(0) <= layout.size.width + 1f)
-            node.fetchSemanticsNode().boundsInRoot
+        val labels = listOf(ar.didgetaller.R.string.ui_measure, ar.didgetaller.R.string.metronome_tab,
+            ar.didgetaller.R.string.ui_laboratory, ar.didgetaller.R.string.ui_library)
+        labels.forEach { resource ->
+            val tab = compose.onNode(hasContentDescription(compose.activity.getString(resource)) and hasAnyAncestor(hasTestTag("main-navigation")))
+            tab.assertIsDisplayed().assertHasClickAction()
+            tab.assert(androidx.compose.ui.test.SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.Role, androidx.compose.ui.semantics.Role.Tab))
         }
-        assertTrue("Four labels must not overlap", labelBounds.zipWithNext().all { (a, b) -> a.right <= b.left })
+        compose.onAllNodes(hasText("Metr.") and hasAnyAncestor(hasTestTag("main-navigation")), useUnmergedTree = true).assertCountEquals(0)
+        compose.onNode(hasContentDescription(label) and hasAnyAncestor(hasTestTag("main-navigation"))).assertIsSelected()
         compose.onNodeWithTag("metronome-transport").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("metronome-sound").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("metronome-bpm").assertDoesNotExist()
@@ -201,6 +195,20 @@ class MetronomeUiTest {
         assertEquals(0.5f, bounded.volume); assertEquals(MetronomeSubdivision.QUARTER, bounded.subdivision)
         app.getSharedPreferences("practice_metronome", 0).edit().putString("bpm", "invalid type").commit()
         assertEquals(MetronomeSettings(), preferences.load())
+    }
+    @Test fun collapsedViewportFitsAndAdvancedSettingsScroll() {
+        compose.setContent {
+            val density = androidx.compose.ui.platform.LocalDensity.current
+            androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(density.density, 1.5f)) {
+                androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.then(androidx.compose.ui.Modifier.size(360.dp, 520.dp))) { MetronomeScreen(metronome) }
+            }
+        }
+        val scroll = compose.onNodeWithTag("metronome-scroll")
+        assertEquals(0f, scroll.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue())
+        compose.onNodeWithTag("metronome-transport").assertIsDisplayed()
+        compose.onNodeWithTag("metronome-expand").performClick()
+        assertTrue(scroll.fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].maxValue() > 0f)
+        compose.onNodeWithTag("metronome-volume").performScrollTo().assertIsDisplayed()
     }
     @Test fun viewModelNavigationBackgroundAndClearOwnTheTransport() {
         val owners = ViewModelStore().also { stores += it }

@@ -63,7 +63,7 @@ class SwipeComparisonUiTest {
         lateinit var vm:TallerViewModel
         compose.runOnUiThread {vm=TallerViewModel(app);owner.put("navigation",vm)}
         compose.setContent {TallerApp(vm,{}, {}, {_,_,_->})}
-        compose.onNodeWithText(uiText(R.string.ui_library),useUnmergedTree=true).performClick()
+        compose.onNodeWithContentDescription(uiText(R.string.ui_library)).performClick()
         compose.onNodeWithTag("session-${item.id}").performScrollTo().performClick()
         openComparison()
         compose.onNodeWithTag("swipe-compare-toggle").performScrollTo().performClick()
