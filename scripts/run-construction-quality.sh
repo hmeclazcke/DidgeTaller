@@ -4,6 +4,8 @@ serial="${1:?An explicit clean emulator serial is required}"
 [[ "$serial" == emulator-* ]] || exit 2
 hardware="$(adb -s "$serial" shell getprop ro.hardware | tr -d '\r')"
 [[ "$hardware" == ranchu || "$hardware" == goldfish ]] || exit 2
+configuration="${2:-all}"
+[[ "$configuration" == all || "$configuration" == landscape ]] || exit 2
 mkdir -p build/reports/quality
 collect() {
   status=$?
@@ -21,6 +23,13 @@ run_case() {
   timeout 600s adb -s "$serial" shell am instrument -w -r -e class "$2" -e evidenceLabel "$1" ar.didgetaller.test/androidx.test.runner.AndroidJUnitRunner > "$log"
   python3 tools/run_instrumentation.py --verify-log "$log"
 }
+if [[ "$configuration" == landscape ]]; then
+  adb -s "$serial" shell wm size 1280x720
+  adb -s "$serial" shell settings put system font_scale 1.5
+  adb -s "$serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales es
+  run_case landscape-150 'ar.didgetaller.ui.ConstructionUiTest#completeWoodWorkflowSearchSaveToleranceAndAllExports'
+  exit 0
+fi
 run_case default ar.didgetaller.ui.ConstructionUiTest
 for language in es en; do
   adb -s "$serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales "$language"

@@ -10,6 +10,11 @@ on:
         type: choice
         default: all
         options: [all, instrumentation, mutation, metronome, localization, construction]
+      configuration:
+        description: Construction evidence only; reuse unchanged successful configurations
+        type: choice
+        default: all
+        options: [all, landscape]
 permissions:
   contents: read
 concurrency:
@@ -80,7 +85,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: bash ${{ inputs.scope == 'construction' && 'scripts/run-construction-quality.sh' || inputs.scope == 'localization' && 'scripts/run-localization-quality.sh' || inputs.scope == 'metronome' && 'scripts/run-metronome-quality.sh' || 'scripts/run-emulator-quality.sh' }} emulator-5554
+          script: bash ${{ inputs.scope == 'construction' && 'scripts/run-construction-quality.sh' || inputs.scope == 'localization' && 'scripts/run-localization-quality.sh' || inputs.scope == 'metronome' && 'scripts/run-metronome-quality.sh' || 'scripts/run-emulator-quality.sh' }} emulator-5554 ${{ inputs.configuration == 'landscape' && 'landscape' || 'all' }}
       - name: Separate emulator coverage report
         if: always() && inputs.scope != 'metronome' && inputs.scope != 'localization' && inputs.scope != 'construction'
         run: |

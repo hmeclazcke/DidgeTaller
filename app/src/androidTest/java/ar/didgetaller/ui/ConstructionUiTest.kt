@@ -12,6 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.semantics.getOrNull
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.lifecycle.ViewModelStore
 import ar.didgetaller.TallerViewModel
@@ -43,7 +44,13 @@ class ConstructionUiTest {
         compose.onNodeWithTag("construction-workspace").assertIsDisplayed()
     }
     private fun click(tag:String) {compose.onNodeWithTag(tag).performScrollTo().performClick()}
-    private fun tab(index:Int) {compose.onNodeWithTag("construction-step-$index").performScrollTo().performClick()}
+    private fun tab(index:Int) {
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
+        val node=compose.onNodeWithTag("construction-step-$index")
+        node.performScrollTo().assertIsDisplayed().performClick()
+        compose.waitUntil(5000){node.fetchSemanticsNode().config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Selected)==true}
+        node.assertIsSelected()
+    }
     private fun field(key:String,value:String) {
         compose.onNodeWithTag("construction-$key").performScrollTo().performTextReplacement(value)
     }
