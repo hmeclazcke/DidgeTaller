@@ -5,6 +5,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import ar.didgetaller.core.*
 
@@ -31,7 +33,7 @@ internal fun WoodStockFields(values:Map<String,String>,set:(String,String)->Unit
     TextButton(onClick={expanded=!expanded},modifier=Modifier.testTag("stock-allowances")){Text(l.wood(WoodTerm.LOSS))}
     if(expanded)WoodPreparationFields(values,set)
     Row(Modifier.fillMaxWidth()) {
-        Checkbox(values.getValue("stockConfirmed")=="true",{set("stockConfirmed",it.toString())},modifier=Modifier.testTag("stock-confirmed"))
+        Checkbox(values.getValue("stockConfirmed")=="true",{set("stockConfirmed",it.toString())},modifier=Modifier.testTag("stock-confirmed").semantics {contentDescription=l.wood(WoodTerm.CONFIRM)})
         Text(l.wood(WoodTerm.CONFIRM),Modifier.weight(1f),style=MaterialTheme.typography.bodySmall)
     }
     Text(l.wood(WoodTerm.ASSUMPTION),style=MaterialTheme.typography.bodySmall)

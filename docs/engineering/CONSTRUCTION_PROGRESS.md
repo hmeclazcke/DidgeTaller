@@ -316,3 +316,13 @@ Both JVM variants pass603 cases each (595 pass/8 protected skips); gate755 measu
 editing/persistence/conflict checks in both languages, alongside unchanged PVC
 regressions. Selected PIT evidence remains scoped to the unchanged WoodFit and
 WoodStockForm implementation in3997e06; no fictitious final mutation rerun is claimed.
+
+
+Native3997e06 completed successfully:12 actual test executions on clean API35,
+including stock editing/persistence/conflicts, EN/ES exports, narrow150% PVC and
+landscape. Ten two-page PDFs (unmeasured wood, log, boards, laminate, PVC in both
+languages) and every optional tile were rendered by Android. Final9bd4100 native
+scope adds narrow150% stock checks. A final accessibility correction gives the
+measurement-confirmation checkbox its full localized description; its regression
+is exercised in both150% landscape locales using the existing focused landscape
+configuration. The drawing and calculation code are unchanged by that semantic fix.

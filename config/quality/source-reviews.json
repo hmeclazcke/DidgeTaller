@@ -7072,10 +7072,10 @@
     },
     "ea7398782961d22b9d2f4e1a6c69b6774108935f3fea7b88739cb278d4b0d02a": {
       "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
-      "line": 13,
+      "line": 15,
       "kind": "function",
       "name": "WoodStockFields",
-      "semanticHash": "8ebff7ee53602c5a69f6b8d10222b69ff29b5745277b3ec742eb026f16995e6e",
+      "semanticHash": "187d54242a2765ea6b3b9d171fa81c4687941a76fa09ef9b3911f5b4df85a9ba",
       "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
         "docs/engineering/CONSTRUCTION_PROGRESS.md",

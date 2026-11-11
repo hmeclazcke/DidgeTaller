@@ -118,6 +118,8 @@ class ConstructionUiTest {
         field("planName","Río claro")
         tab(2);click("stock-kind-LOG")
         field("stockDiameter","130")
+        val language=if(compose.activity.resources.configuration.locales[0].language=="es")WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
+        compose.onNodeWithTag("stock-confirmed").assertContentDescriptionEquals(language.wood(WoodTerm.CONFIRM))
         click("stock-confirmed")
         compose.onNodeWithTag("stock-fit-FITS").performScrollTo().assertIsDisplayed()
         screenshot("log-stock")

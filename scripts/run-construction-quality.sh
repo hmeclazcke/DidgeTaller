@@ -26,7 +26,11 @@ run_case() {
 if [[ "$configuration" == landscape ]]; then
   adb -s "$serial" shell wm size 1280x720
   adb -s "$serial" shell settings put system font_scale 1.5
-  adb -s "$serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales es
+  for language in en es; do
+    adb -s "$serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales "$language"
+    adb -s "$serial" shell am force-stop ar.didgetaller
+    run_case "landscape-150-$language" 'ar.didgetaller.ui.ConstructionUiTest#woodStockInputsPersistAndConflictsDoNotRewriteTheSavedBore'
+  done
   run_case landscape-150 'ar.didgetaller.ui.ConstructionUiTest#completeWoodWorkflowSearchSaveToleranceAndAllExports'
   exit 0
 fi
