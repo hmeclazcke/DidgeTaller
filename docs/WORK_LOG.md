@@ -1246,3 +1246,7 @@ files or physical-device captures. Focused native checks passed, including Spani
 led to independent groove, scale, reducer, layered-cut and template assertions.
 Next delivery step: commit/push, inspect fast CI and one construction-native run;
 record actual conclusions rather than assuming a remote pass.
+
+Publication: implementation fefa877 on the existing feature branch. A sample-only
+follow-up preserves exact Android CSV line endings/hashes; no source/test change.
+Remote run URLs and observed conclusions are maintained in PR #5 delivery evidence.

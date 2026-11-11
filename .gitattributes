@@ -7,4 +7,4 @@ app/src/main/assets/third_party/SWIPE.txt -text -whitespace
 .agents/skills/ub-mode/LICENSE text eol=lf
 
 # Preserve actual Android CSV export bytes recorded in the synthetic evidence manifest.
-docs/examples/construction/*.csv -text
+docs/examples/construction/*.csv -text whitespace=cr-at-eol

@@ -2,7 +2,7 @@
 
 Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
-Current status: **DOCUMENT REVISION VERIFIED LOCALLY; REMOTE CI PENDING**. The complete construction workflow is
+Current status: **DOCUMENT REVISION IMPLEMENTED; VERIFIED LOCAL EVIDENCE BELOW**. The complete construction workflow is
 implemented and executed on the clean emulator. PR5 remains draft and unmerged.
 
 ## Implemented application workflow
@@ -228,4 +228,4 @@ wood depths 15/41.5 and prepared stock 101×50.5 are checked independently. PVC 
 Samples: [gallery](../examples/construction/README.md). No physical printing was done.
 See [document architecture and limitations](WORKSHOP_DOCUMENTS.md).
 
-Remote delivery and CI links will be recorded after observing their actual outcomes.
+Remote delivery and live CI conclusions are attached to [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5). Check actual run results before relying on remote validation.
