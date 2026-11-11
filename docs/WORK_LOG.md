@@ -1294,3 +1294,14 @@ stock mutations passed as recorded in CONSTRUCTION_PROGRESS. Next: push validate
 implementation, execute the existing clean-emulator construction workflow, inspect
 actual Android PDFs and stock UI screenshots, then publish synthetic examples.
 No physical device or private recording operations; main and PR5 merge untouched.
+
+
+Stock-aware delivery:603 JVM cases per variant (595 passed/8 protected skips),
+strict755/160 source gate with0 violations, selected stock PIT128/146 killed and
+no uncovered mutants. Actual API35 native run43071118247 passed14 executions;
+30 rendered PDF pages exactly match inspected prior output. Synthetic current
+log/rectangular examples and hashes are in docs/examples/construction. Final
+UI-only checkbox semantics/header density and keyboard-free evidence changes use
+the focused EN/ES150% landscape scope. Final CI observation is the remaining
+publication step; source/rendering acceptance and physical limitations are detailed
+in engineering/CONSTRUCTION_PROGRESS.md. Keep PR5 draft and do not merge.

@@ -1,8 +1,9 @@
 # Two-sheet workshop documents
 
 The report and the full-size pattern are separate deliverables. The default has
-exactly two A 4 sheets: portrait specifications/cutting rows and a landscape
-construction drawing. Tiled templates contain only the overlapping 1:1 profile.
+exactly two A4 sheets. Split wood uses a landscape instrument/stock overview and
+a landscape carving sheet; laminate/PVC keep portrait specifications and a
+landscape construction drawing. Tiled templates contain only the overlapping 1:1 profile.
 
 `WorkshopDocument`, `WorkshopTables`, `WorkshopDiagram` and `WorkshopTemplates`
 prepare immutable dimensions and drawing commands without Android dependencies.
@@ -12,8 +13,22 @@ No resonance equations, original design serialization or recording data change.
 
 Wood cavities are semicircles: diameter 30 means depth 15 from the joining plane,
 not 30. For a maximum 83 mm bore, wall 8 and radial reserve 1, each prepared half
-requires width 101 and thickness 50.5 mm. Saw kerf, facing, end trimming and actual
-material strength require workshop measurements; they are not invented here.
+requires width101 and thickness50.5 mm. Those are separate axes: the joined
+rectangular envelope is101×101, not automatically a round101 mm exterior. The log
+case assumes a concentric circular minimum envelope. An editable9 mm wall is an
+example constraint, not a universal structural recommendation.
+
+`WoodStock` distinguishes natural logs, two boards and a block to split.
+`WoodFit` checks the union of bore and measured-stock breakpoints; piecewise-linear
+bounds cannot hide an intermediate neck. For a log, usable radius is the measured
+outer radius minus bark/exterior/uncertainty; the joining-plane offset is half the
+saw kerf plus face loss. Available half depth is their difference. For boards,
+width loses a face allowance on each side and each half loses two prepared faces;
+for a block, half thickness starts from(total thickness−kerf)/2. End trim is per
+end. Board dimensions refer to the smaller of both pieces. Bounds, straightness,
+centering and sound material require explicit confirmation; missing ranges are not
+extrapolated. Unconfirmed or negative clearance is stated, never silently resized.
+No geometric test certifies species/grain strength or actual workmanship.
 Laminated layers use the established enclosing-opening approximation. PVC cuts
 include their insertion lengths; the sample assembled length is 800+650+90-30-25
 =1485 mm, with the connector starting at 770 and the second tube at 835 mm.
@@ -21,9 +36,11 @@ include their insertion lengths; the sample assembled length is 800+650+90-30-25
 Displayed dimensions use 0.1 mm. Minimum material dimensions round upward;
 calculations retain full precision. SVG point coordinates use six decimals and
 physical point units. Station labels use two rows when close together; all station
-positions remain in the measurement table/CSV. The readable report supports up to
-36 method-specific rows and rejects cells that cannot fit; it never truncates data
-or silently shrinks text. CSV and SVG remain available for dense reports.
+positions remain in the measurement CSV. Wood sheets show selected meaningful
+sections and retain full station detail in an additional six-decimal numeric CSV
+table; unavailable stock stays blank. Dense wood stations do not add PDF pages.
+Component tables for laminate/PVC retain their36-row legibility boundary and reject
+oversized cells instead of shrinking text. SVG preserves the precise drawing marks.
 
 Every export vocabulary term has an English/Spanish pair. Sensitivity descriptions
 use that same vocabulary, including bell diameter. Human names replace UUID titles;
@@ -47,7 +64,9 @@ Run `:app:testDebugUnitTest --tests ar.didgetaller.core.WorkshopDocumentTest` fo
 independent dimensions, groove circles, material minima, catalog overlaps, template
 coordinates, calibration, invalid/dense inputs, localization and filenames.
 `:app:qualityMutationDocuments` challenges this selected pure document scope.
-On a clean emulator, run `WorkshopDocumentsUiTest` to generate six bilingual PDFs,
+Use `WoodStockTest` and `WoodWorkshopTest` for actual-stock constraints and
+independent83/41.5/50.5/101 mm identities;`:app:qualityMutationWood` targets the pure
+fit/form logic. On a clean emulator,`WorkshopDocumentsUiTest` generates ten bilingual PDFs,
 render every page through Android PdfRenderer and verify the 100mm raster ruler.
 `ConstructionUiTest` executes the real Compose export callbacks and isolated storage.
 The construction CI scope includes both classes.
@@ -58,7 +77,7 @@ claimed. Remaining layout/text mutations are disclosed separately from numerical
 geometry regressions; screenshots complement, rather than replace, geometry tests.
 
 
-## Verified local execution
+## Earlier generator execution (historical, before the stock revision)
 
 Debug/release JVM suites pass; exact totals are recorded in the construction
 checkpoint. Six native tests pass on the clean API 37 emulator (document rendering,
@@ -86,3 +105,12 @@ and [11 native executions](https://github.com/hmeclazcke/DidgeTaller/actions/run
 passed on764bc63. Selected PIT487 generated/245 killed/231 survived/11 uncovered;
 50.31% of generated mutants killed,19s execution. Do not infer whole-app strength.
 The synthetic gallery records the native API35 artifact and exact file hashes.
+
+
+## Current stock-aware evidence
+
+See [construction progress](CONSTRUCTION_PROGRESS.md) and the [actual sample gallery](../examples/construction/README.md)
+for commit-scoped native runs, current stock examples, limitations and source-bound
+review counts. The owner-supplied reference image guides style only. No raster art
+is used as a source of manufacturing coordinates. Pure vector geometry is shared
+by PDF/SVG; the optional1:1 template retains a true100 mm calibration reference.

@@ -2433,3 +2433,15 @@ killed/18 survived/0 uncovered. New domain/drawing functions have CRAP-L<10;
 unsupported Compose/constructors have content-linked technical reviews only.
 Actual clean-emulator workflow and final Android PDF rendering are pending;
 see engineering/CONSTRUCTION_PROGRESS.md for assumptions and completion state.
+
+
+Stock-aware final code:603 JVM debug/release each,595 pass/8 protected skips;
+755 measured/160 technically unscored,0 strict violations,CPD0. Selected stock PIT
+146/128 killed/18 survivors/0 uncovered. Native43071118247 on9bd4100 passed14
+actual cases and generated10 bilingual two-page PDFs plus the10-page template.
+All30 raster pages were compared byte-for-byte with inspected3997e06 previews.
+The synthetic gallery manifest verifies63 files. Final UI-only semantics/header
+changes are covered by the focused EN/ES150% landscape native run; final CI links
+and observed conclusions are maintained in PR5. Do not infer a pass from compilation
+or cancelled runs. No physical print, structural wood safety or played-note
+validation is claimed; no private data or physical device was used.

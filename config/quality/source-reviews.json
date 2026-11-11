@@ -6442,15 +6442,17 @@
     },
     "6a50d29de8eb0abac991e4997c1046f1e95106513d3bbe1761d01be453ef6c22": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "96",
+      "line": 96,
       "kind": "function",
       "name": "ConstructionHeader",
-      "semanticHash": "42f08f536ae49d4628a1fde45db21c9e71ca809d8dcccf43c0cb2e0bd192084c",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Close and four accessible step controls stay outside the scrollable editor and respect keyboard and system insets.",
+      "semanticHash": "150966ab134ad2378109e1aedec0c126b683a317bc6779e307eda851aa5565b6",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "5f1ce7751e2bc4356efe0fe50e88fddc59f5d59103aeaf3592072a33d9ac47f9": {

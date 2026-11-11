@@ -95,7 +95,7 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
 @Composable
 private fun ConstructionHeader(stage:Int,select:(Int)->Unit,dismiss:()->Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal=16.dp)) {
-        Text(stringResource(R.string.construction_title),Modifier.weight(1f).testTag("construction-heading"),style=MaterialTheme.typography.titleLarge)
+        Text(stringResource(R.string.construction_title),Modifier.weight(1f).testTag("construction-heading"),style=MaterialTheme.typography.titleMedium)
         TextButton(onClick=dismiss){Text(stringResource(R.string.ui_close))}
     }
     ScrollableTabRow(stage,edgePadding=0.dp) {

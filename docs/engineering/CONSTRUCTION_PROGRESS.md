@@ -326,3 +326,34 @@ scope adds narrow150% stock checks. A final accessibility correction gives the
 measurement-confirmation checkbox its full localized description; its regression
 is exercised in both150% landscape locales using the existing focused landscape
 configuration. The drawing and calculation code are unchanged by that semantic fix.
+
+
+## Stock-aware drawing acceptance — implementation complete; final CI observation pending
+
+Native9bd4100 [run43071118247](https://github.com/hmeclazcke/DidgeTaller/actions/runs/43071118247)
+passed14 executions (7 base,2 EN/ES normal,4 EN/ES narrow150%,1 landscape150%).
+All20 default PDF pages and all10 template pages were rasterized. Their30 PNGs are
+byte-identical to the already inspected3997e06 renderings; the full gallery now
+contains actual PDFs/SVGs/CSV and the new log/board samples, with63 artifact hashes.
+Each of the four known-stock bilingual PDFs has exactly2 A4 pages and independently
+asserted83 mm bore/41.5 mm groove/9 mm base wall/101 mm half width/50.5 mm thickness.
+The local raster comparison reused visual evidence only after exact image equality.
+
+The later UI-only changes label the confirmation checkbox for accessibility,
+reduce the construction heading to Material titleMedium at large font sizes and
+close the synthetic keyboard before evidence captures. Final focused native scope
+runs EN/ES150% stock tests and the established landscape export workflow. Drawings,
+core calculations and persistence are unchanged. Local source gate remains755/160,
+64 historical high-risk functions,0 violations/CPD. No new measurable function is
+above target; no numeric baseline or mutator was weakened. JVM603 per variant,
+595 passed/8 protected skips. The selected146 stock mutants retain128 killed,
+18 survivors,0 uncovered; this is not whole-feature or whole-app mutation coverage.
+Final automatic CI and focused native conclusions will be linked in PR5 after
+publication; do not count cancelled intermediate runs as passes.
+
+Finite remaining limitations: confirmed straight/concentric minimum wood envelopes,
+conservative bounds between measured sections, builder-supplied preparation losses,
+material/grain assessment and physical printer calibration. Irregular unsupported
+stock remains unconfirmed. No structural or played-pitch certification is claimed.
+Laminated/PVC models, saved schema1, acoustic equations, main, private data and the
+official skill are preserved. No Samsung operation or merge was performed.

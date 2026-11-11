@@ -183,6 +183,7 @@ class ConstructionUiTest {
         }
     }
     private fun screenshot(name:String) {
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
         compose.waitForIdle()
         val automation=InstrumentationRegistry.getInstrumentation().uiAutomation
         automation.waitForIdle(100,3000)
