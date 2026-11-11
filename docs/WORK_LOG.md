@@ -1265,3 +1265,18 @@ emulator: local emulator restart was rejected by automatic execution policy.
 No Samsung operations or private audio access. Next: push this bounded correction,
 observe fast/native CI, download the actual generated PDFs/previews and refresh
 only synthetic example evidence before final delivery.
+
+
+# Workshop document delivery — COMPLETE for owner review
+
+Implementation764bc63 passed fast CI43037920159 and native CI43037955490. The
+native matrix executed11 cases successfully and produced the actual bilingual
+PDF/SVG/CSV and12 page previews now refreshed in docs/examples/construction.
+Measured sockets replace the ambiguous PVC reference box. Sample hashes preserve
+actual CSV bytes; clean API35 provenance is recorded. Final PIT487/245 killed/
+231 survived/11 uncovered is disclosed; quality gate713 measured/156 unscored and
+0 new violations. Limits:36 readable report rows, builder-measured material/kerf,
+physical printer calibration and passive-model uncertainty. No source work remains
+for this generator request. Keep PR5 draft, main unchanged, no merge or Samsung use.
+The evidence-only follow-up does not change source/test inputs; reuse runtime
+checks for764bc63 and inspect any automatically triggered final CI conclusion.

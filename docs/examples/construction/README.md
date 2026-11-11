@@ -1,7 +1,8 @@
 # Synthetic workshop export examples
 
 These are actual Android-generated PDFs and PdfRenderer page captures, not mockups.
-Source fixture: `WorkshopDocumentsUiTest`. Wood:1500 mm length,30 mm mouthpiece,
+Source fixture: `WorkshopDocumentsUiTest`. Final generator: `764bc63`; clean API35
+[actual workflow and artifacts](https://github.com/hmeclazcke/DidgeTaller/actions/runs/43037955490). Wood:1500 mm length,30 mm mouthpiece,
 83 mm bell,8 mm wall and1 mm radial reserve. Laminated wood uses50 mm layers.
 PVC uses two synthetic measured tubes and one measured reducer:1485 mm assembled.
 The shared example title is user-provided text, preserved in both languages.

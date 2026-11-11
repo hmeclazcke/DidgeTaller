@@ -1,17 +1,17 @@
 {
   "synthetic_only": true,
-  "generator_revision": "workshop redesign after 2e997e1",
-  "renderer": "Android PdfRenderer API 37 emulator",
+  "generator_revision": "764bc639d775df78c3e7414b3d95bfdce5dfc239",
+  "renderer": "Android PdfRenderer API 35 clean GitHub Actions emulator",
   "default_pdf_pages": 2,
   "physical_print_verified": false,
   "files": [
     {
       "file": "english-laminated-page-1.png",
-      "sha256": "798ad7d9e08bd37e4f4e62b7475a3db35cdb3fe49a38a318286bf4ea57a53d57"
+      "sha256": "d48cd63dc19228344195be0ff64aba5fed1bb604590828f08cb97efb750ad865"
     },
     {
       "file": "english-laminated-page-2.png",
-      "sha256": "e4b7f37a40e0780f890acaf022b8a15dce354726eae7d19c9d3c5d55175830b1"
+      "sha256": "899c0aef4755df5b96d2b27f7f129192381c11bbfdf180bef0863cabcce5aae6"
     },
     {
       "file": "english-laminated.csv",
@@ -19,7 +19,7 @@
     },
     {
       "file": "english-laminated.pdf",
-      "sha256": "5af66a178870e21b180bda2f4731b546d3b5901f0ccff0e1501f0701f6c18563"
+      "sha256": "375141413758edf38da05ce1fd1c5f25f72e1c0ea1be46948923ac4a1b0e1427"
     },
     {
       "file": "english-laminated.svg",
@@ -27,11 +27,11 @@
     },
     {
       "file": "english-pvc-page-1.png",
-      "sha256": "91f84ecc0ea5d0a4334f3481b216b840ab8a3fce1042fadbbf9cc880675b8b2b"
+      "sha256": "937038caf37b87628485c94bc0d240235f5c7ef39c111f20b0d10872854584ef"
     },
     {
       "file": "english-pvc-page-2.png",
-      "sha256": "bb6226fc595267e2f5aed84226929bf6899480c96a1c097ea0e9d915a5546ee2"
+      "sha256": "b00d96a698653d0703d217a24862e13eca15a18f9a1ff4fa1e1e828516f49b6a"
     },
     {
       "file": "english-pvc.csv",
@@ -39,19 +39,19 @@
     },
     {
       "file": "english-pvc.pdf",
-      "sha256": "e6b4b6801b9b568ff7dd26912833a0cfe6fc4fb590824137b60d817e04a045e2"
+      "sha256": "cfa0d2cb1bb8eb36db13eac28cdcbb7c485e9b657c3fed807d6d6790bcbc3725"
     },
     {
       "file": "english-pvc.svg",
-      "sha256": "0f136e4f5e50dec3628e158b62c4db6145035a33a30c5e7a8013b83fde49c704"
+      "sha256": "4d0b10a69d0e28fcb7ae599c66b35d055d3a39470f054bfda33ab60c83f722b1"
     },
     {
       "file": "english-sandwich-page-1.png",
-      "sha256": "556cee422af05537f99f76f651c4b614d7e736f91226e67c860c094c33f99f32"
+      "sha256": "7aad0758ac4ef0c784cc25ae6d5927e0d61b173735caa89591afc641e8be32b0"
     },
     {
       "file": "english-sandwich-page-2.png",
-      "sha256": "cb530f788e48ec5ddc54d8123b6fc1e66b9186d85c6ee96f2b725766d06b81c2"
+      "sha256": "17ab5488d3fd5ccefc391f01701bb524291154245138523b215d982fa31add79"
     },
     {
       "file": "english-sandwich.csv",
@@ -59,7 +59,7 @@
     },
     {
       "file": "english-sandwich.pdf",
-      "sha256": "b50f0ddb0152d6f2d15996d5c56932edaeb35176f1934d1dac6f7849412983f4"
+      "sha256": "7b2c943b46387355eafac0199fbedaff8bf07a1d40dd839dd50b6336f2c7844f"
     },
     {
       "file": "english-sandwich.svg",
@@ -67,11 +67,11 @@
     },
     {
       "file": "spanish-laminated-page-1.png",
-      "sha256": "f0bcc8172ffecacc4286a6989ac4f00fdd55c6772684a2d1fe52b306f898c6cf"
+      "sha256": "036ce9d679708d5162c639d2f30e19e699a00f1f8a7021abf637201487fe5d47"
     },
     {
       "file": "spanish-laminated-page-2.png",
-      "sha256": "ff41d5e8bde48a8fb9982f8b4954db20e268e15332babd7016cce868bf4b2a69"
+      "sha256": "9ba462142e7c5de6cf1cc0d9d40ce77b65f8a4a4931787cf9c60a45f415b70ba"
     },
     {
       "file": "spanish-laminated.csv",
@@ -79,7 +79,7 @@
     },
     {
       "file": "spanish-laminated.pdf",
-      "sha256": "2ba0ef4999987afc6cf39bdb0f339a2106d8dd0dcbd8327a35ef6b6d4dffe3da"
+      "sha256": "ab41f03da95f350217a9f9988b2224d9d4b07d94dfccaffd1de43f8303223480"
     },
     {
       "file": "spanish-laminated.svg",
@@ -87,11 +87,11 @@
     },
     {
       "file": "spanish-pvc-page-1.png",
-      "sha256": "e0d9d5216386ef7c7ffd434f946d1a6b9ff476f01d57ce527f8a678f9ec89595"
+      "sha256": "f3f03979ca5863c372c20ef71d7bdb4a3a752e3361fc9ad8fdcdff6b4e7ce2d1"
     },
     {
       "file": "spanish-pvc-page-2.png",
-      "sha256": "99ee54974d1a19346921fb18ff33973a638586c20cc2c07a63ddc9d4bf4147d8"
+      "sha256": "ecb352ba32e9caa02eabe4c00ba0f220076bdbc548f232f3e690f12ac0252da5"
     },
     {
       "file": "spanish-pvc.csv",
@@ -99,23 +99,23 @@
     },
     {
       "file": "spanish-pvc.pdf",
-      "sha256": "1d077eb9025d1fc1cf5b0c616939dd4b9071a6830f39e931a5e307626a4305ea"
+      "sha256": "5946b7139912a07b8bfbc7e15419cb654b8480f61871e92c045298f3c5ed9722"
     },
     {
       "file": "spanish-pvc.svg",
-      "sha256": "860ddfcda48a06bb689cf1b6779ffa7efebac027ed1a5c92d3abba322ae18939"
+      "sha256": "096df1025c3fb4b002a2441b80969e4bfbf890f0d09424d6c8901cb00c5ffe40"
     },
     {
       "file": "spanish-sandwich-page-1.png",
-      "sha256": "634e4f8b5369295c0437ef1c9c4948097bcd82c83289ca1fa02a9851d02216fa"
+      "sha256": "ba09e59f16054bc7eb9c6d49ef8885dd8959c9ec10c756edc0391196ab9895b0"
     },
     {
       "file": "spanish-sandwich-page-2.png",
-      "sha256": "2b51f4c22e802acd1fc1347ee37278ddc54a34cf1a5507ba4069a09a7f586047"
+      "sha256": "f4003864cbe1cbffe2030d65aea7d38354435655fefa43cbd91f149601bf6106"
     },
     {
       "file": "spanish-sandwich-tiles.pdf",
-      "sha256": "6aef430232e64e457f51144a809179645ea74764b761e18b1e25730a2a25db02"
+      "sha256": "6df4d185908162d4bbdbffb62637b43ec45416a449316ac847c7a59d6ae99e16"
     },
     {
       "file": "spanish-sandwich.csv",
@@ -123,7 +123,7 @@
     },
     {
       "file": "spanish-sandwich.pdf",
-      "sha256": "9c775bf8e79202dda791b90903fb5575c68f12dccd15e4ebb898058616a8da7d"
+      "sha256": "c3c0b712a2d7d0c812e46b764f7bf2e11c155edfe60570b3f701d9719b426a88"
     },
     {
       "file": "spanish-sandwich.svg",
@@ -131,7 +131,9 @@
     },
     {
       "file": "tiles-contact.png",
-      "sha256": "fc57201b3ef1df752d5759cdc0ad81a10b04c16550b79ab8e7df1348c0645845"
+      "sha256": "0c72785958aaa14181e4e31c7000355f82ba697c9caaba426ad2a0c1be2523b8"
     }
-  ]
+  ],
+  "run_url": "https://github.com/hmeclazcke/DidgeTaller/actions/runs/43037955490",
+  "native_executions": 11
 }

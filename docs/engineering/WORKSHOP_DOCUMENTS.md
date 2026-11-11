@@ -79,3 +79,10 @@ PVC drawing correction: dashed socket outlines use the measured socket diameters
 and insertion lengths at their true assembled positions. They do not claim an
 unknown connector outside diameter or wall thickness. Solid lines remain the
 actual internal bore. The parts table retains the measured body/socket dimensions.
+
+
+Final verification: [fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/43037920159)
+and [11 native executions](https://github.com/hmeclazcke/DidgeTaller/actions/runs/43037955490)
+passed on764bc63. Selected PIT487 generated/245 killed/231 survived/11 uncovered;
+50.31% of generated mutants killed,19s execution. Do not infer whole-app strength.
+The synthetic gallery records the native API35 artifact and exact file hashes.

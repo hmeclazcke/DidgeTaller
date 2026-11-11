@@ -2,7 +2,7 @@
 
 Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
-Current status: **DOCUMENT REVISION IMPLEMENTED; VERIFIED LOCAL EVIDENCE BELOW**. The complete construction workflow is
+Current status: **READY FOR OWNER REVIEW — DOCUMENT REVISION VERIFIED**. The complete construction workflow is
 implemented and executed on the clean emulator. PR5 remains draft and unmerged.
 
 ## Implemented application workflow
@@ -229,3 +229,36 @@ Samples: [gallery](../examples/construction/README.md). No physical printing was
 See [document architecture and limitations](WORKSHOP_DOCUMENTS.md).
 
 Remote delivery and live CI conclusions are attached to [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5). Check actual run results before relying on remote validation.
+
+
+### Final generator evidence — implementation764bc63
+
+- [Fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/43037920159):
+  success; both JVM variants, APK/test APK, Lint, differential contracts, localization,
+  coverage, Detekt, PSI/JVM mapping, CPD and strict source gate executed.
+- [Clean API35 construction CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/43037955490):
+  success;11 actual executions (six base cases, EN/ES normal, EN/ES narrow150%,
+  landscape150%). Artifact logs explicitly contain successful6/1/1/1/1/1 results.
+  The mutation job is intentionally skipped for this construction-only workflow;
+  selected real mutation execution is local, not claimed as a remote mutation run.
+- Final local JVM debug/release each591 cases:583 passed,8 protected skips,0 failed.
+  Source gate713 measured/156 unscored,64 historical above-target functions,0 new
+  violations/CPD. New measurable document and Canvas adapter functions have MCC≤9.
+- Final selected document PIT487:245 killed,231 survived,11 uncovered;50.31% killed
+  of all generated mutants,19 seconds mutation execution. The13 newly introduced
+  socket-dimension mutations were all killed. Remaining layout/iteration survivors
+  are not declared equivalent or silently excluded; this is limited selected-scope
+  strength, not whole-application mutation coverage.
+- Six current bilingual PDFs and SVG/CSV were downloaded from the successful native
+  artifact. All12 default pages and all10 optional tile pages were rendered; every
+  default page and the complete tile contact sheet were visually inspected. PDF
+  page counts, true groove depths, stock minima, measured socket widths/diameters,
+  layer cuts,150mm registration and100mm reference have numerical/native assertions.
+  [Examples and hashes](../examples/construction/README.md) identify the exact source.
+
+The final PVC drawing uses dashed measured socket openings, not a fictitious outer
+connector contour. Solid inner geometry and the acoustic model remain unchanged.
+No scientific equation, saved format, existing user data, physical Samsung or
+private WAV was modified. Official ub-mode remains byte-identical. PR5 stays draft
+and unmerged. The following commit refreshes only synthetic evidence/documentation;
+reuse source-scoped runtime verification rather than rerunning the native matrix.

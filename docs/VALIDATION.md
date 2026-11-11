@@ -2407,3 +2407,17 @@ PIT selected document scope 474:232 killed,231 surviving,11 uncovered;48.95%,24s
 mutation execution. Surviving layout/iteration mutations remain a stated limitation.
 Scientific calculations, saved schemas and audio code are unchanged. No Samsung or
 private WAV access. See engineering/WORKSHOP_DOCUMENTS.md for reproduction/limits.
+
+
+# Final measured-socket workshop evidence
+
+Implementation764bc63: fast CI43037920159 and clean API35 native CI43037955490
+both succeeded. Native artifact logs prove11 executions, including EN/ES and150%
+portrait/landscape. Both JVM variants have591 cases (583 passed,8 protected skips).
+Source gate713/156 measured/unscored,64 historical above-target,0 violations,CPD0.
+Final selected document PIT487:245 killed,231 surviving,11 uncovered;50.31%,19s
+mutation execution. No timeout/runner errors; score is not an application-wide claim.
+Current samples come from that CI artifact; every PDF page was rasterized and
+inspected. PVC sockets are drawn with measured diameters/insertions; outside fitting
+geometry is deliberately unspecified. Physical printing, material strength and
+played note remain unverified. See engineering/CONSTRUCTION_PROGRESS.md for links.
