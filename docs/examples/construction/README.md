@@ -12,7 +12,6 @@ source hashes normalize newlines. No private recording or physical device is use
 | Natural log, declared cylindrical minimum | [PDF](english-sandwich-log.pdf) | [PDF](spanish-sandwich-log.pdf) | [EN](english-sandwich-log.svg) / [ES](spanish-sandwich-log.svg) | [EN](english-sandwich-log.csv) / [ES](spanish-sandwich-log.csv) |
 | Two rectangular boards | [PDF](english-sandwich-boards.pdf) | [PDF](spanish-sandwich-boards.pdf) | [EN](english-sandwich-boards.svg) / [ES](spanish-sandwich-boards.svg) | [EN](english-sandwich-boards.csv) / [ES](spanish-sandwich-boards.csv) |
 | Wood not measured: fit unconfirmed | [PDF](english-sandwich.pdf) | [PDF](spanish-sandwich.pdf) | [EN](english-sandwich.svg) / [ES](spanish-sandwich.svg) | [EN](english-sandwich.csv) / [ES](spanish-sandwich.csv) |
-| Laminated wood | [PDF](english-laminated.pdf) | [PDF](spanish-laminated.pdf) | [EN](english-laminated.svg) / [ES](spanish-laminated.svg) | [EN](english-laminated.csv) / [ES](spanish-laminated.csv) |
 | Measured PVC | [PDF](english-pvc.pdf) | [PDF](spanish-pvc.pdf) | [EN](english-pvc.svg) / [ES](spanish-pvc.svg) | [EN](english-pvc.csv) / [ES](spanish-pvc.csv) |
 
 Each default PDF contains exactly two A4 pages. For split wood, page 1 shows the
@@ -42,7 +41,7 @@ The main sheets are reduced views with separate cross-section scales. The option
 [all tile previews](tiles-contact.png) show registration references. Print at 100%
 and measure the 100 mm ruler physically before trusting scale. Neither printer
 accuracy, wood strength nor the played drone has been physically validated here.
-Laminated stock uses 50 mm layers; the measured synthetic PVC assembly is 1485 mm.
+The measured synthetic PVC assembly is 1485 mm.
 
 ![Log overview](spanish-sandwich-log-page-1.png)
 ![Log sections and carving table](spanish-sandwich-log-page-2.png)
@@ -62,3 +61,9 @@ label derived joining-plane dimensions explicitly; boards keep rectangular-stock
 labels. Boundary examples state that they have no additional geometric allowance.
 All eight requested bilingual board/log pages were rendered and visually inspected.
 Real user-selected design names are preserved.
+
+
+Current plan headings use the actual instrument name or Didgeridoo plus the target
+note, with localized stock/method subtitles on both pages. No generic sample title
+is used. Transverse-layer construction is no longer offered for new designs;
+its stored representation and exports remain supported for legacy projects only.

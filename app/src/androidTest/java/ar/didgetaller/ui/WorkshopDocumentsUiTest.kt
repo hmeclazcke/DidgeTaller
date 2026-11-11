@@ -33,7 +33,7 @@ class WorkshopDocumentsUiTest {
         for(plan in plans())for(language in WorkshopLanguage.entries) {
             val suffix=when(plan.options.woodStock) {is WoodStock.Log->"-log";is WoodStock.Timber->"-boards";null->""}
             val prefix="${language.name.lowercase()}-${plan.options.method.name.lowercase()}$suffix"
-            val example=plan.copy(name=if(language==WorkshopLanguage.SPANISH)"Ejemplo de construcción" else "Construction example")
+            val example=plan.copy(name="")
             val document=WorkshopDocument.create(example,language,69.3)
             assertEquals(2,document.pages.size)
             assertTrue(document.text().contains(WoodPresentation.number(plan.lengthMm)))

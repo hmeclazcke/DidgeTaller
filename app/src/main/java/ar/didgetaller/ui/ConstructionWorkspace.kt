@@ -29,7 +29,7 @@ internal data class ConstructionExport(val plan:ConstructionPlan,val format:Stri
 
 internal fun constructionBytes(r:ConstructionExport):ByteArray = when(r.format) {
     "csv"->WorkshopDocument.csv(r.plan,r.labels.language).toByteArray(Charsets.UTF_8)
-    "svg"->WorkshopDocument.svg(r.plan,r.labels.language).toByteArray(Charsets.UTF_8)
+    "svg"->WorkshopDocument.svg(WorkshopDocument.create(r.plan,r.labels.language,r.labels.targetHz)).toByteArray(Charsets.UTF_8)
     else->ConstructionPdf.create(r.plan,r.labels,r.format=="tiles")
 }
 
@@ -195,8 +195,8 @@ private fun ConstructionTargetFields(v:Map<String,String>,set:(String,String)->U
 
 @Composable
 private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->Unit,saveCatalog:()->Unit,loadCatalog:()->Unit,writable:Boolean) {
-    val names=listOf(R.string.construction_sandwich,R.string.construction_laminated,R.string.construction_pvc)
-    ConstructionMethod.entries.forEachIndexed {i,method->
+    val names=listOf(R.string.construction_sandwich,R.string.construction_pvc)
+    ConstructionForm.activeMethods().forEachIndexed {i,method->
         FilterChip(v.getValue("method")==method.name,{set("method",method.name)},label={Text(stringResource(names[i]))},modifier=Modifier.testTag("construction-method-${method.name}"))
     }
     ConstructionField("interval",R.string.construction_interval,v,set)
@@ -205,7 +205,6 @@ private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->U
         ConstructionField("tolerance",R.string.construction_tolerance,v,set)
     }
     if(v.getValue("method")=="SANDWICH")WoodStockFields(v,set)
-    if(v.getValue("method")=="LAMINATED")ConstructionField("layers",R.string.construction_layers,v,set)
     if(v.getValue("method")=="PVC") {
         Text(stringResource(R.string.construction_schema),style=MaterialTheme.typography.bodySmall)
         ConstructionField("pipes",R.string.construction_pipes,v,set,true)

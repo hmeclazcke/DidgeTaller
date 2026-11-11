@@ -21,7 +21,6 @@ come unchanged from that successful run.
 | [Spanish wood plan](es-normal-wood-plan.png) | Same workflow in Spanish |
 | [PVC plan](default-pvc-plan.png) | Actual measured stepped/reducer interpretation versus ideal |
 | [Spanish PVC editor at 150%](es-150-pvc-editor.png) | Header remains visible above the keyboard; editor scrolls |
-| [Laminated plan](default-laminated-plan.png) | Stepped manufacturing interpretation versus ideal profile |
 | [Spanish target](es-normal-target.png) | Target entry and progressive advanced constraints |
 | [PDF overview](en-normal-pdf.png) | Native PdfRenderer output, dimensions, cross-sections and ruler |
 | [PDF first tile](en-normal-pdf-tile.png) | 1:1 profile, 150 mm alignment mark and 100 mm print reference |

@@ -2,6 +2,7 @@ package ar.didgetaller.core
 
 /** Stable string fields are persisted separately from legacy geometry; parsing occurs once per request. */
 object ConstructionForm {
+    fun activeMethods()=listOf(ConstructionMethod.SANDWICH,ConstructionMethod.PVC)
     fun defaults(shape:AcousticModel.Shape):Map<String,String> = mapOf(
         "geometry" to shape.controlPoints().joinToString("\n"){"${it.positionMm},${it.diameterMm}"},
         "method" to "SANDWICH","target" to "73.42","higher" to "","mouth" to shape.controlPoints().first().diameterMm.toString(),

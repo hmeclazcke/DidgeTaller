@@ -144,4 +144,21 @@ class WorkshopUsabilityTest {
         }
     }
 
+    @Test fun professionalTitlesPreserveNamesAndDescribeStockOnBothPages() {
+        val named=plan(boards())
+        for(l in WorkshopLanguage.entries) {
+            val blank=named.copy(name="")
+            val d=WorkshopDocument.create(blank,l,Music.frequency(37))
+            val title="Didgeridoo "+WorkshopDocument.note(Music.frequency(37),l)
+            for(page in d.pages) {
+                val labels=page.marks.filterIsInstance<WorkshopMark.Text>().map {it.value}
+                assertTrue(labels.contains(title))
+                assertTrue(labels.contains(if(l==WorkshopLanguage.SPANISH)"Madera partida · Dos tablas" else "Split wood · Two boards"))
+            }
+            assertTrue(WorkshopDocument.create(named,l).text().contains("Río claro"))
+        }
+        assertEquals(listOf(ConstructionMethod.SANDWICH,ConstructionMethod.PVC),ConstructionForm.activeMethods())
+        assertEquals(ConstructionMethod.LAMINATED,ConstructionForm.options(ConstructionForm.defaults(shape)+("method" to "LAMINATED")).method)
+    }
+
 }

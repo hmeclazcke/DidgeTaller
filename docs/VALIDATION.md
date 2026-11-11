@@ -2504,3 +2504,27 @@ payload. Source gate: 768 measured,160 unscored,64 historical above-target,zero
 violations,CPD0. No new review/threshold exception or acoustic/storage change.
 Prior unchanged geometry/selected mutation evidence is retained; no broad PIT or
 physical-device operation was repeated. Final remote CI observation belongs to PR5.
+
+## Instrument titles and supported construction selection — 2026-11-11
+
+Both split-wood PDF sheets now use the real design name or, for an empty name,
+Didgeridoo plus the actual localized target note. Stock/method and a named design's
+note are secondary. No acoustic prediction is invented when target frequency is
+absent. The SVG export uses the same titled document as the PDF.
+
+Normal method selection contains only longitudinal split wood and modular PVC.
+The transverse-layer control and layer input were removed; active sample galleries
+and both README feature lists no longer advertise it. Legacy LAMINATED enum/form
+parsing, stored fields, numerical geometry and export support remain unchanged.
+Opening an old project therefore never silently reinterprets or deletes its data.
+Existing legacy numerical/document tests remain; new tests verify active selection
+and legacy option decoding. The PVC native test verifies the removed chip is absent.
+
+Debug JVM:617 cases,609 passed,8 protected skips. Three actual API37 native cases
+passed (bilingual document generation, calibration and PVC catalog/selection/error
+workflow). All eight requested wood PDF pages were regenerated, independently
+rasterized and visually inspected; two A4 pages retained with unchanged geometry.
+Strict source gate771 measured/160 technically unscored,64 historical high-risk,
+zero violations,CPD0. No numerical exception; the changed Compose declaration's
+source-bound compiler-mapping review was refreshed. No Samsung/private data access,
+main modification or merge. Remote CI observation is recorded in PR5.

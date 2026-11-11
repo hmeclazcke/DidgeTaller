@@ -110,9 +110,8 @@ class ConstructionUiTest {
         assertTrue(csv.contains("1485.0"));assertTrue(csv.contains("770"))
         click("construction-save")
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])
-        tab(2);click("construction-method-LAMINATED");field("layers","100")
-        tab(3);click("construction-generate");ready();screenshot("laminated-plan");export("pdf")
-        tab(2);field("layers","0");tab(3);click("construction-generate")
+        tab(2);compose.onNodeWithTag("construction-method-LAMINATED").assertDoesNotExist()
+        field("pipes","invalid");tab(3);click("construction-generate")
         compose.waitUntil(30000){compose.onAllNodesWithTag("construction-error").fetchSemanticsNodes().isNotEmpty()}
         compose.onNodeWithTag("construction-save").assertDoesNotExist()
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])

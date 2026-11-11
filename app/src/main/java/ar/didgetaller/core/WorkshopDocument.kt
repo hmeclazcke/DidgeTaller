@@ -32,7 +32,24 @@ data class WorkshopDocument(val name:String,val language:WorkshopLanguage,val me
             require(targetHz==null || targetHz.isFinite() && targetHz>0)
             val rows=ConstructionDrawing.rows(plan)
             return WorkshopDocument(humanName(plan.name),language,rows,
-                listOf(WorkshopOverview.page(plan,language,targetHz),WorkshopDiagram.page(plan,language)),plan.lengthMm)
+                listOf(WorkshopOverview.page(plan,language,targetHz),WorkshopDiagram.page(plan,language)).map {heading(it,plan,language,targetHz)},plan.lengthMm)
+        }
+        private fun heading(sheet:WorkshopSheet,p:ConstructionPlan,l:WorkshopLanguage,hz:Double?):WorkshopSheet {
+            if(p.options.method!=ConstructionMethod.SANDWICH)return sheet
+            val note=hz?.let {note(it,l)}
+            val title=if(p.name.isBlank())listOfNotNull("Didgeridoo",note).joinToString(" ") else humanName(p.name)
+            val method=if(l==WorkshopLanguage.SPANISH)"Madera partida" else "Split wood"
+            val stock=stockTitle(p,l)
+            val subtitle=listOfNotNull(method,stock,note?.takeIf {p.name.isNotBlank()}).joinToString(" · ")
+            return sheet.copy(marks=sheet.marks.map {m->
+                if(m !is WorkshopMark.Text || m.y>60)m
+                else m.copy(value=if(m.size>=20)title else subtitle)
+            })
+        }
+        private fun stockTitle(p:ConstructionPlan,l:WorkshopLanguage):String {
+            val stock=p.options.woodStock
+            if(stock is WoodStock.Timber && stock.twoBoards)return if(l==WorkshopLanguage.SPANISH)"Dos tablas" else "Two boards"
+            return l.wood(WoodPresentation.kind(stock))
         }
         fun humanName(raw:String):String {
             val clean=raw.replace(Regex("(?i)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\s*/?"),"").trim()

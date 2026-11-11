@@ -6345,11 +6345,11 @@
     },
     "9f21390daa155b39408b0463d04df69d4372dcced69b14d7842e85b5954a0abc": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 199,
+      "line": 197,
       "kind": "function",
       "name": "ConstructionMethodFields",
-      "semanticHash": "2157ce80b16cccbfeac6d18eac45c19f78020f2617cb480ec396b72f0cae4d7e",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "semanticHash": "9ec48a37d3dbf2bde79ae88d7c87d7c20ef8a02ecfdee96a0878dd9022894240",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests. Active selection now contains only split wood and PVC; the legacy layered decoder and export calculations remain intact. The PVC UI test asserts absence of the removed selector.",
       "evidence": [
         "docs/engineering/CONSTRUCTION_PROGRESS.md",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
