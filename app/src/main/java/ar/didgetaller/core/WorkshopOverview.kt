@@ -77,8 +77,12 @@ internal object WorkshopOverview {
         c.text(34.0,408.0,dimensions,10.0)
         c.text(34.0,431.0,l.wood(WoodTerm.CONSTRAINT)+": "+l.dimension(p.options.wallMm)+" mm",10.0)
         if(p.options.radialToleranceMm>0)c.text(455.0,431.0,l.wood(WoodTerm.RESERVE)+": "+l.dimension(p.options.radialToleranceMm)+" mm",9.0)
-        c.text(34.0,459.0,WoodPresentation.status(fit,l),13.0,color=if(fit.status==WoodFitStatus.DOES_NOT_FIT)WoodInk.RED else WoodInk.TEAL,bold=true)
+        c.text(34.0,459.0,fitLabel(fit,l),13.0,color=if(fit.status==WoodFitStatus.DOES_NOT_FIT)WoodInk.RED else WoodInk.TEAL,bold=true)
         c.paragraph(34.0,480.0,description(p,fit,l),765.0,9.0)
+    }
+    private fun fitLabel(fit:WoodAssessment,l:WorkshopLanguage):String {
+        if(fit.status!=WoodFitStatus.FITS)return WoodPresentation.status(fit,l)
+        return l.wood(if(fit.marginMm!!<=1e-9)WoodTerm.ZERO_MARGIN else WoodTerm.POSITIVE_MARGIN)
     }
     private fun description(p:ConstructionPlan,fit:WoodAssessment,l:WorkshopLanguage):String {
         if(fit.status==WoodFitStatus.UNCONFIRMED)return l.wood(WoodTerm.LIMIT_UNKNOWN)

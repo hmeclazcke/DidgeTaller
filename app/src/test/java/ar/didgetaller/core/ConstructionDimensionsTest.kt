@@ -47,7 +47,7 @@ class ConstructionDimensionsTest {
         val texts=xml.getElementsByTagName("text")
         val labels=(0 until texts.length).map {texts.item(it).textContent}
         assertFalse(labels.any {it.startsWith("Half A") || it.startsWith("Half B")})
-        assertTrue(labels.contains("Depth in each half"))
+        assertTrue(labels.contains("Groove depth per half"))
 
     }
     @Test fun layerRemainderAndOpeningApproximationAreExplicit() {

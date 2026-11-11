@@ -33,7 +33,8 @@ class WorkshopDocumentsUiTest {
         for(plan in plans())for(language in WorkshopLanguage.entries) {
             val suffix=when(plan.options.woodStock) {is WoodStock.Log->"-log";is WoodStock.Timber->"-boards";null->""}
             val prefix="${language.name.lowercase()}-${plan.options.method.name.lowercase()}$suffix"
-            val document=WorkshopDocument.create(plan,language,69.3)
+            val example=plan.copy(name=if(language==WorkshopLanguage.SPANISH)"Ejemplo de construcción" else "Construction example")
+            val document=WorkshopDocument.create(example,language,69.3)
             assertEquals(2,document.pages.size)
             assertTrue(document.text().contains(WoodPresentation.number(plan.lengthMm)))
             if(plan.options.woodStock!=null) {
@@ -49,11 +50,11 @@ class WorkshopDocumentsUiTest {
                 assertFalse(table.contains(language.wood(WoodTerm.A)));assertFalse(table.contains(language.wood(WoodTerm.B)))
                 assertEquals(4,document.pages[0].dimensions.count {it.kind=="station-bore"})
             }
-            val bytes=ConstructionPdf.create(plan,ConstructionPdf.Labels(language,69.3),false)
+            val bytes=ConstructionPdf.create(example,ConstructionPdf.Labels(language,69.3),false)
             val pdf=File(directory,"$prefix.pdf").apply {writeBytes(bytes)}
             renderAll(pdf,directory,prefix,2)
             File(directory,"$prefix.svg").writeText(WorkshopDocument.svg(document))
-            File(directory,"$prefix.csv").writeText(WorkshopDocument.csv(plan,language))
+            File(directory,"$prefix.csv").writeText(WorkshopDocument.csv(example,language))
         }
     }
     @Test fun tiledTemplateIsSeparateAndEveryPageHasMetricCalibration() {

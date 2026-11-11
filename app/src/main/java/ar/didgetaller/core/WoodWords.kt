@@ -1,9 +1,9 @@
 package ar.didgetaller.core
 
 enum class WoodTerm(val en:String,val es:String) {
-    DEPTH_SHORT("Depth","Profundidad"), STOCK_T("Thickness of each board","Espesor por tabla"), BLOCK_SIZE("Total block thickness","Espesor total del bloque"), MIN_D("Minimum outside diameter","Diámetro exterior mínimo"), MEASURED_D("Measured outside diameters","Diámetros exteriores medidos"),
-    INSTRUMENT_LENGTH("Instrument length","Largo del instrumento"), MOUTH("Mouthpiece bore","Interior de la boquilla"), BELL("Bell bore","Interior de la campana"),
-    TABLE_POSITION("From the mouthpiece","Desde la boquilla"), TABLE_DEPTH("Depth in each half","Profundidad por mitad"), TABLE_REMAINING("Wood remaining","Madera restante"),
+    DEPTH_SHORT("Groove","Canal"), STOCK_T("Thickness of each board","Espesor por tabla"), BLOCK_SIZE("Total block thickness","Espesor total del bloque"), MIN_D("Minimum outside diameter","Diámetro exterior mínimo"), MEASURED_D("Measured outside diameters","Diámetros exteriores medidos"),
+    INSTRUMENT_LENGTH("Instrument length","Largo del instrumento"), MOUTH("Mouthpiece internal diameter","Diámetro interior de la boquilla"), BELL("Bell internal diameter","Diámetro interior de campana"),
+    TABLE_POSITION("From the mouthpiece","Desde la boquilla"), TABLE_DEPTH("Groove depth per half","Profundidad por mitad"), TABLE_REMAINING("Remaining wall thickness","Espesor restante"),
     CARVING_TABLE("Carving measurements · millimetres","Medidas de ahuecado · milímetros"), SELECTED("Selected stations; complete measurements in CSV","Puntos seleccionados; medidas completas en CSV"),
     TABLE_NOTE("Depth is measured from the joining plane; remaining wood is below the groove.","La profundidad se mide desde el plano de unión; la madera restante queda debajo del canal."),
     LOG_NOTE("Log: minimum wall estimated from the stated diameters, assuming a centred bore.","Tronco: pared mínima estimada con los diámetros indicados, suponiendo el canal centrado."),
@@ -24,6 +24,9 @@ enum class WoodTerm(val en:String,val es:String) {
     SECTIONS("Optional log measurements: distance, minimum diameter (mm)","Medidas opcionales del tronco: distancia, diámetro mínimo (mm)"),
     CONFIRM("These are my measured bounds along a straight, centred, sound piece","Son mis medidas límite de una pieza recta, centrada y sin defectos conocidos"),
     ASSUMPTION("Initial values are examples. Use the smaller dimensions of both boards. A log needs conservative bounds between measurements; curvature, cracks, knots or ovality may prevent confirmation.","Los valores iniciales son ejemplos. Usá las menores dimensiones de ambas tablas. El tronco necesita límites conservadores entre mediciones; curvatura, grietas, nudos u ovalidad pueden impedir confirmarlo."),
+    ZERO_MARGIN("Geometric minimum: no additional allowance","Mínimo geométrico: sin margen adicional"),
+    POSITIVE_MARGIN("Fits geometrically, with dimensional allowance","Cabe geométricamente, con margen dimensional"),
+    JOIN_WIDTH("Width at joining plane","Ancho en la unión"), LOG_DEPTH("Plane to outside (calculated)","Plano al exterior (calculado)"),
     FITS("The available wood has the required dimensions","La madera disponible tiene las medidas necesarias"), FAIL("DOES NOT FIT this wood","NO CABE en esta madera"), UNKNOWN("Wood measurements still need confirmation","Falta confirmar las medidas de la madera"),
     POSITION("Limiting position","Posición limitante"), MARGIN("Clearance reserve","Margen dimensional"),
     LIMIT_LENGTH("Insufficient usable length","Largo útil insuficiente"), LIMIT_WIDTH("Insufficient prepared width","Ancho preparado insuficiente"), LIMIT_DEPTH("Insufficient half thickness","Espesor de mitad insuficiente"),
@@ -33,7 +36,7 @@ enum class WoodTerm(val en:String,val es:String) {
     BOUND("Log outline: stated minimum diameter","Contorno del tronco: diámetro mínimo indicado"), PROFILE_BOUND("Log outline estimated from the measurements","Contorno del tronco aproximado a partir de las medidas"),
     UNMEASURED("Wood dimensions have not been supplied","Faltan las medidas de la madera"),
     PREPARED("Prepared half","Mitad preparada"), PLANE("Joining plane","Plano de unión"),
-    BORE("Bore diameter","Diámetro interior"), DEPTH("Groove depth","Profundidad del canal"), WALL("Remaining wall","Pared restante"), SIDE("Side wall","Pared lateral"),
+    BORE("Internal bore diameter","Diámetro interior"), DEPTH("Groove depth","Profundidad del canal"), WALL("Remaining wall","Pared restante"), SIDE("Side wall","Pared lateral"),
     HALF_T("Half thickness","Espesor de mitad"),
     HALF_WIDTH("Half width","Ancho de mitad"), MINIMUM("Minimum per half, before preparation","Mínimo por mitad, sin pérdidas"),
     CONSTRAINT("Minimum wall thickness","Espesor mínimo de pared"), NO_SAFETY("Wood condition and grain still need assessment.","La resistencia depende de la madera y su estado."),

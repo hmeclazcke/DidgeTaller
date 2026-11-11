@@ -55,3 +55,10 @@ CSV retains exact station sides and measured capacity; SVG uses the same geometr
 marks as the second PDF page. Final UI/fast-CI evidence is linked in [draft PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 
 ![Actual export controls in Spanish](export-options-es.png)
+
+
+The editorial revision localizes the synthetic sample title only. Log sections
+label derived joining-plane dimensions explicitly; boards keep rectangular-stock
+labels. Boundary examples state that they have no additional geometric allowance.
+All eight requested bilingual board/log pages were rendered and visually inspected.
+Real user-selected design names are preserved.

@@ -2484,3 +2484,23 @@ JVM variants and strict gate passed again. Selected PIT survivors are four in
 minimum selection, one Kotlin null assertion in row, and thirteen in station
 spreading. No survivor changes a tested diameter/depth/board-or-log wall formula;
 selection-boundary/tie mutations are retained as disclosed test-strength limits.
+
+## Bilingual workshop editorial correction — 2026-11-11
+
+Reviewed all eight known-stock PDF pages. Localized only the synthetic generator's
+sample title (Ejemplo de construcción / Construction example); real user names
+remain unchanged, with a regression using Río claro. PDF feasibility now separates
+positive allowance, the geometric minimum with no extra allowance, failure and
+unconfirmed measurements, using the unchanged assessment and its tolerance.
+Log section labels identify width at the joining plane and calculated plane-to-outside
+depth, rather than board thickness. Board terminology and exterior geometry remain.
+Both languages use clearer bore/depth/remaining-thickness terms and native decimals.
+
+RED usability assertions failed before the correction. Final debug JVM: 616 cases,
+608 passed, 8 protected skips. Two actual API 37 native document tests passed;
+all four requested two-page A4 PDFs were regenerated, independently rasterized on
+Windows and visually inspected. SVG/CSV samples refreshed from the same synthetic
+payload. Source gate: 768 measured,160 unscored,64 historical above-target,zero
+violations,CPD0. No new review/threshold exception or acoustic/storage change.
+Prior unchanged geometry/selected mutation evidence is retained; no broad PIT or
+physical-device operation was repeated. Final remote CI observation belongs to PR5.

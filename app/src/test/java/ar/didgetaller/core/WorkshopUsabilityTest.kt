@@ -11,7 +11,7 @@ class WorkshopUsabilityTest {
         val page=WorkshopDocument.create(plan(boards()),WorkshopLanguage.SPANISH).pages[1]
         val text=page.marks.filterIsInstance<WorkshopMark.Text>().joinToString("\n"){it.value}
         assertFalse(text.contains("Mitad A"));assertFalse(text.contains("Mitad B"))
-        for(label in listOf("Desde la boquilla","Diámetro interior","Profundidad por mitad","Madera restante"))assertTrue(label,text.contains(label))
+        for(label in listOf("Desde la boquilla","Diámetro interior","Profundidad por mitad","Espesor restante"))assertTrue(label,text.contains(label))
         assertEquals(3,page.marks.filterIsInstance<WorkshopMark.Path>().count {it.shaded})
         assertTrue(text.contains("medidas completas en CSV"));assertFalse(text.contains("CSV / SVG"))
     }
@@ -25,7 +25,7 @@ class WorkshopUsabilityTest {
     @Test fun spanishPlanUsesNaturalWorkshopTermsAndAProperAccidental() {
         val text=WorkshopDocument.create(plan(boards()),WorkshopLanguage.SPANISH,Music.frequency(37)).text()
         assertTrue(text.contains("Do♯2"))
-        assertTrue(text.contains("La madera disponible tiene las medidas necesarias"))
+        assertTrue(text.contains("Mínimo geométrico: sin margen adicional"))
         for(jargon in listOf("envolvente","Posición limitante","restricción:","mandan las cotas","sostenido2"))assertFalse(jargon,text.contains(jargon))
     }    @Test fun carvingDepthsAndActualRemainingBoardThicknessAgreeAtEveryKeyPosition() {
         val p=plan(boards())
@@ -124,6 +124,24 @@ class WorkshopUsabilityTest {
             assertTrue(number,csv.lineSequence().any {it.startsWith("\"$number\",")})
         }
         assertTrue(csv.contains("\"750.000000\",\"39.558824\",\"39.558824\",\"19.779412\""))
+    }
+
+    @Test fun bilingualPdfStatesAndStockTermsAreDistinctAndUserNamesArePreserved() {
+        for(l in WorkshopLanguage.entries) {
+            val minimum=plan(boards())
+            fun text(stock:WoodStock?)=WorkshopDocument.create(plan(stock),l).text()
+            assertTrue(text(boards()).contains(l.wood(WoodTerm.ZERO_MARGIN)))
+            assertTrue(text(boards().copy(widthMm=120.0,thicknessMm=60.0)).contains(l.wood(WoodTerm.POSITIVE_MARGIN)))
+            assertTrue(text(boards().copy(widthMm=90.0)).contains(l.wood(WoodTerm.FAIL)))
+            assertTrue(text(null).contains(l.wood(WoodTerm.UNKNOWN)))
+            assertTrue(WorkshopDocument.create(minimum,l).text().startsWith("Río claro"))
+            val log=WoodStock.Log(1500.0,101.0,emptyList(),0.0,0.0,WoodPreparation(),true)
+            val page=WorkshopDocument.create(plan(log),l).pages[1].marks.filterIsInstance<WorkshopMark.Text>().joinToString("\n"){it.value}
+            assertTrue(page.contains(l.wood(WoodTerm.JOIN_WIDTH)))
+            assertTrue(page.contains(l.wood(WoodTerm.LOG_DEPTH)))
+            assertFalse(page.contains(l.wood(WoodTerm.HALF_T)))
+            assertTrue(text(boards()).contains(l.dimension(50.5)))
+        }
     }
 
 }

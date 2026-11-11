@@ -77,7 +77,7 @@ internal object WoodDrawing {
             c.text(cx-w-48,cy+h-7,l.wood(WoodTerm.SHORT_WALL),8.0)
         }
         measure(c,"stock-width",k.halfWidthMm*2,s,cx-w to cy+h+18,cx+w to cy+h+18,
-            l.wood(WoodTerm.WIDTH).substringBefore(" (")+" "+l.dimension(k.halfWidthMm*2)+" mm",cx-70,cy+h+32)
-        c.text(cx-70,cy+h+48,l.wood(WoodTerm.HALF_T)+" "+l.dimension(k.halfDepthMm)+" mm",8.5)
+            l.wood(if(k.logRadiusMm==null)WoodTerm.WIDTH else WoodTerm.JOIN_WIDTH).substringBefore(" (")+" "+l.dimension(k.halfWidthMm*2)+" mm",cx-70,cy+h+32)
+        c.text(cx-70,cy+h+48,l.wood(if(k.logRadiusMm==null)WoodTerm.HALF_T else WoodTerm.LOG_DEPTH)+" "+l.dimension(k.halfDepthMm)+" mm",8.5)
     }
 }

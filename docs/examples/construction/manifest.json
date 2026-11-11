@@ -1,18 +1,18 @@
 {
   "synthetic_only": true,
-  "generator_base_revision": "c497246bb7185e7e1f65081eaad616ecc9e1794c",
+  "generator_base_revision": "e1ffba7da6319bf1dd9875daa185bd9eb3d6ca5f",
   "renderer": "Android PdfRenderer on a fresh task-owned API37 emulator",
   "default_pdf_pages": 2,
   "physical_print_verified": false,
   "fixture": "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
-  "fixture_sha256": "641ed7886c9d5407a5bde913f059b3d86117d63bd513f5f03ed0f2e5f3538658",
+  "fixture_sha256": "e52d515020bd4203c3d27c0bfcb74e5f2a659ffd6747739da4d35e0f7143b525",
   "generator_sources": {
     "app/src/main/java/ar/didgetaller/core/CarvingMeasurements.kt": "325750b372bc867efdce80aa17cae8b123056e3dc026c04f39e5a6c134b54ff5",
     "app/src/main/java/ar/didgetaller/core/WoodCarving.kt": "7cd396fd3a7bf11adb37ca1e453fdace2bf835ab59e41640308c268cfa200edf",
-    "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt": "f6e14136b40deb8055d040a761afbe5d709f113b0927e23e039a9325ecbf66e7",
-    "app/src/main/java/ar/didgetaller/core/WoodWords.kt": "2edb5c20a021e736a126fa4f78a3f4a521754339a6327750c624d88ec6dc6e69",
+    "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt": "e11e2506ccf80d7d505b54ae06772abd1f23c87b6f7e03f4d2c0355acc660ff6",
+    "app/src/main/java/ar/didgetaller/core/WoodWords.kt": "7b802c9006ce72aba826593196d42d458120b0acd83989903669784f6e8f472b",
     "app/src/main/java/ar/didgetaller/core/WoodMeasurements.kt": "aa8d5a0cd610d08e717cf08bd743d4f48af859886f6684139a3322e49b5a1eeb",
-    "app/src/main/java/ar/didgetaller/core/WorkshopOverview.kt": "c3e7a4bcf14137f215d3f4df4257ef7b7d6f1d8e037f7a1e97b81d299962b692",
+    "app/src/main/java/ar/didgetaller/core/WorkshopOverview.kt": "77041687e1ad6b83bad6d25f37768225699cb422d439bd763750d63eab1457b8",
     "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt": "6d4a3cec1cbc5b593f7a2eb92d6de48623fbc4309dcd8f731510f887e8643674",
     "app/src/main/java/ar/didgetaller/core/WorkshopSvg.kt": "0283154f680119b4a7f0c8e67b7a07acd7d794e191465a4583581d40fa1f5ed9",
     "app/src/main/java/ar/didgetaller/core/WorkshopTables.kt": "a749ba9095af9a31858b07af41e26eb763403359aded6a540c7d91598ed1eda3",
@@ -23,103 +23,103 @@
   "files": [
     {
       "file": "english-laminated-page-1.png",
-      "sha256": "c35b034ba75d96293bb90ea59781433211fcd50e9da4d72ce3aff6d658bd9e38"
+      "sha256": "ce3585b56d3c1c1f0933099fca92c376ecd58dc64b783595a394796e7a3256a4"
     },
     {
       "file": "english-laminated-page-2.png",
-      "sha256": "eca88a0a273825b4e427efe516100fa1137c3ca2f50333d601adf4529a3ea730"
+      "sha256": "3da63dc935af8dd5fd0532278403f310208292c31ade516614cdad0eb10b9399"
     },
     {
       "file": "english-laminated.csv",
-      "sha256": "83ce092ce3488d1987dabd5d2e86f5d02633e1003c4f11b98200238f9781482b"
+      "sha256": "42a377f98206c0ed9081f1898b18bce857fad109afd4ad0f4a2b9b8a729b7787"
     },
     {
       "file": "english-laminated.pdf",
-      "sha256": "46321678c0ca3a3f0bb812d67c014d8c1c179896e644483ed73dae394beed55e"
+      "sha256": "b2332c7173d507e66bbb4c536de295a117a86ac62e25680ec60bc15021d22df8"
     },
     {
       "file": "english-laminated.svg",
-      "sha256": "c32425271e8e7b3b2c28b976eac8e0839af044cfa237caeca32b86e18bfe3f5f"
+      "sha256": "da2e018db7cc19c613c83c0787d6c9b00031bcc93ebc30522b7f7a1392c8e9cc"
     },
     {
       "file": "english-pvc-page-1.png",
-      "sha256": "b187c37cbb70890152d8cae43a04c26f294ab754835c5553ba2a6da856d5cb1a"
+      "sha256": "dd0440cc2f4bf631c0c697526e07ed4c27902442e2293e83f95d4f1ca2fa5c64"
     },
     {
       "file": "english-pvc-page-2.png",
-      "sha256": "41b7f0cff5e6880616e40b9f0b8f931ccd794492c4fd661f2c34a61e71931749"
+      "sha256": "6bd7b1460a0c3ee1c87e594b5aa38de24b1a501e2fed58ec22c3126052a4c247"
     },
     {
       "file": "english-pvc.csv",
-      "sha256": "3d854b142db4a175d2a776b71fc9f6a44e82d43a5767fbc8c942380cf24e0d0a"
+      "sha256": "56120d5c5272a1a40450f779eec28b8c2e703b6946a7b1c49ca3e244891da66d"
     },
     {
       "file": "english-pvc.pdf",
-      "sha256": "dc03b1c9ec96c223799824d86cad2d09657b81674325ffb769ac868d8de5ec28"
+      "sha256": "66427ef81ebc995dfa6705c646221984ebb43797f359fef48cf2a73e91f8fb4f"
     },
     {
       "file": "english-pvc.svg",
-      "sha256": "c2b7f75319c8b9ccc6c2732e70945e53b87d73d341b3445a953f1f495ffcb981"
+      "sha256": "ae181b6a2b1b5a08f51dead9ac31d400f84f433cc74f37011435554694a44858"
     },
     {
       "file": "english-sandwich-boards-page-1.png",
-      "sha256": "9174637281592387fb93f4e6193ff0797df73653a178aff78bfa6fde796bee2d"
+      "sha256": "b907e5cc3445a5924eba66c53f0466e9d2e6ac3ce611ccfb522ff3dd6c995f0f"
     },
     {
       "file": "english-sandwich-boards-page-2.png",
-      "sha256": "2dd4b6cb9996b7e1016dbda4753aa8d6ba731963ecc6b317ff0e8fcdd32d556b"
+      "sha256": "6a6f01aab0b8d237ca6d8bb19aefb1f6aed7dec0edbd4406d2b13351abeea32f"
     },
     {
       "file": "english-sandwich-boards.csv",
-      "sha256": "ed6af592363d998dd6482d72dd280cde5dc891b53ff3c294daf92b932c6eda21"
+      "sha256": "8af62de162a18f5aa436f6660ce6375f570711f5e3569fc3cd9bee874213a8b7"
     },
     {
       "file": "english-sandwich-boards.pdf",
-      "sha256": "b629b7d0b0838dafc640e4a5bb73c07cedc9a1a81b3b7ace6226a7d8754e8215"
+      "sha256": "7ece210734c0826ded602bb71bf58dc664aad74cbc7be9b09a151d4e82fd17fa"
     },
     {
       "file": "english-sandwich-boards.svg",
-      "sha256": "1bba5be6b5d9b9cf0728dd8133e785e9ad63c4cbb956faf3792f2f49076cb346"
+      "sha256": "022af76b8dd662c4e96d68c4327aae8a927ece6bb5476f8615aa1677479d3b08"
     },
     {
       "file": "english-sandwich-log-page-1.png",
-      "sha256": "fe2c7b8c431332962a0b04aba0fffaadc5bc4ae6b22d501c0a95c9f0467433fd"
+      "sha256": "60d0b9cdcb9eec217a22fc0660ac2ccdb832b882def0139af3131d8a51d3909b"
     },
     {
       "file": "english-sandwich-log-page-2.png",
-      "sha256": "4be526607186730d33caed182e4bd233e202bcf2f0d97da123b51eec5ad17e0c"
+      "sha256": "fd80390848ff3e93e2a57ed5971613be1781cd17de7312869bb274e71cd4ea93"
     },
     {
       "file": "english-sandwich-log.csv",
-      "sha256": "74f916c62ebf2c96084309487abe2b3eb5ed51ca1cdca6d56e9f716e7319cb60"
+      "sha256": "b4728761a8bdb184818aaf57efecd863826fa00818e36d56439b8b324df09a92"
     },
     {
       "file": "english-sandwich-log.pdf",
-      "sha256": "995a9c257a70dbbda96d594c5ab6345c0776fc2301cd1988f8ae2e28f59b6626"
+      "sha256": "491b5ca11a030ec0e48e8e6a1a839bb145e79d149eb7aff10b6ea15470e022fa"
     },
     {
       "file": "english-sandwich-log.svg",
-      "sha256": "2157492b384f0bc13c2f66c8b015a424101954323d258aaca3209a788bdf7fa5"
+      "sha256": "9eb26c819d24a9384ab77764c741bd28e95716a565c5b29434afb2b68dcf6b5c"
     },
     {
       "file": "english-sandwich-page-1.png",
-      "sha256": "dc4db8a81fdeb21df2c41cfd0841f7650cd641dad9cbf7b2e2793bf9d6801068"
+      "sha256": "29dc4eb40697c3874e2602bbfef7d2722f5fb9e0ba182866c7b88441868f7129"
     },
     {
       "file": "english-sandwich-page-2.png",
-      "sha256": "5200324b086157e9ebbad188d115b3108b360d5a07f0156ec42cc9291f8dc924"
+      "sha256": "ebb8b5d0d23a5df47926d7645acec9c4767cde9845e237f076b94a3acc4741b7"
     },
     {
       "file": "english-sandwich.csv",
-      "sha256": "3d22d3cda0b3a508a0cce1a409a4202c0ed2de6509b930bb2a0d604b6b0b15f6"
+      "sha256": "cc0cc27054a3702ec3c0024388091609c827fe905b550dc33e3ea87e588579c9"
     },
     {
       "file": "english-sandwich.pdf",
-      "sha256": "03be68dfdccfed8cb3ad512fdd22750eb3802e0e594ded98f6e521b080aeb77f"
+      "sha256": "640e2e10c008ad9160891b68eb3207cab4ed3ca3b7e70f97fe93afdca7ad00f0"
     },
     {
       "file": "english-sandwich.svg",
-      "sha256": "24953f3b3a452e2a63d056b35a87ea6394eb5fbe76d7e86297b825cc9043a45b"
+      "sha256": "9659440a65fe63806f5993a03691fc05dea6284e6f1fddd437147a8a70b5b6f9"
     },
     {
       "file": "export-options-es.png",
@@ -127,91 +127,91 @@
     },
     {
       "file": "spanish-laminated-page-1.png",
-      "sha256": "a725afbed0876035db3e123208572caa43981d99d1c60e841e4be36890646f90"
+      "sha256": "f693540b03fac2c53906d59b82124f2d2ef06ed828dc3d1a951619bd6bd8336f"
     },
     {
       "file": "spanish-laminated-page-2.png",
-      "sha256": "c491546c7e0d020eb1fe7b0682fd2da2904f8e467fd4bcd0cbe89aba13a4b656"
+      "sha256": "15e1a3eed41498b7ae004a00d88bb0a454656fb436c95ddb92bfb682fcf0f8cb"
     },
     {
       "file": "spanish-laminated.csv",
-      "sha256": "f5b6475e3ed580e4aff4398d235a1b530c7023e506cf74696e429ccf4893f854"
+      "sha256": "04b7c514642652fd72efae69e181a644acec35d142a505327e76f55cf526ad29"
     },
     {
       "file": "spanish-laminated.pdf",
-      "sha256": "94be20fc4a0f394bbab8db95d55307ab3e6e2c0073986e46c6b56b46ba8ff860"
+      "sha256": "cd125ed8745a880cd196443e21dbb451bf222f2c08abeea5aed248abdeda3974"
     },
     {
       "file": "spanish-laminated.svg",
-      "sha256": "c3206ce51e4326c2f3408c58636cc6d6b005e52c14e86ddf273020aac70c7053"
+      "sha256": "9ddad3e43b6a90e831f3e474a3b69e44420a68e88bdfec19d4a16557fda62e7d"
     },
     {
       "file": "spanish-pvc-page-1.png",
-      "sha256": "f740d03b35eaa10fae5632e6f9f482b3bc95d7e7c8b0d7d72e717900898dd95d"
+      "sha256": "72765018518c1eed82cd9e7b9f8aa7b82910fc2d904fa55646a978f63a275843"
     },
     {
       "file": "spanish-pvc-page-2.png",
-      "sha256": "db3b80712461ebdeae821b92053c3ba76eb7cf76eab3ff6600242f6558c90208"
+      "sha256": "a5883b73bf029eb9245d58d475a6579e6b7dff80d0dae78a99e07956b48e1715"
     },
     {
       "file": "spanish-pvc.csv",
-      "sha256": "09a37d22d9492aaa44105d6edfa5e63111e59592429715c11e2fb651ca5c8153"
+      "sha256": "ed001376ee7d10bba648990a23d2a7e76f1cae01590d07f88206cebf5b56df1b"
     },
     {
       "file": "spanish-pvc.pdf",
-      "sha256": "9f4abaedda1a5d73c8caa9d3aa24b7836c70ddc76cb78b875169e0051a55182d"
+      "sha256": "3e39480ab8b2a5cfe57aedd77d7b7b2532de5481450ef9c3873b4d1c354aedf5"
     },
     {
       "file": "spanish-pvc.svg",
-      "sha256": "fff2305a91e853f3615e45f644c4259e0d82d8b64e584f425ceeadd7e0829bfb"
+      "sha256": "f9f08c8a7162ad0e866e2075bdf1b160d4d682dc7101d00101f7324b06ecf96e"
     },
     {
       "file": "spanish-sandwich-boards-page-1.png",
-      "sha256": "4e260bc479440982612632e05a2976be81a676f7c11b96827f38afc3e76f3242"
+      "sha256": "ce6e839d339de085ee44fd5f0909440fdc240fb03d1ea2ac069c404dc557cf86"
     },
     {
       "file": "spanish-sandwich-boards-page-2.png",
-      "sha256": "24bfa05f886b19fee85d6d0e21e1e092bf2dcc9861b51a64afd27295520e297a"
+      "sha256": "c0fc2fdfce5f849e6c68f293397fb092028323563cc7b9e5db4ce3ba96d67522"
     },
     {
       "file": "spanish-sandwich-boards.csv",
-      "sha256": "6a30d81d9e4e96552e1b8e5a882ff33a92d6a3ad8a212286c31721a554a72970"
+      "sha256": "3feece8e825ea964536601d1b1eeef8308b0304e6930ba6238a7aabcd07c201f"
     },
     {
       "file": "spanish-sandwich-boards.pdf",
-      "sha256": "345f797787fe7cb933cdbe66d4800666afa221cdf747ca208d9996f25e241b58"
+      "sha256": "fb58376fd55c70c85ff18c596340343f21db94eeaa394285924aa4487e5dfc0f"
     },
     {
       "file": "spanish-sandwich-boards.svg",
-      "sha256": "1bce6c01766b13ab85700ff641b4ea59298a68d18648a26e2db2221ec2cadfc3"
+      "sha256": "0a0cdf867860ff4d906c9883192b6f4e378db183d876359bcd37be5d3c2507fc"
     },
     {
       "file": "spanish-sandwich-log-page-1.png",
-      "sha256": "7b6d4185b6b2db5657f91e56cb2726f57d64bc7ad86697125e016e879a886d7c"
+      "sha256": "7aa89217bb721a8e07849d9bc7aa79051365cec506e80e528753cd502750a05c"
     },
     {
       "file": "spanish-sandwich-log-page-2.png",
-      "sha256": "d68bee37b2d1d6a718a1e156b43cfb49a1e2d1e679660d757f3d3d6e943c7d4d"
+      "sha256": "8afd6817ddf5c6f29b6ec7b95466dfe43ab7759de6df7411c4887ac3fcc0d33d"
     },
     {
       "file": "spanish-sandwich-log.csv",
-      "sha256": "f7258f745f8d63968bfd2c5a0bb4a8cea964e42404089c43f4eac18a26afd122"
+      "sha256": "6284222271b8f1e735b653b632a639e9e16257679435c862ca34c323ff50241f"
     },
     {
       "file": "spanish-sandwich-log.pdf",
-      "sha256": "572257ade2f570e79351c05f4b0c17b82356b5a4cb516ef6c76516ab158201ad"
+      "sha256": "220e04b0cc737c85dda5541691d0bca4b8aafdcba10512f27f0dd631d61f509c"
     },
     {
       "file": "spanish-sandwich-log.svg",
-      "sha256": "9da00ac354a2944735208b307c7bb2a7b9cd6ee42d50105880e519cc5948afe3"
+      "sha256": "8700b9fc3e14e76119853333a50d646f02d3a6e7602a15fef2d90d7790263534"
     },
     {
       "file": "spanish-sandwich-page-1.png",
-      "sha256": "6d0300f43b00f49caf59bc7f99ff09fd7de53a7bf2d313d10ee4d2c384ca05f6"
+      "sha256": "59cb45a05601d131bdb7595f1dff2ccbcc74677673209eceefe32db4039bbc9a"
     },
     {
       "file": "spanish-sandwich-page-2.png",
-      "sha256": "36263b7651dd4280bd273b0bd573deef5151fd438fef2e1cf5a3d7b8c3ddeb79"
+      "sha256": "44f00e2acefb99211e343cdb095c6d48dc0178508cba48d9c30ea60a3dc4856f"
     },
     {
       "file": "spanish-sandwich-tiles-page-1.png",
@@ -259,20 +259,20 @@
     },
     {
       "file": "spanish-sandwich.csv",
-      "sha256": "eda0a70b0833ad824231f75e0d588f4d4069063e5afda7c4a5c7a1714e6481af"
+      "sha256": "dc50c8136f8240e5ca1829f29a2847967f139738f24262d1be839eae13c23d95"
     },
     {
       "file": "spanish-sandwich.pdf",
-      "sha256": "dec0e9c29ee55e55fef65097998d2596f5e3986a1989440730b11d06d288dc7d"
+      "sha256": "99a32c111be6d4b5f1f47a98d633acf324d6a0e9ce9d2a830d638f11abd7d299"
     },
     {
       "file": "spanish-sandwich.svg",
-      "sha256": "936633c2a908e444dafa64e18842065f7d6d0974e8b66d65b4936097f60c0cf0"
+      "sha256": "8822652226cd5089c4e56fedbfe5970bdc8827ed35a2e3ce7601a5f527dce643"
     },
     {
       "file": "tiles-contact.png",
       "sha256": "eb8eb3aa9f9839ffb0eb094dfdc0346595f2cf0a7311f010015073416f9a02d8"
     }
   ],
-  "validation": "615 JVM cases per variant (607 passed, 8 protected skips); 3 native Android executions on the final payload. All 20 default pages and 10 tile pages rendered; caption-only changed pages reinspected. Requested Spanish PDFs independently rendered with Windows.Data.Pdf."
+  "validation": "Editorial revision: debug JVM tests, strict source gate and two actual native document-generation/calibration cases passed. Requested bilingual board/log pages visually inspected; geometry and original user names preserved."
 }

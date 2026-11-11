@@ -15,7 +15,7 @@ class WorkshopDocumentTest {
         assertEquals(1500.0,d.measurements.last().xMm,0.0)
         assertEquals(15.0,d.measurements.first().beforeMm/2,0.0)
         assertEquals(41.5,d.measurements.last().afterMm/2,0.0)
-        assertTrue(d.text().contains("Depth in each half"))
+        assertTrue(d.text().contains("Groove depth per half"))
         assertFalse(d.text().contains("123e4567"))
         assertTrue(d.text().contains("83 mm"))
         assertFalse(d.text().contains("83.000"))
