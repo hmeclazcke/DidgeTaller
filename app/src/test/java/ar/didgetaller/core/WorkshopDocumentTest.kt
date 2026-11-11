@@ -159,7 +159,14 @@ class WorkshopDocumentTest {
         val scale=ConstructionDrawing.POINTS_PER_MM/6
         val upper=marks.single {it.points.size==6 && it.points.first()==34.0 to 220-15*scale}
         assertEquals(listOf(34.0 to 220-15*scale,34+800*scale to 220-15*scale,34+800*scale to 220-15*scale,34+835*scale to 220-35*scale,34+835*scale to 220-35*scale,34+1485*scale to 220-35*scale),upper.points)
-        assertTrue(marks.any {it.points==listOf(34+770*scale to 130.0,34+860*scale to 130.0,34+860*scale to 300.0,34+770*scale to 300.0)})
+        val sockets=marks.filter {it.closed && it.dashed}
+        assertEquals(2,sockets.size)
+        for((index,reference) in listOf(Triple(770.0,30.0,40.2),Triple(835.0,25.0,80.2)).withIndex()) {
+            val points=sockets[index].points
+            assertEquals(34+reference.first*scale,points.first().first,1e-9)
+            assertEquals(reference.second*scale,points[1].first-points[0].first,1e-9)
+            assertEquals(reference.third*scale,points[3].second-points[0].second,1e-9)
+        }
     }
     @Test fun fullSizeTemplateContoursAndRegistrationUseTrueMillimetresOnEverySheet() {
         val shape=AcousticModel.Shape(points=listOf(AcousticModel.BorePoint(0,30.0),AcousticModel.BorePoint(1500,83.0)))

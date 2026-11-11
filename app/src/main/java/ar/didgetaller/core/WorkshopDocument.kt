@@ -77,7 +77,7 @@ internal class WorkshopPage(val width:Double,val height:Double) {
     val marks=mutableListOf<WorkshopMark>()
     fun text(x:Double,y:Double,value:String,size:Double=10.0) {marks+=WorkshopMark.Text(x,y,size,value)}
     fun line(x:Double,y:Double,endX:Double,endY:Double,dashed:Boolean=false) {marks+=WorkshopMark.Path(listOf(x to y,endX to endY),dashed=dashed)}
-    fun path(points:List<Pair<Double,Double>>,closed:Boolean=false,shaded:Boolean=false) {marks+=WorkshopMark.Path(points,closed,shaded)}
+    fun path(points:List<Pair<Double,Double>>,closed:Boolean=false,shaded:Boolean=false,dashed:Boolean=false) {marks+=WorkshopMark.Path(points,closed,shaded,dashed)}
     fun paragraph(x:Double,y:Double,value:String,width:Double,size:Double=9.0):Double {
         val limit=(width/(size*.56)).toInt().coerceAtLeast(12)
         var line="";var cursor=y

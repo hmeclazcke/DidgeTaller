@@ -45,6 +45,7 @@ enum class WorkshopTerm(val en:String,val es:String) {
     INSERTIONS("Left / right insertion","Inserción izquierda / derecha"),
     BODY("Body length","Largo del cuerpo"), WEB("Exposed central length","Largo central expuesto"),
     SOCKETS("Measured socket diameters","Diámetros medidos de encastre"),
+    SOCKET_VIEW("Dashed: measured socket openings, not exterior dimensions","Trazos: alojamientos medidos, no dimensiones exteriores"),
     PROFILE("Internal longitudinal profile","Perfil interior longitudinal"),
     HALF_ONE("Half 1 - material to remove is shaded","Mitad 1 - retirar el material sombreado"),
     HALF_TWO("Half 2 - mirrored matching cavity","Mitad 2 - cavidad correspondiente espejada"),

@@ -82,16 +82,22 @@ internal object WorkshopDiagram {
     }
     private fun sockets(c:WorkshopPage,p:ConstructionPlan,s:Double,l:WorkshopLanguage) {
         val fittings=ConstructionCatalog.connectors(p.options.fittings)
+        c.text(34.0,135.0,l.word(WorkshopTerm.SOCKET_VIEW),9.0)
         var end=0.0
         p.options.assembly.lineSequence().filter {it.isNotBlank()}.forEach {line->
             val row=line.split(',').map {it.trim()};end+=row[1].toDouble()
             fittings[row[2]]?.fitting?.let {f->
                 val x=34+(end-f.leftInsertionMm)*s;val right=x+f.bodyLengthMm*s
-                c.path(listOf(x to 130.0,right to 130.0,right to 300.0,x to 300.0),closed=true)
+                socket(c,x,f.leftSocketMm,f.leftInsertionMm,s)
+                socket(c,right-f.rightInsertionMm*s,f.rightSocketMm,f.rightInsertionMm,s)
                 c.text(x,345.0,"${f.id}: ${l.word(WorkshopTerm.INSERTIONS)} ${f.leftInsertionMm} / ${f.rightInsertionMm} mm",9.0)
                 end+=f.bodyLengthMm-f.leftInsertionMm-f.rightInsertionMm
             }
         }
+    }
+    private fun socket(c:WorkshopPage,start:Double,diameter:Double,insertion:Int,scale:Double) {
+        val radius=diameter/2*scale;val end=start+insertion*scale
+        c.path(listOf(start to 220-radius,end to 220-radius,end to 220+radius,start to 220+radius),closed=true,dashed=true)
     }
     private fun segments(c:WorkshopPage,p:ConstructionPlan,s:Double,center:Double) {
         var start=0.0

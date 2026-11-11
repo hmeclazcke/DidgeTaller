@@ -1250,3 +1250,18 @@ record actual conclusions rather than assuming a remote pass.
 Publication: implementation fefa877 on the existing feature branch. A sample-only
 follow-up preserves exact Android CSV line endings/hashes; no source/test change.
 Remote run URLs and observed conclusions are maintained in PR #5 delivery evidence.
+
+
+# Measured PVC socket drawing clarification
+
+Final visual review found that a schematic connector reference box could be read
+as an unmeasured outside contour. Replace it with two dashed measured socket
+openings at their actual insertion positions, diameters and lengths. Keep the
+solid actual bore and acoustic equations unchanged. Independent tests assert the
+30/25 mm insertion widths and40.2/80.2 mm socket diameters. Both JVM variants pass;
+the source gate now has713 measured/156 unscored,64 historical high-risk methods,
+zero violations and CPD0. Native previews must be regenerated on the existing CI
+emulator: local emulator restart was rejected by automatic execution policy.
+No Samsung operations or private audio access. Next: push this bounded correction,
+observe fast/native CI, download the actual generated PDFs/previews and refresh
+only synthetic example evidence before final delivery.

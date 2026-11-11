@@ -73,3 +73,9 @@ logic. Independent workshop assertions improved detection compared with the firs
 run; remaining survivors are disclosed, not declared equivalent or killed. This
 is not whole-application mutation coverage. No threshold, mutator or baseline was
 weakened. Source-bound reviews concern only constructors/Compose correspondence.
+
+
+PVC drawing correction: dashed socket outlines use the measured socket diameters
+and insertion lengths at their true assembled positions. They do not claim an
+unknown connector outside diameter or wall thickness. Solid lines remain the
+actual internal bore. The parts table retains the measured body/socket dimensions.
