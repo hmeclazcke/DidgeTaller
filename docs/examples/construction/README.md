@@ -2,8 +2,8 @@
 
 These are actual Android-generated PDFs and PdfRenderer captures from a fresh,
 task-owned API 37 emulator, using synthetic data only. Final native execution passed
-three cases: bilingual document generation, calibrated 1:1 templates and the actual
-Compose search/save/tolerance/PDF/CSV/SVG workflow. The [manifest](manifest.json)
+20 focused localization/UI cases and four final document/locale workflow
+executions. Legacy outputs were inspected locally without restoring selection. The [manifest](manifest.json)
 records the starting revision, exact generator-source hashes and artifact hashes;
 source hashes normalize newlines. No private recording or physical device is used.
 
@@ -56,14 +56,13 @@ marks as the second PDF page. Final UI/fast-CI evidence is linked in [draft PR #
 ![Actual export controls in Spanish](export-options-es.png)
 
 
-The editorial revision localizes the synthetic sample title only. Log sections
-label derived joining-plane dimensions explicitly; boards keep rectangular-stock
-labels. Boundary examples state that they have no additional geometric allowance.
-All eight requested bilingual board/log pages were rendered and visually inspected.
-Real user-selected design names are preserved.
-
-
 Current plan headings use the actual instrument name or Didgeridoo plus the target
 note, with localized stock/method subtitles on both pages. No generic sample title
 is used. Transverse-layer construction is no longer offered for new designs;
 its stored representation and exports remain supported for legacy projects only.
+
+
+The current editorial pass distinguishes the joining plane from the outer surface,
+labels log depth as derived, and uses the actual prepared width in CSV. UI values
+use locale decimal separators; CSV numbers retain decimal points. Current EN/ES
+screenshots and detailed validation are linked from the construction gallery.

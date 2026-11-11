@@ -104,7 +104,7 @@ class ConstructionUiTest {
         screenshot("pvc-catalog");click("construction-save-catalog")
         assertEquals("a,32,40,1500\nb,70,80,1500",ConstructionStore(app).catalog()["pipes"])
         tab(3);click("construction-generate");ready()
-        compose.onNodeWithTag("construction-plan-summary").assertTextContains("1485.0",substring=true)
+        compose.onNodeWithTag("construction-plan-summary").assertTextContains("1485 mm",substring=true)
         screenshot("pvc-plan");export("csv")
         val csv=exports.getValue("csv").toString(Charsets.UTF_8)
         assertTrue(csv.contains("1485.0"));assertTrue(csv.contains("770"))

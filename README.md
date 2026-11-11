@@ -144,6 +144,8 @@ The app remains a personal beta distributed from source. Hardware microphone res
 
 ### From acoustic targets to workshop plans
 
+This section describes the implementation on `feature/inverse-design-construction` (draft PR #5), not a published release. Existing transverse-layer projects retain legacy access; new plans offer split wood or measured PVC.
+
 Open **Laboratory → Search → Construction plan**, or choose **Construction plan** on a saved design in the Library. Define a passive resonance target, compare bounded candidate searches, select a construction method and generate the manufactured profile. Original designs and recordings remain unchanged; construction projects and the shared measured catalog are saved separately.
 
 - **Split wood:** mirrored longitudinal halves, station diameters, semicircular hollowing depths, minimum blank dimensions and radial overcut allowance.
@@ -156,8 +158,8 @@ Open **Laboratory → Search → Construction plan**, or choose **Construction p
 The [construction implementation and verification record](docs/engineering/CONSTRUCTION_PROGRESS.md) documents scope, numerical checks, Android evidence and remaining limitations. Search is bounded, not a proof of global optimality; tapered intervals are discretized and circular-bore assumptions remain applicable.
 
 <p>
-  <img src="docs/screenshots/construction/en-normal-candidates.png" alt="Comparing predicted acoustic candidates and bore profiles" width="280" />
-  <img src="docs/screenshots/construction/en-normal-wood-plan.png" alt="Generated split-wood workshop plan and export controls" width="280" />
+  <img src="docs/screenshots/construction/editorial-en-candidates.png" alt="Comparing predicted acoustic candidates and bore profiles" width="280" />
+  <img src="docs/screenshots/construction/editorial-en-wood-plan.png" alt="Generated split-wood workshop plan and export controls" width="280" />
 </p>
 
 Authentic synthetic-data emulator captures; see the [construction gallery and provenance](docs/screenshots/construction/README.md).

@@ -2528,3 +2528,36 @@ Strict source gate771 measured/160 technically unscored,64 historical high-risk,
 zero violations,CPD0. No numerical exception; the changed Compose declaration's
 source-bound compiler-mapping review was refreshed. No Samsung/private data access,
 main modification or merge. Remote CI observation is recorded in PR5.
+
+
+## Cross-application bilingual editorial pass — 2026-11-11
+
+Reviewed all 668 paired string values, five plural resources and two note arrays;
+inspected production Text/contentDescription literals, localized diagnostics,
+construction vocabularies/tables/templates and README-linked screenshots. Scope
+includes Measure, Metronome, Laboratory, Library, playback/viewers, signal/YIN/SWIPE
+and spectral diagnostics, inverse design and supported/legacy construction exports.
+The source inventory of paired values is local/ignored; terminology is documented
+in LANGUAGE_POLICY.md rather than a duplicate localization framework.
+
+Corrected passive-resonance versus fundamental wording, Spanish grammatical gender,
+guide language assumptions, follow/gesture instructions, catalog/validation terms,
+Unicode musical accidentals, locale-aware construction numbers and CSV width/log
+column meanings. Unknown stock no longer invents a limiting position. Geometry,
+acoustic criteria, persisted formats and private data are unchanged. Corrected the
+Laboratory guide: live Spectrum uses the microphone, not the impedance simulation.
+Both READMEs identify construction as current draft-branch work, not a release.
+
+Debug JVM 618 cases:610 passed,8 protected skips; strict gate771 measured/160
+unscored,zero violations/CPD0. Twenty focused native cases passed, covering compiled
+formats/plurals and note labels in EN/ES, navigation accessibility at150%, recording
+ownership during configuration change, metronome and construction/PVC exports.
+Final CSV-only changes retain that UI evidence; four final native executions
+regenerate bilingual PDFs/SVG/CSV and exercise both locale-specific wood workflows.
+Requested PDFs are independently rendered and visually inspected; legacy laminate
+output is inspected locally without restoring active selection. Prior unchanged
+landscape evidence is reused: this is not a new exhaustive screenshot matrix of
+all screens/states. Raw system error details may remain in their originating
+language, as explicitly required by the existing diagnostic boundary. No physical
+acoustic/printing accuracy or perfect localization is claimed. Actual current CI
+conclusion is recorded in PR5 after publication. No Samsung/private data access.

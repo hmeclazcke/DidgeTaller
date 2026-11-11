@@ -17,8 +17,9 @@ internal object WoodMeasurements {
         return rows
     }
     fun table(p:ConstructionPlan,l:WorkshopLanguage):WorkshopTable {
+        val stockLabels=if(p.options.woodStock is WoodStock.Log)listOf(WoodTerm.JOIN_WIDTH,WoodTerm.LOG_DEPTH) else listOf(WoodTerm.HALF_WIDTH,WoodTerm.HALF_T)
         val headings=listOf(l.word(WorkshopTerm.STATION),l.wood(WoodTerm.BEFORE),l.wood(WoodTerm.AFTER),l.wood(WoodTerm.DEPTH),
-            l.wood(WoodTerm.HALF_WIDTH),l.wood(WoodTerm.HALF_T),l.wood(WoodTerm.MIN_REMAINING),l.wood(WoodTerm.TABLE_REMAINING))
+            l.wood(stockLabels[0]),l.wood(stockLabels[1]),l.wood(WoodTerm.MIN_REMAINING),l.wood(WoodTerm.TABLE_REMAINING))
         val positions=(WoodDrawing.positions(p)+CarvingMeasurements.positions(p,9)).distinct().sorted()
         val rows=positions.map {x->
             val before=ConstructionDrawing.diameter(p,x,true);val after=ConstructionDrawing.diameter(p,x,false)

@@ -2,7 +2,7 @@
 "Overall assembled length (mm)","1485.0"
 "Measured modular PVC"
 
-"From mouthpiece (mm)","Inside diameter (mm)"
+"From mouthpiece (mm)","Internal bore diameter (mm)"
 "0.0 *","30.0"
 "100.0","30.0"
 "200.0","30.0"
@@ -21,7 +21,7 @@
 "1300.0","70.0"
 "1400.0","70.0"
 "1485.0","70.0"
-"Part / start (mm)","Length (mm)","Inside diameter","Outside diameter / Measured socket diameters","Left / right insertion"
+"Part / start (mm)","Length (mm)","Internal bore diameter","Outside diameter / Measured socket diameters","Left / right insertion"
 "1. Tube a @0.0","800","30.0","40.0","—"
 "Connector c @770.0","90","30.0 / 70.0","40.2 / 80.2","30 / 25"
 "2. Tube b @835.0","650","70.0","80.0","—"

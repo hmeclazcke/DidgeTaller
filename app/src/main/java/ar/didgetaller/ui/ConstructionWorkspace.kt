@@ -223,7 +223,7 @@ private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->U
 private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->Unit) {
     OutlinedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(12.dp),verticalArrangement=Arrangement.spacedBy(6.dp)) {
-            Text("${index+1}: ${hzLabel(c.hz)} | ${WorkshopDocument.number(c.cents)} cents")
+            Text("${index+1}: ${hzLabel(c.hz)} | ${exportLanguage().dimension(c.cents)} cents")
             Text("${constructionDimensions(c.plan)} | ${exportLanguage().word(WorkshopTerm.QUANTITY)}: ${c.plan.parts.size}")
             Text(c.higher.joinToString(" / "){hzLabel(it)},style=MaterialTheme.typography.bodySmall)
             TextButton(onClick=use,modifier=Modifier.testTag("construction-candidate-$index")){Text(stringResource(R.string.construction_choose))}
@@ -244,12 +244,12 @@ private fun ConstructionPlanView(r:ConstructionResult) {
     TextButton(onClick={details=!details},modifier=Modifier.testTag("construction-dimensions")){Text(stringResource(R.string.construction_stations))}
     if(details) {
     Text(stringResource(R.string.construction_stations),style=MaterialTheme.typography.titleMedium)
-    ConstructionDrawing.rows(p).take(60).forEach {row->Text("${WorkshopDocument.number(row.xMm)} | ${row.idealMm?.let(WorkshopDocument::number) ?: "-"} | ${WorkshopDocument.number(row.beforeMm)}/${WorkshopDocument.number(row.afterMm)}",style=MaterialTheme.typography.bodySmall)}
+    ConstructionDrawing.rows(p).take(60).forEach {row->Text("${exportLanguage().dimension(row.xMm)} | ${row.idealMm?.let {exportLanguage().dimension(it)} ?: "-"} | ${exportLanguage().dimension(row.beforeMm)}/${exportLanguage().dimension(row.afterMm)}",style=MaterialTheme.typography.bodySmall)}
     Text(stringResource(R.string.construction_preview_limit),style=MaterialTheme.typography.bodySmall)
     Text(stringResource(R.string.construction_parts),style=MaterialTheme.typography.titleMedium)
     Text(WorkshopDocument.csv(p,exportLanguage()),style=MaterialTheme.typography.bodySmall)
     }
-    r.sensitivity.forEach {Text("${WorkshopDocument.sensitivity(it.dimension,exportLanguage())}: ${it.deltaHz?.let {hz->WorkshopDocument.number(hz)+" Hz"} ?: stringResource(R.string.construction_unavailable)}",modifier=Modifier.testTag("construction-sensitivity"))}
+    r.sensitivity.forEach {Text("${WorkshopDocument.sensitivity(it.dimension,exportLanguage())}: ${it.deltaHz?.let {hz->exportLanguage().dimension(hz)+" Hz"} ?: stringResource(R.string.construction_unavailable)}",modifier=Modifier.testTag("construction-sensitivity"))}
 }
 
 @Composable
@@ -258,7 +258,7 @@ internal fun exportLanguage()=if(LocalConfiguration.current.locales[0].language=
 @Composable
 private fun constructionDimensions(plan:ConstructionPlan):String {
     val l=exportLanguage()
-    return "${l.word(WorkshopTerm.LENGTH)}: ${WorkshopDocument.number(plan.lengthMm)} mm\n${l.word(WorkshopTerm.MOUTH)}: ${WorkshopDocument.number(plan.pieces.first().inletMm)} mm; ${l.word(WorkshopTerm.BELL)}: ${WorkshopDocument.number(plan.pieces.last().outletMm)} mm"
+    return "${l.word(WorkshopTerm.LENGTH)}: ${l.dimension(plan.lengthMm)} mm\n${l.word(WorkshopTerm.MOUTH)}: ${l.dimension(plan.pieces.first().inletMm)} mm; ${l.word(WorkshopTerm.BELL)}: ${l.dimension(plan.pieces.last().outletMm)} mm"
 }
 
 @Composable

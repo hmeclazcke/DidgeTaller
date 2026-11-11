@@ -38,7 +38,7 @@
     <string name="ui_logarithmic">"logarítmica"</string>
     <string name="ui_linear">"lineal"</string>
     <string name="ui_fundamental_frequency_over_time">"Frecuencia fundamental en el tiempo"</string>
-    <string name="ui_spectrogram_of_the_original_wav">"Espectrograma real del WAV"</string>
+    <string name="ui_spectrogram_of_the_original_wav">Espectrograma del WAV original</string>
     <string name="ui_wav_waveform">"Forma de onda del WAV"</string>
     <string name="ui_green_high_periodicity_and_little_variation_yellow_moderate_variation_orange_g">"Verde: periodicidad alta y poca variación · amarillo: variación media · naranja: mayor incertidumbre · hueco: sin dato"</string>
     <string name="ui_purple_blue_green_yellow_increasing_energy_light_blue_vertical_line_playback">"Violeta → azul → verde → amarillo: energía creciente. Azul claro vertical: reproducción."</string>
@@ -100,7 +100,7 @@
     <string name="ui_no_nearby_assigned_peak">"%1$s · sin pico cercano asignado"</string>
     <string name="ui_pause">"Pausar"</string>
     <string name="ui_play">"Reproducir"</string>
-    <string name="ui_following_on">"Seguir activado"</string>
+    <string name="ui_following_on">Seguimiento activado</string>
     <string name="ui_follow">"Seguir"</string>
     <string name="ui_back_to_session">"Volver a la sesión"</string>
     <string name="ui_change_chart">"Cambiar gráfico"</string>
@@ -133,7 +133,7 @@
     <string name="ui_full">"Completo"</string>
     <string name="ui_overview">"Vista general"</string>
     <string name="ui_fitted_view">"Vista ajustada"</string>
-    <string name="ui_green_variation_25_cents_and_periodicity_0_90_yellow_up_to_60_cents_periodicit">"Verde: variación ≤25 cents y periodicidad ≥0,90. Amarillo: hasta60 cents, periodicidad 0,80–0,90 o sin vecino previo. Naranja: mayor variación o periodicidad &lt;0,80. Se usa el extremo más débil del enlace; estabilidad y periodicidad son medidas distintas. El color no confirma una nota. Trazo discontinuo: enlace de presentación entre extremos medidos, sin muestras intermedias."</string>
+    <string name="ui_green_variation_25_cents_and_periodicity_0_90_yellow_up_to_60_cents_periodicit">"Verde: variación ≤25 cents y periodicidad ≥0,90. Amarillo: hasta 60 cents, periodicidad 0,80–0,90 o sin vecino previo. Naranja: mayor variación o periodicidad &lt;0,80. Se usa el extremo más débil del enlace; estabilidad y periodicidad son medidas distintas. El color no confirma una nota. Trazo discontinuo: enlace de presentación entre extremos medidos, sin muestras intermedias."</string>
     <string name="ui_outside_fitted_original_readings_excluded_from_the_trend_isolated_excursions_a">"%1$s fuera de Ajustada · %2$s originales excluidos de la tendencia. Se omiten excursiones aisladas sin vaciar la curva; intervalos breves de incertidumbre unen solo extremos medidos próximos. Ausencia clara o prolongada deja un hueco. Los valores originales no se corrigen ni se rellenan. Confianza YIN no es probabilidad de acierto."</string>
     <string name="ui_show_original_uncertain_readings">"Mostrar lecturas originales / inciertas"</string>
     <string name="ui_orange_circles_original_estimates_with_no_confirmed_note_hold_at_their_time_to">"Círculos naranjas: estimaciones originales, sin nota confirmada. Mantené pulsado sobre su tiempo para consultar Hz y confianza; usá Mostrar todos para incluir las que están fuera del rango."</string>
@@ -161,7 +161,7 @@
     <string name="ui_explore_microphone_sound_in_real_time">"Observá el sonido del micrófono en tiempo real."</string>
     <string name="ui_explore_geometries_for_resonance_targets">"Explorá geometrías para objetivos de resonancia."</string>
     <string name="ui_guide">"Guía"</string>
-    <string name="ui_musical_and_acoustic_concepts_clearly_explained">"Conceptos musicales y acústicos, explicados en español."</string>
+    <string name="ui_musical_and_acoustic_concepts_clearly_explained">Conceptos musicales y acústicos, explicados con claridad.</string>
     <string name="ui_release_to_delete">"Soltá para eliminar"</string>
     <string name="ui_trash">"Papelera"</string>
     <string name="ui_delete_on_release">"Eliminar al soltar"</string>
@@ -183,8 +183,8 @@
     <string name="ui_frequency">"Frecuencia"</string>
     <string name="ui_hz_axis_and_base_note">"Eje Hz y nota base. "</string>
     <string name="ui_approximately">"aproximadamente"</string>
-    <string name="ui_drag_and_zoom_along_both_axes_hold_to_inspect">"Arrastrar y ampliar en dos ejes. Mantener para inspeccionar."</string>
-    <string name="ui_tap_to_open_viewer">"Tocar para abrir visor."</string>
+    <string name="ui_drag_and_zoom_along_both_axes_hold_to_inspect">Arrastrá y ampliá en ambos ejes. Mantené pulsado para inspeccionar.</string>
+    <string name="ui_tap_to_open_viewer">Tocá para abrir el visor.</string>
     <string name="ui_to_4e5d93">"%1$s. %2$s %3$s a %4$s. %5$s %6$s"</string>
     <string name="ui_amplitude">"amplitud"</string>
     <string name="ui_wav_analysis">"Análisis del WAV"</string>
@@ -236,7 +236,7 @@
     <string name="ui_audio_fundamental">"AUDIO %1$s · fundamental: "</string>
     <string name="ui_no_reliable_estimate">"sin estimación confiable"</string>
     <string name="ui_exploratory_difference_from_the_first_simulated_resonance_hz">"Diferencia exploratoria frente a la primera resonancia simulada: %1$+.2f Hz"</string>
-    <string name="ui_measured_components_of_the_analyzed_wav">"Componentes medidas del WAV analizado: "</string>
+    <string name="ui_measured_components_of_the_analyzed_wav">"Componentes medidos del WAV analizado: "</string>
     <string name="ui_bore_impedance_resonances_and_emitted_harmonics_are_different_quantities_they">Las resonancias de impedancia del conducto y los armónicos emitidos son magnitudes distintas. No se emparejan por orden. El intérprete, la temperatura y la geometría real influyen; este modelo no es una predicción física calibrada.</string>
     <string name="ui_what_does_each_term_mean">"¿Qué significa cada término?"</string>
     <string name="ui_short_acoustic_glossary">"Pequeño glosario acústico"</string>
@@ -342,7 +342,7 @@
     <string name="ui_inverse_design">"DISEÑO INVERSO"</string>
     <string name="ui_search_for_a_geometry_from_three_target_frequencies_as_in_didgelab">Buscá una geometría interior a partir de tres resonancias objetivo.</string>
     <string name="ui_1_choose_the_desired_resonances_2_tap_search_3_compare_and_test_the_result">"1. Elegí las resonancias deseadas. 2. Tocá Buscar. 3. Compará y probá el resultado."</string>
-    <string name="ui_fundamental_drone">"Fundamental / dron"</string>
+    <string name="ui_fundamental_drone">Primera resonancia pasiva</string>
     <string name="ui_second_resonance">"Segunda resonancia"</string>
     <string name="ui_third_resonance">"Tercera resonancia"</string>
     <string name="ui_these_are_estimated_input_resonances_not_necessarily_notes_that_the_performer">"Estas son resonancias de entrada estimadas, no notas que el intérprete pueda tocar necesariamente."</string>
@@ -391,7 +391,7 @@
     <string name="ui_restart">"Reiniciar"</string>
     <string name="ui_export_wav">"Exportar WAV"</string>
     <string name="ui_rename">"Renombrar"</string>
-    <string name="ui_delete_d7b82b">"Borrar"</string>
+    <string name="ui_delete_d7b82b">Eliminar</string>
     <string name="ui_rename_session">"Renombrar sesión"</string>
     <string name="ui_high">"alta"</string>
     <string name="ui_medium">"media"</string>
@@ -434,8 +434,8 @@
     <string name="category_session">sesión</string>
     <string name="category_design">diseño</string>
     <string name="ui_conical">Cónico</string>
-    <string-array name="note_names"><item>Do · C</item><item>Do♯ · C#</item><item>Re · D</item><item>Mi♭ · Eb</item><item>Mi · E</item><item>Fa · F</item><item>Fa♯ · F#</item><item>Sol · G</item><item>Sol♯ · Ab</item><item>La · A</item><item>Si♭ · Bb</item><item>Si · B</item></string-array>
-    <string-array name="note_base_names"><item>Do</item><item>Do♯</item><item>Re</item><item>Mi♭</item><item>Mi</item><item>Fa</item><item>Fa♯</item><item>Sol</item><item>Sol♯</item><item>La</item><item>Si♭</item><item>Si</item></string-array>
+    <string-array name="note_names"><item>Do · C</item><item>Do♯ · C♯</item><item>Re · D</item><item>Mi♭ · E♭</item><item>Mi · E</item><item>Fa · F</item><item>Fa♯ · F♯</item><item>Sol · G</item><item>La♭ · A♭</item><item>La · A</item><item>Si♭ · B♭</item><item>Si · B</item></string-array>
+    <string-array name="note_base_names"><item>Do</item><item>Do♯</item><item>Re</item><item>Mi♭</item><item>Mi</item><item>Fa</item><item>Fa♯</item><item>Sol</item><item>La♭</item><item>La</item><item>Si♭</item><item>Si</item></string-array>
     <string name="ui_waveform">Forma de onda</string>
     <string name="diagnostic_invalid_destination">"Destino inválido"</string>
     <string name="diagnostic_file_exported">"Archivo exportado."</string>
@@ -488,7 +488,7 @@
     <string name="diagnostic_ambiguous_or_incomplete_wav_format">"Formato WAV ambiguo o incompleto."</string>
     <string name="diagnostic_16_bit_pcm_wav_mono_or_stereo_is_supported">"Se admite WAV PCM de 16 bits, mono o estéreo."</string>
     <string name="diagnostic_invalid_wav_sample_rate_or_frame_alignment">"Frecuencia de muestreo o alineación WAV inválida."</string>
-    <string name="diagnostic_wav_files_with_multiple_audio_chunks_are_not_supported">"WAV con varios bloques de audio no admitido."</string>
+    <string name="diagnostic_wav_files_with_multiple_audio_chunks_are_not_supported">No se admiten archivos WAV con varios bloques de audio.</string>
     <string name="diagnostic_missing_wav_chunk_padding">"Falta el relleno de un bloque WAV."</string>
     <string name="diagnostic_the_wav_contains_no_complete_pcm_audio">"El WAV no contiene audio PCM completo."</string>
     <string name="diagnostic_the_capture_file_already_exists">"El archivo de captura ya existe."</string>
@@ -497,7 +497,7 @@
     <string name="diagnostic_unsupported_partial_capture">"Captura parcial no compatible."</string>
     <string name="diagnostic_partial_capture_is_too_large">"Captura parcial demasiado grande."</string>
     <string name="diagnostic_fundamental_range_is_too_high_for_this_sample_rate">"Rango de fundamental demasiado alto para este muestreo."</string>
-    <string name="diagnostic_too_many_windows_select_a_shorter_excerpt_or_increase_the_analysis_bud">"Demasiadas ventanas: seleccioná un fragmento menor o aumentá el presupuesto de análisis."</string>
+    <string name="diagnostic_too_many_windows_select_a_shorter_excerpt_or_increase_the_analysis_bud">Demasiadas ventanas: seleccioná un fragmento más corto.</string>
     <string name="diagnostic_analysis_canceled_d0d4d">"Análisis cancelado"</string>
     <string name="diagnostic_the_wav_ended_before_the_requested_interval">"El WAV terminó antes del intervalo solicitado."</string>
     <string name="diagnostic_too_many_readings_select_a_shorter_excerpt">"Demasiadas lecturas: seleccioná un fragmento menor."</string>
@@ -551,7 +551,7 @@
     <string name="drone_component_failed">El análisis de la componente del dron no está disponible para esta grabación.</string>
     <string name="drone_component_diagnostic">Componente del dron: %1$s · candidata espectral original: %2$s · %3$s · RMS digital %4$.3f</string>
     <string name="drone_reason_component">familia armónica respaldada</string>
-    <string name="drone_reason_competing">componente medida con periodicidad competidora</string>
+    <string name="drone_reason_competing">componente medido con periodicidad alternativa</string>
     <string name="drone_reason_quiet">nivel de señal bajo</string>
     <string name="drone_reason_no_peak">sin pico grave destacado</string>
     <string name="drone_reason_no_family">familia armónica insuficiente</string>
@@ -661,19 +661,19 @@
     <string name="construction_sandwich">Madera partida longitudinalmente</string>
     <string name="construction_laminated">Capas laminadas transversales</string>
     <string name="construction_pvc">PVC modular medido</string>
-    <string name="construction_wall">Pared terminada mínima (mm)</string>
+    <string name="construction_wall">Espesor mínimo de pared terminada (mm)</string>
     <string name="construction_tolerance">Margen de sobrecorte radial (mm)</string>
     <string name="construction_interval">Intervalo de estaciones (50-500 mm)</string>
     <string name="construction_layers">Espesor de capas en mm: valor nominal o lista exacta</string>
     <string name="construction_pipes">Tubos: identificador, diámetros interior/exterior medidos, largo disponible (mm)</string>
-    <string name="construction_fittings">Acoples: id, diámetros de alojamientos, inserciones, cuerpo, paso mínimo, perfil central</string>
+    <string name="construction_fittings">Acoples: identificador, diámetros de encastre, profundidades de inserción, largo del cuerpo, diámetro interior mínimo, perfil central</string>
     <string name="construction_assembly">Armado: id de tubo, corte mm, id de acople siguiente (último: -)</string>
     <string name="construction_schema">Una fila CSV por pieza; punto decimal. Identificadores: letras, números, guion o guion bajo. Cada acople tiene 8 columnas; su perfil central usa pares distancia:diámetro_interior separados por |, desde cero hasta el largo del cuerpo menos ambas inserciones. Usá medidas reales; no se presuponen medidas comerciales.</string>
     <string name="construction_clearance">Holgura máxima de encastre (mm)</string>
     <string name="construction_save_catalog">Guardar catálogo medido</string>
-    <string name="construction_load_catalog">Cargar catálogo compartido</string>
+    <string name="construction_load_catalog">Cargar catálogo guardado</string>
     <string name="construction_saved">Guardado por separado; el perfil original y las grabaciones no cambian.</string>
-    <string name="construction_error">No se pudo generar o guardar. Revisá rangos numéricos, suma de capas, IDs únicos, perfiles, largos disponibles y dimensiones de encastre. Los datos guardados no se sobrescribieron.</string>
+    <string name="construction_error">No se pudo generar o guardar. Revisá rangos numéricos, totales de capas antiguas, identificadores únicos, perfiles de acoples, largos disponibles y profundidades de inserción. Los datos guardados no se sobrescribieron.</string>
     <string name="construction_storage_error">Los datos de construcción no se pueden leer o usan un esquema no compatible. Se conservaron. El guardado de este proyecto está deshabilitado.</string>
     <string name="construction_choose">Usar candidato</string>
     <string name="construction_compare">Gris: perfil ideal. Verde: perfil fabricado. Las exportaciones incluyen estaciones y piezas.</string>
@@ -686,7 +686,7 @@
     <string name="construction_tiles">Plantilla a tamaño real - PDF 1:1 por mosaicos</string>
     <string name="construction_ruler">Referencia de 100 mm: imprimí al 100 por ciento y medí; no confíes en la escala automática.</string>
     <string name="construction_overview">Vista general reducida, no tamaño real</string>
-    <string name="construction_preview_limit">La vista previa muestra las primeras 60 estaciones; las exportaciones incluyen la tabla completa.</string>
+    <string name="construction_preview_limit">La vista previa muestra las primeras 60 posiciones; CSV incluye la tabla completa de medidas.</string>
     <string name="construction_geometry">Perfil ideal CSV: x mm, diámetro interior mm</string>
     <string name="construction_advanced">Geometría y límites avanzados</string>
     <string name="construction_tolerance_help">Escenarios: diámetros interiores +/-1 mm, largo de última sección +/-5 mm, diámetro interior de campana +1 mm, primera inserción PVC 1 mm menor. La sensibilidad local cambia ambos diámetros de hasta 12 secciones en +1 mm; aproxima un conducto circular, no un ahuecado asimétrico.</string>

@@ -1,6 +1,6 @@
 {
   "synthetic_only": true,
-  "generator_base_revision": "bb3457492ac6ffd135ec826c25317233cd479e8f",
+  "generator_base_revision": "422a251",
   "renderer": "Android PdfRenderer on a fresh task-owned API37 emulator",
   "default_pdf_pages": 2,
   "physical_print_verified": false,
@@ -10,8 +10,8 @@
     "app/src/main/java/ar/didgetaller/core/CarvingMeasurements.kt": "325750b372bc867efdce80aa17cae8b123056e3dc026c04f39e5a6c134b54ff5",
     "app/src/main/java/ar/didgetaller/core/WoodCarving.kt": "7cd396fd3a7bf11adb37ca1e453fdace2bf835ab59e41640308c268cfa200edf",
     "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt": "e11e2506ccf80d7d505b54ae06772abd1f23c87b6f7e03f4d2c0355acc660ff6",
-    "app/src/main/java/ar/didgetaller/core/WoodWords.kt": "7b802c9006ce72aba826593196d42d458120b0acd83989903669784f6e8f472b",
-    "app/src/main/java/ar/didgetaller/core/WoodMeasurements.kt": "aa8d5a0cd610d08e717cf08bd743d4f48af859886f6684139a3322e49b5a1eeb",
+    "app/src/main/java/ar/didgetaller/core/WoodWords.kt": "9d2e99baeabcb39a1540a1843dd61b568b111cac9cae81cb70943ecd241b23ee",
+    "app/src/main/java/ar/didgetaller/core/WoodMeasurements.kt": "0fd210679f6828aea13e151d774b52e8e29921c12ec33e57943d07e6a8b3f6bc",
     "app/src/main/java/ar/didgetaller/core/WorkshopOverview.kt": "77041687e1ad6b83bad6d25f37768225699cb422d439bd763750d63eab1457b8",
     "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt": "77e079a34c3e1ed53f9ada1690b70c9e6be54dc9a3eedd5f08ac8fcba6b303a3",
     "app/src/main/java/ar/didgetaller/core/WorkshopSvg.kt": "0283154f680119b4a7f0c8e67b7a07acd7d794e191465a4583581d40fa1f5ed9",
@@ -23,7 +23,7 @@
   "files": [
     {
       "file": "english-pvc-page-1.png",
-      "sha256": "0ea69a3b92bc727f4d14eefbf9185571778a11837994e1530b2172cff8242df8"
+      "sha256": "9687801d9fbb11d37b01adb83f06ca291b39c2dca4135408a4f9da9b91579c3a"
     },
     {
       "file": "english-pvc-page-2.png",
@@ -31,11 +31,11 @@
     },
     {
       "file": "english-pvc.csv",
-      "sha256": "409c8a266ebb4c6810e9c84d5ad8012849fcfbe6e182550accee6a46edf24d8a"
+      "sha256": "8e4f0b53e83ffeb28f0c5d66de2c94c6b68126c92f7402d62dadc8b465b8b9b9"
     },
     {
       "file": "english-pvc.pdf",
-      "sha256": "2d78208b0f1fe03547cf5e3197fa8f691ebf37d33a4588d3b9be68186463e1b2"
+      "sha256": "39ea2938570750973bf39c830f91b8fff5a3243d19d84c36d16bda62bcfd4d40"
     },
     {
       "file": "english-pvc.svg",
@@ -51,7 +51,7 @@
     },
     {
       "file": "english-sandwich-boards.csv",
-      "sha256": "95c1ea124a58e87ef71f458449a3d60e5eff89bb69198d48d143ecba84134d12"
+      "sha256": "74030d0e8841c891a91a5ff0203bc6c8d08b50f43367afcb5fdfb1489a2b3053"
     },
     {
       "file": "english-sandwich-boards.pdf",
@@ -67,19 +67,19 @@
     },
     {
       "file": "english-sandwich-log-page-2.png",
-      "sha256": "7f10a8809d7fb22180936d2ce461464570ea7e6bc217e3e8df67fb610063b2a8"
+      "sha256": "fc2a21e981e8a73b6432c3641e5a8fe9abbb8b9c97289588d471670d4a182b5f"
     },
     {
       "file": "english-sandwich-log.csv",
-      "sha256": "b737437f4577bc26eeb9971a27d79e89fcd8a910db5189ac910fc0ee59a768d9"
+      "sha256": "39f8b9e0253f01ecc1a2f3fc6c9ace15f20ce5d548123ddb30d793f63135cb11"
     },
     {
       "file": "english-sandwich-log.pdf",
-      "sha256": "de8a2bf1357884a6c6fa21e97326cc017b4c855250f00d6de427b0e8cd1e1df1"
+      "sha256": "1d8bdee30706322f90ff2f62d352472623e3ce2c9814976c504064067e445c01"
     },
     {
       "file": "english-sandwich-log.svg",
-      "sha256": "ebdceb8138d98d471175ad343fb5e6241dbeae21a749f6a00d9d137c2b028af5"
+      "sha256": "4bc14e1cae726dc54adc694b34a74b776bf6dcfbce66a399c5b6fd83ca0c95a8"
     },
     {
       "file": "english-sandwich-page-1.png",
@@ -91,7 +91,7 @@
     },
     {
       "file": "english-sandwich.csv",
-      "sha256": "3e343de0001ca00f16566431e1151265117c06c43b40c30d4761a3923aca6a95"
+      "sha256": "17441795c9338461b9dcadd62fb8695a55adbb13d4c94f0b52d67f683b1774cc"
     },
     {
       "file": "english-sandwich.pdf",
@@ -103,7 +103,7 @@
     },
     {
       "file": "export-options-es.png",
-      "sha256": "aeae0436e08f5e0bec581936cfa63908689540d7256dde6aac5c0568a9f64d9c"
+      "sha256": "eb8d17daf34978baee893fe1ebd238f57733ba25c20cf20253339d34917f08e7"
     },
     {
       "file": "spanish-pvc-page-1.png",
@@ -131,19 +131,19 @@
     },
     {
       "file": "spanish-sandwich-boards-page-2.png",
-      "sha256": "1edd46e228c8c3d7490e368dcfa040e240114f138488b949228075e68f456506"
+      "sha256": "be84b8c8c06cf4824bf14ef2b366e8d3c6cfbfc2078a6d5df1c770932d4b478c"
     },
     {
       "file": "spanish-sandwich-boards.csv",
-      "sha256": "7d4e5bd59695caa578300b723705b58d97925706f75e186f9de9bc824cea65d9"
+      "sha256": "7aaa1f27b3a0cc69a639a7d15e7e031413cfc5f4a9c17f3c5f170d7feec2884b"
     },
     {
       "file": "spanish-sandwich-boards.pdf",
-      "sha256": "a29cde90b1a09a5faf85537591becf5a2d780a30eb5f93cb1e75e8b22a20f1a9"
+      "sha256": "5c6f9efb78349800f1d02049733aee7e50b5842681c4cab8e5ce3ab03666ddac"
     },
     {
       "file": "spanish-sandwich-boards.svg",
-      "sha256": "a4acecdfbbc0954a534bf6171ba7b9668bffccbf90e286b7869059bac5936b74"
+      "sha256": "e53d72fc2f7d67c63f3c63e600f0cfbeda88b1fba03e1dcd145fe5192802231f"
     },
     {
       "file": "spanish-sandwich-log-page-1.png",
@@ -151,19 +151,19 @@
     },
     {
       "file": "spanish-sandwich-log-page-2.png",
-      "sha256": "9457c2b878473622768a10c7a2ef6f8456f624c4ecb6182111ba90e15f08147f"
+      "sha256": "118a4e0ee527f104ce6ca98b418fe7f4bae7b2e993c582bf7ca9e10a50e34bd4"
     },
     {
       "file": "spanish-sandwich-log.csv",
-      "sha256": "2735d1c886e17ac395e47635138e465ac7e623d902ab10b5ca60d0e3d8bfc23f"
+      "sha256": "3ce5c4cc90ca175cdb1621e4b9d166f5bf96c4bdb6154a319300981099729b56"
     },
     {
       "file": "spanish-sandwich-log.pdf",
-      "sha256": "d8f06ac470aec6da50ff6f83cfccb56f9a574ab1bcc09241ac4ae05c9786b4c0"
+      "sha256": "1e3c3cf97d706f7768ecae4e3f2e2a9decdf16cb1eb151dabfab12590fbf90e5"
     },
     {
       "file": "spanish-sandwich-log.svg",
-      "sha256": "62e5d1a2170d93c5ca2243710cd3a69d03b0964c99618f176a4bbea4bec98782"
+      "sha256": "4e9ed56049466c3ef3504c5a783073484878e615a2b924b971def2ab399a5999"
     },
     {
       "file": "spanish-sandwich-page-1.png",
@@ -171,7 +171,7 @@
     },
     {
       "file": "spanish-sandwich-page-2.png",
-      "sha256": "c3f253c0a5bcfa0fc521568df2609f405913945c0e5a1e2797550ad415a888a1"
+      "sha256": "a6982ae25a61ebbdc130177fd7ded77fde464f444901fa96f86a6c7189944340"
     },
     {
       "file": "spanish-sandwich-tiles-page-1.png",
@@ -219,20 +219,20 @@
     },
     {
       "file": "spanish-sandwich.csv",
-      "sha256": "e1ead8d2f38a4e7035687a49d6ba0866df697c6660fad84ebadc33d7274519bd"
+      "sha256": "d7814f6555a273f392a9573069cad8886505e78efb24d419fae2a29af8523f86"
     },
     {
       "file": "spanish-sandwich.pdf",
-      "sha256": "d6a5cc9570c8a4811b7672f307caed373cb3509b60a0bbdb92fab3f0c5698d8c"
+      "sha256": "f9c35967a7a79b998f7373f89cfbe966f50f005bd6a7389c4d509babbe521198"
     },
     {
       "file": "spanish-sandwich.svg",
-      "sha256": "dd3cd11a51bed45e8ccf88c9c96a197836c7a9c2b833eab8b1fe5651acc535a5"
+      "sha256": "805a1d996968327ac20a35687ac6388db7f30c769e0da3acd6b3b1127a0003c5"
     },
     {
       "file": "tiles-contact.png",
       "sha256": "eb8eb3aa9f9839ffb0eb094dfdc0346595f2cf0a7311f010015073416f9a02d8"
     }
   ],
-  "validation": "Three focused native document/PVC cases passed; four bilingual named-note wood PDFs independently rendered and inspected. Strict gate passed."
+  "validation": "Bilingual editorial pass: 20 focused native UI/localization cases plus four final document/EN/ES workflow executions. Eight supported two-page PDFs (16 pages), legacy output inspected locally, calibrated tiles separate. Source/artifact hashes verified; physical printing not validated."
 }

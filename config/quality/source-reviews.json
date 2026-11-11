@@ -6360,11 +6360,11 @@
     },
     "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 226,
+      "line": 223,
       "kind": "function",
       "name": "ConstructionCandidateCard",
-      "semanticHash": "6b773b3bc3541fa49f41dfae6a2917acf624ccde2f2e30befa1d927069532a0a",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "semanticHash": "8e5c6a4da06233a64fe2c178b093a5949624b951df336c32dec3952c63ec9c7b",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests. Editorial revision: display dimensions use the existing locale-aware formatter; CSV numbers remain locale independent. No geometric calculation or state transition changed.",
       "evidence": [
         "docs/engineering/CONSTRUCTION_PROGRESS.md",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
@@ -6375,11 +6375,11 @@
     },
     "11aeefc4ba94c4479d3dac4607edf6a3cad604aa05dd659f4dbfa64097cf1bac": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 240,
+      "line": 237,
       "kind": "function",
       "name": "ConstructionPlanView",
-      "semanticHash": "928a3c100d6e566e4a34e26a223afae64bdbb05b63ae73bcdefa4567c165a0d0",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "semanticHash": "e54d34d033b01fc12d4da0ddd7867b40653c068ca6d630f61bb7b334ecdccba0",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests. Editorial revision: display dimensions use the existing locale-aware formatter; CSV numbers remain locale independent. No geometric calculation or state transition changed.",
       "evidence": [
         "docs/engineering/CONSTRUCTION_PROGRESS.md",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
@@ -6638,11 +6638,11 @@
     },
     "1da4089963dba36837c872fc33dedeedf25d653469a4e11227581632d6a8b78d": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 253,
+      "line": 259,
       "kind": "function",
       "name": "constructionDimensions",
-      "semanticHash": "32df5309f8f28c3091705a2a6171af753cd537975e655cbe0e4842fd20b142fa",
-      "reason": "Pure presentation of assembled length and endpoint diameters inside Compose; no acoustic or persistence calculation. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "semanticHash": "0418bbcdb943e856059590255c036170e016da3bdd230771fe31e785e7a1023d",
+      "reason": "Pure presentation of assembled length and endpoint diameters inside Compose; no acoustic or persistence calculation. Compose source/JVM correspondence is unsupported; no synthetic score is claimed. Editorial revision: display dimensions use the existing locale-aware formatter; CSV numbers remain locale independent. No geometric calculation or state transition changed.",
       "evidence": [
         "docs/engineering/WORKSHOP_DOCUMENTS.md",
         "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",

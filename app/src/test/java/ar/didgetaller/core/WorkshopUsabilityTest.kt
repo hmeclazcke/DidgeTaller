@@ -11,7 +11,7 @@ class WorkshopUsabilityTest {
         val page=WorkshopDocument.create(plan(boards()),WorkshopLanguage.SPANISH).pages[1]
         val text=page.marks.filterIsInstance<WorkshopMark.Text>().joinToString("\n"){it.value}
         assertFalse(text.contains("Mitad A"));assertFalse(text.contains("Mitad B"))
-        for(label in listOf("Desde la boquilla","Diámetro interior","Profundidad por mitad","Espesor restante"))assertTrue(label,text.contains(label))
+        for(label in listOf("Desde la boquilla","Diámetro interior","Profundidad por mitad","Espesor de pared restante"))assertTrue(label,text.contains(label))
         assertEquals(3,page.marks.filterIsInstance<WorkshopMark.Path>().count {it.shaded})
         assertTrue(text.contains("medidas completas en CSV"));assertFalse(text.contains("CSV / SVG"))
     }
@@ -102,6 +102,7 @@ class WorkshopUsabilityTest {
         val unknown=WoodFit.assess(shape,null,9.0,0.0)
         assertTrue(WoodPresentation.detail(unknown,l).contains(l.wood(WoodTerm.LIMIT_UNKNOWN)))
         assertFalse(WoodPresentation.detail(unknown,l).contains(l.wood(WoodTerm.MARGIN)))
+        assertFalse(WoodPresentation.detail(unknown,l).contains(l.wood(WoodTerm.POSITION)))
         val good=WoodFit.assess(shape,boards(),9.0,0.0)
         assertTrue(WoodPresentation.detail(good,l).contains("1500"))
         assertTrue(WoodPresentation.detail(good,l).contains(l.wood(WoodTerm.MARGIN)+": 0 mm"))
@@ -159,6 +160,16 @@ class WorkshopUsabilityTest {
         }
         assertEquals(listOf(ConstructionMethod.SANDWICH,ConstructionMethod.PVC),ConstructionForm.activeMethods())
         assertEquals(ConstructionMethod.LAMINATED,ConstructionForm.options(ConstructionForm.defaults(shape)+("method" to "LAMINATED")).method)
+    }
+
+    @Test fun logDimensionNamesItsActualPlaneAndSurfaceInBothLanguages() {
+        assertEquals("Joint plane to outer surface (derived)",WoodTerm.LOG_DEPTH.en)
+        assertEquals("Plano de unión a superficie exterior (calculado)",WoodTerm.LOG_DEPTH.es)
+        assertEquals("Internal bore diameter",WorkshopTerm.DIAMETER.en)
+        assertEquals("Prepared width",WoodTerm.HALF_WIDTH.en)
+        val log=WoodStock.Log(1500.0,101.0,emptyList(),0.0,0.0,WoodPreparation(),true)
+        assertTrue(WorkshopDocument.csv(plan(log),WorkshopLanguage.ENGLISH).contains("Joint plane to outer surface (derived) (mm)"))
+        assertEquals("Espesor de pared restante",WoodTerm.TABLE_REMAINING.es)
     }
 
 }

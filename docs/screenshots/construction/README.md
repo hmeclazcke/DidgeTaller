@@ -1,5 +1,17 @@
 # Construction workflow evidence
 
+## Current bilingual editorial captures
+
+Fresh task-owned API 37 emulator captures from the final EN/ES synthetic workflows:
+
+| Language | Candidates | Workshop/export screen |
+|---|---|---|
+| English | [Current capture](editorial-en-candidates.png) | [Current capture](editorial-en-wood-plan.png) |
+| Spanish | [Captura actual](editorial-es-candidates.png) | [Captura actual](editorial-es-wood-plan.png) |
+
+The captures use current localized dimensions and uncertainty wording. Historical
+images below retain their original dated provenance and are not new-run evidence.
+
 These are unchanged PNGs from the clean API35 Pixel2 instrumentation artifact of
 [run 42917003540](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917003540),
 production source `992dadc`. The four base tests and all EN/ES portrait cases passed;

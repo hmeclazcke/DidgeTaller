@@ -143,6 +143,8 @@ La app sigue siendo una beta personal distribuida desde el código fuente. La re
 
 ### Del objetivo acústico al plano de taller
 
+Esta sección describe la implementación de `feature/inverse-design-construction` (PR #5 en borrador), no una versión publicada. Los proyectos antiguos por capas conservan su acceso; los planos nuevos ofrecen madera partida o PVC medido.
+
 Abrí **Laboratorio → Buscar → Plano de construcción**, o elegí **Plano de construcción** en un diseño guardado de la Biblioteca. Definí una resonancia pasiva objetivo, compará candidatos de una búsqueda acotada, seleccioná un método constructivo y generá el perfil fabricable. Los diseños originales y las grabaciones no cambian: los proyectos constructivos y el catálogo medido compartido se guardan por separado.
 
 - **Madera partida:** mitades longitudinales espejadas, diámetros por estación, profundidades semicirculares de ahuecado, dimensiones mínimas del bloque y margen radial de sobrecorte.
@@ -155,8 +157,8 @@ Los [PDF de dos páginas, dibujos vectoriales y tablas de ejemplo](docs/examples
 El [registro de implementación y verificación constructiva](docs/engineering/CONSTRUCTION_PROGRESS.md), en inglés, documenta alcance, comprobaciones numéricas, evidencia Android y límites pendientes. La búsqueda es acotada y no demuestra un óptimo global; los intervalos cónicos se discretizan y se mantienen los supuestos de conducto circular.
 
 <p>
-  <img src="docs/screenshots/construction/es-normal-candidates.png" alt="Comparación de candidatos acústicos y perfiles interiores" width="280" />
-  <img src="docs/screenshots/construction/es-normal-wood-plan.png" alt="Plano de taller de madera partida y controles de exportación" width="280" />
+  <img src="docs/screenshots/construction/editorial-es-candidates.png" alt="Comparación de candidatos acústicos y perfiles interiores" width="280" />
+  <img src="docs/screenshots/construction/editorial-es-wood-plan.png" alt="Plano de taller de madera partida y controles de exportación" width="280" />
 </p>
 
 Capturas auténticas del emulador con datos sintéticos; consultá la [galería constructiva y su procedencia](docs/screenshots/construction/README.md), en inglés.

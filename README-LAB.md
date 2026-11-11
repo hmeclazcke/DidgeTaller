@@ -8,7 +8,7 @@ For installation and recording, start with the [project README](README.md). This
 
 1. Open **Laboratory → Design / Laboratorio → Diseñar**. Choose a preset or edit the instrument length and internal diameters. The point editor describes the bore with positions and diameters in millimeters.
 2. Inspect the profile and simulated resonance results. Save useful designs to **Library → Designs / Biblioteca → Diseños**.
-3. Use **Spectrum / Espectro** to examine the simulated input-impedance curve and its resonance peaks. This is a model output, distinct from the power spectrum of a recording.
+3. Use **Spectrum / Espectro** to inspect microphone sound in real time. This does not record audio; Measure records sessions. The live power spectrum is distinct from the simulated input-impedance resonances in the bore editor.
 4. Use **Search / Buscar** to enter three target resonance notes and run the evolutionary search. Progress and cancellation are available; the result can be applied to the editor.
 5. Optionally associate a saved design with a didgeridoo session. The session presents simulated resonances and recorded results separately. Manual vocalization or possible-toot markers annotate observations without claiming automatic detection.
 
@@ -34,3 +34,9 @@ For installation and recording, start with the [project README](README.md). This
 The project studied DidgeLab and CADSD as conceptual references. The included engines are independent Kotlin implementations; neither reference engine is bundled as a dependency or presented as a port.
 
 The historical [DidgeLab study](docs/DIDGELAB_STUDY.md) records research, attribution, and licensing considerations. It is not the current feature list. Any future incorporation of third-party code requires a separate review of its license and attribution requirements. This repository's existing license is [MIT](LICENSE).
+
+
+Construction plans on the current PR #5 feature branch support longitudinal split
+wood and measured modular PVC. Existing transverse-layer projects remain readable
+and exportable, but that method is not offered for new designs. See the bilingual
+[README](README.md) and [sample plans](docs/examples/construction/README.md).
