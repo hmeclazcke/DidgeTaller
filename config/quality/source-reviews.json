@@ -6234,15 +6234,18 @@
     },
     "4ec62b1a6d75dc89b7fbbbf56b72fc8719f9658bbbd875493c728ae839e4889b": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "37",
+      "line": 38,
       "kind": "function",
       "name": "ConstructionWorkspace",
-      "semanticHash": "c085299887e636e4f24b0f2fcbd72e38c54d947152ebfb2ad8452224e60eba70",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. One dialog owns revocable analysis/export workers, form snapshots and stages. Editing or closing revokes old publication.",
+      "semanticHash": "5caf4d1594087b0d221964f88b73c27595b03885ca0e0e48d60dd2a567af7946",
+      "reason": "Uses the current Compose locale and the existing revocable workers; analysis requests carry the human design name only. No storage schema or microphone behavior changes. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
       "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
       "metric_status": "compose-transformation"
     },
     "c6a82ba678a51bcba862f9ddee2150ade41810bd693498b62b58254c83aa260c": {
@@ -6260,15 +6263,18 @@
     },
     "b3fd468079d6d80c179ff5fe1be105fddd3409030499b4464c264b8a9e44cd90": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "116",
+      "line": 123,
       "kind": "function",
       "name": "ConstructionStatus",
-      "semanticHash": "b11d5ad994786547597aca350f996bec0ff5de8d584dac3223b1aaefbef4e479",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Localizes rejected storage/input and saved status without authorizing writes from damaged documents.",
+      "semanticHash": "bd93f50fc469e667aec47fdfb557cccdc2fae36de350267ba62ea0cc1b0d908e",
+      "reason": "Keeps existing failure state and adds a localized legibility-limit explanation without overwriting saved data. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
       "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
       "metric_status": "compose-transformation"
     },
     "b1049c55fac6b02327d2044ba47c55ccb39aabc8643877e91737108bed213106": {
@@ -6351,28 +6357,34 @@
     },
     "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "218",
+      "line": 219,
       "kind": "function",
       "name": "ConstructionCandidateCard",
-      "semanticHash": "172078a7ca300bc90e893b843ba063e234de7b12f6cf28f362cc18d4e96a14ea",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Predicted resonance, error, dimensions and profile comparison share the exact candidate selected by the action.",
+      "semanticHash": "b4932ef26cf0f06b07c3beae0745611c4c980ac90d837a3cbeb135002acbe415",
+      "reason": "Replaces cryptic dimension abbreviations with localized labels and presentation-only rounding; candidate geometry/scoring is unchanged. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
       "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
       "metric_status": "compose-transformation"
     },
     "11aeefc4ba94c4479d3dac4607edf6a3cad604aa05dd659f4dbfa64097cf1bac": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "230",
+      "line": 232,
       "kind": "function",
       "name": "ConstructionPlanView",
-      "semanticHash": "affd0c8b6ac69d3a686d146cc2e51b98d01efeda817f9935c694d9c0e6685e07",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Manufactured summary, optional station/parts preview and numerical sensitivity use the same plan as export.",
+      "semanticHash": "5ee2f034266dbb03664d060205ff6a1082e443433af3c8568ef4c2012e42c954",
+      "reason": "Uses localized dimensions, semantic CSV detail rows and sensitivity vocabulary; stored geometry remains full precision. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
       "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
       "metric_status": "compose-transformation"
     },
     "fab9efa1702f4fa84afc6933233099cf868ad216d108f7fec10e383a9322c488": {
@@ -6438,6 +6450,204 @@
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
       "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "5f1ce7751e2bc4356efe0fe50e88fddc59f5d59103aeaf3592072a33d9ac47f9": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d1b9febc311867a8a4920db928e5309079d7af728c4bb29656558cc83508148f",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "0773730ffb97cefbedd7d50e774bd8c25beb954aa7fbf1a0e137bcf1a1a0c310": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bc448c3f24a9e74bc5ae41f3bb4dda95101a205bb836cd12da98baaaf978916e",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "6d51b23f1b1d9cddbaaaf37cbb0cf2ebe4445ef5d4c5fb9738747a89928cb48c": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 25,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "769cc0974f17ebf46a5dfa1fcc994786bdc0bdf025c5b67a9bfcbee162557706",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "fc01b58f61c5f031403724754024a7de31236b5b2ff57cd70a934d20954b18f7": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 26,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2433ec5753f31f015279004ffd55f277fde4cc95e94738a6cb2b39146fd8e7e4",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "a71dd15f0f23d1570a914ee050c4d94970672c16035da5454ff4cd76c45f6487": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 76,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a940160469f71abbcf965cd4ef9af57f8b832cfc4459a810b030bb7c46680cf3",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "d65dd07d858db03d85aa35e6ba7000216b67e3b975929a4117b96fc0732989e6": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 77,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5c3faf2b3e833c0d7e785f6953199b924e40dc22399165e65e8273b9c299de89",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "ac0bcfb927e03c10436be0300be505b90a5b87edc60fc5d756dd017a073f9f9f": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopLanguage.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "92237feddf3e1063b07ab1c7f07be743261fb30132161cb47bc8712fb424d1c6",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "553dc851c6bb0d2d3130091a1c1a47f103d5ce487821bd3e40ce5d6603aa0462": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopTables.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "fdf3b7588cbe16e04125000715afc60a9bf821f9cf35422a1a12969d72e0068c",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "a55dbec333d68de5e6f74fad30c45f4c29df3795169022cb8c4ea6f22d30d3fc": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionPdf.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f219ae8681b8ac5434649b53ec6f16f014c359af9a3cfd4b5e80d7b8cc45929e",
+      "reason": "Android export value carrier or Canvas adapter constructor; independent constructor CRAP is unavailable. Native tests create, close and rasterize actual PDF pages; no drawing decisions or persistent state are owned here.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "871c94e65727e7cb54d415e61361ea03c06d830146fa6fbfec72db1812008f53": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionPdf.kt",
+      "line": 33,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "4c7389b4554c03bffb13caee2456b0f61672d4cfc82b3ed1ec500062b2c5f94b",
+      "reason": "Android export value carrier or Canvas adapter constructor; independent constructor CRAP is unavailable. Native tests create, close and rasterize actual PDF pages; no drawing decisions or persistent state are owned here.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "e180faaddff3dfbebf24f21392201006670964569d4e54b579441e00e2651f73": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 109,
+      "kind": "function",
+      "name": "ConstructionExportEffect",
+      "semanticHash": "0c16b5ec615a1c291cc3964c030a6da1ed66be220da523426ed44ad78fde13ef",
+      "reason": "Acknowledges one owned result, chooses its MIME type and a safe human-name filename; the real Compose export callbacks verify all four formats. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "metric_status": "compose-transformation"
+    },
+    "d7138299125a5254c83f0946cb263e70250fcbbe87b1a414dfd47ea88800099e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 250,
+      "kind": "function",
+      "name": "exportLanguage",
+      "semanticHash": "a452e8ebb00578b5ba0ed7687d919cf22fef3edddce0466e01c2ae6d62f34f13",
+      "reason": "Reads LocalConfiguration so recomposition follows Android locale changes, rather than reading a cached context configuration. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "metric_status": "compose-transformation"
+    },
+    "1da4089963dba36837c872fc33dedeedf25d653469a4e11227581632d6a8b78d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 253,
+      "kind": "function",
+      "name": "constructionDimensions",
+      "semanticHash": "32df5309f8f28c3091705a2a6171af753cd537975e655cbe0e4842fd20b142fa",
+      "reason": "Pure presentation of assembled length and endpoint diameters inside Compose; no acoustic or persistence calculation. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
       "metric_status": "compose-transformation"
     }
   }

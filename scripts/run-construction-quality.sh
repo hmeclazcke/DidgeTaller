@@ -30,7 +30,7 @@ if [[ "$configuration" == landscape ]]; then
   run_case landscape-150 'ar.didgetaller.ui.ConstructionUiTest#completeWoodWorkflowSearchSaveToleranceAndAllExports'
   exit 0
 fi
-run_case default ar.didgetaller.ui.ConstructionUiTest
+run_case default ar.didgetaller.ui.ConstructionUiTest,ar.didgetaller.ui.WorkshopDocumentsUiTest
 for language in es en; do
   adb -s "$serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales "$language"
   adb -s "$serial" shell am force-stop ar.didgetaller

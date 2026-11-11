@@ -17,7 +17,7 @@ class ConstructionAnalysisTest {
         assertTrue("Longer bore lowers resonance",longer<0)
         assertEquals(ConstructionProjects.predict(ConstructionProjects.perturb(plan.plan,lengthDeltaMm=5.0)).baseHz-plan.prediction.baseHz,longer,1e-9)
         assertEquals(1500.0,plan.plan.lengthMm,0.0)
-        assertTrue(ConstructionDrawing.table(plan.plan).first().contains("0.000"))
+        assertTrue(ConstructionDrawing.table(plan.plan).any {it.startsWith("\"0.0 *\"")})
     }
     @Test fun boundedCandidatesRespectManufacturingConstraintsAndPvcStock() {
         val form=ConstructionForm.defaults(AcousticModel.Shape())

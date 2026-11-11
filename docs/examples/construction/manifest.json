@@ -1,0 +1,137 @@
+{
+  "synthetic_only": true,
+  "generator_revision": "workshop redesign after 2e997e1",
+  "renderer": "Android PdfRenderer API 37 emulator",
+  "default_pdf_pages": 2,
+  "physical_print_verified": false,
+  "files": [
+    {
+      "file": "english-laminated-page-1.png",
+      "sha256": "798ad7d9e08bd37e4f4e62b7475a3db35cdb3fe49a38a318286bf4ea57a53d57"
+    },
+    {
+      "file": "english-laminated-page-2.png",
+      "sha256": "e4b7f37a40e0780f890acaf022b8a15dce354726eae7d19c9d3c5d55175830b1"
+    },
+    {
+      "file": "english-laminated.csv",
+      "sha256": "1133b59c1728377f94aee84524b1b8d8d0f93680c2a2576f362e70f966b6055b"
+    },
+    {
+      "file": "english-laminated.pdf",
+      "sha256": "5af66a178870e21b180bda2f4731b546d3b5901f0ccff0e1501f0701f6c18563"
+    },
+    {
+      "file": "english-laminated.svg",
+      "sha256": "7cc2cf9776884c04eec340d1b50fdc436e14b7ef3927b40fcb16a056e4b1d0eb"
+    },
+    {
+      "file": "english-pvc-page-1.png",
+      "sha256": "91f84ecc0ea5d0a4334f3481b216b840ab8a3fce1042fadbbf9cc880675b8b2b"
+    },
+    {
+      "file": "english-pvc-page-2.png",
+      "sha256": "bb6226fc595267e2f5aed84226929bf6899480c96a1c097ea0e9d915a5546ee2"
+    },
+    {
+      "file": "english-pvc.csv",
+      "sha256": "2826e3fad1795482cbeff477716c584efebc48a7237bc76995c077b8735bb941"
+    },
+    {
+      "file": "english-pvc.pdf",
+      "sha256": "e6b4b6801b9b568ff7dd26912833a0cfe6fc4fb590824137b60d817e04a045e2"
+    },
+    {
+      "file": "english-pvc.svg",
+      "sha256": "0f136e4f5e50dec3628e158b62c4db6145035a33a30c5e7a8013b83fde49c704"
+    },
+    {
+      "file": "english-sandwich-page-1.png",
+      "sha256": "556cee422af05537f99f76f651c4b614d7e736f91226e67c860c094c33f99f32"
+    },
+    {
+      "file": "english-sandwich-page-2.png",
+      "sha256": "cb530f788e48ec5ddc54d8123b6fc1e66b9186d85c6ee96f2b725766d06b81c2"
+    },
+    {
+      "file": "english-sandwich.csv",
+      "sha256": "69871081e5d269d560cdc6355a9ee8d023db4c3cc916fae0683677b40a17a4a0"
+    },
+    {
+      "file": "english-sandwich.pdf",
+      "sha256": "b50f0ddb0152d6f2d15996d5c56932edaeb35176f1934d1dac6f7849412983f4"
+    },
+    {
+      "file": "english-sandwich.svg",
+      "sha256": "c57fccb3cf81d8becade5c2a795b6f851e4d28a11c3886a7e3f53aa9300a9690"
+    },
+    {
+      "file": "spanish-laminated-page-1.png",
+      "sha256": "f0bcc8172ffecacc4286a6989ac4f00fdd55c6772684a2d1fe52b306f898c6cf"
+    },
+    {
+      "file": "spanish-laminated-page-2.png",
+      "sha256": "ff41d5e8bde48a8fb9982f8b4954db20e268e15332babd7016cce868bf4b2a69"
+    },
+    {
+      "file": "spanish-laminated.csv",
+      "sha256": "263e9d6283717d034841d319b356e50bbf2b49a21815aad1e77f99f66c2eab67"
+    },
+    {
+      "file": "spanish-laminated.pdf",
+      "sha256": "2ba0ef4999987afc6cf39bdb0f339a2106d8dd0dcbd8327a35ef6b6d4dffe3da"
+    },
+    {
+      "file": "spanish-laminated.svg",
+      "sha256": "10baba9ce49c4741ebef9ba7d29897c39ffc992bb1c3ce396315bd3ddb192e3d"
+    },
+    {
+      "file": "spanish-pvc-page-1.png",
+      "sha256": "e0d9d5216386ef7c7ffd434f946d1a6b9ff476f01d57ce527f8a678f9ec89595"
+    },
+    {
+      "file": "spanish-pvc-page-2.png",
+      "sha256": "99ee54974d1a19346921fb18ff33973a638586c20cc2c07a63ddc9d4bf4147d8"
+    },
+    {
+      "file": "spanish-pvc.csv",
+      "sha256": "77d0f081e83dbd32f191f50df91b77fcb13a1661ea650bf1a24bbd098298be71"
+    },
+    {
+      "file": "spanish-pvc.pdf",
+      "sha256": "1d077eb9025d1fc1cf5b0c616939dd4b9071a6830f39e931a5e307626a4305ea"
+    },
+    {
+      "file": "spanish-pvc.svg",
+      "sha256": "860ddfcda48a06bb689cf1b6779ffa7efebac027ed1a5c92d3abba322ae18939"
+    },
+    {
+      "file": "spanish-sandwich-page-1.png",
+      "sha256": "634e4f8b5369295c0437ef1c9c4948097bcd82c83289ca1fa02a9851d02216fa"
+    },
+    {
+      "file": "spanish-sandwich-page-2.png",
+      "sha256": "2b51f4c22e802acd1fc1347ee37278ddc54a34cf1a5507ba4069a09a7f586047"
+    },
+    {
+      "file": "spanish-sandwich-tiles.pdf",
+      "sha256": "6aef430232e64e457f51144a809179645ea74764b761e18b1e25730a2a25db02"
+    },
+    {
+      "file": "spanish-sandwich.csv",
+      "sha256": "33729db4b17d42575deb14dfa65e55fa09d77396b2343a7d76a70c2c61b4cda3"
+    },
+    {
+      "file": "spanish-sandwich.pdf",
+      "sha256": "9c775bf8e79202dda791b90903fb5575c68f12dccd15e4ebb898058616a8da7d"
+    },
+    {
+      "file": "spanish-sandwich.svg",
+      "sha256": "d83b2a3dca73dc67b6a54228c85217a14ee343f030676572a7f86d794251ec8a"
+    },
+    {
+      "file": "tiles-contact.png",
+      "sha256": "fc57201b3ef1df752d5759cdc0ad81a10b04c16550b79ab8e7df1348c0645845"
+    }
+  ]
+}

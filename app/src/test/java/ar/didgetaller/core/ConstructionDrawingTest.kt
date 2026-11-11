@@ -15,8 +15,8 @@ class ConstructionDrawingTest {
         assertEquals(32.0,row.beforeMm,0.0);assertEquals(70.0,row.afterMm,0.0)
         assertEquals(listOf(700.0 to 16.0,700.0 to 35.0),ConstructionDrawing.outline(p,1).filter {it.first==700.0})
         val svg=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ConstructionDrawing.svg(p).byteInputStream())
-        assertEquals("1580.000mm",svg.documentElement.getAttribute("width"))
-        assertTrue(ConstructionDrawing.csv(p).contains("\"32.000\",\"70.000\""))
+        assertEquals("842.0pt",svg.documentElement.getAttribute("width"))
+        assertTrue(ConstructionDrawing.csv(p).contains("32.0 / 70.0"))
     }
     @Test fun metricCalibrationTilesAndFractionalEndsHaveNoInventedIdealExtension() {
         assertEquals(283.464566929,100*ConstructionDrawing.POINTS_PER_MM,1e-8)

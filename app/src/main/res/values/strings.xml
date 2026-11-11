@@ -678,18 +678,18 @@
     <string name="construction_choose">Use candidate</string>
     <string name="construction_compare">Gray: ideal profile. Green: manufactured profile. Stations and parts are included in exports.</string>
     <string name="construction_parts">Parts and assembly order</string>
-    <string name="construction_stations">Stations: x, ideal ID, ID before/after (mm)</string>
+    <string name="construction_stations">Measurements from the mouthpiece (mm)</string>
     <string name="construction_tolerance_analysis">Evaluate manufacturing sensitivity</string>
     <string name="construction_uncertainty">Simulation only: no physical calibration. Losses, circular sections and radiation are approximate. Display decimals do not imply manufacturing or acoustic precision. Tapered fitting profiles use 8 cylinders per measured interval. Verify dimensions, dry material, glue and structure before construction.</string>
-    <string name="construction_instructions">ID/OD: internal/external diameters; L: length; W: stock width; I: insertion. Mirror prepared wood halves; add saw kerf to the unsplit blank, align centre plane and station marks. Layers are ordered mouth to bell; constant holes approximate the ideal bore. PVC cuts include both insertions: do not subtract them again.</string>
-    <string name="construction_pdf">Export A4 PDF</string>
-    <string name="construction_tiles">Export PDF with 1:1 tiles</string>
+    <string name="construction_instructions">Dimensions are in millimetres. Follow the method-specific workshop plan, check measured material and verify the printed 100 mm reference.</string>
+    <string name="construction_pdf">Workshop plan - 2-page PDF</string>
+    <string name="construction_tiles">Full-size template - tiled 1:1 PDF</string>
     <string name="construction_ruler">100 mm reference: print at 100 percent and measure; do not trust automatic scaling.</string>
     <string name="construction_overview">Reduced overview, not full scale</string>
     <string name="construction_preview_limit">Preview shows the first 60 stations; the exports contain the complete table.</string>
     <string name="construction_geometry">Ideal profile CSV: x mm, inner diameter mm</string>
     <string name="construction_advanced">Geometry and advanced limits</string>
     <string name="construction_tolerance_help">Scenarios: ID +/-1 mm, last-piece length +/-5 mm, bell ID +1 mm, first PVC insertion 1 mm short. Local sensitivity changes both diameters of up to 12 pieces by +1 mm; this is a circular-bore approximation, not asymmetric hollowing.</string>
-    <string name="construction_svg">Export SVG</string>
+    <string name="construction_svg">Technical drawing - SVG image</string>
     <string name="construction_unavailable">outside model limits</string>
 </resources>

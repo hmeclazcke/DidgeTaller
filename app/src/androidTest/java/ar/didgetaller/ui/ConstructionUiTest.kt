@@ -77,12 +77,14 @@ class ConstructionUiTest {
         screenshot("wood-method");tab(3);click("construction-generate");ready()
         screenshot("wood-plan");click("construction-save")
         assertEquals("SANDWICH",ConstructionStore(app).project("synthetic-construction")["method"])
-        export("csv");assertTrue(exports.getValue("csv").toString(Charsets.UTF_8).contains("station"))
+        export("csv");assertTrue(exports.getValue("csv").toString(Charsets.UTF_8).contains("mm"))
+        compose.onNodeWithTag("construction-export-pdf").performScrollTo().assertTextEquals(compose.activity.getString(R.string.construction_pdf))
+        screenshot("export-options")
         export("svg");assertTrue(exports.getValue("svg").toString(Charsets.UTF_8).contains("100 mm"))
         export("pdf");val overviewPages=verifyPdf(exports.getValue("pdf"))
         val selected=ConstructionForm.shape(ConstructionStore(app).project("synthetic-construction"))
         export("tiles")
-        assertEquals(overviewPages+kotlin.math.ceil(selected.lengthMm/150.0).toInt(),verifyPdf(exports.getValue("pdf"),overviewPages))
+        assertEquals(kotlin.math.ceil(selected.lengthMm/150.0).toInt(),verifyPdf(exports.getValue("pdf"),0))
         click("construction-tolerance")
         compose.waitUntil(60000){compose.onAllNodesWithTag("construction-sensitivity").fetchSemanticsNodes().isNotEmpty()}
         assertEquals(before,legacy.all)
@@ -98,10 +100,10 @@ class ConstructionUiTest {
         screenshot("pvc-catalog");click("construction-save-catalog")
         assertEquals("a,32,40,1500\nb,70,80,1500",ConstructionStore(app).catalog()["pipes"])
         tab(3);click("construction-generate");ready()
-        compose.onNodeWithTag("construction-plan-summary").assertTextContains("1485.000",substring=true)
+        compose.onNodeWithTag("construction-plan-summary").assertTextContains("1485.0",substring=true)
         screenshot("pvc-plan");export("csv")
         val csv=exports.getValue("csv").toString(Charsets.UTF_8)
-        assertTrue(csv.contains("1485.000"));assertTrue(csv.contains("770"))
+        assertTrue(csv.contains("1485.0"));assertTrue(csv.contains("770"))
         click("construction-save")
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])
         tab(2);click("construction-method-LAMINATED");field("layers","100")
@@ -139,20 +141,19 @@ class ConstructionUiTest {
     private fun verifyPdf(bytes:ByteArray,firstTile:Int?=null):Int {
         val file=File(app.filesDir,"test.pdf").apply {writeBytes(bytes)}
         ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->PdfRenderer(fd).use {renderer->
-            assertTrue(renderer.pageCount>=2)
-            pdfPage(renderer,0,"pdf")
+            if(firstTile==null)assertEquals(2,renderer.pageCount) else assertTrue(renderer.pageCount>2)
+            pdfPage(renderer,if(firstTile==null)1 else 0,"pdf")
             if(firstTile!=null)pdfPage(renderer,firstTile,"pdf-tile")
             return renderer.pageCount
         }}
     }
     private fun pdfPage(renderer:PdfRenderer,index:Int,name:String) {
         renderer.openPage(index).use {page->
-            assertEquals(595,page.width);assertEquals(842,page.height)
-            val bitmap=Bitmap.createBitmap(1190,1684,Bitmap.Config.ARGB_8888)
+            assertTrue(page.width in listOf(595,842));assertTrue(page.height in listOf(595,842))
+            val bitmap=Bitmap.createBitmap(page.width*2,page.height*2,Bitmap.Config.ARGB_8888)
             bitmap.eraseColor(Color.WHITE);page.render(bitmap,null,null,PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
-            // Reference endpoints 40 and 40+100*72/25.4 points, rasterized at 2x.
-            for(x in 82..644)assertTrue("Continuous 100 mm scale ruler",Color.red(bitmap.getPixel(x,1570))<180)
-            if(index>0)assertTrue("Next tile registration at 150 mm",(929..931).any {Color.red(bitmap.getPixel(it,180))<180})
+            val rulerY=(page.height-45)*2
+            for(x in 70..632)assertTrue("Continuous 100 mm scale ruler",Color.red(bitmap.getPixel(x,rulerY))<180)
             evidence(name,bitmap);bitmap.recycle()
         }
     }

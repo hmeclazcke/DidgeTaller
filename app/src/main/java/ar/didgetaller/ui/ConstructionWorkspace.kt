@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
@@ -27,8 +28,8 @@ import kotlinx.coroutines.Dispatchers
 internal data class ConstructionExport(val plan:ConstructionPlan,val format:String,val labels:ConstructionPdf.Labels)
 
 internal fun constructionBytes(r:ConstructionExport):ByteArray = when(r.format) {
-    "csv"->ConstructionDrawing.csv(r.plan).toByteArray(Charsets.UTF_8)
-    "svg"->ConstructionDrawing.svg(r.plan).toByteArray(Charsets.UTF_8)
+    "csv"->WorkshopDocument.csv(r.plan,r.labels.language).toByteArray(Charsets.UTF_8)
+    "svg"->WorkshopDocument.svg(r.plan,r.labels.language).toByteArray(Charsets.UTF_8)
     else->ConstructionPdf.create(r.plan,r.labels,r.format=="tiles")
 }
 
@@ -53,12 +54,10 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
     val exportOwner=remember {LatestAnalysis<ConstructionExport,ByteArray>(CoroutineAnalysisLoader(scope,Dispatchers.Default){r:ConstructionExport,_,_->constructionBytes(r)}){exported=it}}
     DisposableEffect(owner,exportOwner){onDispose {owner.close();exportOwner.close()}}
     fun set(key:String,value:String){owner.clear();exportOwner.clear();fields[key]=value.take(64000);failed=false;saved=false}
-    fun run(action:String){failed=false;owner.replace(ConstructionRequest("${design.id} / ${design.name}",fields.toMap(),action))}
-    ConstructionExportEffect(design.id,exported,{exportOwner.clear()},export)
-    val labels=ConstructionPdf.Labels(context.getString(R.string.construction_title),context.getString(R.string.construction_overview),
-        context.getString(R.string.construction_ruler),context.getString(R.string.construction_uncertainty),context.getString(R.string.construction_stations),
-        context.getString(R.string.construction_parts),context.getString(R.string.construction_instructions),
-        context.getString(mapOf("SANDWICH" to R.string.construction_sandwich,"LAMINATED" to R.string.construction_laminated,"PVC" to R.string.construction_pvc).getOrDefault(fields["method"],R.string.construction_title)))
+    fun run(action:String){failed=false;owner.replace(ConstructionRequest(design.name,fields.toMap(),action))}
+    ConstructionExportEffect(exported,{exportOwner.clear()},export)
+    val language=exportLanguage()
+    val labels=ConstructionPdf.Labels(language,fields["target"]?.toDoubleOrNull())
     Dialog(onDismissRequest=dismiss,properties=DialogProperties(usePlatformDefaultWidth=false,decorFitsSystemWindows=false)) {
         val focus=LocalFocusManager.current
         val select:(Int)->Unit={focus.clearFocus();stage=it}
@@ -107,7 +106,7 @@ private fun ConstructionHeader(stage:Int,select:(Int)->Unit,dismiss:()->Unit) {
 }
 
 @Composable
-private fun ConstructionExportEffect(designId:String,exported:AnalysisState<ConstructionExport,ByteArray>,acknowledge:()->Unit,export:(String,String,ByteArray)->Unit) {
+private fun ConstructionExportEffect(exported:AnalysisState<ConstructionExport,ByteArray>,acknowledge:()->Unit,export:(String,String,ByteArray)->Unit) {
     LaunchedEffect(exported) {
         val ready=exported as? AnalysisState.Ready<ConstructionExport,ByteArray>
         if(ready!=null) {
@@ -115,7 +114,7 @@ private fun ConstructionExportEffect(designId:String,exported:AnalysisState<Cons
             acknowledge()
             val extension=if(request.format=="tiles")"pdf" else request.format
             val mime=mapOf("pdf" to "application/pdf","csv" to "text/csv","svg" to "image/svg+xml").getValue(extension)
-            export("construction-$designId.$extension",mime,bytes)
+            export(WorkshopDocument.filename(request.plan,request.format,request.labels.language,java.util.UUID.randomUUID().toString().take(8)),mime,bytes)
         }
     }
 }
@@ -124,6 +123,8 @@ private fun ConstructionExportEffect(designId:String,exported:AnalysisState<Cons
 private fun ConstructionStatus(unreadable:Boolean,failed:Boolean,saved:Boolean,analysis:AnalysisState<ConstructionRequest,ConstructionResult>,exported:AnalysisState<ConstructionExport,ByteArray>) {
     if(unreadable)Text(stringResource(R.string.construction_storage_error),color=MaterialTheme.colorScheme.error)
     if(failed || analysis is AnalysisState.Failed || exported is AnalysisState.Failed)Text(stringResource(R.string.construction_error),color=MaterialTheme.colorScheme.error,modifier=Modifier.testTag("construction-error"))
+    val limit=exportLanguage().word(WorkshopTerm.TOO_DENSE)
+    if(exported.failure?.message==limit)Text(limit,color=MaterialTheme.colorScheme.error)
     if(saved)Text(stringResource(R.string.construction_saved))
 }
 
@@ -218,8 +219,8 @@ private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->U
 private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->Unit) {
     OutlinedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(12.dp),verticalArrangement=Arrangement.spacedBy(6.dp)) {
-            Text("${index+1}: ${hzLabel(c.hz)} | ${ConstructionDrawing.number(c.cents)} cents")
-            Text("${constructionDimensions(c.plan)} | n=${c.plan.parts.size}")
+            Text("${index+1}: ${hzLabel(c.hz)} | ${WorkshopDocument.number(c.cents)} cents")
+            Text("${constructionDimensions(c.plan)} | ${exportLanguage().word(WorkshopTerm.QUANTITY)}: ${c.plan.parts.size}")
             Text(c.higher.joinToString(" / "){hzLabel(it)},style=MaterialTheme.typography.bodySmall)
             TextButton(onClick=use,modifier=Modifier.testTag("construction-candidate-$index")){Text(stringResource(R.string.construction_choose))}
             ConstructionProfile(c.plan)
@@ -237,16 +238,22 @@ private fun ConstructionPlanView(r:ConstructionResult) {
     TextButton(onClick={details=!details},modifier=Modifier.testTag("construction-dimensions")){Text(stringResource(R.string.construction_stations))}
     if(details) {
     Text(stringResource(R.string.construction_stations),style=MaterialTheme.typography.titleMedium)
-    ConstructionDrawing.rows(p).take(60).forEach {row->Text("${ConstructionDrawing.number(row.xMm)} | ${row.idealMm?.let(ConstructionDrawing::number) ?: "-"} | ${ConstructionDrawing.number(row.beforeMm)}/${ConstructionDrawing.number(row.afterMm)}",style=MaterialTheme.typography.bodySmall)}
+    ConstructionDrawing.rows(p).take(60).forEach {row->Text("${WorkshopDocument.number(row.xMm)} | ${row.idealMm?.let(WorkshopDocument::number) ?: "-"} | ${WorkshopDocument.number(row.beforeMm)}/${WorkshopDocument.number(row.afterMm)}",style=MaterialTheme.typography.bodySmall)}
     Text(stringResource(R.string.construction_preview_limit),style=MaterialTheme.typography.bodySmall)
     Text(stringResource(R.string.construction_parts),style=MaterialTheme.typography.titleMedium)
-    p.parts.forEach {Text(it,style=MaterialTheme.typography.bodySmall)}
+    Text(WorkshopDocument.csv(p,exportLanguage()),style=MaterialTheme.typography.bodySmall)
     }
-    r.sensitivity.forEach {Text("${it.dimension}: ${it.deltaHz?.let {hz->ConstructionDrawing.number(hz)+" Hz"} ?: stringResource(R.string.construction_unavailable)}",modifier=Modifier.testTag("construction-sensitivity"))}
+    r.sensitivity.forEach {Text("${WorkshopDocument.sensitivity(it.dimension,exportLanguage())}: ${it.deltaHz?.let {hz->WorkshopDocument.number(hz)+" Hz"} ?: stringResource(R.string.construction_unavailable)}",modifier=Modifier.testTag("construction-sensitivity"))}
 }
 
-private fun constructionDimensions(plan:ConstructionPlan):String =
-    "L=${ConstructionDrawing.number(plan.lengthMm)} mm | ID=${ConstructionDrawing.number(plan.pieces.first().inletMm)}/${ConstructionDrawing.number(plan.pieces.last().outletMm)} mm"
+@Composable
+private fun exportLanguage()=if(LocalConfiguration.current.locales[0].language=="es")WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
+
+@Composable
+private fun constructionDimensions(plan:ConstructionPlan):String {
+    val l=exportLanguage()
+    return "${l.word(WorkshopTerm.LENGTH)}: ${WorkshopDocument.number(plan.lengthMm)} mm\n${l.word(WorkshopTerm.MOUTH)}: ${WorkshopDocument.number(plan.pieces.first().inletMm)} mm; ${l.word(WorkshopTerm.BELL)}: ${WorkshopDocument.number(plan.pieces.last().outletMm)} mm"
+}
 
 @Composable
 private fun ConstructionProfile(plan:ConstructionPlan) {

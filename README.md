@@ -149,7 +149,9 @@ Open **Laboratory → Search → Construction plan**, or choose **Construction p
 - **Split wood:** mirrored longitudinal halves, station diameters, semicircular hollowing depths, minimum blank dimensions and radial overcut allowance.
 - **Laminated wood:** transverse layers, ordered cuts/openings and explicit stepped approximation of the ideal bore.
 - **Modular PVC:** editable measured tube/socket/reducer catalog, cut lengths, insertion overlaps, variable internal transitions and assembled length. No commercial sizes or availability are assumed.
-- **Exports:** paginated A4 PDF with dimensions and parts, optional overlapping 1:1 inner-profile tiles, measurement/parts CSV and metric SVG. Measure the 100 mm reference before trusting printer scale.
+- **Workshop exports:** a two-page A4 PDF: specifications and measurements, then a landscape dimensioned construction drawing. Split-wood plans show both mirrored halves, semicircular hollowing depths and minimum prepared stock. Separate optional 1:1 tiled templates, localized CSV tables and SVG technical drawings are available. Displayed dimensions use 0.1 mm; measure the 100 mm reference before trusting printer scale. Dense plans report a legibility limit rather than shrinking text; CSV retains the full table.
+
+[Two-page sample PDFs, vector drawings and measurements](docs/examples/construction/README.md) are generated and rendered on Android using synthetic fixtures.
 - **Sensitivity:** recompute diameter, length and insertion variations with the existing acoustic model. These are predictions, not physical calibration or a guarantee of the played drone/toot.
 
 The [construction implementation and verification record](docs/engineering/CONSTRUCTION_PROGRESS.md) documents scope, numerical checks, Android evidence and remaining limitations. Search is bounded, not a proof of global optimality; tapered intervals are discretized and circular-bore assumptions remain applicable.

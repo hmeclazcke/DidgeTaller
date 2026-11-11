@@ -678,18 +678,18 @@
     <string name="construction_choose">Usar candidato</string>
     <string name="construction_compare">Gris: perfil ideal. Verde: perfil fabricado. Las exportaciones incluyen estaciones y piezas.</string>
     <string name="construction_parts">Piezas y orden de armado</string>
-    <string name="construction_stations">Estaciones: x, diámetro ideal, anterior/posterior (mm)</string>
+    <string name="construction_stations">Medidas desde la boquilla (mm)</string>
     <string name="construction_tolerance_analysis">Evaluar sensibilidad de fabricación</string>
     <string name="construction_uncertainty">Solo simulación, sin calibración física. Pérdidas, secciones circulares y radiación son aproximadas. Los decimales no implican precisión constructiva ni acústica. Los perfiles variables usan 8 cilindros por intervalo medido. Verificá medidas, material seco, adhesivo y estructura antes de construir.</string>
-    <string name="construction_instructions">ID/OD: diámetros interior/exterior; L: longitud; W: ancho de material; I: inserción. Espejá las mitades preparadas; sumá el ancho de sierra al bloque sin partir y alineá plano central y marcas. Las capas van de boquilla a campana: sus aberturas constantes aproximan el perfil ideal. Los cortes PVC incluyen ambas inserciones: no las restes otra vez.</string>
-    <string name="construction_pdf">Exportar PDF A4</string>
-    <string name="construction_tiles">Exportar PDF con mosaicos 1:1</string>
+    <string name="construction_instructions">Las medidas están en milímetros. Seguí el plano de taller de cada técnica, verificá el material medido y comprobá la referencia impresa de 100 mm.</string>
+    <string name="construction_pdf">Plano de taller - PDF de 2 páginas</string>
+    <string name="construction_tiles">Plantilla a tamaño real - PDF 1:1 por mosaicos</string>
     <string name="construction_ruler">Referencia de 100 mm: imprimí al 100 por ciento y medí; no confíes en la escala automática.</string>
     <string name="construction_overview">Vista general reducida, no tamaño real</string>
     <string name="construction_preview_limit">La vista previa muestra las primeras 60 estaciones; las exportaciones incluyen la tabla completa.</string>
     <string name="construction_geometry">Perfil ideal CSV: x mm, diámetro interior mm</string>
     <string name="construction_advanced">Geometría y límites avanzados</string>
     <string name="construction_tolerance_help">Escenarios: ID +/-1 mm, largo de última pieza +/-5 mm, campana ID +1 mm, primera inserción PVC 1 mm menor. La sensibilidad local cambia ambos diámetros de hasta 12 piezas en +1 mm; aproxima un conducto circular, no un ahuecado asimétrico.</string>
-    <string name="construction_svg">Exportar SVG</string>
+    <string name="construction_svg">Dibujo técnico - imagen SVG</string>
     <string name="construction_unavailable">fuera de los límites del modelo</string>
 </resources>

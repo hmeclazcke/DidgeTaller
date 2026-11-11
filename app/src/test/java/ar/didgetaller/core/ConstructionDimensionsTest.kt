@@ -16,9 +16,9 @@ class ConstructionDimensionsTest {
         assertEquals(44.0,row.idealMm!!,1e-9)
         assertEquals(44.0,row.beforeMm,1e-9);assertEquals(44.0,row.afterMm,1e-9)
         assertEquals(41.0,ConstructionDrawing.diameter(plan,375.0,false),1e-9)
-        val csv=ConstructionDrawing.csv(plan).lineSequence().first {it.startsWith("\"station\"")}.split("\",\"")
-        assertEquals("16.000",csv[8]);assertEquals("16.000",csv[9].trim('"'))
-        assertEquals("0.000 | 32.000 | 32.000 / 32.000 | 16.000 / 16.000",ConstructionDrawing.table(plan).first())
+        val csv=ConstructionDrawing.csv(plan).lineSequence().first {it.startsWith("\"0.0 *\"")}.split("\",\"")
+        assertEquals("16.0",csv[2]);assertEquals("50.0",csv[3]);assertEquals("25.0",csv[4].trim('"'))
+        assertTrue(ConstructionDrawing.table(plan).any {it.contains("16.0")})
         val cylinders=ConstructionProjects.cylinders(plan)
         assertEquals(16,cylinders.size)
         assertEquals(93.75,cylinders.first().lengthMm,0.0)
@@ -34,14 +34,19 @@ class ConstructionDimensionsTest {
     }
     @Test fun svgIsDimensionalEscapedAndIncludesBothPreparedHalves() {
         val xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ConstructionDrawing.svg(wood()).byteInputStream())
-        assertEquals("332mm",xml.documentElement.getAttribute("height"))
+        assertEquals("595.0pt",xml.documentElement.getAttribute("height"))
         assertEquals("<& wood",xml.getElementsByTagName("title").item(0).textContent)
-        val points=(xml.getElementsByTagName("polyline").item(0) as org.w3c.dom.Element).getAttribute("points").split(' ')
-        assertEquals("30.000,134.000",points.first());assertEquals("1530.000,110.000",points.last())
+        val paths=xml.getElementsByTagName("polyline")
+        val shaded=(0 until paths.length).map {paths.item(it) as org.w3c.dom.Element}.filter {it.getAttribute("fill")=="#dddddd"}
+        assertTrue(shaded.size>=5) // two longitudinal cavities plus three groove sections
+        val points=shaded.first().getAttribute("points").split(' ').map {it.split(',').map(String::toDouble)}
+        val scale=ConstructionDrawing.POINTS_PER_MM/6
+        assertEquals(34.0,points[1][0],1e-6)
+        assertEquals(142.0+16*scale,points[1][1],1e-6)
+        assertEquals(34.0+1500*scale,points.maxOf {it[0]},1e-6)
         val texts=xml.getElementsByTagName("text")
-        val parts=(0 until texts.length).map {texts.item(it)}.filter {it.textContent.startsWith("A:") || it.textContent.startsWith("B:")}
-        assertEquals(listOf("320","326"),parts.map {(it as org.w3c.dom.Element).getAttribute("y")})
-        assertTrue(parts.all {it.textContent.contains("W=98.000; H=49.000")})
+        val labels=(0 until texts.length).map {texts.item(it).textContent}
+        assertTrue(labels.any {it.startsWith("Half 1")});assertTrue(labels.any {it.startsWith("Half 2")})
     }
     @Test fun layerRemainderAndOpeningApproximationAreExplicit() {
         val plan=ConstructionProjects.create("layers",AcousticModel.Shape().withControlPoints(listOf(AcousticModel.BorePoint(0,32.0),AcousticModel.BorePoint(1500,80.0))),ConstructionOptions(method=ConstructionMethod.LAMINATED,layers="128"))

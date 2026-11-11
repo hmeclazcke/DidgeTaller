@@ -2,7 +2,7 @@
 
 Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
-Current status: **READY FOR OWNER REVIEW**. The complete construction workflow is
+Current status: **DOCUMENT REVISION VERIFIED LOCALLY; REMOTE CI PENDING**. The complete construction workflow is
 implemented and executed on the clean emulator. PR5 remains draft and unmerged.
 
 ## Implemented application workflow
@@ -171,3 +171,61 @@ unfinished export/UI integrations.
 No known functional or data-integrity blocker remains for owner review of this
 feature. Keep PR5 draft; do not merge automatically. Main, Samsung, private WAVs,
 legacy sessions/designs, official ub-mode and its license were not modified.
+
+
+## Workshop document redesign (2026-11-11)
+
+Baseline `2e 997e 1`. No acoustic equations or stored design schemas change.
+A shared pure document model now prepares specifications, method-specific cutting
+rows and point-based drawing commands. Android PDF and SVG consume the same marks.
+Default PDF is exactly two A 4 pages (portrait specifications, landscape drawing);
+full-size templates are a separate document, without report pages prepended.
+Wood drawings distinguish joining plane, semicircular removal radius, mirrored
+halves and prepared stock. Minimum material dimensions round upward to 0.1 mm;
+other displayed dimensions round to 0.1 mm without changing model geometry.
+Saw kerf/facing allowances remain builder-measured, never invented.
+
+English/Spanish export vocabulary is explicit. UUIDs are removed from presentation;
+filenames use the human name, method/format and a random collision-resistant suffix.
+SVG uses point units with six-decimal coordinates (not rounded displayed dimensions).
+CSV contains explicit units, station measurements and semantic parts rows; negative
+numeric values remain numeric and spreadsheet formulas are escaped.
+
+The legible two-page format supports at most 36 rows in the method-specific table;
+denser station/layer/assembly input must be simplified or exported as complete CSV.
+This is an explicit layout boundary, not silent truncation. Tiled inner profiles
+span 160 mm, advance 150 mm and include station/alignment marks and 100 mm rulers.
+Printing still requires a physical ruler check. Physical construction, glue-line
+thickness, material certification and played pitch are not validated by simulation.
+
+Validation is being consolidated; final evidence and sample files follow below.
+
+
+### Document revision: verified implementation awaiting remote CI
+
+JVM debug and release each:591 discovered,583 passed,8 protected skips,0 failures.
+The source gate reports 712 scored/156 unscored,64 historical above-target methods,
+zero violations and zero CPD groups. All 62 independently measured functions in the
+new document/Canvas adapter files have MCC≤9; existing numerical baselines and
+thresholds are unchanged. Constructors/Compose have 17 narrow source-bound technical
+reviews, with no invented numeric scores. Full scope coverage is JVM-only and kept
+separate from native rendering.
+
+Selected document PIT:474 generated,232 killed,231 survived,11 uncovered;48.95%
+of generated mutants killed,24 seconds mutation execution. First run on the prior
+layout produced 475/143; geometry assertions increased detected dimensional defects,
+while one mutation disappeared with the layout correction. These are related but
+not identical scopes. Survivors include annotation/layout changes and Kotlin
+iteration paths; they are not all asserted equivalent. This is limited defect-
+detection strength, not a whole-app score or proof of construction accuracy.
+
+Six clean API 37 native cases passed, plus a Spanish narrow 150% full export workflow.
+The final PDF generator additionally passed its two native document/render tests.
+Six bilingual default PDFs were generated, all 12 pages inspected; all 10 optional
+wood tiles were rendered and reviewed. Source geometry 1500/30/83 is preserved;
+wood depths 15/41.5 and prepared stock 101×50.5 are checked independently. PVC assembly
+1485 and connector/tube starts 770/835 are verified against measured synthetic inputs.
+Samples: [gallery](../examples/construction/README.md). No physical printing was done.
+See [document architecture and limitations](WORKSHOP_DOCUMENTS.md).
+
+Remote delivery and CI links will be recorded after observing their actual outcomes.

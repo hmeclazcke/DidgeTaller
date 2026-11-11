@@ -1232,3 +1232,17 @@ change was needed for that final test synchronization. Full provenance, selected
 647-mutant results, reproducible commands and practical model limits are in the
 [construction record](engineering/CONSTRUCTION_PROGRESS.md). PR5 stays draft;
 main, physical devices, private audio and official ub-mode remain untouched.
+
+
+# Workshop document generator revision — 2026-11-11
+
+Continued feature/inverse-design-construction from2e997e1. Replaced paginated text
+reports with a shared pure two-sheet document/drawing model and thin Android PDF
+adapter. Full-size tiles are now a separate export. Corrected rounded presentation,
+minimum-stock rounding, human filenames, bilingual export vocabulary and SVG/CSV.
+Native-generated synthetic samples live in docs/examples/construction; no private
+files or physical-device captures. Focused native checks passed, including Spanish
+150%; source gate passes without numerical exceptions. Selected mutation findings
+led to independent groove, scale, reducer, layered-cut and template assertions.
+Next delivery step: commit/push, inspect fast CI and one construction-native run;
+record actual conclusions rather than assuming a remote pass.

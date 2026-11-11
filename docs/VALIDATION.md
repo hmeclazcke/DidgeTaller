@@ -2392,3 +2392,18 @@ ruler and150mm alignment mark. No physical calibration or printer result is clai
 See [construction record](engineering/CONSTRUCTION_PROGRESS.md) and
 [authentic screenshot gallery](screenshots/construction/README.md). Synthetic
 fixtures only; no physical device, private WAV or existing user session was accessed.
+
+
+# Two-sheet workshop generator — 2026-11-11
+
+Debug/release each 591 tests:583 passed,8 protected skips; no failure. Source gate:
+712 scored/156 unscored,64 historical high-risk functions,0 new violations,CPD 0.
+No numerical baseline or quality threshold changed. Native API 37: six base cases,
+Spanish narrow 150% full workflow, and final two PDF-generation/raster cases passed.
+Actual default PDFs contain exactly two A 4 pages for all three methods in EN/ES;
+optional 1:1 wood pattern contains 10 independent tiles. Every PDF page was rasterized
+and inspected. Synthetic samples and file hashes are in examples/construction.
+PIT selected document scope 474:232 killed,231 surviving,11 uncovered;48.95%,24s
+mutation execution. Surviving layout/iteration mutations remain a stated limitation.
+Scientific calculations, saved schemas and audio code are unchanged. No Samsung or
+private WAV access. See engineering/WORKSHOP_DOCUMENTS.md for reproduction/limits.
