@@ -43,7 +43,10 @@ class ConstructionUiTest {
         compose.setContent {MaterialTheme(colorScheme=appColors) {ConstructionWorkspace(design,{name,_,bytes->exports[name.substringAfterLast('.')]=bytes},app){}}}
         compose.onNodeWithTag("construction-workspace").assertIsDisplayed()
     }
-    private fun click(tag:String) {compose.onNodeWithTag(tag).performScrollTo().performClick()}
+    private fun click(tag:String) {
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
+        compose.onNodeWithTag(tag).performScrollTo().assertIsDisplayed().performClick()
+    }
     private fun tab(index:Int) {
         androidx.test.espresso.Espresso.closeSoftKeyboard()
         val node=compose.onNodeWithTag("construction-step-$index")
@@ -121,6 +124,7 @@ class ConstructionUiTest {
         val language=if(compose.activity.resources.configuration.locales[0].language=="es")WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
         compose.onNodeWithTag("stock-confirmed").assertContentDescriptionEquals(language.wood(WoodTerm.CONFIRM))
         click("stock-confirmed")
+        compose.onNodeWithTag("stock-confirmed").assertIsOn()
         compose.onNodeWithTag("stock-fit-FITS").performScrollTo().assertIsDisplayed()
         screenshot("log-stock")
         click("stock-kind-BOARDS")

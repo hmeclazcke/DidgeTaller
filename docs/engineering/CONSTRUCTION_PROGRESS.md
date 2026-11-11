@@ -357,3 +357,13 @@ material/grain assessment and physical printer calibration. Irregular unsupporte
 stock remains unconfirmed. No structural or played-pitch certification is claimed.
 Laminated/PVC models, saved schema1, acoustic equations, main, private data and the
 official skill are preserved. No Samsung operation or merge was performed.
+
+
+Focused landscape diagnostic:7286899 native43072007504 failed at the new stock
+confirmation/FITS assertion while the IME was open. It is not counted as a pass.
+The test action helper now closes the IME before real button taps, requires the
+control to be displayed and explicitly asserts the confirmation checkbox is ON.
+All fit, locale, stored-geometry and export assertions remain intact. This is a
+synthetic interaction correction, not a relaxed manufacturing constraint or an
+application behavior workaround. Re-run only the focused three-case landscape
+scope; preserve the successful14-case PDF/stock matrix and unchanged pure tests.
