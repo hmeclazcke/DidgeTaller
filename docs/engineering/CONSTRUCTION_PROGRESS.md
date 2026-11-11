@@ -367,3 +367,11 @@ All fit, locale, stored-geometry and export assertions remain intact. This is a
 synthetic interaction correction, not a relaxed manufacturing constraint or an
 application behavior workaround. Re-run only the focused three-case landscape
 scope; preserve the successful14-case PDF/stock matrix and unchanged pure tests.
+
+
+The next focused run43073921219 confirmed the checkbox/fit fix and completed
+save/PDF assertions, then failed on the final conflict visibility check after
+editing width:the text-entry helper still left the IME open. Complete text edits
+now dismiss the IME centrally before subsequent state observations, as real Done
+navigation does. This removes the shared test-input premise instead of weakening
+visibility assertions. No production logic changed; retry the same focused scope.

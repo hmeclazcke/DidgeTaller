@@ -56,6 +56,7 @@ class ConstructionUiTest {
     }
     private fun field(key:String,value:String) {
         compose.onNodeWithTag("construction-$key").performScrollTo().performTextReplacement(value)
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
     }
     private fun ready() {compose.waitUntil(60000){compose.onAllNodesWithTag("construction-plan-summary").fetchSemanticsNodes().isNotEmpty()}}
     private fun export(format:String) {
