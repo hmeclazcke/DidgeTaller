@@ -665,10 +665,10 @@
     <string name="construction_tolerance">Margen de sobrecorte radial (mm)</string>
     <string name="construction_interval">Intervalo de estaciones (50-500 mm)</string>
     <string name="construction_layers">Espesor de capas en mm: valor nominal o lista exacta</string>
-    <string name="construction_pipes">Tubos: id, diámetro interior, exterior, largo disponible mm</string>
+    <string name="construction_pipes">Tubos: identificador, diámetros interior/exterior medidos, largo disponible (mm)</string>
     <string name="construction_fittings">Acoples: id, diámetros de alojamientos, inserciones, cuerpo, paso mínimo, perfil central</string>
     <string name="construction_assembly">Armado: id de tubo, corte mm, id de acople siguiente (último: -)</string>
-    <string name="construction_schema">Una fila CSV por pieza; punto decimal. IDs: letras, números, guión o guion bajo. El acople tiene 8 columnas; perfil x:diámetro|x:diámetro desde 0 hasta cuerpo menos ambas inserciones. Usá medidas reales: no se presuponen medidas comerciales.</string>
+    <string name="construction_schema">Una fila CSV por pieza; punto decimal. Identificadores: letras, números, guion o guion bajo. Cada acople tiene 8 columnas; su perfil central usa pares distancia:diámetro_interior separados por |, desde cero hasta el largo del cuerpo menos ambas inserciones. Usá medidas reales; no se presuponen medidas comerciales.</string>
     <string name="construction_clearance">Holgura máxima de encastre (mm)</string>
     <string name="construction_save_catalog">Guardar catálogo medido</string>
     <string name="construction_load_catalog">Cargar catálogo compartido</string>
@@ -689,7 +689,7 @@
     <string name="construction_preview_limit">La vista previa muestra las primeras 60 estaciones; las exportaciones incluyen la tabla completa.</string>
     <string name="construction_geometry">Perfil ideal CSV: x mm, diámetro interior mm</string>
     <string name="construction_advanced">Geometría y límites avanzados</string>
-    <string name="construction_tolerance_help">Escenarios: ID +/-1 mm, largo de última pieza +/-5 mm, campana ID +1 mm, primera inserción PVC 1 mm menor. La sensibilidad local cambia ambos diámetros de hasta 12 piezas en +1 mm; aproxima un conducto circular, no un ahuecado asimétrico.</string>
+    <string name="construction_tolerance_help">Escenarios: diámetros interiores +/-1 mm, largo de última sección +/-5 mm, diámetro interior de campana +1 mm, primera inserción PVC 1 mm menor. La sensibilidad local cambia ambos diámetros de hasta 12 secciones en +1 mm; aproxima un conducto circular, no un ahuecado asimétrico.</string>
     <string name="construction_svg">Dibujo técnico - imagen SVG</string>
     <string name="construction_unavailable">fuera de los límites del modelo</string>
 </resources>

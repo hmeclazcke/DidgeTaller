@@ -665,10 +665,10 @@
     <string name="construction_tolerance">Radial overcut allowance (mm)</string>
     <string name="construction_interval">Station interval (50-500 mm)</string>
     <string name="construction_layers">Layer thickness mm: one nominal value or exact list</string>
-    <string name="construction_pipes">Pipes: id, measured ID, OD, stock length mm</string>
+    <string name="construction_pipes">Pipes: identifier, measured inside/outside diameters, stock length (mm)</string>
     <string name="construction_fittings">Fittings: id, left/right socket diameters, left/right insertion, body, minimum bore, central profile</string>
     <string name="construction_assembly">Assembly: pipe id, cut mm, next fitting id (last: -)</string>
-    <string name="construction_schema">One CSV row per item; decimal point. IDs: letters, digits, underscore or dash. Fitting has 8 columns; profile is x:ID|x:ID from 0 to body minus both insertions. Enter measured values only. No commercial sizes are assumed.</string>
+    <string name="construction_schema">One CSV row per item; decimal point. Identifiers: letters, digits, underscore or dash. Each fitting has 8 columns; its central profile uses distance:inside_diameter pairs separated by |, from zero to body length minus both insertions. Enter measured values only; no commercial sizes are assumed.</string>
     <string name="construction_clearance">Maximum measured socket clearance (mm)</string>
     <string name="construction_save_catalog">Save measured catalog</string>
     <string name="construction_load_catalog">Load shared catalog</string>
@@ -689,7 +689,7 @@
     <string name="construction_preview_limit">Preview shows the first 60 stations; the exports contain the complete table.</string>
     <string name="construction_geometry">Ideal profile CSV: x mm, inner diameter mm</string>
     <string name="construction_advanced">Geometry and advanced limits</string>
-    <string name="construction_tolerance_help">Scenarios: ID +/-1 mm, last-piece length +/-5 mm, bell ID +1 mm, first PVC insertion 1 mm short. Local sensitivity changes both diameters of up to 12 pieces by +1 mm; this is a circular-bore approximation, not asymmetric hollowing.</string>
+    <string name="construction_tolerance_help">Scenarios: internal diameters +/-1 mm, last-section length +/-5 mm, internal bell diameter +1 mm, first PVC insertion 1 mm short. Local sensitivity changes both diameters of up to 12 sections by +1 mm; this models a circular bore, not asymmetric hollowing.</string>
     <string name="construction_svg">Technical drawing - SVG image</string>
     <string name="construction_unavailable">outside model limits</string>
 </resources>
