@@ -2360,3 +2360,35 @@ and individual provenance are in `docs/screenshots/showcase/` and `showcase-es/`
 ### Workshop domain checkpoint ? IN PROGRESS
 
 See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,562 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.
+
+### Workshop workflow verification (production992dadc)
+
+[Fast CI42917012360](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917012360)
+passed:580 discovered per JVM variant,572 passed,8 protected skips, no failures;
+APK/test compilation, Lint, localization, differential/source/coverage/CPD gates
+and quality-tool tests. JVM46.94/45.18%, core99.26/82.01% line/branch;670 measured
+functions,150 unscored in the numerical summary,64 historical above-target methods,
+zero gate violations and zero CPD groups. Lint0 errors/70 warnings/7 hints; broad
+Detekt2453 informational findings. No baseline/threshold relaxation.
+
+[Native run42917003540](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917003540)
+passed eight cases (base plus EN/ES normal/150% portrait) but failed landscape
+navigation automation. It is not a passing full run. The remaining complete
+landscape150 scenario passed in
+[42993552622](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42993552622),
+test-only70e744d, with unchanged production. Every construction scenario has actual
+clean-API35 execution; this is focused feature verification, not the full app suite.
+[Fast CI42993559385](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42993559385)
+also passed for that test-only revision; numerical source evidence above is reused
+because production code and JVM tests are unchanged.
+
+Selected local PIT:16 bytecode classes,647 mutants,432 killed,200 survived,15
+uncovered, no incomplete outcomes;66.77% detection. Different scope from the
+historical218-mutant checkpoint. New geometry/physics contracts cover interpolation,
+overlaps, layer openings, midpoint cells, sensitivity and unit conversions. Android
+verifies both PDF modes, CSV/SVG callbacks, exact page count, native-rendered100mm
+ruler and150mm alignment mark. No physical calibration or printer result is claimed.
+
+See [construction record](engineering/CONSTRUCTION_PROGRESS.md) and
+[authentic screenshot gallery](screenshots/construction/README.md). Synthetic
+fixtures only; no physical device, private WAV or existing user session was accessed.

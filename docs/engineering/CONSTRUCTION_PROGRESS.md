@@ -2,8 +2,8 @@
 
 Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
-Current status: **IN VERIFICATION**. Observe Android execution, screenshots and
-exact-source CI before declaring the complete workflow ready.
+Current status: **READY FOR OWNER REVIEW**. The complete construction workflow is
+implemented and executed on the clean emulator. PR5 remains draft and unmerged.
 
 ## Implemented application workflow
 
@@ -67,7 +67,9 @@ never zero. Circular sections do not represent asymmetric hollowing or structure
 - PDF: A4 overview, reduced scale, wood half cross-sections, paginated measurements,
   parts/instructions and optional 1:1 inner-profile tiles. Tiles span 160 mm, start
   every 150 mm (10 mm overlap), using exactly 72/25.4 points/mm. Every page includes
-  a 100 mm ruler. Print at 100% and measure; automatic calibration is not claimed.
+  a 100 mm ruler. Match identical x marks on neighboring tiles. Overview and
+  cross-section views are reduced; only the tiled inner profile is full size.
+  Print at 100% and measure; automatic calibration is not claimed.
 
 Exports use the existing Android document picker callback. Existing revocable
 analysis ownership prevents stale publication after editing or closing. No audio
@@ -83,9 +85,10 @@ layer constraints, bounded search, sensitivity, metric exports, tile coverage,
 storage round trips/corruption and acoustic equivalence. A failing laminated-mouth
 regression was reproduced and corrected. Numeric quality baselines are unchanged.
 
-Local executable checkpoint: 580 debug JVM cases, 572 passed, eight protected skips,
-no failures; app and instrumented APKs compiled. JVM line/branch 47.02%/45.10%, core
-99.23%/81.84%. Source gate: 667 measured, 149 unscored by the numerical summary,
+Verified production source: `992dadc`, unchanged by the later test-only `70e744d`.
+CI debug and release each discover 580 JVM cases: 572 passed, eight protected skips,
+zero failures. CI JVM line/branch 46.94%/45.18%, core 99.26%/82.01%.
+Source gate: 670 measured, 150 unscored by the numerical summary,
 64 historical above-target methods, zero new violations and zero CPD groups.
 Unsupported constructors/Compose are reviewed by source hash; no numeric exception
 or threshold change. EN/ES resource parity passes (668 strings).
@@ -105,6 +108,66 @@ storage and real Laboratory entry/close. Manual deep scope `construction` runs o
 clean API35 with EN/ES, normal/150%, portrait/landscape and screenshot artifacts.
 Compilation is not an executed Android test.
 
-Next: execute Android scope and inspect images/PDF; fix actual failures; observe
-final fast CI; replace pending status with exact evidence. Keep PR5 draft,
-main unchanged. No Samsung or private recording access.
+First integration (`5247ca6`): [fast CI](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42913461785)
+and [focused emulator](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42913473334)
+passed; 9 native executions and 29 images. Visual review exposed IME panning at
+150%, unformatted dimensions and PDF word breaks. `83b7997` uses explicit
+[dialog window insets](https://developer.android.com/reference/kotlin/androidx/compose/ui/window/DialogProperties),
+formats dimensions and adds natural word wrapping, a length dimension and tile
+registration. Updated native tests check a visible editor heading, exact PDF page
+count and registration position, as well as the 100 mm ruler. JVM, gate and selected
+PIT passed locally with the updated construction code.
+
+## Final source-scoped evidence
+
+- [Fast CI for production source992dadc](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917012360):
+  success; debug/release JVM, app and test APK, Lint, localization, coverage,
+  Kotlin inventories, CRAP-L/source ratchet, CPD and Python/Java tooling tests.
+  Differential synthetic contracts match the pinned original reference byte-for-byte.
+  [Fast CI for test-only70e744d](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42993559385)
+  also passed with the final keyboard/selected-tab assertions compiled.
+- [Eight passing native cases](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917003540):
+  four base tests, EN/ES normal portrait and EN/ES narrow 150% portrait. The workflow
+  itself failed only on landscape navigation after editing, and is retained as a
+  failed run, not relabeled a full pass.
+- [Targeted landscape150 verification](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42993552622):
+  success, one complete search/plan/save/tolerance/export scenario. Test-only70e744d
+  closes the active IME through Espresso before navigating and requires selected-tab
+  semantics. Production code is identical to992dadc. The default manual configuration
+  still runs every construction case; the explicit landscape option reuses the
+  eight unchanged successful production scenarios instead of repeating them.
+- Remote Lint: zero errors,70 warnings,7 hints; three construction recommendations
+  suggest Canvas KTX helpers. Broad Detekt:2453 informational findings. These are
+  disclosed debt, not claims of zero static-analysis issues. No new numeric gate
+  exception was introduced. Workspace orchestration MCC is9; domain calculations
+  are independently measured and tested.
+- All exports are triggered in Compose and their returned bytes verified. Android's
+  real PdfRenderer checks A4 dimensions, exact extra tile count,100mm raster ruler
+  and150mm registration. Actual system document-picker file destinations reuse the
+  unchanged app export transport; no physical printer was tested.
+- [Reviewed authentic screenshots](../screenshots/construction/README.md): target,
+  candidates, wood and PVC plans, laminated steps,150% editor, PDF overview/tile,
+  and landscape navigation. Original PNGs, synthetic data only.
+
+## Practical limitations and reproducibility
+
+Search targets constrain candidate search. Generating a plan for the current
+geometry instead reports that actual bore without silently retuning it. PVC search
+varies cuts within the user-entered assembly sequence; it does not enumerate every
+possible catalog arrangement or perform stock nesting. Every listed cut can use
+its own stock piece. Sensitivity is bounded to the listed global scenarios and
+up to12 local pieces. Model resonance is not a measured played note, structural
+certification or guaranteed physical performance. Construction requires measured
+materials and printer-scale verification. These are explicit scope limits, not
+unfinished export/UI integrations.
+
+```powershell
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:testDebugUnitTest :app:testReleaseUnitTest :app:assembleDebug :app:assembleDebugAndroidTest
+.\gradlew.bat --max-workers=2 -Pkotlin.incremental=false :app:qualityMutationWorkshop
+# Existing complete metric commands remain in docs/quality/QUALITY_GUIDE.md.
+# GitHub manual deep workflow: scope=construction, configuration=all (or landscape).
+```
+
+No known functional or data-integrity blocker remains for owner review of this
+feature. Keep PR5 draft; do not merge automatically. Main, Samsung, private WAVs,
+legacy sessions/designs, official ub-mode and its license were not modified.

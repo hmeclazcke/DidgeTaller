@@ -153,6 +153,13 @@ Abrí **Laboratorio → Buscar → Plano de construcción**, o elegí **Plano de
 
 El [registro de implementación y verificación constructiva](docs/engineering/CONSTRUCTION_PROGRESS.md), en inglés, documenta alcance, comprobaciones numéricas, evidencia Android y límites pendientes. La búsqueda es acotada y no demuestra un óptimo global; los intervalos cónicos se discretizan y se mantienen los supuestos de conducto circular.
 
+<p>
+  <img src="docs/screenshots/construction/es-normal-candidates.png" alt="Comparación de candidatos acústicos y perfiles interiores" width="280" />
+  <img src="docs/screenshots/construction/es-normal-wood-plan.png" alt="Plano de taller de madera partida y controles de exportación" width="280" />
+</p>
+
+Capturas auténticas del emulador con datos sintéticos; consultá la [galería constructiva y su procedencia](docs/screenshots/construction/README.md), en inglés.
+
 ## Licencia y colaboración
 
 Didge Taller se distribuye bajo la [licencia MIT](LICENSE). DidgeLab y CADSD son referencias de investigación, no motores incluidos; el contexto de atribución está en la [guía del Laboratorio](README-LAB.md). Antes de colaborar, leé [AGENTS.md](AGENTS.md), mantené los cambios acotados y dejá fuera de Git el audio privado, los diagnósticos locales y las credenciales.

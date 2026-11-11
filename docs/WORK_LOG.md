@@ -1214,3 +1214,21 @@ private-recording access; PR3 remains separate (already merged by the owner).
 ### Workshop domain checkpoint ? IN PROGRESS
 
 See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,562 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.
+
+### Complete workshop application workflow
+
+Production992dadc adds bounded candidates, separate construction project/catalog
+persistence, three manufacturing interpretations, tolerance, actual PDF/CSV/SVG
+exports and bilingual Android navigation. Reused the acoustic solver and existing
+revocable workers; original designs and recordings remain unchanged. A regression
+exposed the laminated first-layer inlet constraint and was corrected. Mutation
+survivors led to independent dimensional assertions and fixed-size mesh allocation.
+
+Reviewed real emulator/PDF captures; corrected IME panning, dimension formatting,
+word wrapping and tile registration. Eight native scenarios passed on992dadc;
+test-only70e744d then passed the remaining landscape150 scenario after closing the
+active keyboard before tab navigation and requiring selection semantics. No runtime
+change was needed for that final test synchronization. Full provenance, selected
+647-mutant results, reproducible commands and practical model limits are in the
+[construction record](engineering/CONSTRUCTION_PROGRESS.md). PR5 stays draft;
+main, physical devices, private audio and official ub-mode remain untouched.

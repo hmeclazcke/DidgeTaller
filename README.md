@@ -154,6 +154,13 @@ Open **Laboratory → Search → Construction plan**, or choose **Construction p
 
 The [construction implementation and verification record](docs/engineering/CONSTRUCTION_PROGRESS.md) documents scope, numerical checks, Android evidence and remaining limitations. Search is bounded, not a proof of global optimality; tapered intervals are discretized and circular-bore assumptions remain applicable.
 
+<p>
+  <img src="docs/screenshots/construction/en-normal-candidates.png" alt="Comparing predicted acoustic candidates and bore profiles" width="280" />
+  <img src="docs/screenshots/construction/en-normal-wood-plan.png" alt="Generated split-wood workshop plan and export controls" width="280" />
+</p>
+
+Authentic synthetic-data emulator captures; see the [construction gallery and provenance](docs/screenshots/construction/README.md).
+
 ## License and contributions
 
 Didge Taller is licensed under [MIT](LICENSE). DidgeLab and CADSD are research references, not bundled engines; attribution context is in the [Laboratory guide](README-LAB.md). Before contributing, read [AGENTS.md](AGENTS.md), keep changes focused, and leave private audio, local diagnostics, and credentials out of Git.
