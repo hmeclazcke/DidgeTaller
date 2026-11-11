@@ -20,13 +20,21 @@ class WoodWorkshopTest {
             assertEquals(101.0,measures.last {it.kind=="stock-width"}.valueMm,0.0)
             for(m in d.pages.flatMap {it.dimensions})assertEquals(m.valueMm*m.scale,hypot(m.end.first-m.start.first,m.end.second-m.start.second),1e-8)
             val cavities=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().filter {it.shaded}
-            assertEquals(5,cavities.size)
-            for((a,b) in cavities[0].points.zip(cavities[1].points)) {
-                assertEquals(a.first,b.first,1e-9);assertEquals(123.0+253.0,a.second+b.second,1e-9)
+            assertEquals(3,cavities.size)
+            val diameters=measures.filter {it.kind=="bore-diameter"}
+            val depths=measures.filter {it.kind=="groove-depth"}
+            for(i in cavities.indices) {
+                val cx=(diameters[i].start.first+diameters[i].end.first)/2
+                val cy=depths[i].start.second
+                for((a,b) in cavities[i].points.zip(cavities[i].points.asReversed())) {
+                    assertEquals(a.first,b.first,1e-8);assertEquals(2*cy,a.second+b.second,1e-8)
+                    assertEquals(diameters[i].valueMm/2*diameters[i].scale,hypot(a.first-cx,a.second-cy),1e-8)
+                }
             }
-            // The genuine bend at 1020 mm is retained; no invented straight taper.
-            val s=measures.first {it.kind=="overall-length"}.scale
-            assertTrue(cavities[0].points.any {(x,y)->kotlin.math.abs(x-(64+1020*s))<1e-8 && kotlin.math.abs(y-(123+21.5*s))<1e-8})
+            // The actual profile bend remains on page1, independently of the transverse circles.
+            val s=d.pages[0].dimensions.first {it.kind=="overall-length"}.scale
+            val profile=d.pages[0].marks.filterIsInstance<WorkshopMark.Path>().single {it.shaded}
+            assertTrue(profile.points.any {(x,y)->kotlin.math.abs(x-(62+1020*s))<1e-8 && kotlin.math.abs(y-(260-21.5*s))<1e-8})
             assertFalse(d.text().contains("UUID"));assertFalse(d.text().contains("83.000"))
         }
     }
@@ -40,8 +48,8 @@ class WoodWorkshopTest {
         val section=WorkshopDocument.create(plan(boards),WorkshopLanguage.ENGLISH).pages[1].marks.filterIsInstance<WorkshopMark.Path>().first {it.fillColor==WoodInk.WOOD && it.points.size==4}
         assertEquals(section.points[0].first,section.points[3].first,0.0)
         assertEquals(section.points[0].second,section.points[1].second,0.0)
-        assertTrue(log.text().contains("minimum envelope"))
-        assertTrue(WorkshopDocument.create(plan(null),WorkshopLanguage.ENGLISH).text().contains("unknown"))
+        assertTrue(log.text().contains("minimum diameter"))
+        assertTrue(WorkshopDocument.create(plan(null),WorkshopLanguage.ENGLISH).text().contains(WoodTerm.UNKNOWN.en))
     }
     @Test fun additiveFormFieldsRoundTripAndLegacyProjectsRemainUnconfirmed() {
         val v=ConstructionForm.defaults(shape)+mapOf("stockKind" to "BOARDS","stockLength" to "1500","stockWidth" to "101","stockThickness" to "50.5","stockFace" to "0","stockTrim" to "0","stockUncertainty" to "0","stockConfirmed" to "true","wall" to "9","tolerance" to "0")
@@ -68,7 +76,7 @@ class WoodWorkshopTest {
         assertTrue(csv.contains("731.250000"));assertTrue(csv.contains("119.800000"))
         val raw=WorkshopDocument.csv(plan(null),WorkshopLanguage.SPANISH)
         assertTrue(raw.contains("Interior antes de la posición (mm)"))
-        assertTrue(raw.lines().last {it.startsWith("\"1500.000000")}.endsWith("\"\",\"\",\"\""))
+        assertTrue(raw.lines().last {it.startsWith("\"1500.000000")}.endsWith("\"\",\"\",\"\",\"\""))
     }    @Test fun formParsesBothStockAxesAndRejectsAmbiguousOrMalformedBounds() {
         val defaults=ConstructionForm.defaults(shape)
         assertEquals("1520",defaults["stockLength"])

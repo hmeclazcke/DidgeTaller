@@ -179,6 +179,9 @@ registerMutation("qualityMutationWorkshop", "pit-workshop",
 registerMutation("qualityMutationDocuments", "pit-documents",
     "ar.didgetaller.core.WorkshopDocument*,ar.didgetaller.core.WorkshopTables,ar.didgetaller.core.WorkshopSpecifications,ar.didgetaller.core.WorkshopDiagram,ar.didgetaller.core.WorkshopSvg,ar.didgetaller.core.WorkshopPage,ar.didgetaller.core.WorkshopLanguage,ar.didgetaller.core.WorkshopTemplates,ar.didgetaller.core.WorkshopMark*",
     "ar.didgetaller.core.WorkshopDocumentTest,ar.didgetaller.core.ConstructionDrawingTest", null)
+registerMutation("qualityMutationCarving", "pit-carving",
+    "ar.didgetaller.core.CarvingMeasurements",
+    "ar.didgetaller.core.WorkshopUsabilityTest,ar.didgetaller.core.WoodWorkshopTest", null)
 registerMutation("qualityMutationWood", "pit-wood",
     "ar.didgetaller.core.WoodFit,ar.didgetaller.core.WoodStockForm",
     "ar.didgetaller.core.WoodStockTest,ar.didgetaller.core.WoodWorkshopTest", null)

@@ -47,8 +47,8 @@ data class WorkshopDocument(val name:String,val language:WorkshopLanguage,val me
         }
         fun note(hz:Double,l:WorkshopLanguage):String {
             val pitch=Music.pitch(hz) ?: return "—"
-            if(l==WorkshopLanguage.ENGLISH)return pitch.note
-            val names=listOf("Do","Do sostenido","Re","Mi bemol","Mi","Fa","Fa sostenido","Sol","Sol sostenido","La","Si bemol","Si")
+            if(l==WorkshopLanguage.ENGLISH)return pitch.note.replace("#","♯").replace("b","♭")
+            val names=listOf("Do","Do♯","Re","Mi♭","Mi","Fa","Fa♯","Sol","Sol♯","La","Si♭","Si")
             return names[Math.floorMod(pitch.midi,12)]+(Math.floorDiv(pitch.midi,12)-1)
         }
         fun filename(p:ConstructionPlan,format:String,l:WorkshopLanguage,token:String):String {

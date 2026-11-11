@@ -7146,6 +7146,20 @@
       ],
       "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
+    },
+    "72974a6203c922771d71968911024eb7c191c9378bd224726774e7b83a018b2b": {
+      "file": "app/src/main/java/ar/didgetaller/core/CarvingMeasurements.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "fa0950432b52b76d75ad6fd4756d4207eac0e151ea30bc8f624fac5fc36ca5c1",
+      "reason": "Immutable workshop-station value with explicit diameter, half-groove depth, wood below the groove and minimum radial/side wall. Constructor has no standalone named-function Detekt/JaCoCo correspondence. All calculations are measured in CarvingMeasurements.row; independent board/log/uncertainty/section tests protect the quantities. No numeric CRAP exception is claimed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopUsabilityTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "docs/engineering/WORKSHOP_DOCUMENTS.md"
+      ],
+      "reviewed_source": "Focused workshop usability correction following c497246"
     }
   }
 }

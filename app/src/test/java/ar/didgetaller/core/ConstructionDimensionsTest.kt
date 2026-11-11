@@ -38,15 +38,17 @@ class ConstructionDimensionsTest {
         assertEquals("<& wood",xml.getElementsByTagName("title").item(0).textContent)
         val paths=xml.getElementsByTagName("polyline")
         val shaded=(0 until paths.length).map {paths.item(it) as org.w3c.dom.Element}.filter {it.getAttribute("data-cavity")=="true"}
-        assertTrue(shaded.size>=5) // two longitudinal cavities plus three groove sections
+        assertEquals(3,shaded.size) // three complete transverse openings, with no duplicate long halves
         val points=shaded.first().getAttribute("points").split(' ').map {it.split(',').map(String::toDouble)}
-        val scale=ConstructionDrawing.POINTS_PER_MM/6
-        assertEquals(64.0,points[1][0],1e-6)
-        assertEquals(123.0+16*scale,points[1][1],1e-6)
-        assertEquals(64.0+1500*scale,points.maxOf {it[0]},1e-6)
+        assertEquals(3,shaded.size)
+        val minX=points.minOf {it[0]};val maxX=points.maxOf {it[0]}
+        val minY=points.minOf {it[1]};val maxY=points.maxOf {it[1]}
+        assertEquals(maxX-minX,maxY-minY,1e-6)
         val texts=xml.getElementsByTagName("text")
         val labels=(0 until texts.length).map {texts.item(it).textContent}
-        assertTrue(labels.any {it.startsWith("Half A")});assertTrue(labels.any {it.startsWith("Half B")})
+        assertFalse(labels.any {it.startsWith("Half A") || it.startsWith("Half B")})
+        assertTrue(labels.contains("Depth in each half"))
+
     }
     @Test fun layerRemainderAndOpeningApproximationAreExplicit() {
         val plan=ConstructionProjects.create("layers",AcousticModel.Shape().withControlPoints(listOf(AcousticModel.BorePoint(0,32.0),AcousticModel.BorePoint(1500,80.0))),ConstructionOptions(method=ConstructionMethod.LAMINATED,layers="128"))

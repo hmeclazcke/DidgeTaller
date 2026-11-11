@@ -1,6 +1,15 @@
 package ar.didgetaller.core
 
 enum class WoodTerm(val en:String,val es:String) {
+    DEPTH_SHORT("Depth","Profundidad"), STOCK_T("Thickness of each board","Espesor por tabla"), BLOCK_SIZE("Total block thickness","Espesor total del bloque"), MIN_D("Minimum outside diameter","Diámetro exterior mínimo"), MEASURED_D("Measured outside diameters","Diámetros exteriores medidos"),
+    INSTRUMENT_LENGTH("Instrument length","Largo del instrumento"), MOUTH("Mouthpiece bore","Interior de la boquilla"), BELL("Bell bore","Interior de la campana"),
+    TABLE_POSITION("From the mouthpiece","Desde la boquilla"), TABLE_DEPTH("Depth in each half","Profundidad por mitad"), TABLE_REMAINING("Wood remaining","Madera restante"),
+    CARVING_TABLE("Carving measurements · millimetres","Medidas de ahuecado · milímetros"), SELECTED("Selected stations; complete measurements in CSV","Puntos seleccionados; medidas completas en CSV"),
+    TABLE_NOTE("Depth is measured from the joining plane; remaining wood is below the groove.","La profundidad se mide desde el plano de unión; la madera restante queda debajo del canal."),
+    LOG_NOTE("Log: minimum wall estimated from the stated diameters, assuming a centred bore.","Tronco: pared mínima estimada con los diámetros indicados, suponiendo el canal centrado."),
+    PREPARATION_NOTE("Dimensions allow for the stated preparation losses.","Las medidas descuentan las pérdidas de preparación indicadas."),
+    UNCONFIRMED("Not confirmed","Por confirmar"), MIN_REMAINING("Smallest remaining wall","Menor espesor de pared"), AT_BELL("at the bell","en la campana"), AT_MOUTH("at the mouthpiece","en la boquilla"), FROM_MOUTH("from the mouthpiece","desde la boquilla"),
+    RESERVE("Extra carving allowance","Reserva de rebaje"), PARALLEL("Rectangular stock: parallel outside edges","Madera rectangular: bordes exteriores paralelos"),
     SHORT_LENGTH("Length","Largo"), SHORT_WIDTH("width","ancho"), SHORT_THICKNESS("thickness","espesor"),
     GROOVE("Groove","Canal"), SHORT_WALL("Wall","Pared"),
     BEFORE("Bore before station","Interior antes de la posición"), AFTER("Bore after station","Interior después de la posición"),
@@ -15,22 +24,22 @@ enum class WoodTerm(val en:String,val es:String) {
     SECTIONS("Optional log measurements: distance, minimum diameter (mm)","Medidas opcionales del tronco: distancia, diámetro mínimo (mm)"),
     CONFIRM("These are my measured bounds along a straight, centred, sound piece","Son mis medidas límite de una pieza recta, centrada y sin defectos conocidos"),
     ASSUMPTION("Initial values are examples. Use the smaller dimensions of both boards. A log needs conservative bounds between measurements; curvature, cracks, knots or ovality may prevent confirmation.","Los valores iniciales son ejemplos. Usá las menores dimensiones de ambas tablas. El tronco necesita límites conservadores entre mediciones; curvatura, grietas, nudos u ovalidad pueden impedir confirmarlo."),
-    FITS("Fits the stated dimensional envelope","Cabe en la envolvente dimensional indicada"), FAIL("DOES NOT FIT this wood","NO CABE en esta madera"), UNKNOWN("Fit not confirmed","Ajuste sin confirmar"),
+    FITS("The available wood has the required dimensions","La madera disponible tiene las medidas necesarias"), FAIL("DOES NOT FIT this wood","NO CABE en esta madera"), UNKNOWN("Wood measurements still need confirmation","Falta confirmar las medidas de la madera"),
     POSITION("Limiting position","Posición limitante"), MARGIN("Clearance reserve","Margen dimensional"),
     LIMIT_LENGTH("Insufficient usable length","Largo útil insuficiente"), LIMIT_WIDTH("Insufficient prepared width","Ancho preparado insuficiente"), LIMIT_DEPTH("Insufficient half thickness","Espesor de mitad insuficiente"),
-    LIMIT_LOG("Insufficient usable log envelope","Envolvente útil del tronco insuficiente"), LIMIT_UNKNOWN("Measurements or full-length bounds are incomplete","Faltan medidas o límites de todo el largo"),
-    OVERVIEW("Instrument and starting wood","Instrumento y madera inicial"), CARVING("Interior · halves A and B","Interior · mitades A y B"),
-    RAW("Starting stock · before preparation","Madera inicial · antes de preparar"), CAVITY("White: final air passage","Blanco: conducto de aire final"),
-    BOUND("Log outline: declared minimum envelope","Tronco: envolvente mínima declarada"), PROFILE_BOUND("Log outline: interpolated measured bounds","Tronco: límites medidos interpolados"),
-    UNMEASURED("Required envelope only · available wood unknown","Solo envolvente requerida · madera disponible desconocida"),
+    LIMIT_LOG("The usable log diameter is too small","El diámetro útil del tronco no alcanza"), LIMIT_UNKNOWN("More measurements are needed to check the full length","Faltan medidas para comprobar todo el largo"),
+    OVERVIEW("Instrument and available wood","Instrumento y madera disponible"), CARVING("Interior and carving dimensions","Interior y medidas de ahuecado"),
+    RAW("Available wood","Madera disponible"), CAVITY("White: final air passage","Blanco: conducto de aire final"),
+    BOUND("Log outline: stated minimum diameter","Contorno del tronco: diámetro mínimo indicado"), PROFILE_BOUND("Log outline estimated from the measurements","Contorno del tronco aproximado a partir de las medidas"),
+    UNMEASURED("Wood dimensions have not been supplied","Faltan las medidas de la madera"),
     PREPARED("Prepared half","Mitad preparada"), PLANE("Joining plane","Plano de unión"),
     BORE("Bore diameter","Diámetro interior"), DEPTH("Groove depth","Profundidad del canal"), WALL("Remaining wall","Pared restante"), SIDE("Side wall","Pared lateral"),
     HALF_T("Half thickness","Espesor de mitad"),
-    HALF_WIDTH("Half width","Ancho de mitad"), MINIMUM("Theoretical minimum per half","Mínimo teórico por mitad"),
-    CONSTRAINT("Chosen wall constraint","Pared elegida como restricción"), NO_SAFETY("A geometric fit is not a wood-strength or instrument-safety certification.","El ajuste geométrico no certifica resistencia de la madera ni seguridad del instrumento."),
-    PASSIVE("Estimated passive resonance","Resonancia pasiva estimada"), TARGET("Acoustic target","Objetivo acústico"), NOTE_LIMIT("Played pitch is not guaranteed","La nota tocada no está garantizada"),
-    DETAIL("Full measurements and component data: CSV / SVG","Medidas completas y piezas: CSV / SVG"), SCALE("Reduced view · dimensions govern","Vista reducida · mandan las cotas"),
-    A("Half A","Mitad A"), B("Half B · mirrored","Mitad B · espejada"), LEGEND("Warm wood: available material · white: cavity","Madera cálida: material disponible · blanco: cavidad"),
+    HALF_WIDTH("Half width","Ancho de mitad"), MINIMUM("Minimum per half, before preparation","Mínimo por mitad, sin pérdidas"),
+    CONSTRAINT("Minimum wall thickness","Espesor mínimo de pared"), NO_SAFETY("Wood condition and grain still need assessment.","La resistencia depende de la madera y su estado."),
+    PASSIVE("Estimated passive resonance","Resonancia pasiva estimada"), TARGET("Target note","Nota objetivo"), NOTE_LIMIT("The target note is not a guarantee of the played note.","La nota objetivo no garantiza la nota al tocar."),
+    DETAIL("Full measurements and component data: CSV / SVG","Medidas completas y piezas: CSV / SVG"), SCALE("Longitudinal view · scale","Vista longitudinal · escala"),
+    A("Half A","Mitad A"), B("Half B · mirrored","Mitad B · espejada"), LEGEND("Wood in colour; the white area is the air passage","Madera en color; el área blanca es el conducto de aire"),
     PREP_UNKNOWN("No reliable prepared outline at this station","Sin contorno preparado fiable en esta posición")
 }
 fun WorkshopLanguage.wood(term:WoodTerm)=if(this==WorkshopLanguage.SPANISH)term.es else term.en
@@ -45,4 +54,14 @@ object WoodPresentation {
         val where="${l.wood(WoodTerm.POSITION)}: ${number(fit.positionMm)} mm"
         return (if(fit.status==WoodFitStatus.FITS)"" else reason(fit,l)+". ")+where+(fit.marginMm?.let {" · "+l.wood(WoodTerm.MARGIN)+": "+number(it)+" mm"} ?: "")
     }
+}
+
+/** Print formatting only; numeric CSV and acoustic calculations remain locale independent. */
+internal fun WorkshopLanguage.dimension(value:Double):String = WoodPresentation.number(value).let {
+    if(this==WorkshopLanguage.SPANISH)it.replace('.',',') else it
+}
+internal fun WorkshopLanguage.location(x:Double,length:Double):String = when(x) {
+    0.0->wood(WoodTerm.AT_MOUTH)
+    length->wood(WoodTerm.AT_BELL)
+    else->dimension(x)+" mm "+wood(WoodTerm.FROM_MOUTH)
 }

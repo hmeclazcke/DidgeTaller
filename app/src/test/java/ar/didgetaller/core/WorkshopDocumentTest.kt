@@ -15,7 +15,7 @@ class WorkshopDocumentTest {
         assertEquals(1500.0,d.measurements.last().xMm,0.0)
         assertEquals(15.0,d.measurements.first().beforeMm/2,0.0)
         assertEquals(41.5,d.measurements.last().afterMm/2,0.0)
-        assertTrue(d.text().contains("Groove depth"))
+        assertTrue(d.text().contains("Depth in each half"))
         assertFalse(d.text().contains("123e4567"))
         assertTrue(d.text().contains("83 mm"))
         assertFalse(d.text().contains("83.000"))
@@ -23,7 +23,7 @@ class WorkshopDocumentTest {
     @Test fun localizedDrawingAndCsvPreserveMeasurementsAndExplicitUnits() {
         val p=wood()
         val d=WorkshopDocument.create(p,WorkshopLanguage.SPANISH)
-        assertTrue(d.text().contains("Plano de unión"))
+        assertTrue(d.text().lowercase().contains("plano de unión"))
         assertFalse(d.text().contains("Hollowing"))
         val csv=WorkshopDocument.csv(p,WorkshopLanguage.SPANISH)
         assertTrue(csv.contains("Profundidad por mitad (mm)"))
@@ -76,8 +76,8 @@ class WorkshopDocumentTest {
             assertFalse(WorkshopDocument.sensitivity(raw,WorkshopLanguage.SPANISH).contains("bell"))
             assertNotEquals(raw,WorkshopDocument.sensitivity(raw,WorkshopLanguage.ENGLISH))
         }
-        assertEquals("Do sostenido2",WorkshopDocument.note(Music.frequency(37),WorkshopLanguage.SPANISH))
-        assertEquals("C#2",WorkshopDocument.note(Music.frequency(37),WorkshopLanguage.ENGLISH))
+        assertEquals("Do♯2",WorkshopDocument.note(Music.frequency(37),WorkshopLanguage.SPANISH))
+        assertEquals("C♯2",WorkshopDocument.note(Music.frequency(37),WorkshopLanguage.ENGLISH))
         assertEquals("—",WorkshopDocument.note(0.0,WorkshopLanguage.SPANISH))
         try {WorkshopDocument.filename(wood(),"pdf",WorkshopLanguage.ENGLISH,"../");fail("Unsafe token")}catch(_:IllegalArgumentException){}
     }
@@ -107,12 +107,12 @@ class WorkshopDocumentTest {
         val d=WorkshopDocument.create(p,WorkshopLanguage.ENGLISH)
         val points=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().flatMap {it.points}
         assertTrue(points.all {(x,y)->x>=0 && x<=842 && y>=0 && y<=595})
-        val measure=d.pages[1].dimensions.first {it.kind=="overall-length"}
+        val measure=d.pages[0].dimensions.first {it.kind=="overall-length"}
         assertEquals(500.0,measure.valueMm,0.0)
         assertEquals(500.0*measure.scale,measure.end.first-measure.start.first,1e-9)
-        val cavity=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().first {it.shaded}
-        assertEquals(64+500*measure.scale,cavity.points[2].first,1e-9)
-        assertEquals(123+110*measure.scale,cavity.points[2].second,1e-9)
+        val cavity=d.pages[0].marks.filterIsInstance<WorkshopMark.Path>().first {it.shaded}
+        assertEquals(62+500*measure.scale,cavity.points[2].first,1e-9)
+        assertEquals(260+110*measure.scale,cavity.points[2].second,1e-9)
         val peaked=AcousticModel.Shape(lengthMm=500,points=listOf(AcousticModel.BorePoint(0,15.0),AcousticModel.BorePoint(250,220.0),AcousticModel.BorePoint(500,15.0)))
         val layers=ConstructionProjects.create("Wide middle",peaked,ConstructionOptions(method=ConstructionMethod.LAMINATED,layers="50"))
         assertTrue(WorkshopDocument.create(layers,WorkshopLanguage.ENGLISH).text().contains("1:8.0"))
@@ -127,17 +127,14 @@ class WorkshopDocumentTest {
         val csv=WorkshopDocument.csv(p,WorkshopLanguage.ENGLISH)
         assertTrue(csv.contains("\"0.0 *\",\"30.0\",\"15.0\",\"48.0\",\"24.0\""))
         assertTrue(csv.contains("\"1500.0 *\",\"83.0\",\"41.5\",\"101.0\",\"50.5\""))
-        val shaded=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().filter {it.shaded}
-        assertEquals(5,shaded.size)
-        val longitudinal=d.pages[1].dimensions.first {it.kind=="overall-length"}.scale
-        assertEquals(listOf(64.0 to 123.0,64.0 to 123.0+15*longitudinal,64.0+1500*longitudinal to 123.0+41.5*longitudinal,64.0+1500*longitudinal to 123.0),shaded[0].points)
-        assertEquals(253.0-15*longitudinal,shaded[1].points[1].second,1e-9)
+        val circles=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().filter {it.shaded}
         val diameters=d.pages[1].dimensions.filter {it.kind=="bore-diameter"}
-        for((i,diameter) in diameters.withIndex()) {
-            val groove=shaded[i+2].points
-            val cx=158.0+i*263
-            assertEquals(diameter.valueMm*diameter.scale,groove.first().first-groove.last().first,1e-9)
-            groove.forEach {(x,y)->assertEquals(diameter.valueMm/2*diameter.scale,kotlin.math.hypot(x-cx,y-400.0),1e-9)}
+        val depths=d.pages[1].dimensions.filter {it.kind=="groove-depth"}
+        assertEquals(3,circles.size)
+        for(i in circles.indices) {
+            val diameter=diameters[i];val centerX=(diameter.start.first+diameter.end.first)/2;val centerY=depths[i].start.second
+            circles[i].points.forEach {(x,y)->assertEquals(diameter.valueMm/2*diameter.scale,kotlin.math.hypot(x-centerX,y-centerY),1e-9)}
+            assertEquals(diameter.valueMm/2,depths[i].valueMm,0.0)
         }
         assertEquals(30.0,diameters.first().valueMm,0.0)
         assertEquals(83.0,diameters.last().valueMm,0.0)

@@ -42,7 +42,12 @@ class WorkshopDocumentsUiTest {
                 assertEquals(41.5,m.last {it.kind=="groove-depth"}.valueMm,0.0)
                 assertEquals(9.0,m.last {it.kind=="base-wall"}.valueMm,0.0)
                 assertEquals(101.0,m.last {it.kind=="stock-width"}.valueMm,0.0)
-                assertTrue(document.text().contains("50.5"))
+                assertTrue(document.text().contains(language.dimension(50.5)))
+                val table=document.pages[1].marks.filterIsInstance<WorkshopMark.Text>().map {it.value}
+                assertTrue(table.containsAll(listOf(language.wood(WoodTerm.TABLE_POSITION),language.wood(WoodTerm.TABLE_DEPTH),language.wood(WoodTerm.TABLE_REMAINING))))
+                assertTrue(table.contains(language.dimension(35.5)));assertTrue(table.contains(language.dimension(29.0)))
+                assertFalse(table.contains(language.wood(WoodTerm.A)));assertFalse(table.contains(language.wood(WoodTerm.B)))
+                assertEquals(4,document.pages[0].dimensions.count {it.kind=="station-bore"})
             }
             val bytes=ConstructionPdf.create(plan,ConstructionPdf.Labels(language,69.3),false)
             val pdf=File(directory,"$prefix.pdf").apply {writeBytes(bytes)}

@@ -1305,3 +1305,22 @@ UI-only checkbox semantics/header density and keyboard-free evidence changes use
 the focused EN/ES150% landscape scope. Final CI observation is the remaining
 publication step; source/rendering acceptance and physical limitations are detailed
 in engineering/CONSTRUCTION_PROGRESS.md. Keep PR5 draft and do not merge.
+
+
+## Focused workshop usability correction — 2026-11-11
+
+Replaced the misleading pair of longitudinal half-views with three full transverse
+sections and a practical carving table. Page 1 retains the complete bore with real
+station/diameter markers and constant rectangular outside edges. A pure station
+model distinguishes groove depth, wood below the groove and minimum side/base wall;
+logs use prepared circular-cap geometry, not board subtraction. Unknown dimensions
+remain unknown. Full-precision CSV includes every selected print station; SVG
+matches the second sheet. Presentation-only note names and ES/EN wording improved.
+
+The original requested PDFs were rendered before editing. Final bilingual samples
+were generated and rasterized by a fresh task-owned emulator; the Spanish known-stock
+PDFs were independently rasterized on Windows and visually compared across pages.
+See VALIDATION.md and the synthetic gallery manifest for exact evidence. The final
+caption correction points full station measurements to CSV only. No acoustic,
+persistence or physical-device changes. Keep PR #5 draft; final publication/CI
+observation follows the validated implementation. No merge or private-file access.

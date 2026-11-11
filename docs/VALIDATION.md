@@ -2445,3 +2445,42 @@ changes are covered by the focused EN/ES150% landscape native run; final CI link
 and observed conclusions are maintained in PR5. Do not infer a pass from compilation
 or cancelled runs. No physical print, structural wood safety or played-note
 validation is claimed; no private data or physical device was used.
+
+
+## Workshop usability correction — 2026-11-11
+
+Both JVM variants: 615 discovered, 607 passed, 8 protected skips, no failures.
+Twelve focused usability tests protect the actual board/log quantities, profile
+stations, complete circles, dimension-arrow lengths, unknown measurements and
+CSV agreement. Strict source gate: 767 measured, 160 technically unscored,
+64 historical high-risk functions, zero violations; CPD zero. No new numerical
+exception. The new immutable Row constructor has a content-linked technical review.
+Selected CarvingMeasurements PIT: 57 generated, 39 killed, 18 surviving, zero
+uncovered (68.42% killed); selected bytecode scope only. Survivors remain disclosed,
+not all declared equivalent. Tool/localization evidence is reused for unchanged inputs.
+
+A fresh task-owned API 37 emulator executed the two native document tests and the
+actual Compose search/save/tolerance/export workflow: 3 passed, zero failures/skips.
+Android generated ten bilingual two-page A4 PDFs, SVG/CSV and the separate ten-page
+1:1 template. Every one of the 30 pages was rasterized and visually inspected;
+the requested Spanish board/log PDFs were independently rendered before/after using
+Windows.Data.Pdf. Final caption-only rerendering is checked separately; unchanged
+pages reuse exact-pixel evidence. Earlier emulator launcher/System UI ANRs interfered
+with UI input; after dismissing those dialogs, the unchanged workflow passed. The
+failed attempts are not counted as successful instrumentation.
+
+The 1500 mm example has 30/43/83 mm bores at 0/1020/1500 mm, 15/21.5/41.5 mm groove
+depths and 35.5/29/9 mm below-groove wood in 50.5 mm prepared boards. Its assembled
+101 x 101 mm envelope is rectangular. Log calculations assume the explicitly stated
+centred circular/minimum envelope and deduct supplied preparation losses. Numerical
+boundary examples do not establish wood strength, physical printer scale or played
+pitch. Source/artifact hashes are in docs/examples/construction/manifest.json.
+Final automatic CI URL/conclusion will be recorded in PR #5, without another
+redundant emulator dispatch. No Samsung/private recording operations occurred.
+
+Final caption payload also passed all three native cases. Of 30 regenerated PNGs,
+24 are byte-identical; the six caption-changed wood pages were reinspected. Final
+JVM variants and strict gate passed again. Selected PIT survivors are four in
+minimum selection, one Kotlin null assertion in row, and thirteen in station
+spreading. No survivor changes a tested diameter/depth/board-or-log wall formula;
+selection-boundary/tie mutations are retained as disclosed test-strength limits.

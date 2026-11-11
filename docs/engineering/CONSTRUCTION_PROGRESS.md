@@ -375,3 +375,38 @@ editing width:the text-entry helper still left the IME open. Complete text edits
 now dismiss the IME centrally before subsequent state observations, as real Done
 navigation does. This removes the shared test-input premise instead of weakening
 visibility assertions. No production logic changed; retry the same focused scope.
+
+
+## Focused workshop plan usability — completed locally, publication pending
+
+Current revision starts at c497246. The default wood PDF remains exactly two A4
+pages: (1) whole instrument, real distance/diameter markers, actual stock and truthful
+fit result; (2) complete transverse sections and selected carving measurements.
+The former long A/B views are removed. Board exteriors stay parallel, while log
+contours use supplied circular/minimum or measured bounds. Groove depth, base wood
+and minimum side/base wall are different quantities; unknown dimensions remain blank.
+Detailed CSV includes every printed station at full precision. SVG uses the same
+second-sheet vectors; true-size tiles remain a separate calibrated export.
+
+Local JVM debug/release: 615 each, 607 passed/8 protected skips. Source gate 767
+measured/160 unscored, 64 historical high-risk, zero violations and CPD zero.
+CarvingMeasurements PIT: 57 total, 39 killed, 18 survivors, no uncovered mutants.
+Three actual native executions on a fresh API 37 emulator cover both bilingual
+PDF generation/template calibration and the Compose search/save/tolerance/all-export
+workflow. All 20 default and 10 template pages were rendered and inspected; Windows
+also independently rendered the requested Spanish PDFs. The synthetic gallery and
+manifest retain exact samples and source hashes. Final CI observation remains a
+publication step; see PR #5 for the resulting run URL/conclusion.
+
+No acoustic engine, stock-feasibility rule, persisted schema, Laminated/PVC model,
+private recording or physical device was changed. Remaining limits are the explicit
+stock assumptions, builder-measured preparation losses, material/grain assessment
+and physical printer calibration. These sheets are not structural or played-pitch
+certification. Keep PR #5 draft and main unchanged.
+
+Final caption payload also passed all three native cases. Of 30 regenerated PNGs,
+24 are byte-identical; the six caption-changed wood pages were reinspected. Final
+JVM variants and strict gate passed again. Selected PIT survivors are four in
+minimum selection, one Kotlin null assertion in row, and thirteen in station
+spreading. No survivor changes a tested diameter/depth/board-or-log wall formula;
+selection-boundary/tie mutations are retained as disclosed test-strength limits.

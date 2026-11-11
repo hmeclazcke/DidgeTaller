@@ -114,3 +114,32 @@ for commit-scoped native runs, current stock examples, limitations and source-bo
 review counts. The owner-supplied reference image guides style only. No raster art
 is used as a source of manufacturing coordinates. Pure vector geometry is shared
 by PDF/SVG; the optional1:1 template retains a true100 mm calibration reference.
+
+
+## Focused workshop usability correction — 2026-11-11
+
+The current split-wood layout supersedes the former pair of long A/B projections.
+Page 1 contains the complete bore, actual distance/diameter callouts and available
+stock. Rectangular outside edges stay parallel; logs use their stated minimum or
+measured bounds. Page 2 contains three complete cross sections and a selected
+station table, with full-diameter, half-depth and remaining-wall arrows.
+
+`CarvingMeasurements.Row` distinguishes bore diameter, half-groove depth, wood
+below the groove and minimum wall (including board sides). For 50.5 mm prepared
+boards the 0/1020/1500 mm rows are30/43/83 mm bores,15/21.5/41.5 mm depths and
+35.5/29/9 mm remaining bases. A 70 mm board has28.5 mm below the bell groove;
+a 101 mm width still has9 mm side walls. Logs use the prepared circular-cap radius
+and joining-plane offset. Unconfirmed or absent local measurements produce no
+invented remaining thickness or limiting location. All selected print stations
+also appear in the full-precision CSV. SVG follows the new dimensioned second
+sheet; exhaustive numeric station data remains in CSV. True-size tiles are
+unchanged and separate.
+
+Spanish print dimensions use decimal commas; target notes use compact accidentals
+such as Do♯2. Required dimensions/feasibility remain independent of wood strength
+and played pitch. Three native cases passed on a fresh API 37 emulator,
+including actual Compose export callbacks. 20 default pages and 10 tile pages were
+rendered; the requested Spanish PDFs were independently rasterized with the Windows
+PDF renderer before and after editing. Local logs stay ignored; source/artifact
+hashes and actual examples are linked from the sample gallery. No acoustic engine,
+saved design/session format, microphone operation or physical-device state changed.
