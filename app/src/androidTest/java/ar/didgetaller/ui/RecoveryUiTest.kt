@@ -131,7 +131,7 @@ class RecoveryUiTest {
             compose.runOnIdle {assertTrue("$profile readings=${readings.size}, hz=${vm.reading.hz}, listening=${vm.listening}",vm.stableReading);assertEquals(hz,vm.filteredHz,1.0);assertEquals(profile,vm.instrument);assertEquals(readings.size,vm.sessionTimeline.size)}
             if(limited)capture("$name-before-accessibility-scroll")
             if(limited)compose.onNodeWithTag("measurement-note-name").performScrollTo()
-            compose.onNodeWithTag("measurement-note-name").assertIsDisplayed().assertTextEquals(if(profile==InstrumentProfile.NATIVE_AMERICAN_FLUTE)"A4" else "C#2")
+            compose.onNodeWithTag("measurement-note-name").assertIsDisplayed().assertTextEquals(if(profile==InstrumentProfile.NATIVE_AMERICAN_FLUTE)"A4" else "C♯2")
             if(limited)compose.onNodeWithText(uiText(R.string.ui_stable_note)).performScrollTo()
             compose.onNodeWithText(uiText(R.string.ui_stable_note)).assertIsDisplayed()
             compose.onNodeWithText(hzLabel(vm.filteredHz)).assertIsDisplayed()

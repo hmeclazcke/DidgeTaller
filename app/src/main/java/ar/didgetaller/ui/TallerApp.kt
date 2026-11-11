@@ -336,7 +336,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
     }
     val hz=if(capturing && vm.stableReading)vm.filteredHz else 0.0
     val signal=vm.acousticSample?.signal
-    val note=listOf(context.noteBase(hz), Music.pitch(hz)?.note.orEmpty())
+    val note=listOf(context.noteBase(hz), Music.pitch(hz)?.note.orEmpty().replace("#","♯").replace("b","♭"))
     val status=when {
         vm.requestingPermission -> context.getString(R.string.ui_waiting_for_microphone_permission)
         vm.permissionDenied -> context.getString(R.string.ui_permission_denied_enable_it_in_settings)

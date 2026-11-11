@@ -25,7 +25,7 @@ Didge Taller brings live pitch readings, WAV recording, and saved-session analys
 </tr>
 <tr>
 <td width="50%" valign="top">
-  <a href="docs/screenshots/showcase/live-measurement.png"><img src="docs/screenshots/showcase/live-measurement.png" alt="Live didgeridoo measurement showing a stable 70 Hz synthetic reading" width="420"></a>
+  <a href="docs/screenshots/showcase/live-measurement-editorial.png"><img src="docs/screenshots/showcase/live-measurement-editorial.png" alt="Live didgeridoo measurement showing a stable 70 Hz synthetic reading" width="420"></a>
   <p><strong>Live measurement.</strong> Read an accepted pitch estimate, note, and signal status while playing.</p>
 </td>
 <td width="50%" valign="top">

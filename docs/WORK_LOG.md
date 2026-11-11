@@ -1401,3 +1401,13 @@ all screens/states. Raw system error details may remain in their originating
 language, as explicitly required by the existing diagnostic boundary. No physical
 acoustic/printing accuracy or perfect localization is claimed. Actual current CI
 conclusion is recorded in PR5 after publication. No Samsung/private data access.
+
+Cross-check follow-up: an exact C♯2 assertion exposed that the live scientific-note
+line still displayed the canonical C#2 identifier, while localized labels used
+musical glyphs. The first targeted run failed on that actual inconsistency; only
+the UI presentation now substitutes sharp/flat glyphs. Core Music and saved note
+identifiers are unchanged. The same controlled PCM test then passed, including
+both instrument profiles and unchanged recording-control geometry. One additional
+native case passed; a fresh unretouched English live-meter capture is linked in
+the README. The earlier failing run is not counted as a pass. Final source gate
+remains771/160,zero violations. No private fixture method was executed.

@@ -5479,12 +5479,12 @@
     },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "311",
+      "line": 311,
       "kind": "function",
       "name": "MeasureScreen",
-      "semanticHash": "2f6b6839612b685dda38849d76647af467304aeef58cb5021f365d7b8b67c9d1",
+      "semanticHash": "db7f22aca32b89852db61b896827111f322d2d96622f7f38b27c22cd0550dda3",
       "metric_status": "compose-transformation",
-      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged.",
+      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged. Scientific-note secondary display substitutes sharp/flat glyphs only; stored identifiers and Music calculations are untouched. The controlled synthetic PCM meter regression asserts the exact glyph and stable layout.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
