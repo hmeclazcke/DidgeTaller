@@ -1280,3 +1280,17 @@ physical printer calibration and passive-model uncertainty. No source work remai
 for this generator request. Keep PR5 draft, main unchanged, no merge or Samsung use.
 The evidence-only follow-up does not change source/test inputs; reuse runtime
 checks for764bc63 and inspect any automatically triggered final CI conclusion.
+
+
+# Stock-aware construction drawings — implementation checkpoint
+
+Continued PR5 after preserving the supplied style reference. Explicit log/two-board/
+block models now constrain inverse candidates with kerf/preparation/measurement
+bounds and report limiting positions. Old projects stay unmeasured, not implicitly
+feasible. New white/warm vector sheets distinguish raw stock, prepared mirrored
+halves, bore diameter, groove depth and remaining wall. No acoustic equation or
+saved design/recording schema was changed. Local JVM, source gate and selected
+stock mutations passed as recorded in CONSTRUCTION_PROGRESS. Next: push validated
+implementation, execute the existing clean-emulator construction workflow, inspect
+actual Android PDFs and stock UI screenshots, then publish synthetic examples.
+No physical device or private recording operations; main and PR5 merge untouched.

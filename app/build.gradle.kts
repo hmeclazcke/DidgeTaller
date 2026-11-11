@@ -179,6 +179,9 @@ registerMutation("qualityMutationWorkshop", "pit-workshop",
 registerMutation("qualityMutationDocuments", "pit-documents",
     "ar.didgetaller.core.WorkshopDocument*,ar.didgetaller.core.WorkshopTables,ar.didgetaller.core.WorkshopSpecifications,ar.didgetaller.core.WorkshopDiagram,ar.didgetaller.core.WorkshopSvg,ar.didgetaller.core.WorkshopPage,ar.didgetaller.core.WorkshopLanguage,ar.didgetaller.core.WorkshopTemplates,ar.didgetaller.core.WorkshopMark*",
     "ar.didgetaller.core.WorkshopDocumentTest,ar.didgetaller.core.ConstructionDrawingTest", null)
+registerMutation("qualityMutationWood", "pit-wood",
+    "ar.didgetaller.core.WoodFit,ar.didgetaller.core.WoodStockForm",
+    "ar.didgetaller.core.WoodStockTest,ar.didgetaller.core.WoodWorkshopTest", null)
 registerMutation("qualityMutationMetronome", "pit-metronome",
     "ar.didgetaller.core.MetronomeEngine,ar.didgetaller.core.MetronomeGrid,ar.didgetaller.core.MetronomeSettings*,ar.didgetaller.core.FocusedMetronomeClick,ar.didgetaller.core.MetronomeOutputKt,ar.didgetaller.core.MetronomePcm,ar.didgetaller.core.MetronomeAudioKt",
     "ar.didgetaller.core.Metronome*Test", null)

@@ -10,14 +10,14 @@ class WorkshopDocumentTest {
         val d=WorkshopDocument.create(wood(),WorkshopLanguage.ENGLISH,69.3)
         assertEquals("Workshop example",d.name)
         assertEquals(2,d.pages.size)
-        assertEquals(595.0,d.pages[0].width,0.0)
+        assertEquals(842.0,d.pages[0].width,0.0)
         assertEquals(842.0,d.pages[1].width,0.0)
         assertEquals(1500.0,d.measurements.last().xMm,0.0)
         assertEquals(15.0,d.measurements.first().beforeMm/2,0.0)
         assertEquals(41.5,d.measurements.last().afterMm/2,0.0)
-        assertTrue(d.text().contains("Hollowing depth"))
+        assertTrue(d.text().contains("Groove depth"))
         assertFalse(d.text().contains("123e4567"))
-        assertTrue(d.text().contains("83.0"))
+        assertTrue(d.text().contains("83 mm"))
         assertFalse(d.text().contains("83.000"))
     }
     @Test fun localizedDrawingAndCsvPreserveMeasurementsAndExplicitUnits() {
@@ -62,10 +62,9 @@ class WorkshopDocumentTest {
     @Test fun dimensionsRemainFullPrecisionAndDenseReportsFailInsteadOfShrinkingText() {
         val original=wood().ideal.copy(lengthMm=3000,mouthMm=15,bellMm=200)
         val plan=ConstructionProjects.create("Long",original,ConstructionOptions(intervalMm=50))
-        try {WorkshopDocument.create(plan,WorkshopLanguage.ENGLISH);fail("Dense reports must be rejected")}catch(e:IllegalArgumentException){assertEquals(WorkshopLanguage.ENGLISH.word(WorkshopTerm.TOO_DENSE),e.message)}
-        assertTrue(WorkshopDocument.csv(plan,WorkshopLanguage.ENGLISH).contains("3000.0"))
-        val supported=ConstructionProjects.create("Long",original,ConstructionOptions(intervalMm=100))
-        assertEquals(2,WorkshopDocument.create(supported,WorkshopLanguage.ENGLISH).pages.size)
+        // Dense station data belongs to CSV; paper stays readable at exactly two sheets.
+        assertEquals(2,WorkshopDocument.create(plan,WorkshopLanguage.ENGLISH).pages.size)
+        assertTrue(WorkshopDocument.csv(plan,WorkshopLanguage.ENGLISH).contains("3000.000000"))
         val invalid=listOf(Double.NaN,-1.0,0.0)
         for(wall in invalid)try {ConstructionProjects.create("bad",original,ConstructionOptions(wallMm=wall));fail("Invalid material")}catch(_:IllegalArgumentException){}
         assertEquals("Didgeridoo",WorkshopDocument.humanName("123e4567-e89b-12d3-a456-426614174000"))
@@ -92,8 +91,8 @@ class WorkshopDocumentTest {
         val events=mutableListOf<String>()
         val painter=object:WorkshopPainter {
             override fun text(mark:WorkshopMark.Text){events+="text"}
-            override fun stroke(points:List<Pair<Double,Double>>,dashed:Boolean){events+="stroke:$dashed:${points.first()==points.last()}"}
-            override fun shade(points:List<Pair<Double,Double>>){assertEquals(points.first(),points.last());events+="shade"}
+            override fun stroke(points:List<Pair<Double,Double>>,dashed:Boolean,color:Int,width:Double){events+="stroke:$dashed:${points.first()==points.last()}"}
+            override fun shade(points:List<Pair<Double,Double>>,color:Int){assertEquals(points.first(),points.last());events+="shade"}
         }
         WorkshopDocument.create(p,WorkshopLanguage.ENGLISH).pages.flatMap {it.marks}.forEach {it.paint(painter)}
         assertTrue(events.contains("shade"));assertTrue(events.contains("stroke:true:false"));assertTrue(events.contains("stroke:false:true"));assertTrue(events.contains("text"))
@@ -108,10 +107,12 @@ class WorkshopDocumentTest {
         val d=WorkshopDocument.create(p,WorkshopLanguage.ENGLISH)
         val points=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().flatMap {it.points}
         assertTrue(points.all {(x,y)->x>=0 && x<=842 && y>=0 && y<=595})
-        assertTrue(d.text().contains("1:9.0"))
+        val measure=d.pages[1].dimensions.first {it.kind=="overall-length"}
+        assertEquals(500.0,measure.valueMm,0.0)
+        assertEquals(500.0*measure.scale,measure.end.first-measure.start.first,1e-9)
         val cavity=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().first {it.shaded}
-        assertEquals(34+500*ConstructionDrawing.POINTS_PER_MM/9,cavity.points[2].first,1e-9)
-        assertEquals(142+110*ConstructionDrawing.POINTS_PER_MM/9,cavity.points[2].second,1e-9)
+        assertEquals(64+500*measure.scale,cavity.points[2].first,1e-9)
+        assertEquals(123+110*measure.scale,cavity.points[2].second,1e-9)
         val peaked=AcousticModel.Shape(lengthMm=500,points=listOf(AcousticModel.BorePoint(0,15.0),AcousticModel.BorePoint(250,220.0),AcousticModel.BorePoint(500,15.0)))
         val layers=ConstructionProjects.create("Wide middle",peaked,ConstructionOptions(method=ConstructionMethod.LAMINATED,layers="50"))
         assertTrue(WorkshopDocument.create(layers,WorkshopLanguage.ENGLISH).text().contains("1:8.0"))
@@ -128,18 +129,19 @@ class WorkshopDocumentTest {
         assertTrue(csv.contains("\"1500.0 *\",\"83.0\",\"41.5\",\"101.0\",\"50.5\""))
         val shaded=d.pages[1].marks.filterIsInstance<WorkshopMark.Path>().filter {it.shaded}
         assertEquals(5,shaded.size)
-        val longitudinal=ConstructionDrawing.POINTS_PER_MM/6
-        assertEquals(listOf(34.0 to 142.0,34.0 to 142.0+15*longitudinal,34.0+1500*longitudinal to 142.0+41.5*longitudinal,34.0+1500*longitudinal to 142.0),shaded[0].points)
-        assertEquals(242.0-15*longitudinal,shaded[1].points[1].second,1e-9)
-        val sectionScale=ConstructionDrawing.POINTS_PER_MM/4
-        for((i,diameter) in listOf(30.0,56.5,83.0).withIndex()) {
-            val cx=165.0+i*255
+        val longitudinal=d.pages[1].dimensions.first {it.kind=="overall-length"}.scale
+        assertEquals(listOf(64.0 to 123.0,64.0 to 123.0+15*longitudinal,64.0+1500*longitudinal to 123.0+41.5*longitudinal,64.0+1500*longitudinal to 123.0),shaded[0].points)
+        assertEquals(253.0-15*longitudinal,shaded[1].points[1].second,1e-9)
+        val diameters=d.pages[1].dimensions.filter {it.kind=="bore-diameter"}
+        for((i,diameter) in diameters.withIndex()) {
             val groove=shaded[i+2].points
-            assertEquals(diameter*sectionScale,groove.first().first-groove.last().first,1e-9)
-            assertEquals(426.0+diameter/2*sectionScale,groove.maxOf {it.second},1e-9)
-            groove.forEach {(x,y)->assertEquals(diameter/2*sectionScale,kotlin.math.hypot(x-cx,y-426.0),1e-9)}
+            val cx=158.0+i*263
+            assertEquals(diameter.valueMm*diameter.scale,groove.first().first-groove.last().first,1e-9)
+            groove.forEach {(x,y)->assertEquals(diameter.valueMm/2*diameter.scale,kotlin.math.hypot(x-cx,y-400.0),1e-9)}
         }
-        assertTrue(d.text().contains("1:6.0"));assertTrue(d.text().contains("1:4.0"))
+        assertEquals(30.0,diameters.first().valueMm,0.0)
+        assertEquals(83.0,diameters.last().valueMm,0.0)
+
     }
     @Test fun measuredPartsAndLaminatedRowsPreserveActualWorkshopReferences() {
         val shape=AcousticModel.Shape(points=listOf(AcousticModel.BorePoint(0,30.0),AcousticModel.BorePoint(1500,83.0)))

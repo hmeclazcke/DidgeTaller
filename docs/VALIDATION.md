@@ -2421,3 +2421,15 @@ Current samples come from that CI artifact; every PDF page was rasterized and
 inspected. PVC sockets are drawn with measured diameters/insertions; outside fitting
 geometry is deliberately unspecified. Physical printing, material strength and
 played note remain unverified. See engineering/CONSTRUCTION_PROGRESS.md for links.
+
+
+## Stock-aware plan implementation checkpoint
+
+Local branch revision after4688f4f: JVM debug/release602 each (594 pass,8 protected
+skips,0 failures); clean production/test APK compilation; source inventory754
+measured/160 unscored;0 strict-gate violations,CPD0;46 tooling tests; localization
+parity668 strings/5 plurals/2 arrays. Selected WoodFit/WoodStockForm PIT146,128
+killed/18 survived/0 uncovered. New domain/drawing functions have CRAP-L<10;
+unsupported Compose/constructors have content-linked technical reviews only.
+Actual clean-emulator workflow and final Android PDF rendering are pending;
+see engineering/CONSTRUCTION_PROGRESS.md for assumptions and completion state.

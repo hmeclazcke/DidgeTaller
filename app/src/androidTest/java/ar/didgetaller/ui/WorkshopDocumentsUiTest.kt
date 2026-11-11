@@ -19,8 +19,11 @@ class WorkshopDocumentsUiTest {
         val shape=AcousticModel.Shape(mouthMm=30,bellMm=83)
         val pvc=ConstructionOptions(method=ConstructionMethod.PVC,pipes="a,30,40,1500\nb,70,80,1500",
             fittings="c,40.2,80.2,30,25,90,30,0:30|35:70",assembly="a,800,c\nb,650,-")
-        return listOf(ConstructionOptions(),ConstructionOptions(method=ConstructionMethod.LAMINATED),pvc).map {
-            ConstructionProjects.create("Synthetic workshop 1500",shape,it)
+        val log=WoodStock.Log(1500.0,101.0,emptyList(),0.0,0.0,WoodPreparation(),true)
+        val boards=WoodStock.Timber(1500.0,101.0,50.5,true,WoodPreparation(),true)
+        return listOf(ConstructionOptions(),ConstructionOptions(wallMm=9.0,radialToleranceMm=0.0,woodStock=log),
+            ConstructionOptions(wallMm=9.0,radialToleranceMm=0.0,woodStock=boards),ConstructionOptions(method=ConstructionMethod.LAMINATED),pvc).map {
+            ConstructionProjects.create("Río claro",shape,it)
         }
     }
     @Test fun allThreeMethodsGenerateExactlyTwoLocalizedDimensionedSheets() {
@@ -28,10 +31,19 @@ class WorkshopDocumentsUiTest {
         val context=InstrumentationRegistry.getInstrumentation().targetContext
         val directory=File(context.getExternalFilesDir(null),"construction-evidence/documents").apply {mkdirs()}
         for(plan in plans())for(language in WorkshopLanguage.entries) {
-            val prefix="${language.name.lowercase()}-${plan.options.method.name.lowercase()}"
+            val suffix=when(plan.options.woodStock) {is WoodStock.Log->"-log";is WoodStock.Timber->"-boards";null->""}
+            val prefix="${language.name.lowercase()}-${plan.options.method.name.lowercase()}$suffix"
             val document=WorkshopDocument.create(plan,language,69.3)
             assertEquals(2,document.pages.size)
-            assertTrue(document.text().contains(WorkshopDocument.number(plan.lengthMm)))
+            assertTrue(document.text().contains(WoodPresentation.number(plan.lengthMm)))
+            if(plan.options.woodStock!=null) {
+                val m=document.pages[1].dimensions
+                assertEquals(83.0,m.last {it.kind=="bore-diameter"}.valueMm,0.0)
+                assertEquals(41.5,m.last {it.kind=="groove-depth"}.valueMm,0.0)
+                assertEquals(9.0,m.last {it.kind=="base-wall"}.valueMm,0.0)
+                assertEquals(101.0,m.last {it.kind=="stock-width"}.valueMm,0.0)
+                assertTrue(document.text().contains("50.5"))
+            }
             val bytes=ConstructionPdf.create(plan,ConstructionPdf.Labels(language,69.3),false)
             val pdf=File(directory,"$prefix.pdf").apply {writeBytes(bytes)}
             renderAll(pdf,directory,prefix,2)

@@ -13,7 +13,7 @@ enum class ConstructionMethod { SANDWICH, LAMINATED, PVC }
 data class ConstructionOptions(val method:ConstructionMethod=ConstructionMethod.SANDWICH,
     val intervalMm:Int=100,val wallMm:Double=8.0,val radialToleranceMm:Double=1.0,
     val layers:String="50",val pipes:String="",val fittings:String="",val assembly:String="",
-    val socketClearanceMm:Double=0.5)
+    val socketClearanceMm:Double=0.5,val woodStock:WoodStock?=null)
 
 data class ConstructionPlan(val name:String,val ideal:AcousticModel.Shape,val options:ConstructionOptions,
     val pieces:List<ConstructionPiece>,val parts:List<String>) {

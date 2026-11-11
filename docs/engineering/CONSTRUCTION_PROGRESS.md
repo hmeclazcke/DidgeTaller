@@ -262,3 +262,46 @@ No scientific equation, saved format, existing user data, physical Samsung or
 private WAV was modified. Official ub-mode remains byte-identical. PR5 stays draft
 and unmerged. The following commit refreshes only synthetic evidence/documentation;
 reuse source-scoped runtime verification rather than rerunning the native matrix.
+
+
+## Stock-aware workshop revision — IN PROGRESS
+
+Started from4688f4f on the existing PR5 branch. Owner-provided reference art was
+preserved inb902b97 before source changes; it is a style reference, never a source
+of dimensions. New pure stock models distinguish a log, two separate boards and a
+block to split. End trim, saw kerf, face preparation, bark/exterior loss and a
+measurement reserve have explicit meanings. Old schema1 projects have no stock
+measurement and remain unconfirmed; no legacy geometry or recording is rewritten.
+
+Feasibility uses all bore breakpoints and measured-stock breakpoints, not sparse
+end-point sampling. Measurements describe a straight concentric minimum envelope;
+interpolated bounds require builder confirmation. Partial bounds never produce a
+confirmed fit. Negative clearance is reported with its limiting position. Candidate
+search rejects incompatible stock without changing the given material or acoustic
+engine. A dimensional fit is not a structural wood-safety assessment.
+
+The landscape wood sheets separate raw stock/air passage from prepared mirrored
+halves and true semicircular sections. Default sheets remain separate from optional
+1:1 tiles. Full numeric detail belongs in CSV, with unknown capacity left blank.
+The illustrative 1500/30/83/9 mm case requires101 mm width and50.5 mm thickness per
+half before extra losses;41.5 mm is groove depth, never bore diameter. A rectangular
+joined envelope is not a round outside surface.
+
+Focused model/drawing tests passed. Pending: integration quality results, selected
+stock mutation findings, clean-emulator stock workflow/PDF rendering, visual review
+and updated synthetic evidence. Do not interpret this checkpoint as final delivery.
+
+
+Local integration checkpoint: both JVM variants602 cases each,594 passed/8 protected
+skips,0 failures;46 quality-tool tests and localization parity passed. Strict source
+gate754 measured/160 unscored,64 historical high-risk functions,0 violations,CPD0.
+New measured stock/drawing functions stay below CRAP-L10 without numeric exceptions:
+assess5,measured6,overview outline8. Constructors/Compose retain explicit source-bound
+technical reviews, not fabricated scores. Selected WoodFit/WoodStockForm PIT146:
+128 killed,18 survived,0 uncovered (87.67%). Real missing assertions for reserves,
+stock offsets, available width and branch parsing were added. Remaining boundary,
+compiler guard and input-limit mutants are disclosed, not universally called
+"equivalent". JVM overall50.97% lines/47.12% branches; pure core99.18%/82.11%.
+Android compilation passed; actual new native execution and PDF inspection remain
+pending. Lint on the prior same-feature snapshot had0 errors/67 warnings/7 hints;
+final remote Lint must be observed. Do not treat Android compilation as execution.

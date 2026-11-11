@@ -113,6 +113,29 @@ class ConstructionUiTest {
         compose.onNodeWithTag("construction-save").assertDoesNotExist()
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])
     }
+    @Test fun woodStockInputsPersistAndConflictsDoNotRewriteTheSavedBore() {
+        open()
+        field("planName","Río claro")
+        tab(2);click("stock-kind-LOG")
+        field("stockDiameter","130")
+        click("stock-confirmed")
+        compose.onNodeWithTag("stock-fit-FITS").performScrollTo().assertIsDisplayed()
+        screenshot("log-stock")
+        click("stock-kind-BOARDS")
+        field("stockWidth","130");field("stockThickness","70")
+        screenshot("board-stock")
+        tab(3);click("construction-generate");ready();click("construction-save")
+        val stored=ConstructionStore(app).project("synthetic-construction")
+        assertEquals("Río claro",stored["planName"])
+        assertEquals("BOARDS",stored["stockKind"])
+        assertEquals("130",stored["stockWidth"])
+        assertEquals(ConstructionForm.defaults(AcousticModel.Shape())["geometry"],stored["geometry"])
+        export("pdf");verifyPdf(exports.getValue("pdf"))
+        tab(2);field("stockWidth","40")
+        compose.onNodeWithTag("stock-fit-DOES_NOT_FIT").performScrollTo().assertIsDisplayed()
+        screenshot("stock-conflict")
+        assertEquals(stored,ConstructionStore(app).project("synthetic-construction"))
+    }
     @Test fun malformedAndFutureDocumentsArePreservedAndNeverAuthorizeOverwrite() {
         val prefs=app.getSharedPreferences("construction_v1",0)
         for(value in listOf("{broken", "{\"schema\":99,\"designs\":{}}")) {

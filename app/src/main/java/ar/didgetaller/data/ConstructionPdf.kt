@@ -33,15 +33,16 @@ object ConstructionPdf {
 private class PdfWorkshopPainter(private val canvas:Canvas):WorkshopPainter {
     private fun ink()=Paint(Paint.ANTI_ALIAS_FLAG).apply {color=Color.BLACK;strokeWidth=.6f}
     override fun text(mark:WorkshopMark.Text) {
-        val ink=ink();ink.textSize=mark.size.toFloat()
+        val ink=ink();ink.textSize=mark.size.toFloat();ink.color=mark.color
+        if(mark.bold)ink.typeface=android.graphics.Typeface.DEFAULT_BOLD
         canvas.drawText(mark.value,mark.x.toFloat(),mark.y.toFloat(),ink)
     }
-    override fun shade(points:List<Pair<Double,Double>>) {
-        val ink=ink();ink.color=Color.LTGRAY
+    override fun shade(points:List<Pair<Double,Double>>,color:Int) {
+        val ink=ink();ink.color=color
         canvas.drawPath(path(points),ink)
     }
-    override fun stroke(points:List<Pair<Double,Double>>,dashed:Boolean) {
-        val ink=ink();ink.style=Paint.Style.STROKE
+    override fun stroke(points:List<Pair<Double,Double>>,dashed:Boolean,color:Int,width:Double) {
+        val ink=ink();ink.style=Paint.Style.STROKE;ink.color=color;ink.strokeWidth=width.toFloat()
         if(dashed)ink.pathEffect=DashPathEffect(floatArrayOf(4f,3f),0f)
         canvas.drawPath(path(points),ink)
     }

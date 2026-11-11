@@ -6237,15 +6237,14 @@
       "line": 38,
       "kind": "function",
       "name": "ConstructionWorkspace",
-      "semanticHash": "5caf4d1594087b0d221964f88b73c27595b03885ca0e0e48d60dd2a567af7946",
-      "reason": "Uses the current Compose locale and the existing revocable workers; analysis requests carry the human design name only. No storage schema or microphone behavior changes. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "semanticHash": "5ae7ce548ea38567d1afaa4b8ba0ff1ee95647e2dfdf640c70ec9c6fc1022e0b",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "docs/engineering/WORKSHOP_DOCUMENTS.md",
-        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "c6a82ba678a51bcba862f9ddee2150ade41810bd693498b62b58254c83aa260c": {
@@ -6331,60 +6330,62 @@
     },
     "eb1b13a823cb39b677dca503cfb4d374a66773ed21f8e5654a4983161dcbaa2c": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "161",
+      "line": 173,
       "kind": "function",
       "name": "ConstructionTargetFields",
-      "semanticHash": "84b9eede4865ebbb950729d149a2580a7e85bd5a47038788d0f23bb901bc7d63",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Accessible target/notes and advanced geometry fields forward form changes; no acoustic calculation in composition.",
+      "semanticHash": "882ca6f7405d73446f035e62138d6d0ed7fd002a65c840a9c2ea472ef021a8f6",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "9f21390daa155b39408b0463d04df69d4372dcced69b14d7842e85b5954a0abc": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "184",
+      "line": 199,
       "kind": "function",
       "name": "ConstructionMethodFields",
-      "semanticHash": "97624edf04b825b1e24ba9c61f040148f84e92f341d9f91acddddac615c6c9ca",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Measured catalog edits and explicit save/load callbacks; wood and PVC options are shown only where applicable.",
+      "semanticHash": "2157ce80b16cccbfeac6d18eac45c19f78020f2617cb480ec396b72f0cae4d7e",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 219,
+      "line": 226,
       "kind": "function",
       "name": "ConstructionCandidateCard",
-      "semanticHash": "b4932ef26cf0f06b07c3beae0745611c4c980ac90d837a3cbeb135002acbe415",
-      "reason": "Replaces cryptic dimension abbreviations with localized labels and presentation-only rounding; candidate geometry/scoring is unchanged. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "semanticHash": "6b773b3bc3541fa49f41dfae6a2917acf624ccde2f2e30befa1d927069532a0a",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "docs/engineering/WORKSHOP_DOCUMENTS.md",
-        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "11aeefc4ba94c4479d3dac4607edf6a3cad604aa05dd659f4dbfa64097cf1bac": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 232,
+      "line": 240,
       "kind": "function",
       "name": "ConstructionPlanView",
-      "semanticHash": "5ee2f034266dbb03664d060205ff6a1082e443433af3c8568ef4c2012e42c954",
-      "reason": "Uses localized dimensions, semantic CSV detail rows and sensitivity vocabulary; stored geometry remains full precision. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "semanticHash": "928a3c100d6e566e4a34e26a223afae64bdbb05b63ae73bcdefa4567c165a0d0",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "docs/engineering/WORKSHOP_DOCUMENTS.md",
-        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "fab9efa1702f4fa84afc6933233099cf868ad216d108f7fec10e383a9322c488": {
@@ -6620,18 +6621,17 @@
     },
     "d7138299125a5254c83f0946cb263e70250fcbbe87b1a414dfd47ea88800099e": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 250,
+      "line": 259,
       "kind": "function",
       "name": "exportLanguage",
-      "semanticHash": "a452e8ebb00578b5ba0ed7687d919cf22fef3edddce0466e01c2ae6d62f34f13",
-      "reason": "Reads LocalConfiguration so recomposition follows Android locale changes, rather than reading a cached context configuration. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "semanticHash": "78f220e1d3981d8f6b13deff9ceab0d21e9992e690bd280383f3bfd7343a1fd1",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
       "evidence": [
-        "docs/engineering/WORKSHOP_DOCUMENTS.md",
-        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
       ],
-      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     },
     "1da4089963dba36837c872fc33dedeedf25d653469a4e11227581632d6a8b78d": {
@@ -6648,6 +6648,501 @@
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
       "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "metric_status": "compose-transformation"
+    },
+    "ec3b1a5546cf7bf0065aeeb4eddb6a747a4b3a40755e24a0a45e076ab738c8d3": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "98237d8f169694487f4d086a8b9dc4be6ea3aeca6dc2d69f3519d363c87b1726",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "57d17f6f6011d74540e0244a94eee00b3d75e44dbb2ba12309f5d5fc16130064": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "287e8f76633651e1dcfafafd658293b4c7dcf686fe260341d657a8adff20f14d",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "322bfa49858764d27decaeb95e006dbdc7edc17b3629eafec961fbdad58f0071": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5e6a50984d39b057a42412677c09815f3940c5d4adae3c5cfe663252ee6510f3",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "cab7d090568bb2325f163b72880c812ddffc7b94259f50c6188633b761ba924f": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "ab2e609b4dbd79426ceb131e4adc57f9ee4bd67254240041a5b7ed98b56620f3",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "6432a76c94213b3530a92ec6c2f0f896be357cf42e6ab1cbdbee13364136b070": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "62e8e861bd9e3581e3b7b5db40ffd80bcd79c46f536d4c11223d7ae0a6b0be45",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "a9b28a8777f3e1aa37bb09e8df4de8ac4553cafa7278f56016117bd815c0b9bf": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "47e1b20f6cdc189fe48b4fe3cf6651f179c87c0cec7d7af6a0a22902361eae50",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ebc0e06e9dba283a3986385db0e2cc504e31cc6c5e726d38b6fd116f4c7538b8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "8a49b3f799f694f969834c3b5781b3e5f86efa8819cce27a8e05ecd9804e02da",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "220441c022af1cedddc7102aef248bea252ce69299eed4239bbc25cd246afa47": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "51432164a33c8c0e66a7b7124d388563395ddd2d8a9ec80b239e294771cbe12a",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "294d1e94f13186980bf14c6287f820c17ccfa4b512722e7e2182ad344e5f9fd8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c85f8f8ef39b31a195ed833cc226156fbe81fa6c9e7fba919a7e9cfb8859e059",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ebcd34744a8c1fc25a385a46c05b2ddec8bf21dde87428cf3d3899bf3b4c159e": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6f1988298b85dcfa94607bcae83fddd11bc7cba6f25bf916a2aba44136265a48",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "4184ee6e9aa934f6ff80d7426a7089b643fe3eac8ffe3057be6a03724d91e858": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 7,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "1204a3134571681ec6d7699c4aab21140aa19e8e9bebfa3d501bcd1fbef50214",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "3fa3fac6f8fff534ff9f3b931804a9ca6baf25657ebeeb7725dec7fe8c5e7764": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 9,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c942e1beac0f1b460f4b4c7ba1921b1c31874ca8bfbf62fd63a779753d472590",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "eb4c6f901044ed0985136aab2779550640e21c651d7f9b78a84b391890ad3474": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 10,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f2b032dea968ba00e9b08cdf6511f1335c2d936a49b10505ea8a0f5d2420d41b",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "119f5feea8f1317df2fd1a9915f3a66de87c2b51447ac4af2aae0625257fc645": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "44e431c4cb8ccf10cb20ff03eac9f762232367cb3059d3ad3f597cfc07d5b378",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "6e79b3c06223c0835d0b83827bdb31dc1f5df5923f2f478ef56d9ee1bbc657a0": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 19,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "d0a3c63da4afdca14fd36753185c299d02719a746ea75caf175ec827cd58bbd3",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "48321f3ab04e2179a242d8baf5894f1aa191770d736dcef032a76af139fd4e06": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "e1ac0bab81e0e0d250b91ba8263fbfde8a6263c07cb236bd7be987e85798a52b",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "fee637b0f92c0f51242a53d1e9113260169fb74d5c21c10b248dbcbe255ad9d8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 23,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "5e669febcac76f0e9094614a1b42788b4416c38475cab0d631281bb633ca48ed",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "1a2d86164a911b1548d4764bd2af0699425f3ce9ae6b9183928a8ef125f12bb8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 27,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "8e4a9f3360ac3981f3a4764a5b4d12f3f3494777463cdc10012d50521a9e3062",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "14978538cd88b69e3111836401ba09385bee4a0c4bd1ac28c00c241e373ca115": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 29,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fb53a24efbe4a293f18d17bec1728b14846363aff1f5a9c1d36f5c679380ee5c",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ed1b37f6116b7fd13e9a972c492b6297334f6cf78562f889e78bc32c3a00cb30": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 29,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "c1abe92909f5f17dc75af776669b30bdd5b1b774366e55099b15f784543d4ffd",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "aee1cfdda5b0f7cc07e4430b9887417d9080f2d5824acf5e260c1bf96e3e5173": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 35,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f74cfe5daef98e44a3d2c84c8c3bc18ed49165b6a41b1c92147f9a1e22a6291e",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "4f9378c0ed7aee7d2c68822f01fe15d9602c35b48dd5bd50e1df624ab280bacc": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 37,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "0c9ff66c2a1c3660866cf59785148d16f043f7eceefec2a0bcf9098d98a23dc1",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "be1048c878270efe77ebc28127f706beb8e8fc7ca0eba6e64ea53beea6ca7e25": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodWords.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "92237feddf3e1063b07ab1c7f07be743261fb30132161cb47bc8712fb424d1c6",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "3c298f159989860778a7255efad1ebf0f507883c96469328fbc05440b0cc2398": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "37acda9d4924866b77d53f06a042adcd22f3f27bd4eba6fe11816d1353f42fcc",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "8da4f4d642e1dc8fae8dfd8a86da4c30499058a30ca1aad44e6f77aa432a17cc": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c802ce0750160e0ed29cdbcd94876f60ee8c2a7986dccb870b49d2d08cca0a98",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "42955e6e950e6f1753ab782a50017602c79a3a3ec0d1e9806e7fa96c007a21d2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 26,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f89aa987cd9a9864d66985fe1701741be955cc9606d4195957ae18984aea6139",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "39545d28b6a500e438bfb4dac2cd411c0e2aaa0de245ff8ad97c2477daaab37b": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 27,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7e03e494f419b5331db65e6bfb46600838c030c4cf8b209bcfa8598ed01e4317",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "d9b93514cb4e52314c66f03b97243e50f4c1ef5ba6587a77a0e768b0e8204d50": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 80,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6ab5e27d0d662b36531f4d93dbe92c78651514dda2daf91e4bb0fcfb534cdbcb",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ea7398782961d22b9d2f4e1a6c69b6774108935f3fea7b88739cb278d4b0d02a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 13,
+      "kind": "function",
+      "name": "WoodStockFields",
+      "semanticHash": "8ebff7ee53602c5a69f6b8d10222b69ff29b5745277b3ec742eb026f16995e6e",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "866c4e95e94023b345b8c4b7d1b59e96db3e86cea84548e044d64e7945a8865e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 46,
+      "kind": "function",
+      "name": "WoodPreparationFields",
+      "semanticHash": "9264bb6e28811154b3f92e06fd3f0f2a9d0913ecc1c09eae0673a782c8a82c7b",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "ff830a0c5671c9e1d115bf8a0cc9fee61245bcf3ee30386667be4e3da65a1e79": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 59,
+      "kind": "function",
+      "name": "WoodInput",
+      "semanticHash": "9eb1a17bd5e314ff1a6f523333675c323d1c0ffe35f3ea5a0571d18500e53536",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "b5a6f59333dc16ebd4363210c6a8a9cc5e9d50b3cba1ea7927084b2bf121d02c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 65,
+      "kind": "function",
+      "name": "WoodFitMessage",
+      "semanticHash": "c89a6bf8e9e71e3ab658a7d712847586f4c0d42ca84aa41553b7ada6c17ee2b0",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "86a964e726925b5e7488745d48c7ce5f313d40995f1131131e38f22ea1a8f90e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 170,
+      "kind": "function",
+      "name": "ConstructionTargetFields",
+      "semanticHash": "2fe86bb5a6bc2a9271475e0ba7b722256908be84af702eb776c595a598333b64",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
       "metric_status": "compose-transformation"
     }
   }

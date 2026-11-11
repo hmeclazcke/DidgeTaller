@@ -8,8 +8,9 @@ internal object WorkshopSvg {
         append("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"${n(sheet.width)}pt\" height=\"${n(sheet.height)}pt\" viewBox=\"0 0 ${n(sheet.width)} ${n(sheet.height)}\" data-length-mm=\"${n(length)}\"><title>${xml(name)}</title>")
         sheet.marks.forEach {append(mark(it))};append("</svg>")
     }
+    private fun hex(color:Int)="#%06x".format(java.util.Locale.ROOT,color and 0xffffff)
     private fun mark(m:WorkshopMark):String = when(m) {
-        is WorkshopMark.Text->"<text x=\"${c(m.x)}\" y=\"${c(m.y)}\" font-size=\"${n(m.size)}\" font-family=\"sans-serif\">${xml(m.value)}</text>"
-        is WorkshopMark.Path->"<polyline points=\"${m.points.joinToString(" "){c(it.first)+","+c(it.second)}}${if(m.closed)" "+c(m.points.first().first)+","+c(m.points.first().second) else ""}\" stroke=\"black\" stroke-width=\"0.6\" fill=\"${if(m.shaded)"#dddddd" else "none"}\" stroke-dasharray=\"${if(m.dashed)"4 3" else "none"}\"/>"
+        is WorkshopMark.Text->"<text x=\"${c(m.x)}\" y=\"${c(m.y)}\" font-size=\"${n(m.size)}\" font-family=\"sans-serif\" fill=\"${hex(m.color)}\" font-weight=\"${if(m.bold)"bold" else "normal"}\">${xml(m.value)}</text>"
+        is WorkshopMark.Path->"<polyline data-cavity=\"${m.shaded}\" points=\"${m.points.joinToString(" "){c(it.first)+","+c(it.second)}}${if(m.closed)" "+c(m.points.first().first)+","+c(m.points.first().second) else ""}\" stroke=\"${hex(m.strokeColor)}\" stroke-width=\"${c(m.strokeWidth)}\" fill=\"${m.fillColor?.let(::hex) ?: if(m.shaded)"#dddddd" else "none"}\" stroke-dasharray=\"${if(m.dashed)"4 3" else "none"}\"/>"
     }
 }

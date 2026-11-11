@@ -22,7 +22,7 @@ object ConstructionSearch {
         val plans=if(o.method==ConstructionMethod.PVC)pvcPlans(shape,o) else woodPlans(shape,o,t)
         val candidates=plans.distinctBy {it.pieces}.mapNotNull {p->
             if(cancelled())throw CancellationException()
-            if(!feasible(p,t))return@mapNotNull null
+            if(!feasible(p,t) || !WoodStockForm.accepts(p))return@mapNotNull null
             val prediction=AcousticModel.evaluateCylinders(ConstructionProjects.cylinders(p),stepHz=3)
             if(prediction.baseHz<=0)return@mapNotNull null
             val errorCents=cents(prediction.baseHz,t.hz)

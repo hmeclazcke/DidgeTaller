@@ -41,12 +41,13 @@ internal object WorkshopTables {
     fun csv(p:ConstructionPlan,l:WorkshopLanguage):String {
         val station=WorkshopTable(listOf(l.word(WorkshopTerm.STATION)+" (mm)",l.word(WorkshopTerm.DIAMETER)+" (mm)",l.word(WorkshopTerm.DEPTH)+" (mm)",l.word(WorkshopTerm.WIDTH)+" (mm)",l.word(WorkshopTerm.THICKNESS)+" (mm)"),measurements(p,l).rows)
         val extras=when(p.options.method) {
-            ConstructionMethod.SANDWICH->emptyList()
+            ConstructionMethod.SANDWICH->listOf(WoodMeasurements.table(p,l))
             ConstructionMethod.LAMINATED->listOf(layers(p,l))
             ConstructionMethod.PVC->listOf(pvc(p,l))
         }
         val selected=if(p.options.method==ConstructionMethod.SANDWICH)station else WorkshopTable(station.headings.take(2),station.rows.map {it.take(2)})
-        val metadata=listOf(listOf(l.word(WorkshopTerm.TITLE),WorkshopDocument.humanName(p.name)),listOf(l.word(WorkshopTerm.LENGTH)+" (mm)",n(p.lengthMm)),listOf(l.word(WorkshopDocument.method(p))))
+        val metadata=listOf(listOf(l.word(WorkshopTerm.TITLE),WorkshopDocument.humanName(p.name)),listOf(l.word(WorkshopTerm.LENGTH)+" (mm)",n(p.lengthMm)),listOf(l.word(WorkshopDocument.method(p))))+
+            if(p.options.method==ConstructionMethod.SANDWICH)WoodMeasurements.metadata(p,l) else emptyList()
         return metadata.joinToString("\r\n"){it.joinToString(",",transform=::cell)}+"\r\n\r\n"+
             (listOf(selected)+extras).joinToString("\n"){table->(listOf(table.headings)+table.rows).joinToString("\r\n"){row->row.joinToString(",",transform=::cell)}}+"\r\n"
     }
@@ -68,14 +69,7 @@ internal object WorkshopSpecifications {
         c.text(34.0,143.0,l.word(WorkshopTerm.TARGET)+": "+target)
         c.text(34.0,160.0,l.word(WorkshopTerm.PREDICTION)+": "+ConstructionProjects.predict(p).frequenciesHz.take(5).joinToString(" / "){n(it)}+" Hz",9.0)
         material(c,p,l)
-        val instruction=when(p.options.method) {
-            ConstructionMethod.SANDWICH->WorkshopTerm.WOOD_INSTRUCTION
-            ConstructionMethod.LAMINATED->WorkshopTerm.LAYER_INSTRUCTION
-            ConstructionMethod.PVC->WorkshopTerm.PVC_INSTRUCTION
-        }
-        val bottom=c.paragraph(34.0,233.0,l.word(instruction),520.0)
-        val detail=if(p.options.method==ConstructionMethod.SANDWICH)WorkshopTerm.KERF else WorkshopTerm.TOLERANCE
-        c.paragraph(34.0,bottom+3,l.word(detail),520.0,8.5)
+        c.paragraph(34.0,240.0,l.wood(WoodTerm.DETAIL),520.0)
         table(c,p,l)
         c.paragraph(34.0,775.0,l.word(WorkshopTerm.WARNING),520.0,8.5)
         c.text(535.0,826.0,"1 / 2",8.0)

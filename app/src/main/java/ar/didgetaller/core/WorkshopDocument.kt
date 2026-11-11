@@ -5,24 +5,26 @@ import java.util.Locale
 
 interface WorkshopPainter {
     fun text(mark:WorkshopMark.Text)
-    fun stroke(points:List<Pair<Double,Double>>,dashed:Boolean)
-    fun shade(points:List<Pair<Double,Double>>)
+    fun stroke(points:List<Pair<Double,Double>>,dashed:Boolean,color:Int,width:Double)
+    fun shade(points:List<Pair<Double,Double>>,color:Int)
 }
 
 sealed interface WorkshopMark {
     fun paint(painter:WorkshopPainter)
-    data class Text(val x:Double,val y:Double,val size:Double,val value:String):WorkshopMark {
+    data class Text(val x:Double,val y:Double,val size:Double,val value:String,val color:Int=0xff3c322b.toInt(),val bold:Boolean=false):WorkshopMark {
         override fun paint(painter:WorkshopPainter)=painter.text(this)
     }
-    data class Path(val points:List<Pair<Double,Double>>,val closed:Boolean=false,val shaded:Boolean=false,val dashed:Boolean=false):WorkshopMark {
+    data class Path(val points:List<Pair<Double,Double>>,val closed:Boolean=false,val shaded:Boolean=false,val dashed:Boolean=false,val fillColor:Int?=null,val strokeColor:Int=0xff5f4b3d.toInt(),val strokeWidth:Double=.6):WorkshopMark {
         override fun paint(painter:WorkshopPainter) {
             val outline=if(closed)points+points.first() else points
-            if(shaded)painter.shade(outline)
-            painter.stroke(outline,dashed)
+            val fill=fillColor ?: if(shaded)0xffdddddd.toInt() else null
+            if(fill!=null)painter.shade(outline,fill)
+            painter.stroke(outline,dashed,strokeColor,strokeWidth)
         }
     }
 }
-data class WorkshopSheet(val width:Double,val height:Double,val marks:List<WorkshopMark>)
+data class WorkshopMeasure(val kind:String,val valueMm:Double,val scale:Double,val start:Pair<Double,Double>,val end:Pair<Double,Double>)
+data class WorkshopSheet(val width:Double,val height:Double,val marks:List<WorkshopMark>,val dimensions:List<WorkshopMeasure> = emptyList())
 data class WorkshopDocument(val name:String,val language:WorkshopLanguage,val measurements:List<ConstructionDrawing.Row>,val pages:List<WorkshopSheet>,val lengthMm:Double) {
     fun text()=pages.flatMap {it.marks}.filterIsInstance<WorkshopMark.Text>().joinToString("\n"){it.value}
     companion object {
@@ -30,7 +32,7 @@ data class WorkshopDocument(val name:String,val language:WorkshopLanguage,val me
             require(targetHz==null || targetHz.isFinite() && targetHz>0)
             val rows=ConstructionDrawing.rows(plan)
             return WorkshopDocument(humanName(plan.name),language,rows,
-                listOf(WorkshopSpecifications.page(plan,language,targetHz),WorkshopDiagram.page(plan,language)),plan.lengthMm)
+                listOf(WorkshopOverview.page(plan,language,targetHz),WorkshopDiagram.page(plan,language)),plan.lengthMm)
         }
         fun humanName(raw:String):String {
             val clean=raw.replace(Regex("(?i)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\s*/?"),"").trim()
@@ -75,7 +77,8 @@ data class WorkshopDocument(val name:String,val language:WorkshopLanguage,val me
 /** Drawing coordinates are PDF points; geometry and annotations share the same transform in SVG. */
 internal class WorkshopPage(val width:Double,val height:Double) {
     val marks=mutableListOf<WorkshopMark>()
-    fun text(x:Double,y:Double,value:String,size:Double=10.0) {marks+=WorkshopMark.Text(x,y,size,value)}
+    val dimensions=mutableListOf<WorkshopMeasure>()
+    fun text(x:Double,y:Double,value:String,size:Double=10.0,color:Int=0xff3c322b.toInt(),bold:Boolean=false) {marks+=WorkshopMark.Text(x,y,size,value,color,bold)}
     fun line(x:Double,y:Double,endX:Double,endY:Double,dashed:Boolean=false) {marks+=WorkshopMark.Path(listOf(x to y,endX to endY),dashed=dashed)}
     fun path(points:List<Pair<Double,Double>>,closed:Boolean=false,shaded:Boolean=false,dashed:Boolean=false) {marks+=WorkshopMark.Path(points,closed,shaded,dashed)}
     fun paragraph(x:Double,y:Double,value:String,width:Double,size:Double=9.0):Double {
@@ -95,5 +98,5 @@ internal class WorkshopPage(val width:Double,val height:Double) {
         val y=height-45;dimension(34.0,y,34+100*ConstructionDrawing.POINTS_PER_MM,y,"100 mm")
         text(34.0,height-22,l.word(WorkshopTerm.RULER),9.0)
     }
-    fun sheet()=WorkshopSheet(width,height,marks.toList())
+    fun sheet()=WorkshopSheet(width,height,marks.toList(),dimensions.toList())
 }

@@ -54,7 +54,7 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
     val exportOwner=remember {LatestAnalysis<ConstructionExport,ByteArray>(CoroutineAnalysisLoader(scope,Dispatchers.Default){r:ConstructionExport,_,_->constructionBytes(r)}){exported=it}}
     DisposableEffect(owner,exportOwner){onDispose {owner.close();exportOwner.close()}}
     fun set(key:String,value:String){owner.clear();exportOwner.clear();fields[key]=value.take(64000);failed=false;saved=false}
-    fun run(action:String){failed=false;owner.replace(ConstructionRequest(design.name,fields.toMap(),action))}
+    fun run(action:String){failed=false;owner.replace(ConstructionRequest(ConstructionForm.name(fields,design.name),fields.toMap(),action))}
     ConstructionExportEffect(exported,{exportOwner.clear()},export)
     val language=exportLanguage()
     val labels=ConstructionPdf.Labels(language,fields["target"]?.toDoubleOrNull())
@@ -68,7 +68,7 @@ internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,Strin
                 Column(Modifier.weight(1f).verticalScroll(scroll).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                     ConstructionStatus(load.isFailure,failed,saved,analysis,exported)
                     when(stage) {
-                        0->ConstructionTargetFields(fields,::set)
+                        0->ConstructionTargetFields(fields,::set,design.name)
                         1->ConstructionCandidates(analysis.value?.candidates.orEmpty(),{run("search")},{c->
                             set("geometry",ConstructionForm.defaults(c.plan.ideal).getValue("geometry"))
                             set("assembly",c.plan.options.assembly);select(2)
@@ -167,7 +167,8 @@ private fun ConstructionField(key:String,label:Int,values:Map<String,String>,set
 }
 
 @Composable
-private fun ConstructionTargetFields(v:Map<String,String>,set:(String,String)->Unit) {
+private fun ConstructionTargetFields(v:Map<String,String>,set:(String,String)->Unit,name:String) {
+    OutlinedTextField(v["planName"] ?: WorkshopDocument.humanName(name),{set("planName",it)},label={Text(exportLanguage().wood(WoodTerm.NAME))},singleLine=true,modifier=Modifier.fillMaxWidth().testTag("construction-planName"))
     var notes by remember {mutableStateOf(false)}
     ConstructionField("target",R.string.construction_hz,v,set)
     Box {
@@ -187,6 +188,9 @@ private fun ConstructionTargetFields(v:Map<String,String>,set:(String,String)->U
         ConstructionField("geometry",R.string.construction_geometry,v,set,true)
     }
     Text(stringResource(R.string.construction_limits),style=MaterialTheme.typography.bodySmall)
+    var wood by remember {mutableStateOf(false)}
+    TextButton(onClick={wood=!wood},modifier=Modifier.testTag("construction-target-stock")){Text(exportLanguage().wood(WoodTerm.STOCK))}
+    if(wood)WoodStockFields(v,set)
 }
 
 @Composable
@@ -200,6 +204,7 @@ private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->U
         ConstructionField("wall",R.string.construction_wall,v,set)
         ConstructionField("tolerance",R.string.construction_tolerance,v,set)
     }
+    if(v.getValue("method")=="SANDWICH")WoodStockFields(v,set)
     if(v.getValue("method")=="LAMINATED")ConstructionField("layers",R.string.construction_layers,v,set)
     if(v.getValue("method")=="PVC") {
         Text(stringResource(R.string.construction_schema),style=MaterialTheme.typography.bodySmall)
@@ -223,6 +228,7 @@ private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->
             Text("${constructionDimensions(c.plan)} | ${exportLanguage().word(WorkshopTerm.QUANTITY)}: ${c.plan.parts.size}")
             Text(c.higher.joinToString(" / "){hzLabel(it)},style=MaterialTheme.typography.bodySmall)
             TextButton(onClick=use,modifier=Modifier.testTag("construction-candidate-$index")){Text(stringResource(R.string.construction_choose))}
+            if(c.plan.options.method==ConstructionMethod.SANDWICH)WoodFitMessage(WoodFit.assess(c.plan.ideal,c.plan.options.woodStock,c.plan.options.wallMm,c.plan.options.radialToleranceMm))
             ConstructionProfile(c.plan)
         }
     }
@@ -232,6 +238,7 @@ private fun ConstructionCandidateCard(c:ConstructionCandidate,index:Int,use:()->
 private fun ConstructionPlanView(r:ConstructionResult) {
     val p=r.plan
     Text("${p.name.substringAfter(" / ")}\n${constructionDimensions(p)}",modifier=Modifier.testTag("construction-plan-summary"))
+    if(p.options.method==ConstructionMethod.SANDWICH)WoodFitMessage(WoodFit.assess(p.ideal,p.options.woodStock,p.options.wallMm,p.options.radialToleranceMm))
     Text(r.prediction.frequenciesHz.take(5).joinToString(" / "){hzLabel(it)})
     ConstructionProfile(p)
     var details by remember {mutableStateOf(false)}
@@ -247,7 +254,7 @@ private fun ConstructionPlanView(r:ConstructionResult) {
 }
 
 @Composable
-private fun exportLanguage()=if(LocalConfiguration.current.locales[0].language=="es")WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
+internal fun exportLanguage()=if(LocalConfiguration.current.locales[0].language=="es")WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
 
 @Composable
 private fun constructionDimensions(plan:ConstructionPlan):String {
