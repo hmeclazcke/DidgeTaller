@@ -55,7 +55,7 @@ internal object WorkshopOverview {
         val stock=p.options.woodStock;val fit=WoodFit.assess(p.ideal,stock,p.options.wallMm,p.options.radialToleranceMm)
         c.text(34.0,386.0,l.wood(WoodPresentation.kind(stock)),13.0,bold=true)
         c.text(34.0,408.0,stockDimensions(stock,l),10.0)
-        c.text(34.0,431.0,l.wood(WoodTerm.MINIMUM)+": "+l.wood(WoodTerm.SHORT_WIDTH)+" "+n(fit.requiredWidthMm)+" mm × "+l.wood(WoodTerm.SHORT_THICKNESS)+" "+n(fit.requiredHalfDepthMm)+" mm",10.0)
+        c.text(34.0,431.0,l.wood(WoodTerm.MINIMUM)+": "+l.wood(WoodTerm.SHORT_WIDTH)+" "+WoodPresentation.minimum(fit.requiredWidthMm)+" mm × "+l.wood(WoodTerm.SHORT_THICKNESS)+" "+WoodPresentation.minimum(fit.requiredHalfDepthMm)+" mm",10.0)
         c.text(455.0,431.0,l.wood(WoodTerm.CONSTRAINT)+": "+n(p.options.wallMm)+" mm + "+n(p.options.radialToleranceMm)+" mm",9.0)
         c.text(34.0,459.0,WoodPresentation.status(fit,l),13.0,color=if(fit.status==WoodFitStatus.DOES_NOT_FIT)WoodInk.RED else WoodInk.TEAL,bold=true)
         c.paragraph(34.0,480.0,WoodPresentation.detail(fit,l),765.0,9.0)

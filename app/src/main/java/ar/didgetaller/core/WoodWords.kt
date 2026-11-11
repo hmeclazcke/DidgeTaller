@@ -36,6 +36,7 @@ enum class WoodTerm(val en:String,val es:String) {
 fun WorkshopLanguage.wood(term:WoodTerm)=if(this==WorkshopLanguage.SPANISH)term.es else term.en
 
 object WoodPresentation {
+    fun minimum(value:Double)=WorkshopDocument.minimum(value).removeSuffix(".0")
     fun number(value:Double)=if(kotlin.math.abs(value-kotlin.math.round(value))<1e-8)"%.0f".format(java.util.Locale.ROOT,value) else WorkshopDocument.number(value)
     fun kind(stock:WoodStock?)=when(stock) {null->WoodTerm.NONE;is WoodStock.Log->WoodTerm.LOG;is WoodStock.Timber->if(stock.twoBoards)WoodTerm.BOARDS else WoodTerm.BLOCK}
     fun status(fit:WoodAssessment,l:WorkshopLanguage)=l.wood(when(fit.status) {WoodFitStatus.FITS->WoodTerm.FITS;WoodFitStatus.DOES_NOT_FIT->WoodTerm.FAIL;WoodFitStatus.UNCONFIRMED->WoodTerm.UNKNOWN})

@@ -305,3 +305,14 @@ compiler guard and input-limit mutants are disclosed, not universally called
 Android compilation passed; actual new native execution and PDF inspection remain
 pending. Lint on the prior same-feature snapshot had0 errors/67 warnings/7 hints;
 final remote Lint must be observed. Do not treat Android compilation as execution.
+
+
+Print-boundary correction: a new failing regression demonstrated that rounding a
+50.51 mm theoretical minimum to50.5 mm understated the stock requirement. Minimum
+stock labels now use the existing upward0.1 mm rounding policy, with no change to
+internal precision or measured stock. Other dimensions still use nearest0.1 mm.
+Both JVM variants pass603 cases each (595 pass/8 protected skips); gate755 measured/
+160 unscored,0 violations. The native narrow150% scope now explicitly adds stock
+editing/persistence/conflict checks in both languages, alongside unchanged PVC
+regressions. Selected PIT evidence remains scoped to the unchanged WoodFit and
+WoodStockForm implementation in3997e06; no fictitious final mutation rerun is claimed.

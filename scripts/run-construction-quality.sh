@@ -41,7 +41,7 @@ adb -s "$serial" shell settings put system font_scale 1.5
 for language in en es; do
   adb -s "$serial" shell cmd locale set-app-locales ar.didgetaller --user 0 --locales "$language"
   adb -s "$serial" shell am force-stop ar.didgetaller
-  run_case "$language-150" 'ar.didgetaller.ui.ConstructionUiTest#measuredPvcCatalogPersistsAndProducesCorrectAssemblyWithoutChangingLegacyDesigns'
+  run_case "$language-150" 'ar.didgetaller.ui.ConstructionUiTest#measuredPvcCatalogPersistsAndProducesCorrectAssemblyWithoutChangingLegacyDesigns,ar.didgetaller.ui.ConstructionUiTest#woodStockInputsPersistAndConflictsDoNotRewriteTheSavedBore'
 done
 adb -s "$serial" shell wm size 1280x720
 run_case landscape-150 'ar.didgetaller.ui.ConstructionUiTest#completeWoodWorkflowSearchSaveToleranceAndAllExports'

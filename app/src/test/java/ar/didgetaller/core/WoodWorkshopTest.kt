@@ -87,5 +87,13 @@ class WoodWorkshopTest {
         assertEquals("Legacy",ConstructionForm.name(mapOf("planName" to ""),"Legacy"))
         assertEquals("Legacy",ConstructionForm.name(emptyMap(),"Legacy"))
     }
+    @Test fun printedMinimumStockNeverRoundsBelowTheFullPrecisionRequirement() {
+        val fractional=shape.copy(points=listOf(AcousticModel.BorePoint(0,30.0),AcousticModel.BorePoint(1500,83.02)))
+        val p=ConstructionProjects.create("Fractional stock",fractional,ConstructionOptions(wallMm=9.0,radialToleranceMm=0.0))
+        val text=WorkshopDocument.create(p,WorkshopLanguage.ENGLISH).text()
+        assertTrue(text.contains("width 101.1 mm"))
+        assertTrue(text.contains("thickness 50.6 mm"))
+        assertEquals(50.51,WoodFit.assess(fractional,null,9.0,0.0).requiredHalfDepthMm,1e-9)
+    }
 
 }
