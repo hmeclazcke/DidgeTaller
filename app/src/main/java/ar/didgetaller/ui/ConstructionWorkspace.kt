@@ -6,6 +6,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
+import androidx.activity.compose.BackHandler
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -20,10 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import ar.didgetaller.R
-import ar.didgetaller.audio.CoroutineAnalysisLoader
 import ar.didgetaller.core.*
 import ar.didgetaller.data.*
-import kotlinx.coroutines.Dispatchers
 
 internal data class ConstructionExport(val plan:ConstructionPlan,val format:String,val labels:ConstructionPdf.Labels)
 
@@ -33,74 +37,137 @@ internal fun constructionBytes(r:ConstructionExport):ByteArray = when(r.format) 
     else->ConstructionPdf.create(r.plan,r.labels,r.format=="tiles")
 }
 
-/** Scoped, revocable workers reuse the existing analysis owner; exports never mutate the saved bore. */
+private val journeySaver=mapSaver(
+    save={j:ConstructionJourney->j.values.mapKeys {"value:"+it.key}+mapOf("step" to j.step,"accepted" to j.accepted)},
+    restore={saved->
+        val values=saved.filterKeys {it.startsWith("value:")}.mapKeys {it.key.removePrefix("value:")}.mapValues {it.value as String}
+        ConstructionJourney(values,saved["step"] as Int,if(saved["accepted"]==true)values else null)
+    })
+
+/** Saveable input state outlives composition; rendering never owns a second draft. */
 @Composable
-internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,String,ByteArray)->Unit,storageContext:android.content.Context?=null,dismiss:()->Unit) {
-    val context=LocalContext.current
-    val store=remember {ConstructionStore(storageContext ?: context)}
+internal fun ConstructionWorkspace(design:LocalStore.Design,export:(String,String,ByteArray)->Unit,storageContext:android.content.Context?=null,embedded:Boolean=false,dismiss:()->Unit) {
+    val context=storageContext ?: LocalContext.current
+    val store=remember(context){ConstructionStore(context)}
     val load=remember(design.id){runCatching {ConstructionForm.defaults(design.shape)+store.catalog()+store.project(design.id)}}
-    val fields=remember(design.id){
-        val initial=mutableStateMapOf<String,String>()
-        initial.putAll(load.getOrElse {ConstructionForm.defaults(design.shape)})
-        initial
-    }
-    var stage by remember {mutableIntStateOf(0)}
-    var failed by remember {mutableStateOf(false)}
-    var saved by remember {mutableStateOf(false)}
-    var analysis by remember {mutableStateOf<AnalysisState<ConstructionRequest,ConstructionResult>>(AnalysisState.Idle)}
-    var exported by remember {mutableStateOf<AnalysisState<ConstructionExport,ByteArray>>(AnalysisState.Idle)}
+    val initial=remember(design.id){ConstructionJourney.restore(load.getOrElse {ConstructionForm.defaults(design.shape)})}
+    val draft=rememberSaveable(design.id,stateSaver=journeySaver){mutableStateOf(initial)}
     val scope=rememberCoroutineScope()
-    val owner=remember {LatestAnalysis<ConstructionRequest,ConstructionResult>(CoroutineAnalysisLoader(scope,Dispatchers.Default){r:ConstructionRequest,cancelled,_->calculateConstruction(r,cancelled)}){analysis=it}}
-    val exportOwner=remember {LatestAnalysis<ConstructionExport,ByteArray>(CoroutineAnalysisLoader(scope,Dispatchers.Default){r:ConstructionExport,_,_->constructionBytes(r)}){exported=it}}
-    DisposableEffect(owner,exportOwner){onDispose {owner.close();exportOwner.close()}}
-    fun set(key:String,value:String){owner.clear();exportOwner.clear();fields[key]=value.take(64000);failed=false;saved=false}
-    fun run(action:String){failed=false;owner.replace(ConstructionRequest(ConstructionForm.name(fields,design.name),fields.toMap(),action))}
-    ConstructionExportEffect(exported,{exportOwner.clear()},export)
+    val editor=remember(design.id,context){ConstructionEditor(context,design,draft,initial,load,scope)}
     val language=exportLanguage()
-    val labels=ConstructionPdf.Labels(language,fields["target"]?.toDoubleOrNull())
-    Dialog(onDismissRequest=dismiss,properties=DialogProperties(usePlatformDefaultWidth=false,decorFitsSystemWindows=false)) {
+    val journey=draft.value
+    val lifecycle=LocalLifecycleOwner.current.lifecycle
+    DisposableEffect(editor){onDispose {editor.dispose()}}
+    DisposableEffect(lifecycle,editor) {
+        val observer=LifecycleEventObserver {_,event->if(event==Lifecycle.Event.ON_STOP)editor.cancel()}
+        lifecycle.addObserver(observer)
+        onDispose {lifecycle.removeObserver(observer)}
+    }
+    LaunchedEffect(editor,journey.step,journey.values){editor.prepare(language)}
+    ConstructionExportEffect(editor.exported,editor::acknowledgeExport,export)
+    val scroll=rememberScrollState()
+    LaunchedEffect(journey.step){scroll.scrollTo(0)}
+    ConstructionWindow(embedded,{editor.back(dismiss)}) {
         val focus=LocalFocusManager.current
-        val select:(Int)->Unit={focus.clearFocus();stage=it}
+        val select:(Int)->Unit={focus.clearFocus();editor.select(it)}
         Surface(Modifier.fillMaxSize().testTag("construction-workspace")) {
-            Column(Modifier.fillMaxSize().safeDrawingPadding()) {
-                ConstructionHeader(stage,select,dismiss)
-                val scroll=key(stage){rememberScrollState()}
-                Column(Modifier.weight(1f).verticalScroll(scroll).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
-                    ConstructionStatus(load.isFailure,failed,saved,analysis,exported)
-                    when(stage) {
-                        0->ConstructionTargetFields(fields,::set,design.name)
-                        1->ConstructionCandidates(analysis.value?.candidates.orEmpty(),{run("search")},{c->
-                            set("geometry",ConstructionForm.defaults(c.plan.ideal).getValue("geometry"))
-                            set("assembly",c.plan.options.assembly);select(2)
-                        },{set("geometry",ConstructionForm.defaults(design.shape).getValue("geometry"));select(2)})
-                        2->ConstructionMethodFields(fields,::set,{
-                            runCatching {store.saveCatalog(fields.getValue("pipes"),fields.getValue("fittings"))}
-                                .onSuccess {saved=true}.onFailure {failed=true}
-                        },{
-                            runCatching {store.catalog().forEach {(k,v)->set(k,v)}}
-                                .onSuccess {saved=true}.onFailure {failed=true}
-                        },load.isSuccess)
-                        else->ConstructionPlanActions(analysis,exported is AnalysisState.Loading,load.isSuccess,::run,{
-                            runCatching {store.saveProject(design.id,fields.toMap())}.onSuccess {saved=true}.onFailure {failed=true}
-                        }){plan,format->exportOwner.replace(ConstructionExport(plan,format,labels))}
-                    }
-                    ConstructionWorkers(analysis,exported){owner.cancel();exportOwner.cancel()}
-                    Text(stringResource(R.string.construction_uncertainty),style=MaterialTheme.typography.bodySmall)
+            BoxWithConstraints(Modifier.fillMaxSize().then(if(embedded)Modifier else Modifier.safeDrawingPadding())) {
+                val compact=maxHeight<360.dp
+                Column(Modifier.fillMaxSize().then(if(compact)Modifier.verticalScroll(scroll) else Modifier)) {
+                ConstructionHeader(journey.step,editor::available,select,{editor.save(language)},{editor.requestClose(dismiss)})
+                Column(Modifier.then(if(compact)Modifier else Modifier.weight(1f).verticalScroll(scroll)).padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+                    ConstructionStatus(load.isFailure,editor.failed,editor.saved,editor.analysis,editor.exported)
+                    ConstructionStep(editor,language)
+                    ConstructionWorkers(editor.analysis,editor.exported,editor::cancel)
+                    ConstructionHelp()
+                }
+                ConstructionFooter(journey.step,editor::available,select)
                 }
             }
         }
+        if(editor.leaving)ConstructionLeaveDialog(editor,language,dismiss)
     }
 }
 
 @Composable
-private fun ConstructionHeader(stage:Int,select:(Int)->Unit,dismiss:()->Unit) {
+private fun ConstructionWindow(embedded:Boolean,back:()->Unit,content:@Composable ()->Unit) {
+    if(embedded) {
+        BackHandler(onBack=back)
+        content()
+    } else Dialog(onDismissRequest=back,properties=DialogProperties(usePlatformDefaultWidth=false,decorFitsSystemWindows=false)) {
+        BackHandler(onBack=back)
+        content()
+    }
+}
+
+@Composable
+private fun ConstructionHelp() {
+    var expanded by remember {mutableStateOf(false)}
+    TextButton(onClick={expanded=!expanded}){Text(stringResource(R.string.ui_guide))}
+    if(expanded)Text(stringResource(R.string.construction_uncertainty),style=MaterialTheme.typography.bodySmall)
+}
+
+@Composable
+private fun ConstructionStep(editor:ConstructionEditor,language:WorkshopLanguage) {
+    val journey=editor.draft.value
+    val run:(String)->Unit={editor.run(it,language)}
+    when(journey.step) {
+        0->ConstructionTargetFields(journey.values,editor::set,editor.name(language))
+        1->ConstructionMethodFields(journey.values,editor::set,editor::saveCatalog,editor::loadCatalog,editor.load.isSuccess)
+        2->ConstructionValidation(editor,run)
+        else->if(editor.canPlan)ConstructionPlanActions(editor.analysis,editor.exported is AnalysisState.Loading,run){plan,format->
+            editor.export(plan,format,ConstructionPdf.Labels(language,journey.values["target"]?.toDoubleOrNull()))
+        } else Text(stringResource(R.string.wizard_unavailable))
+    }
+}
+
+@Composable
+private fun ConstructionValidation(editor:ConstructionEditor,run:(String)->Unit) {
+    Button(onClick={run("plan")},modifier=Modifier.testTag("construction-validate")){Text(stringResource(R.string.wizard_validate))}
+    val result=editor.current
+    if(result==null)Text(stringResource(R.string.wizard_validation_help)) else {
+        ConstructionReadinessLabel(result.plan,editor.draft.value.accepted)
+        Text(stringResource(R.string.wizard_predictions),style=MaterialTheme.typography.titleSmall)
+        ConstructionPlanView(result)
+        if(result.plan.options.method==ConstructionMethod.PVC && !ConstructionJourney.canPlan(result.plan,false))ConstructionApproval(editor,result.plan)
+    }
+    ConstructionCandidates(editor.analysis.value?.candidates.orEmpty(),{run("search")},editor::choose,{run("plan")})
+}
+
+@Composable
+private fun ConstructionApproval(editor:ConstructionEditor,plan:ConstructionPlan) {
+    Text(stringResource(R.string.wizard_pvc_alternative),modifier=Modifier.testTag("construction-approximation"))
+    Text(stringResource(R.string.wizard_difference,exportLanguage().dimension(ConstructionJourney.deviation(plan)),exportLanguage().dimension(plan.lengthMm-plan.ideal.lengthMm)))
+    Row {Checkbox(editor.draft.value.accepted,editor::approve,Modifier.testTag("construction-accept-alternative"));Text(stringResource(R.string.wizard_accept))}
+}
+
+@Composable
+private fun ConstructionFooter(step:Int,available:(Int)->Boolean,select:(Int)->Unit) {
+    FlowRow(Modifier.padding(horizontal=16.dp),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+        if(step>0)TextButton(onClick={select(step-1)}){Text(stringResource(R.string.wizard_back))}
+        if(step<3)Button(onClick={select(step+1)},enabled=available(step+1),modifier=Modifier.testTag("construction-continue")){Text(stringResource(R.string.wizard_continue))}
+    }
+    if(step<3 && !available(step+1))Text(stringResource(R.string.wizard_unavailable),Modifier.padding(horizontal=16.dp),style=MaterialTheme.typography.bodySmall)
+}
+
+@Composable
+private fun ConstructionLeaveDialog(editor:ConstructionEditor,language:WorkshopLanguage,dismiss:()->Unit) {
+    AlertDialog(onDismissRequest={editor.leaving=false},title={Text(stringResource(R.string.wizard_unsaved))},
+        confirmButton={TextButton(onClick={if(editor.save(language))dismiss()}){Text(stringResource(R.string.ui_save))}},
+        dismissButton={FlowRow {TextButton(onClick={editor.leaving=false}){Text(stringResource(R.string.wizard_keep_editing))};TextButton(onClick=dismiss){Text(stringResource(R.string.wizard_leave))}}})
+}
+
+@Composable
+private fun ConstructionHeader(stage:Int,available:(Int)->Boolean,select:(Int)->Unit,save:()->Unit,dismiss:()->Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal=16.dp)) {
         Text(stringResource(R.string.construction_title),Modifier.weight(1f).testTag("construction-heading"),style=MaterialTheme.typography.titleMedium)
+        TextButton(onClick=save,modifier=Modifier.testTag("wizard-save-draft")){Text(stringResource(R.string.ui_save))}
         TextButton(onClick=dismiss){Text(stringResource(R.string.ui_close))}
     }
     ScrollableTabRow(stage,edgePadding=0.dp) {
-        listOf(R.string.construction_target,R.string.construction_candidates,R.string.construction_method,R.string.construction_plan).forEachIndexed {i,title->
-            Tab(stage==i,{select(i)},text={Text(stringResource(title))},modifier=Modifier.testTag("construction-step-$i"))
+        listOf(R.string.wizard_design,R.string.wizard_material,R.string.wizard_validation,R.string.construction_open).forEachIndexed {i,title->
+            val status=stringResource(if(i==stage)R.string.wizard_current else if(!available(i))R.string.wizard_unavailable else if(i<stage)R.string.wizard_completed else R.string.wizard_available)
+            Tab(stage==i,{select(i)},enabled=available(i),text={Text(stringResource(title))},modifier=Modifier.testTag("construction-step-$i").semantics {stateDescription=status})
         }
     }
 }
@@ -144,13 +211,12 @@ private fun ConstructionCandidates(candidates:List<ConstructionCandidate>,search
 }
 
 @Composable
-private fun ConstructionPlanActions(state:AnalysisState<ConstructionRequest,ConstructionResult>,exporting:Boolean,writable:Boolean,
-    run:(String)->Unit,save:()->Unit,export:(ConstructionPlan,String)->Unit) {
+private fun ConstructionPlanActions(state:AnalysisState<ConstructionRequest,ConstructionResult>,exporting:Boolean,
+    run:(String)->Unit,export:(ConstructionPlan,String)->Unit) {
     Button(onClick={run("plan")},modifier=Modifier.testTag("construction-generate")){Text(stringResource(R.string.construction_preview))}
     val result=state.value
     if(result==null || state !is AnalysisState.Ready || state.request?.action=="search")return
     ConstructionPlanView(result)
-    Button(enabled=writable,onClick=save,modifier=Modifier.testTag("construction-save")){Text(stringResource(R.string.ui_save))}
     FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
         listOf("pdf" to R.string.construction_pdf,"tiles" to R.string.construction_tiles,"csv" to R.string.ui_export_csv,"svg" to R.string.construction_svg).forEach {(format,title)->
             OutlinedButton(onClick={export(result.plan,format)},enabled=!exporting,modifier=Modifier.testTag("construction-export-$format")){Text(stringResource(title))}
@@ -173,28 +239,35 @@ private fun ConstructionTargetFields(v:Map<String,String>,set:(String,String)->U
     ConstructionField("target",R.string.construction_hz,v,set)
     Box {
         TextButton(onClick={notes=true}){Text(stringResource(R.string.construction_note))}
-        DropdownMenu(notes,{notes=false}){(23..55).forEach {midi->DropdownMenuItem(text={Text(Music.pitch(Music.frequency(midi))!!.note)},onClick={set("target",Music.frequency(midi).toString());notes=false})}}
+        DropdownMenu(notes,{notes=false}){(23..55).forEach {midi->DropdownMenuItem(text={Text(WorkshopDocument.note(Music.frequency(midi),exportLanguage()))},onClick={set("target",Music.frequency(midi).toString());notes=false})}}
     }
-    ConstructionField("higher",R.string.construction_higher,v,set)
-    ConstructionField("mouth",R.string.construction_mouth,v,set)
-    ConstructionField("preferred",R.string.construction_preferred,v,set)
+    val shape=runCatching {ConstructionForm.shape(v)}.getOrDefault(AcousticModel.Shape())
+    BoreGraph(shape,Modifier.fillMaxWidth().height(150.dp))
+    DimensionControl(stringResource(R.string.ui_length),shape.lengthMm,500..3000,"mm",{value->
+        set("geometry",ConstructionForm.defaults(resizeProfile(shape,value)).getValue("geometry"));set("preferred",value.toString())
+    },{})
+    DimensionControl(stringResource(R.string.ui_mouthpiece),shape.mouthMm,15..180,"mm",{value->
+        set("geometry",ConstructionForm.defaults(changeDiameter(shape,0,value)).getValue("geometry"));set("mouth",value.toString())
+    },{})
+    DimensionControl(stringResource(R.string.ui_bell),shape.bellMm,15..200,"mm",{value->
+        set("geometry",ConstructionForm.defaults(changeDiameter(shape,2,value)).getValue("geometry"))
+    },{})
     ConstructionField("maximumLength",R.string.construction_maximum,v,set)
     var advanced by remember {mutableStateOf(false)}
-    TextButton(onClick={advanced=!advanced}){Text(stringResource(R.string.construction_advanced))}
+    TextButton(onClick={advanced=!advanced},modifier=Modifier.testTag("construction-advanced")){Text(stringResource(R.string.construction_advanced))}
     if(advanced) {
+        ConstructionField("higher",R.string.construction_higher,v,set)
         ConstructionField("minimumBore",R.string.construction_min_bore,v,set)
         ConstructionField("maximumBore",R.string.construction_max_bore,v,set)
         ConstructionField("bell",R.string.construction_bell,v,set)
         ConstructionField("geometry",R.string.construction_geometry,v,set,true)
     }
     Text(stringResource(R.string.construction_limits),style=MaterialTheme.typography.bodySmall)
-    var wood by remember {mutableStateOf(false)}
-    TextButton(onClick={wood=!wood},modifier=Modifier.testTag("construction-target-stock")){Text(exportLanguage().wood(WoodTerm.STOCK))}
-    if(wood)WoodStockFields(v,set)
 }
 
 @Composable
 private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->Unit,saveCatalog:()->Unit,loadCatalog:()->Unit,writable:Boolean) {
+    if(v.getValue("method")=="LAMINATED")Text(stringResource(R.string.wizard_legacy),style=MaterialTheme.typography.bodySmall)
     val names=listOf(R.string.construction_sandwich,R.string.construction_pvc)
     ConstructionForm.activeMethods().forEachIndexed {i,method->
         FilterChip(v.getValue("method")==method.name,{set("method",method.name)},label={Text(stringResource(names[i]))},modifier=Modifier.testTag("construction-method-${method.name}"))

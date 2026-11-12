@@ -102,7 +102,8 @@ private fun TallerToolbar(route: String?, detail: Boolean, fullscreen: Boolean, 
     val suppressed=mapOf(
         TallerRoutes.Viewer to true,
         TallerRoutes.Measure to (shortLarge || capturing),
-        TallerRoutes.Metronome to (configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE))
+        TallerRoutes.Metronome to (configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE),
+        TallerRoutes.Lab to shortLarge)
     if((detail || !fullscreen) && suppressed[route]!=true)
         TopAppBar(title=title,navigationIcon=navigationIcon,colors=TopAppBarDefaults.topAppBarColors(containerColor=background))
 }
@@ -198,7 +199,7 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                 }
                 composable(TallerRoutes.Lab) {
                     DestinationFrame(padding,route==TallerRoutes.Lab) {
-                        DestinationContent("lab-home") {LabHome {index->vm.labTab=index;navController.navigate(TallerRoutes.tool(index))}}
+                        LaboratoryWizard(vm,exportFile){index->vm.labTab=index;navController.navigate(TallerRoutes.tool(index))}
                     }
                 }
                 composable(TallerRoutes.LabTool,arguments=listOf(navArgument("tool"){type=NavType.IntType})) {tool ->
@@ -211,11 +212,12 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                                     if(i!=index)navController.navigate(TallerRoutes.tool(i)){popUpTo(TallerRoutes.Lab);launchSingleTop=true}
                                 },text={Text(context.presetLabel(label),maxLines=1)})}
                             }
-                            key(index){DestinationContent("lab-screen"){when(index){0->DesignerScreen(vm,exportFile);1->SpectrumScreen(vm,toggleMic);2->EvolutionScreen(vm,exportFile);else->GuideScreen()}}}
+                            key(index){if(index==0)LaboratoryWizard(vm,exportFile){i->navController.navigate(TallerRoutes.tool(i))} else DestinationContent("lab-screen"){when(index){1->SpectrumScreen(vm,toggleMic);2->EvolutionScreen(vm,exportFile);else->GuideScreen()}}}
                         }
                     }
                 }
                 composable(TallerRoutes.Library) {
+                    LaunchedEffect(Unit){vm.reloadDesigns()}
                     DestinationFrame(padding,route==TallerRoutes.Library) {
                         Column {
                             PrimaryTabRow(selectedTabIndex=vm.libraryTab,containerColor=background){
@@ -224,7 +226,6 @@ fun TallerApp(vm:TallerViewModel, startMeasurement:()->Unit, toggleMic:()->Unit,
                             key(vm.libraryTab){DestinationContent("library-list"){
                                 LibraryScreen(vm,exportFile,
                                     onOpen={navController.navigate(TallerRoutes.session(it.id))},
-                                    onOpenDesign={vm.selectDesign(it);navController.navigateToSection(2);navController.navigate(TallerRoutes.tool(0))},
                                     onCompare={navController.navigate(TallerRoutes.Compare)})
                             }}
                         }
@@ -695,15 +696,20 @@ private fun DesignerScreen(vm:TallerViewModel,export:(String,String,ByteArray)->
         dismissButton={TextButton(onClick={showSaveDialog=false}){Text(stringResource(R.string.ui_cancel))}})
 }
 
-private fun resizeProfile(shape:AcousticModel.Shape,length:Int):AcousticModel.Shape {
+internal fun resizeProfile(shape:AcousticModel.Shape,length:Int):AcousticModel.Shape {
+    require(length in 500..3000)
     if(shape.points.isEmpty())return shape.copy(lengthMm=length)
-    val nodes=shape.points.mapIndexed {index,p ->
-        p.copy(positionMm=when(index){0->0;shape.points.lastIndex->length
-            else ->(p.positionMm.toDouble()*length/shape.lengthMm).roundToInt()})
+    var previous=-1
+    val nodes=shape.points.mapIndexed {index,p->
+        // Integer-mm scaling must not merge adjacent custom stations.
+        val position=(p.positionMm.toDouble()*length/shape.lengthMm).roundToInt()
+            .coerceIn(previous+1,length-shape.points.lastIndex+index)
+        previous=position
+        p.copy(positionMm=position)
     }
     return shape.copy(lengthMm=length,points=nodes)
 }
-private fun changeDiameter(shape:AcousticModel.Shape,which:Int,value:Int):AcousticModel.Shape {
+internal fun changeDiameter(shape:AcousticModel.Shape,which:Int,value:Int):AcousticModel.Shape {
     if(shape.points.isEmpty())return when(which){0->shape.copy(mouthMm=value);1->shape.copy(middleMm=value);else->shape.copy(bellMm=value)}
     val nodes=shape.points.toMutableList()
     val index=when(which){0->0;1->nodes.size/2;else->nodes.lastIndex}
@@ -712,7 +718,7 @@ private fun changeDiameter(shape:AcousticModel.Shape,which:Int,value:Int):Acoust
 }
 
 @Composable
-private fun DimensionControl(label:String,value:Int,range:IntRange,unit:String,
+internal fun DimensionControl(label:String,value:Int,range:IntRange,unit:String,
                              onChange:(Int)->Unit,onCommit:()->Unit){
     Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){
         Text(label,Modifier.weight(1f).padding(end=12.dp),fontSize=13.sp,color=muted)
@@ -724,7 +730,7 @@ private fun DimensionControl(label:String,value:Int,range:IntRange,unit:String,
 }
 
 @Composable
-private fun BoreGraph(shape:AcousticModel.Shape,modifier:Modifier=Modifier) {
+internal fun BoreGraph(shape:AcousticModel.Shape,modifier:Modifier=Modifier) {
     Canvas(modifier.background(Color(0xFF102125),RoundedCornerShape(12.dp)).padding(16.dp)) {
         val w=size.width;val h=size.height
         val magnification=(h*0.77f)/(200f)
@@ -751,9 +757,6 @@ private fun BoreGraph(shape:AcousticModel.Shape,modifier:Modifier=Modifier) {
 
 @Composable
 private fun EvolutionScreen(vm:TallerViewModel,export:(String,String,ByteArray)->Unit) {
-    var construction by remember {mutableStateOf<LocalStore.Design?>(null)}
-    Button(onClick={construction=LocalStore.Design("inverse-workspace","Didge Taller",vm.shape)},modifier=Modifier.testTag("construction-open")){Text(stringResource(R.string.construction_open))}
-    construction?.let {item->ConstructionWorkspace(item,export,vm.getApplication<android.app.Application>()){construction=null}}
     val context = androidx.compose.ui.platform.LocalContext.current
     Panel(context.getString(R.string.ui_inverse_design), context.getString(R.string.ui_search_for_a_geometry_from_three_target_frequencies_as_in_didgelab)) {
         Text(stringResource(R.string.ui_1_choose_the_desired_resonances_2_tap_search_3_compare_and_test_the_result),
@@ -809,14 +812,14 @@ private fun TargetSlider(title:String,value:Double,range:ClosedFloatingPointRang
 
 @Composable
 private fun LibraryScreen(vm:TallerViewModel,export:(String,String,ByteArray)->Unit,
-                          onOpen:(RecordingStore.Session)->Unit,onOpenDesign:(LocalStore.Design)->Unit,onCompare:()->Unit) {
+                          onOpen:(RecordingStore.Session)->Unit,onCompare:()->Unit) {
     LibraryTools(vm,onCompare)
     when(vm.libraryTab) {
         0 -> {
             SessionsLibrary(vm,onOpen=onOpen)
             if(vm.measurements.isNotEmpty())MeasurementsLibrary(vm,export)
         }
-        else -> DesignsLibrary(vm,onOpenDesign,export)
+        else -> DesignsLibrary(vm,export)
     }
 }
 
@@ -982,9 +985,9 @@ private fun stabilityLabel(percent:Int)=when {
 }
 
 @Composable
-private fun DesignsLibrary(vm:TallerViewModel,onOpen:(LocalStore.Design)->Unit,export:(String,String,ByteArray)->Unit) {
-    var construction by remember {mutableStateOf<LocalStore.Design?>(null)}
-    construction?.let {item->ConstructionWorkspace(item,export,vm.getApplication<android.app.Application>()){construction=null}}
+private fun DesignsLibrary(vm:TallerViewModel,export:(String,String,ByteArray)->Unit) {
+    var constructionId by rememberSaveable {mutableStateOf<String?>(null)}
+    vm.designs.firstOrNull {it.id==constructionId}?.let {item->ConstructionWorkspace(item,export,vm.getApplication<android.app.Application>()){constructionId=null;vm.reloadDesigns()}}
     val context = androidx.compose.ui.platform.LocalContext.current
     var delete by remember {mutableStateOf<LocalStore.Design?>(null)}
     Text(stringResource(R.string.ui_saved_bore_profiles),color=muted)
@@ -995,8 +998,7 @@ private fun DesignsLibrary(vm:TallerViewModel,onOpen:(LocalStore.Design)->Unit,e
             Text(stringResource(R.string.ui_mm_long_points, item.shape.lengthMm, item.shape.controlPoints().size) +
                 context.getString(R.string.ui_mouthpiece_mm_bell_mm, item.shape.mouthMm, item.shape.bellMm),color=muted,fontSize=12.sp)
             FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-                TextButton(onClick={onOpen(item)}) {Text(stringResource(R.string.ui_open))}
-                TextButton(onClick={construction=item},modifier=Modifier.testTag("construction-design-${item.id}")){Text(stringResource(R.string.construction_open))}
+                TextButton(onClick={constructionId=item.id},modifier=Modifier.testTag("construction-design-${item.id}")){Text(stringResource(R.string.ui_open))}
                 TextButton(onClick={vm.duplicateDesign(item)}) {Text(stringResource(R.string.ui_duplicate))}
                 TextButton(onClick={delete=item}) {Text(stringResource(R.string.ui_delete))}
             }

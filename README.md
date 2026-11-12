@@ -146,7 +146,7 @@ The app remains a personal beta distributed from source. Hardware microphone res
 
 This section describes the implementation on `feature/inverse-design-construction` (draft PR #5), not a published release. Existing transverse-layer projects retain legacy access; new plans offer split wood or measured PVC.
 
-Open **Laboratory → Search → Construction plan**, or choose **Construction plan** on a saved design in the Library. Define a passive resonance target, compare bounded candidate searches, select a construction method and generate the manufactured profile. Original designs and recordings remain unchanged; construction projects and the shared measured catalog are saved separately.
+Open **Laboratory → Design instrument → Choose material → Validate and adjust → Construction plan**. Save a draft without leaving the wizard; opening the same design from **Library → Designs** restores its editing stage, material and accepted construction alternative. Saving updates that identity rather than creating duplicates. Geometry edits invalidate old calculations and exports. A PVC approximation requires explicit approval, with predictions calculated from the actual measured assembly. Live microphone Spectrum and the older three-resonance search remain optional tools, separate from workshop-plan navigation.
 
 - **Split wood:** mirrored longitudinal halves, station diameters, semicircular hollowing depths, minimum blank dimensions and radial overcut allowance.
 - **Modular PVC:** editable measured tube/socket/reducer catalog, cut lengths, insertion overlaps, variable internal transitions and assembled length. No commercial sizes or availability are assumed.
@@ -158,8 +158,8 @@ Open **Laboratory → Search → Construction plan**, or choose **Construction p
 The [construction implementation and verification record](docs/engineering/CONSTRUCTION_PROGRESS.md) documents scope, numerical checks, Android evidence and remaining limitations. Search is bounded, not a proof of global optimality; tapered intervals are discretized and circular-bore assumptions remain applicable.
 
 <p>
-  <img src="docs/screenshots/construction/editorial-en-candidates.png" alt="Comparing predicted acoustic candidates and bore profiles" width="280" />
-  <img src="docs/screenshots/construction/editorial-en-wood-plan.png" alt="Generated split-wood workshop plan and export controls" width="280" />
+  <img src="docs/screenshots/construction/wizard-en-design.png" alt="Persistent Laboratory construction wizard" width="280" />
+  <img src="docs/screenshots/construction/wizard-en-plan.png" alt="Construction-plan PDF export at 150% font size" width="280" />
 </p>
 
 Authentic synthetic-data emulator captures; see the [construction gallery and provenance](docs/screenshots/construction/README.md).

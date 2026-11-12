@@ -2,32 +2,56 @@
 
 Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
-Current status: **READY FOR OWNER REVIEW — DOCUMENT REVISION VERIFIED**. The complete construction workflow is
-implemented and executed on the clean emulator. PR5 remains draft and unmerged.
+Current status: **PERSISTENT WIZARD IMPLEMENTED - LOCAL INTEGRATION VERIFIED**. PR5 remains draft and unmerged.
 
 ## Implemented application workflow
 
-Laboratory > Search > Construction plan, or the same action on a saved Library
-design, opens acoustic target, candidates, construction method and plan/export.
-Original bore editing, three-target evolutionary search, four bottom destinations
-and historical design serialization remain available. Construction schema-1 JSON
-is separate (`construction_v1`), keyed by design ID; Laboratory has one draft.
-A shared measured catalog supplies defaults; saved projects retain their snapshot.
-Corrupt or unknown-schema documents block saving and preserve their originals.
-No legacy design/session/recording metadata is rewritten.
+Laboratory now opens one guided constructor: **Design instrument -> Choose material
+-> Validate and adjust -> Construction plan**. The same ConstructionWorkspace opens
+from Library > Designs > Open. Saving keeps the current stage and updates the
+selected design identity. Saved completed projects restore their plan stage and
+recalculate before enabling exports; incomplete drafts restore their editing stage.
+The earlier `inverse-workspace` draft remains accessible without migration.
 
-Targets accept Hz or a note, two optional higher resonances, mouth ID, preferred/
-maximum length and bore/bell bounds. Bounded deterministic search ranks feasible
-candidates by cents error, optional resonances and piece count. Cards compare
-resonance, cents, dimensions, components and ideal/manufactured profiles. Equivalent
-manufactured candidates are deduplicated. No global optimum/playability is claimed.
+ConstructionJourney owns saveable inputs, stage and an exact-input PVC approval.
+ConstructionEditor owns commands and revocable analysis/export workers, sharing
+that same draft rather than copying UI state. Input edits clear old results,
+exports and approval. Current plans must match the full input snapshot. Existing
+stock assessment, acoustic prediction, bounded search, catalog and document engines
+are reused. No scientific calculation or historical recording format is changed.
+
+The Laboratory wizard is bounded inside the existing tab destination, keeping the
+four-tab navigation available. Navigation away retains the unsaved draft without
+implicitly saving it; Android Back returns through stages before offering to keep,
+save or discard edits. Saved Library designs use the same editor in a full-screen
+dialog. Saveable state restoration is tested; actual OS process-kill restoration
+has not been separately exercised. Live microphone Spectrum is explicitly optional
+and separate from passive predictions. The older three-resonance search and Guide
+remain optional tools; candidate search for construction belongs to validation,
+and the plan is no longer hidden under Search. Model limitations are contextual.
+
+Schema-1 construction JSON remains separate (`construction_v1`), keyed by design
+identity. Stage and approval fields are additive. Catalog snapshots remain bound
+to each saved project. Stable-id design upsert preserves unrelated rows and unknown
+fields; malformed, future-schema or ambiguous metadata fails closed. Repeated save
+is idempotent. Each document retains its existing publication boundary; cross-file
+saving is not claimed as one distributed transaction. A reported save failure can
+be retried using the same identity without appending duplicates.
+
+A straight PVC tube is not treated as a conical bore. A measured construction that
+differs in diameter or length requires explicit approval, reports differences and
+shows predictions calculated for that actual assembly. Search uses the entered
+measured component assembly and bounded cut-length alternatives; it is not an
+exhaustive catalog-connection synthesizer or a claim of acoustic equivalence.
+Unconfirmed wood cannot unlock a construction plan. Legacy transverse-layer
+projects remain readable/exportable without being offered for new construction.
 
 ## Manufacturing methods
 
 - Split wood: mirrored semicircular hollows, regular and mandatory transition
   stations, two prepared halves A/B, minimum stock width/thickness, wall and radial
   overcut reserve. Add saw kerf separately to the unsplit blank.
-- Transverse laminated layers: exact thickness list or nominal thickness with final
+- Legacy transverse-layer projects only: exact thickness list or nominal thickness with final
   remainder; constant openings enclose ideal extrema, report excess/stock dimensions.
   Search reserves a cylindrical first layer to preserve the requested mouth ID.
 - PVC: user-measured tube ID/OD/stock length, cuts, socket dimensions, insertions,
@@ -410,3 +434,54 @@ JVM variants and strict gate passed again. Selected PIT survivors are four in
 minimum selection, one Kotlin null assertion in row, and thirteen in station
 spreading. No survivor changes a tested diameter/depth/board-or-log wall formula;
 selection-boundary/tie mutations are retained as disclosed test-strength limits.
+
+
+## Persistent-wizard verification - 2026-11-12
+
+RED/GREEN regressions protect dense bore-point resizing and stage transitions.
+Resizing keeps strictly ordered stations and every diameter instead of merging
+nearby points. Stable scroll ownership removes the reproduced recomposition stall
+and teardown SlotWriter failure. ConstructionWorkspace MCC fell from the initial
+45-branch wizard draft to 7; stage presentation is 6, validation 4 and ordinary
+editor commands at most 4. Pure readiness is 8. This separates editing commands,
+readiness rules and rendering instead of hiding a large helper.
+
+JVM integration: 637 discovered per variant, 629 passed and 8 protected skips,
+zero failures. All newly measured editor/journey methods have 100% method-line
+coverage and CRAP-L below 10. Current source gate: 798 measured, 169 unscored,
+60 historical above-target JVM functions, zero violations; CPD zero groups.
+Compose, state accessors, Saver callbacks and constructors retain explicit
+source-hash-bound technical reviews; they are not assigned invented CRAP scores.
+No metric baseline, threshold, dependency or scientific algorithm was changed.
+
+Native coverage includes stable saving, incomplete/completed Library resume,
+unsaved tab changes, Android Back warnings, earlier draft access, stock validation,
+explicit PVC approval, stale-plan rejection, all four exports and saved-state
+restoration. EN/ES150% rendering and native PDF dimensions/calibration are exercised
+with synthetic fixtures. Detailed logs are ignored under checkpoints/workshop-final.
+Final native layout results and remote CI are recorded in the delivery follow-up
+on draft PR5; earlier failed diagnostic attempts are not counted as passing runs.
+No Samsung or private audio/session data was accessed.
+
+
+Responsive follow-up: compact available heights scroll the complete wizard rather
+than shrinking its editable body below a usable field height. Normal portrait
+keeps the bounded body/header/footer. The Laboratory toolbar yields space for the
+short/large-font case while the original icon navigation remains fixed. Tests
+scroll both vertical and horizontal parents before asserting tab visibility and
+performing an actual click; assertions are retained. The first semantic-only
+landscape pass was not accepted as sufficient visual evidence. Authentic images
+are linked in the construction screenshot gallery.
+
+
+Final ownership/save regressions: replacing a LifecycleOwner no longer disposes a
+surviving editor; analysis admission includes editor identity even when measurements
+are identical. Both failures were independently reproduced before correction.
+A saved draft with unfinished geometry preserves the last valid canonical bore,
+including a fresh Laboratory entry; draft text remains editable. Library reloads
+its snapshot on entry, so Save -> switch tab -> Open resumes the just-created design.
+JVM637 per variant passed with8 protected skips; all17 native journey/navigation
+cases passed on the final implementation, including these additional regressions.
+No failed or stale-APK diagnostic attempt is counted as a passing validation.
+
+Final compact verification passed: Library resume and measured PVC at 1280x720,150% font; final CI is attached to the published implementation in draft PR5.

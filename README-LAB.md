@@ -6,13 +6,13 @@ For installation and recording, start with the [project README](README.md). This
 
 ## Workflow
 
-1. Open **Laboratory → Design / Laboratorio → Diseñar**. Choose a preset or edit the instrument length and internal diameters. The point editor describes the bore with positions and diameters in millimeters.
-2. Inspect the profile and simulated resonance results. Save useful designs to **Library → Designs / Biblioteca → Diseños**.
-3. Use **Spectrum / Espectro** to inspect microphone sound in real time. This does not record audio; Measure records sessions. The live power spectrum is distinct from the simulated input-impedance resonances in the bore editor.
-4. Use **Search / Buscar** to enter three target resonance notes and run the evolutionary search. Progress and cancellation are available; the result can be applied to the editor.
-5. Optionally associate a saved design with a didgeridoo session. The session presents simulated resonances and recorded results separately. Manual vocalization or possible-toot markers annotate observations without claiming automatic detection.
+1. Open **Laboratory** to start the construction wizard. Define the target passive resonance, length and internal bore profile; advanced controls retain higher targets and point editing.
+2. **Choose material:** measured natural log, two boards, a block to split, or a measured modular PVC assembly. Catalog dimensions are user-provided, not commercial assumptions.
+3. **Validate and adjust:** inspect dimensional readiness and predictions for the actual manufactured profile. Candidate search belongs here. A stepped or cylindrical PVC alternative never silently replaces a widening target bore: inspect the difference and explicitly accept it.
+4. **Construction plan:** preview dimensions and export PDF, SVG, CSV or the separate tiled 1:1 template. Editing earlier inputs revokes the prior plan and approval.
+5. Save from any stage without leaving the wizard. **Library → Designs → Open** resumes the same identity and stage; repeated saves update it rather than append copies. Incomplete drafts remain editable, and plans are recalculated after restoration.
 
-**Guide / Guía** introduces the musical and acoustic terms used by the tools.
+Closing an edited unsaved draft offers Save, Keep editing or Leave without saving. Android Back first returns to the preceding stage. The live microphone spectrum, the older three-resonance evolutionary search and Guide remain optional Laboratory tools after closing the wizard. The spectrum does not record and does not represent simulated impedance. Session/design association remains available independently.
 
 ## What the model represents
 

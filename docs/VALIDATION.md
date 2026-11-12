@@ -2412,7 +2412,7 @@ private WAV access. See engineering/WORKSHOP_DOCUMENTS.md for reproduction/limit
 # Final measured-socket workshop evidence
 
 Implementation764bc63: fast CI43037920159 and clean API35 native CI43037955490
-both succeeded. Native artifact logs prove11 executions, including EN/ES and150%
+both succeeded. Native artifact logs prove11 executions, including EN/ES and 150%
 portrait/landscape. Both JVM variants have591 cases (583 passed,8 protected skips).
 Source gate713/156 measured/unscored,64 historical above-target,0 violations,CPD0.
 Final selected document PIT487:245 killed,231 surviving,11 uncovered;50.31%,19s
@@ -2571,3 +2571,31 @@ both instrument profiles and unchanged recording-control geometry. One additiona
 native case passed; a fresh unretouched English live-meter capture is linked in
 the README. The earlier failing run is not counted as a pass. Final source gate
 remains771/160,zero violations. No private fixture method was executed.
+
+
+## Persistent Laboratory construction wizard - 2026-11-12
+
+Final canonical build: debug/release JVM637 discovered each,629 passed,8 protected
+skips,zero failures; debug and androidTest APKs built, Lint passed. Seventeen actual
+native integration cases passed on task-owned emulator-5582/API37, synthetic data
+only. They cover new-save/Library resume without duplicates, incomplete/canonical
+geometry separation, old projects, ownership changes with identical measurements,
+LifecycleOwner replacement, cancellation, stale-plan invalidation, PVC approval,
+all exports and SavedState restoration. Two localization regression cases also
+passed; focused EN/ES150% portrait/landscape captures were rendered and inspected.
+Configuration runs are separate executions, not additional unique test methods.
+
+Strict source gate:798 measured/169 unscored,60 historical above-target JVM
+functions,zero violations; CPD0. New ordinary journey/editor methods are measured
+below10. ConstructionWorkspace MCC7, stage routing6, validation4; no replacement
+giant controller. Compose/accessor/constructor/Saver technical reviews are narrowly
+source-hash-bound. No numeric gate/baseline changed. Full logs are ignored under
+checkpoints/workshop-final/wizard-*. Earlier failing diagnostic attempts remain
+recorded and are not represented as passes. PR5 carries exact published SHA/CI.
+
+Physical acoustics/printing and OS process-kill restoration are not claimed.
+The current search evaluates the entered measured assembly and bounded alternatives,
+not exhaustive component-catalog synthesis. No Samsung or private audio/session data
+was accessed; the existing scientific model and document geometry were unchanged.
+
+Final compact follow-up: both Library reopening and measured-PVC configuration/export passed at 1280x720 and 150% font on the final APK. The earlier fixed-header assertion was corrected to scroll the responsive header into view before retaining its visibility assertion.

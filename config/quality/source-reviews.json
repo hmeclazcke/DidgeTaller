@@ -5683,15 +5683,17 @@
     },
     "c7c20c886466a32843eb06cae5e4e1be68c58c2230fe95c3789065cb1b09e3d7": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "112",
+      "line": 113,
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "725b8523436bf22c9f476363b23573ee6960390a51624bead382be7449596412",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Passes the existing document exporter into Laboratory and Library without changing destinations or microphone ownership.",
+      "semanticHash": "4cbaf0c817ed41b1593a17054d159e0213c815eb794a6a7c8a0fbbe3c5d893ac",
+      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5",
       "metric_status": "compose-transformation"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
@@ -5724,18 +5726,18 @@
     },
     "6fb537759ceaad7c363d55656bc7ffef5e25a801bff1dfff3a89f02d3a0de561": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 113,
+      "line": 98,
       "kind": "function",
       "name": "TallerToolbar",
-      "semanticHash": "2c6ac8f1e08186a1fbb573c879bf2a88ea09a9c0b55e8f64cdb6011d579b6a6d",
-      "reason": "Cohesive platform header owns a declarative per-destination suppression policy: preserve viewer/measurement/fullscreen rules and free landscape practice space. MCC is below the unchanged complexity ceiling; real navigation/font/recording UI regressions protect this Compose-only boundary.",
+      "semanticHash": "b55ad57d43564451dbcd78bd82fd0b27ebb2fedc6c8b9a76026584b3735f016b",
+      "reason": "Compose viewport presentation: the bounded four-stage wizard derives compact layout from actual available height. Short viewports scroll the whole wizard so an editable control can fit; normal portrait keeps its header and footer fixed. The Laboratory toolbar yields space at short/large-font configurations while bottom navigation remains available. Native bilingual 150% portrait/landscape journeys, Back and tab restoration exercise these bounds. Source/JVM Compose mapping is unsupported; no CRAP or numeric baseline waiver is claimed.",
       "metric_status": "compose-transformation",
       "evidence": [
-        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+      "reviewed_source": "Persistent Laboratory wizard, final responsive verification on PR5"
     },
     "62ff3f35dedd6ea9f6ede82711c677111c666d35b7dc9839c5138587e2d231a6": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
@@ -6345,17 +6347,18 @@
     },
     "9f21390daa155b39408b0463d04df69d4372dcced69b14d7842e85b5954a0abc": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 197,
+      "line": 265,
       "kind": "function",
       "name": "ConstructionMethodFields",
-      "semanticHash": "9ec48a37d3dbf2bde79ae88d7c87d7c20ef8a02ecfdee96a0878dd9022894240",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests. Active selection now contains only split wood and PVC; the legacy layered decoder and export calculations remain intact. The PVC UI test asserts absence of the removed selector.",
+      "semanticHash": "c8732ced095bbbc9aad81fa4e83cdfc6f8ec471e03ea9cdbb74e39d78ae51fa3",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
       "evidence": [
-        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "stock-aware revision on PR5",
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
       "metric_status": "compose-transformation"
     },
     "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
@@ -6403,15 +6406,18 @@
     },
     "8b5ccf12ad73b2944b81215c50de688b963aeef5676170d5d04cda15257fb686": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "753",
+      "line": 757,
       "kind": "function",
       "name": "EvolutionScreen",
-      "semanticHash": "96143193fbcd95313a47251f402c1a2a65b0161b6b01f475fab5d774308e14d1",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Opens the scoped construction workspace while retaining the legacy three-resonance search.",
+      "semanticHash": "75fa659e7d4754f4176279e9d90af72e00a33c0ded9c6925fedc9007e225150f",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
       "metric_status": "compose-transformation"
     },
     "dbaf13ede01bb97f977a9fe9addda021613d11355db90ce429e3dfc73c194c29": {
@@ -7134,17 +7140,18 @@
     },
     "86a964e726925b5e7488745d48c7ce5f313d40995f1131131e38f22ea1a8f90e": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 170,
+      "line": 232,
       "kind": "function",
       "name": "ConstructionTargetFields",
-      "semanticHash": "2fe86bb5a6bc2a9271475e0ba7b722256908be84af702eb776c595a598333b64",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "semanticHash": "0fe8ced796922f20c91f437dffd0e8409ba5b2c564a70a4b7dbf10a7c5bb930d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
       "evidence": [
-        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "stock-aware revision on PR5",
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
       "metric_status": "compose-transformation"
     },
     "72974a6203c922771d71968911024eb7c191c9378bd224726774e7b83a018b2b": {
@@ -7160,6 +7167,664 @@
         "docs/engineering/WORKSHOP_DOCUMENTS.md"
       ],
       "reviewed_source": "Focused workshop usability correction following c497246"
+    },
+    "d1a0d4a1e99379aeb5d8e179378eb66da1671a1f264c774295087e8695f6ecbc": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionJourney.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a6de2d394ef0f709a757f9bc96b26f03a35760a2a52178ccc2a6c8609696c994",
+      "reason": "Immutable saveable draft snapshot: constructor enforces stage bounds and the acceptance accessor compares the exact approved input map. Constructor/initializer/accessor have no independent named-function Detekt correspondence. Ordinary transition, restoration and readiness functions are measured below target; tests cover all readiness states, legacy metadata and revocation on input edits.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "04871da3914b75c2350bff8b2ed7b9b902ce6b642a7752a9dde022af6b136218": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionJourney.kt",
+      "line": 9,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "620ae6b50c95eb246957a7a80cf14834b70c3406039f2bec06dccd76f4aa9688",
+      "reason": "Immutable saveable draft snapshot: constructor enforces stage bounds and the acceptance accessor compares the exact approved input map. Constructor/initializer/accessor have no independent named-function Detekt correspondence. Ordinary transition, restoration and readiness functions are measured below target; tests cover all readiness states, legacy metadata and revocation on input edits.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "7a2e0c5a8cfc7cb2235fd7190d8291b78626658ddf5e594e614b31cfa0334a6d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionJourney.kt",
+      "line": 10,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "bc094879e3310cb22a8b621aa2bd7ab66b54eb71ace9a4ff502fb269bd8c6540",
+      "reason": "Immutable saveable draft snapshot: constructor enforces stage bounds and the acceptance accessor compares the exact approved input map. Constructor/initializer/accessor have no independent named-function Detekt correspondence. Ordinary transition, restoration and readiness functions are measured below target; tests cover all readiness states, legacy metadata and revocation on input edits.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "d30ae3b677417701502a51616a60576251c3d602ebef934cdecd50184fa3de1c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 12,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d59bc981a0e0ce8bd0c6308d24f53cea67c4dfaab4105e803e0e719ca866b5e4",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "88910a0e5d10144fb6c7788036cecdeab2b99349d691560791df9a1dbb8692d1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "16472e6475677ddea59c083ca553322a58113068d319ce7ba7cfac7949d34cbd",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "0ae5f974e5abb8bdfeab2406cdd71063b90d12d2e8154c97d3991488365a3ed3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 16,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "51f5870497e478de115592629f56c7d8004525cc8dc658ba22738808236d8a54": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 17,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "ce7b3493a378cc9e41d4da82830914c3cac47271a31cf33886e80820d0d02a3c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 19,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "cb4da411523453b1e715e1b450322ef31b02693e0707e14ef949e78b715e7753": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 20,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "6cf7fab619c5c29622075dd9ff966b778f26f4e8541543c084c60b8d02dbf736": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 21,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "7db298e5e6e53979f45d68e60e158884e2937d2e00277d61ad11d71eca91222c",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "3e4b7491da1b1b2975d94da8c57d0299829b823eb7dbbf229fa8bae1fd496fa7": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 21,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "c6f2fa852dd54a631515ba604712692c2e3043009db4f7b5a96f4e54943411c5",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "00fa884175dc8e3e33d128b2db700175cf143957efa0533ce84ef762cd807dff": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 21,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "bd7dc142c5e18cbda2a9d5f8a0e0bde6db3954109a0b1b6712f06a4fb04d29d1",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "48a137e51065a2d4ff62cc832ccccdec9a33eb2a5ac1dd1655826c8a7ff2f014": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 22,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "45ea6f6f967cf2e4c2b1f74b9afdcb31914edfbe4cfc3865605ccc4773d349e5",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "7376d255429603fd9c20bfa8249b24edd9ac8abd842ca40572e394d62724b7ee": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "2f7d9cac95b811b1538cbdf388653841b72b6e86936e700c29d6ca96d2a0a8d2",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "684ec703961092b9f90d37bf8b5b4fa55c7833793027b6c32d79cfa246f9c60e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "153896787a93b0a5247259d572654e113731534fc5d9b3cbffc19fad0a3d1fe1",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "2b4de717f42339ab8479722b8cd124b02597f1a40c05a5966db3545d4372f46c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 23,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "313b90f44045a655ce52bda917b356f80a26b14b59a011b1337a98064840505b",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "55f3156ea8530e0ff024f0d3b211ccf8dc7e35d6b92eaadb88c226ed1401d315": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 23,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "0c84abe965f76f1d5bbb9cceb3570ac778230a07eaaa3fd12a12e0ebf4810107",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "3bae8bd38001311a7064884fd714c9122186b0c2c33cc780751cba3c5195611a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 24,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "bf8aead130e42bcaf998b1c0f3c079a2b55968196e496ca8315e5ef9518ea2ac",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "506f3f68ba22340e05abbb03420bbd745c7b2b5fad028432e28a211525eb3a5c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 24,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "35ec8ba532e836df4c0676a346bf4a108aaf1b4eddc858ac5082204ea443c9f7",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "cc4752cb1c541673fef0f599c0bac621ed4edc51874783e618bfb3f1ef010a1f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionReadinessLabel.kt",
+      "line": 12,
+      "kind": "function",
+      "name": "ConstructionReadinessLabel",
+      "semanticHash": "b1386166e778b7d3378ddb758c6d74ed74d04c79a7809daead90bdb37f345e73",
+      "reason": "Localized Compose presentation of the independently tested, measured readiness policy. Compose source/JVM transformation has no reliable per-source CRAP correspondence. Native tests verify readiness-dependent progression and bilingual rendering; no calculation or feasibility threshold is duplicated here.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "ff74befc60c31f2e853052a25ea087a0f00b45a81445cb1a40d21a237e984545": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 40,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "de2aec0e932202db604128cdbd50208cc5467213f566a5e0244a6a42b379c534",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "f1a7d37604ed5faf8cdd96ec24672e59328b5cd3dce321d598faaecb4080c65d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 41,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "94f271e39a27f8e38a42e764b488e0f9aa7b5a572078fefd2a8f35759f48d766",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "6cfd8dcb838166e9b176b7c48392f863745f7cd1ff1d3cc326df8cdb3780c22f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 41,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "79a1643eba0385ff073b33b01a54413d91858cb7075a5011959eca2e5ace6d6d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "0cf7a311dd9adb787613f2491dd12e6ed5e713176517e93ae0322dfdf0959353": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 42,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "6fd40f1aa9f6804c0fba7dc3dcb9589d9d5930b5d66bf998a07c60a294ac242d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "e59af7f7e9deaabfd34567ff5c0cfac4f0b4852c3f48afff842f68a6d1eef4cf": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 43,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "e221728a17c60a33ad8df0b4e71ccfb4edc0ae434efd5ed4cc4f1cafbea5bf7d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "4097b35f0660586f4250e03cf5cd07f114d4e3f682a2198af57588608ed95d16": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 43,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "8dbe55384f23c0a020e89cb75929db96c6d3d9c1b8947b8ed65b834e7f6a7d47",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "bda97ce76e20d4f53554d66bd33cb7821b876ddeea8064d7cae392d34e1d4fae": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 43,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "062ebeb0aebefe29bea472ddea7ea78ed8e143561a8df30b39c893355613a0c9",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "81878b2233e57da42c9d08ae3d1374ccb6b4b1fcbb407a2aa28d0df71a4ebb0b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 49,
+      "kind": "function",
+      "name": "ConstructionWorkspace",
+      "semanticHash": "cd3f67813238f6c1c3c2344a8d35435e989d760c7ad770c2391e89e30551ea3a",
+      "reason": "Compose viewport presentation: the bounded four-stage wizard derives compact layout from actual available height. Short viewports scroll the whole wizard so an editable control can fit; normal portrait keeps its header and footer fixed. The Laboratory toolbar yields space at short/large-font configurations while bottom navigation remains available. Native bilingual 150% portrait/landscape journeys, Back and tab restoration exercise these bounds. Source/JVM Compose mapping is unsupported; no CRAP or numeric baseline waiver is claimed. Lifecycle observation is detached independently from editor disposal, so replacing the owner does not close a surviving draft; a dedicated native RED/GREEN regression protects this boundary. Analysis admission is keyed by editor identity as well as inputs; replacing a design with identical measurements starts its own validation. Dedicated deterministic native RED/GREEN covers this previously missed owner change.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard, final responsive verification on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "fa87b23f39c13ff047bd9f03c16bdadafcae444b4b54aa9783a714a4b2b004d0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 89,
+      "kind": "function",
+      "name": "ConstructionWindow",
+      "semanticHash": "6d1a2941500933d254a02f478037e798567e028bacaf2c8e9936fd0d041ecf18",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "6f69a18aa31610d20c700f41751c431dfedd88374a06ef17643187125900e28a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 100,
+      "kind": "function",
+      "name": "ConstructionHelp",
+      "semanticHash": "4becebc041f8d27c02b3313103c38127166681a487d9babb8d601418b4799843",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "ed8d667b5e58b15ca9685324da5569e1cfb46f2bd33ef0acabde9bdff8f1f946": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 107,
+      "kind": "function",
+      "name": "ConstructionStep",
+      "semanticHash": "c65fac73ab1d1bc90ff32ec50acc12fcfd2617c2296913e93238143b996010c5",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "15f76b053904573997523a777204bb6a2da6304ed18fa9f6128b00244e9dbb4f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 121,
+      "kind": "function",
+      "name": "ConstructionValidation",
+      "semanticHash": "c5c23bb7d9d06f9fd7ac035c7998354887ddec61d4f4e14ad87c1bfde5da15c5",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "8542e7269412d526c6ea6d0bcbf5f1cd93de13a86b92e675db00f4505221b26f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 134,
+      "kind": "function",
+      "name": "ConstructionApproval",
+      "semanticHash": "63b6a12a9b92cce2554486bb93a0f4b590ef3d0369adb7dc4bf3ee5b43e1a257",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "434dd7a5a711e1f589cdee4a0cfb171c6b9645419bcd13aeeda567949df44ba8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 141,
+      "kind": "function",
+      "name": "ConstructionFooter",
+      "semanticHash": "41d51f04b34ace4a2ecb66d029289441127014f459714643ea16c75b8b7db826",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "3fabc71bca7b9d62776f82be61c42b0ebe502d5e8511ae0f57db143d5850d2fb": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 150,
+      "kind": "function",
+      "name": "ConstructionLeaveDialog",
+      "semanticHash": "ec5b227433a694a4bd0de8488f487bc5cc11f4588de659f7b447850638c6712d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "cecd44499b316b10a7e8447678f083d9be76f385cfba6257b751989f81444639": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 157,
+      "kind": "function",
+      "name": "ConstructionHeader",
+      "semanticHash": "30c7d6546429ed5b60cb9e72fc32f32472a3f06da784b43d1df4ec8557df8f08",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "8356802cd527bbd6f5f153ca3965bcd420a4ec2e4afeb11f69a92f06a2e3304f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 210,
+      "kind": "function",
+      "name": "ConstructionPlanActions",
+      "semanticHash": "18bc31e813a9fc387c3efb8dd59e1bc9f58d4c5f9d15dde79453ed12d5ff43f6",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "09030d6ae4466bab5a965a29eccb1be8e660898915b03ed8b86963eb05531a3f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/LaboratoryWizard.kt",
+      "line": 21,
+      "kind": "function",
+      "name": "LaboratoryWizard",
+      "semanticHash": "9ba3897f9451c22167e58124c90b5e925ceec28dcdba8ca72bf4e804c8bfe0ed",
+      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "3e659df7591919487e12fc8c1671baafd485a6d19457779d9055addb5a911e6f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 719,
+      "kind": "function",
+      "name": "DimensionControl",
+      "semanticHash": "07d93b537a43701ac8c18b377d73af1a41389ab55aa508f44c111270606053d5",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "865b70f3a9186b80bce91f67f1faa7f7ef76e010eb7650b7b39cff3e8c62b364": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 731,
+      "kind": "function",
+      "name": "BoreGraph",
+      "semanticHash": "97fe83f82bb713cb2aea125d91c333e059997c32adfc66e2c37f8c0a48671f79",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "68315abeec6c0284c856260fae874a7a1fb5ad313bb32103120ef1b162dfd05f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 812,
+      "kind": "function",
+      "name": "LibraryScreen",
+      "semanticHash": "adb3d7dd6b078d44d0c88ecfe9edb423e0efbeadcd9e0293f79fcd0a7b7b3fb6",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "bc07012c199e571c4e45f9e4b6e2e6640867de2f8b5d34f60b95832c8561ad6f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 986,
+      "kind": "function",
+      "name": "DesignsLibrary",
+      "semanticHash": "aa58e84850e2b5743c32a15fce9c6212209f05301baa0e8bf207b33e261eacc5",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "09d208e33dae5f96b98aeb3b5722eb3bf9d4ef518246c5aeebcf365221696633": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "ca1c45a5cb2f56bb00402e2346f42101d510a48b5f21059237af6ec218959ed2",
+      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5"
     }
   }
 }

@@ -1,8 +1,25 @@
 # Construction workflow evidence
 
-## Current bilingual editorial captures
+## Persistent Laboratory wizard
 
-Fresh task-owned API 37 emulator captures from the final EN/ES synthetic workflows:
+Unedited task-owned API37 emulator PNGs from the connected construction journey:
+
+| Language | Design | Scrolled plan/export controls |
+|---|---|---|
+| English | [Laboratory, normal font](wizard-en-design.png) | [150% font](wizard-en-plan.png) |
+| Spanish | [150% font](wizard-es-design.png) | [150% font](wizard-es-plan.png) |
+
+The English Laboratory capture includes the real four-tab application shell.
+The large-font captures mount the same constructor with localized resources and
+safe insets in its synthetic test host; the host's white system-bar margins are
+not screenshots of a physical device. Export views are intentionally scrolled to
+the PDF action. Plans use calculated geometry, never private recordings. Separate
+landscape captures and full logs remain local under checkpoints/workshop-final;
+the final workflow tests exercise all exports and re-opening saved designs.
+
+## Previous bilingual editorial captures
+
+Earlier task-owned API37 editorial captures, before the persistent wizard:
 
 | Language | Candidates | Workshop/export screen |
 |---|---|---|

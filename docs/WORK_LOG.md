@@ -1411,3 +1411,42 @@ both instrument profiles and unchanged recording-control geometry. One additiona
 native case passed; a fresh unretouched English live-meter capture is linked in
 the README. The earlier failing run is not counted as a pass. Final source gate
 remains771/160,zero violations. No private fixture method was executed.
+
+
+## Persistent Laboratory wizard - 2026-11-12
+
+Baseline 84968d8; same feature branch/draft PR5. One constructor now owns Design,
+Material, Validation and Plan. Library Open resumes that identity and stage;
+Library reloads its coherent snapshot on entry, including just-saved drafts.
+Saving never leaves the wizard or appends duplicate identities. Old inverse-workspace
+and legacy layer projects remain accessible without destructive migration.
+
+ConstructionJourney owns saveable input/approval state; ConstructionEditor owns
+commands and the existing revocable workers. Geometry edits invalidate results,
+exports and PVC approval. Unconfirmed stock cannot unlock a plan. Predictions use
+actual measured PVC geometry, with explicit approximation approval. Incomplete
+geometry text is saved separately while canonical geometry retains the last valid
+publication, including on a newly resumed Laboratory entry.
+
+Actual RED/GREEN defects: dense point resizing merged stations; keyed returned
+scroll state stalled Compose; changing LifecycleOwner closed a surviving editor;
+replacing a design with identical inputs failed to start its own calculation;
+saving unfinished geometry could revert the last saved bore. Regression tests now
+protect each boundary. Analysis effect admission includes editor identity, and
+lifecycle observation is detached independently from final editor disposal.
+
+Compact viewports scroll the whole wizard; portrait retains a bounded body and
+fixed controls. Native helpers scroll both axes before asserting real tab clicks,
+and target the focused window when hiding the keyboard. No assertions or gates
+were suppressed. Authentic EN/ES screenshots were inspected, including 150% and
+landscape. Synthetic host margins and intentionally scrolled exports are documented.
+
+Final local integration: JVM637 per variant,629 passed/8 protected skips/0 failures;
+native17 passed, plus2 retained localization regressions and focused configuration
+runs. Strict gate798 measured/169 unscored/60 historical high-risk/0 violations,
+CPD0. Framework-only semantic-hash reviews claim no invented CRAP scores. Relevant
+logs: checkpoints/workshop-final/wizard-complete-native.log and
+wizard-canonical-final-build.log. Remote publication/CI result is recorded in PR5.
+No new dependencies, numeric baseline changes, Samsung access, private recordings,
+main changes or merge. OS process-kill restoration was not separately exercised;
+SavedState restoration, lifecycle replacement and Library reopening were executed.
