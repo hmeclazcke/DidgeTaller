@@ -141,6 +141,28 @@ Estos comandos ejecutan suites JVM y verifican formatos de recursos, no instrume
 
 La app sigue siendo una beta personal distribuida desde el código fuente. La respuesta del micrófono y la latencia de audio dependen del dispositivo; no se afirma precisión calibrada, temporización universal, cobertura completa ni un puntaje de mutaciones de toda la app. Conservá las grabaciones originales y la compatibilidad de firma al actualizar.
 
+### Del objetivo acústico al plano de taller
+
+Esta sección describe la implementación de `feature/inverse-design-construction` (PR #5 en borrador), no una versión publicada. Los proyectos antiguos por capas conservan su acceso; los planos nuevos ofrecen madera partida o PVC medido.
+
+Abrí **Laboratorio → Diseñar instrumento → Elegir material → Comprobar y ajustar → Plano de construcción**. Guardá un borrador sin salir del asistente; al abrir el mismo diseño desde **Biblioteca → Diseños**, se recuperan la etapa de edición, el material y la alternativa constructiva aceptada. Guardar actualiza ese diseño sin duplicarlo. Los cambios de geometría invalidan los cálculos y las exportaciones anteriores. Una aproximación en PVC requiere aceptación explícita, con predicciones calculadas sobre el ensamblado medido real. El espectro del micrófono y la búsqueda anterior de tres resonancias siguen disponibles como herramientas opcionales, fuera del recorrido al plano.
+
+- **Madera partida:** mitades longitudinales espejadas, diámetros por estación, profundidades semicirculares de ahuecado, dimensiones mínimas del bloque y margen radial de sobrecorte.
+- **PVC modular:** catálogo editable de tubos, encastres y reductores medidos, largos de corte, solapamientos por inserción, transiciones interiores variables y largo ensamblado. No se suponen medidas comerciales ni disponibilidad.
+- **Exportaciones de taller:** PDF A4 de dos páginas: especificaciones y medidas, seguido de un dibujo de construcción acotado en horizontal. Los planos de madera partida distinguen tronco medido, dos tablas separadas y bloque para partir. Las medidas y pérdidas de preparación restringen los candidatos; las mediciones incompletas quedan sin confirmar. Las láminas vectoriales de fondo blanco muestran la madera y el conducto con diámetros por posición, cortes completos y una tabla de profundidad y madera restante. También hay plantillas opcionales 1:1 por mosaicos, tablas CSV e imágenes técnicas SVG localizadas. Las medidas se presentan con una décima de milímetro; verificá la referencia de 100 mm antes de confiar en la escala impresa. Las medidas mínimas de madera se redondean hacia arriba a 0,1 mm. Las estaciones detalladas quedan en CSV; las listas de piezas excesivas informan un límite de legibilidad en vez de reducir el texto.
+
+Los [PDF de dos páginas, dibujos vectoriales y tablas de ejemplo](docs/examples/construction/README.md) se generan y renderizan en Android con datos sintéticos.
+- **Sensibilidad:** recalculá variaciones de diámetro, longitud e inserción mediante el modelo acústico existente. Son predicciones, no calibración física ni garantía del bordón o toot interpretado.
+
+El [registro de implementación y verificación constructiva](docs/engineering/CONSTRUCTION_PROGRESS.md), en inglés, documenta alcance, comprobaciones numéricas, evidencia Android y límites pendientes. La búsqueda es acotada y no demuestra un óptimo global; los intervalos cónicos se discretizan y se mantienen los supuestos de conducto circular.
+
+<p>
+  <img src="docs/screenshots/construction/wizard-es-design.png" alt="Asistente persistente de diseño y construcción" width="280" />
+  <img src="docs/screenshots/construction/wizard-es-plan.png" alt="Plano de taller de madera partida y controles de exportación" width="280" />
+</p>
+
+Capturas auténticas del emulador con datos sintéticos; consultá la [galería constructiva y su procedencia](docs/screenshots/construction/README.md), en inglés.
+
 ## Licencia y colaboración
 
 Didge Taller se distribuye bajo la [licencia MIT](LICENSE). DidgeLab y CADSD son referencias de investigación, no motores incluidos; el contexto de atribución está en la [guía del Laboratorio](README-LAB.md). Antes de colaborar, leé [AGENTS.md](AGENTS.md), mantené los cambios acotados y dejá fuera de Git el audio privado, los diagnósticos locales y las credenciales.

@@ -5479,12 +5479,12 @@
     },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "311",
+      "line": 311,
       "kind": "function",
       "name": "MeasureScreen",
-      "semanticHash": "2f6b6839612b685dda38849d76647af467304aeef58cb5021f365d7b8b67c9d1",
+      "semanticHash": "db7f22aca32b89852db61b896827111f322d2d96622f7f38b27c22cd0550dda3",
       "metric_status": "compose-transformation",
-      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged.",
+      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged. Scientific-note secondary display substitutes sharp/flat glyphs only; stored identifiers and Music calculations are untouched. The controlled synthetic PCM meter regression asserts the exact glyph and stable layout.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
@@ -5683,18 +5683,18 @@
     },
     "c7c20c886466a32843eb06cae5e4e1be68c58c2230fe95c3789065cb1b09e3d7": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": "112",
+      "line": 113,
       "kind": "function",
       "name": "TallerApp",
-      "semanticHash": "2602f862129e634d1aec15ec25e8d74ade1fe98d05afc05836697e91c12d5eab",
-      "metric_status": "compose-transformation",
-      "reason": "Presentation-only review: preserve measurement predicates, reserved live-reading slots, protected recording actions and unchanged transport callbacks. Compact primary reading with opt-in details; three viewport-sized metronome groups retain intrinsic overflow scrolling. Compose source/JVM CRAP-L remains unsupported; no numeric ratchet changed. New detail compositions have MCC 7 and 8; existing MeasureScreen stays below its previous MCC 105. Idle and active actions now share the reading composition instead of a separated footer. Native layout, synthetic PCM, confirmation and accessibility contracts validate the visual boundary.",
+      "semanticHash": "4cbaf0c817ed41b1593a17054d159e0213c815eb794a6a7c8a0fbbe3c5d893ac",
+      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt"
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "7062629 + cohesive idle action placement"
+      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5",
+      "metric_status": "compose-transformation"
     },
     "9b4094565530ac0254018894774575f73fc21507169eb7d260acc625914f3c47": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerNavigation.kt",
@@ -5726,18 +5726,18 @@
     },
     "6fb537759ceaad7c363d55656bc7ffef5e25a801bff1dfff3a89f02d3a0de561": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 113,
+      "line": 98,
       "kind": "function",
       "name": "TallerToolbar",
-      "semanticHash": "2c6ac8f1e08186a1fbb573c879bf2a88ea09a9c0b55e8f64cdb6011d579b6a6d",
-      "reason": "Cohesive platform header owns a declarative per-destination suppression policy: preserve viewer/measurement/fullscreen rules and free landscape practice space. MCC is below the unchanged complexity ceiling; real navigation/font/recording UI regressions protect this Compose-only boundary.",
+      "semanticHash": "b55ad57d43564451dbcd78bd82fd0b27ebb2fedc6c8b9a76026584b3735f016b",
+      "reason": "Compose viewport presentation: the bounded four-stage wizard derives compact layout from actual available height. Short viewports scroll the whole wizard so an editable control can fit; normal portrait keeps its header and footer fixed. The Laboratory toolbar yields space at short/large-font configurations while bottom navigation remains available. Native bilingual 150% portrait/landscape journeys, Back and tab restoration exercise these bounds. Source/JVM Compose mapping is unsupported; no CRAP or numeric baseline waiver is claimed.",
       "metric_status": "compose-transformation",
       "evidence": [
-        "docs/METRONOME.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
-      "reviewed_source": "2a32da7f7a8d5114e7a10869c059d2e25c8013a4 + captured orientation/width correction"
+      "reviewed_source": "Persistent Laboratory wizard, final responsive verification on PR5"
     },
     "62ff3f35dedd6ea9f6ede82711c677111c666d35b7dc9839c5138587e2d231a6": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
@@ -5796,6 +5796,2035 @@
         "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
       ],
       "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
+    },
+    "6b27e74d3d931ca97719e4f90acca7c0d7b7f44e103a96511cb34c0b34cde6c2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "5",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d5797dfc6b669cec7249978756787203a1e237131d58f8d542d0b43e46d6def7",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "5c422d46eef3100a5c476e7d5b00ce9b0ec45d1d4c0885542de54ef50f3719ff": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "6",
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "769d967ea0d132deb0704cc7d1bf72abfa91e37cf63151e92132d5da64cd9f31",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "27c6bb4351c7094d271cc72c4c7af13ea14e7ebe0b952a65a038e294c1c6bed1": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "8",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5fded918be88bc310cae56d0296edc17ed27a5a236db4fe1f67b7db563e5c20b",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "ed0c40ee6627fa89cd15dfda1c987ab68aa90a6397be489f5e9256948de72958": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "10",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "83871d6f71e3d30d206741a6d2b76847a8d72332c080c555544cbc7878912ae5",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "dfd715561590c13f356a16243562e3725902c8ea9abe49fbd9132778a26f27a8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "12",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f931d52ed950fb7d4767bb19087d588b460eeebd932d31bc0741e65bdea3dbd1",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "cb995bc385eee2e425fe86fa0e527e431c0ca2f28cde223c945ff5c606f3b608": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "13",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "8a95be2fe90f2ad9f975ec6a0bd67af56d6e690fb718835a8620977ac55d4f57",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "a8d0c0e7afd7b948be6b4c50b0c8a81ccfa7cea7f4ee7d88bdb8a076f8750c09": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "20",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d908c8a824c11e128a971269d3d0d05c845b8bf3b6e79ae9b2f97ae6ccc4b91a",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "a953d4dcbb3107181f29a09d9c0908a63253a70acd9f3f7b3826e9fe0ff983b2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "23",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "9295b9ad03f93800e675527609942429e07e39e4b260346db677075771761d58",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "d974f165d39580f4ab209aa85bacb2df9f6b0a72f0e5781d8ae1eb4eea052f27": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "31",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1cbe8de0262cea129ce7e497f17fadf54003fe7feb7cf071eafd1e44b047ec19",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "f3e832c07e73f322046c6afed849bd09d59dd0acfceef0f8be9a1dde3d4633c2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "32",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d780dd0fe7e2e6ce6713c59b17ffd8f8bb9d672bea58d35f3452313cab56524d",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "0aa03787f7cb5079f22f97a3ec9a487acf359198ec274b10fe80933e38f9e846": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopPlans.kt",
+      "line": "33",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "732c39720d8850955a0d9a7866e355ebd83c4a515885dcfe0730b1cd82b40ab7",
+      "reason": "Explicit workshop value-carrier constructor, validation initializer or radius getter. Existing mapper does not assign independent Detekt/JaCoCo function CRAP-L to this authored construct. Reviewed mm units, finite inputs, insertion ownership and bounded lengths; independent stations, semicircular depth, layers and overlap assertions plus executed PIT protect the boundary. Mutation survivors remain disclosed as unfinished test work, not certified safety.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopPlansTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopExportsTest.kt"
+      ],
+      "reviewed_source": "b411bb8 + workshop domain checkpoint"
+    },
+    "4a80a55ec986221d7f0c434f1b34046030a96161720efda6d9e00d13b90b2ba9": {
+      "file": "app/src/main/java/ar/didgetaller/core/AcousticModel.kt",
+      "line": "102",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d33f7e5235a88f720b51921231bd939a48630bfded8963471f4993eb4248b838",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Cylinder unit carrier. The executable input validation is measured in evaluateCylinders; uniform legacy equivalence and abrupt junction subdivision cover the boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopAcousticsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "e82eab0fa66ea0eecc204366df0cab3782d937d340a02e676b47113d7ea762f5": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionAnalysis.kt",
+      "line": "3",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "073582b04c2ae8f64a3ea2a7490e7d9903accaaa7e686c5d39970a9f69360089",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Immutable request/result carriers keep form snapshots and the chosen manufactured plan with one operation. Calculation, cancellation and numerical sensitivity are separately measured.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "918b23c26a83da354396d6dfc5f3db5b52c4c8cfdbd323f33e3e6bbea0898c9d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionAnalysis.kt",
+      "line": "4",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "4e204c223a0c0ddda916633eb1757dc94f97048937ba3c7e5012ee985ae768e8",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Immutable request/result carriers keep form snapshots and the chosen manufactured plan with one operation. Calculation, cancellation and numerical sensitivity are separately measured.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "10699fd95f51a65afa384aa0e58bc0b914d0f5a9423ed0707d0dab32d10dcb79": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionCatalog.kt",
+      "line": "5",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "1e59fbbdd2142fb866720b74f9e50e1b2113066d7b7d4e12eb8b0094cb9280ae",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Measured fitting/profile carrier. Measured overlap, variable transition and rejected malformed-profile contracts exercise the enclosing catalog validation.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "b32a5d3fa7bf33bac35720b21320ae314a79b7e12dfff9c2061c272582aca340": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionDrawing.kt",
+      "line": "6",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fc13b1a3654dedf8d64343c9c9aa26f0a7979f0ad420a002a52c4734767d4d57",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Metric scale constant and station carrier. Independent unit conversion, two-sided junction and exported geometry assertions cover these values.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "496b8f7ba7b7b787ebfe8a2a2c40d751dabe5af7e2818442ab78b48d2ad8627f": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionDrawing.kt",
+      "line": "7",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2ec583a951b55bcf94e9d4e6dbc104d139a46b311d1c06904fbf023d9781b1ce",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Metric scale constant and station carrier. Independent unit conversion, two-sided junction and exported geometry assertions cover these values.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "faa224ce237ffc6f2b549a21e382f9f127154682684b06b971666c7275c926d4": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "4",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7d5119c90fe3641c76e006aa5bb2ef4e8e0bea854f58df5c5482757f6d8ccfe9",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "fd7bd2e865c6972855834a74083396ba9e56a7174608f003af8d20cd4b64ba4e": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "5",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "17a4a1dbd363d7458e43a4f1870a3e909a12c6088189d52906c145498488447f",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "024e6ccccc607df18188f89a93e3b75d464bf9cf491ebf2a7d96cc26b261ff26": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "13",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c6cd13ed04c6905b5ec4ee49f2f7daf6fa4d2014d49108c8859699f763683752",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "ac2ef8d772cd38179d5761a26aff6b21019490c3a1e6c4f0b13f3b9e4e079ced": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "18",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5d199f86c379ea0915a6cabd5034ef51b335aaad72bcdf81db6699794c693623",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "dee1f42b93e511f61e0b2e3f893bf1449a357271ee35f4431ebe398aeddab05d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "20",
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "9f4224a2e1693334febe5eb6c096667fd7ece1866234e4d84fa943c436dcbc11",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "7f339088a64905aee8633acf1f0cddb4d8b33d9e60513e795c24bbb1f0684c9b": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": "20",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "7a426b942533d96f28f1bffbfb11bb065882fd4ad06e56495d8b61ca72b74c92",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Explicit manufactured value boundary: finite positive lengths, diameter limits and derived total length. Wood, layers, variable fitting and perturbation dimensions are checked independently.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionProjectTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDimensionsTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "5a4a63944ce9364da342b9f2359ab62f55e74d9d9bcfb5c57af3114c40c8004d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "6",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2cf359de2721b3e3676e0b5ed707816711d674a120cf6121422cb58b6c8ef44f",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "f4303525e31525a122990c548e56594a279e4383e02dee38849ed7566a608ba1": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "9",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "3b82bd77fa1657542447a6c6d0682a304c36829f241faf1ec975b5edbd09dd18",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "282211c0239a391b03639eb20e3901bcbe09973dc9f1fdab3b3ae28f870eeae5": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "10",
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "792c689aaacbfc024dbe4d3dbc41e14f98c732b9358397d197e73db4487ddefa",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "2044e39da838e2bfb2c18d8863c35a1b5c89612331a55a24c2b2a91e10901f34": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "17",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "aa2298eaea5939453c445c26f3399c29766da1ec1f50a8f8a0b85bbafc5c256a",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "f3e88d65d9c3d48dc955b4cb2c465475b9a4604c69b8e3e1e26f1430ffed5b9a": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionSearch.kt",
+      "line": "18",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2d5bd55734b42de68af4622a03e9150796533bf398e82ef3107508da1bc0531e",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Target bounds and immutable candidate/sensitivity carriers. Feasibility, first-layer inlet, ranked targets, bounded search, cancellation and unmeasurable variations have direct contracts.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionAnalysisTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionDrawingTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "8166ac928bb4f892fedc3ba1d3acba05d5f650552d26452a7df2072a1e54e8bf": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionPdf.kt",
+      "line": "11",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c54281bf6ec8818c05de4c6e0f197a42c8d35465542b89844f680ec99ee8210f",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Localized label bundle has no independent PDF geometry or control flow. Native PDF rendering and metric ruler assertions exercise the document contract.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "ea56b507713f338881083bd7a86afec1a371d7ad857afe199ef62631d48c1c5d": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "8",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "5ed13eba0a603a6e8158a089f6835f836ae80310ea83ff4af65f0b62bc2cffa9",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "61facdb11cd607c04dea8eb0f43b3a5744727de13b3c5567a73e8ffb0654b326": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "9",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bc65da7c772171803a56bb573698b6fb6312a8e4c4b6c80c7d4744499b6a5bbf",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "23ce98d49975f3e8d0ddc280e88064c75457bcc8f589a5a21fd36f6dafab43d9": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "10",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "98ea369d235bc51dd8751699462658ff3d74f6291f6e0702e7268960b28e0b58",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "83e7e857c73c2ce1a9ca68ad4cad39fce332d3aa11905e9241738facbdc856a3": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionStore.kt",
+      "line": "11",
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6e131593d840001461cea3512850676a461475e39a2d0f8a959293a4e7e41977",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Isolated preferences namespace and existing atomic JSON document owners. Round-trip, legacy-key and damaged/future-schema tests verify the storage boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/data/ConstructionStoreTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "6542638f4953465a0d1197f69707f0c171ad1e1f479ee52bfd5ef22e31979a66": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "27",
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "3c6388ad06dba46db1468e17da2b9efb5d030b7da96d9e164bc0c9a0cddea256",
+      "reason": "This authored auxiliary declaration has no independent Detekt/JaCoCo function score. Immutable export request owns the selected plan, format and localized labels. Text export tests and the Android workspace contract cover the publication boundary.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/ui/ConstructionExportsTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow"
+    },
+    "4ec62b1a6d75dc89b7fbbbf56b72fc8719f9658bbbd875493c728ae839e4889b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 38,
+      "kind": "function",
+      "name": "ConstructionWorkspace",
+      "semanticHash": "5ae7ce548ea38567d1afaa4b8ba0ff1ee95647e2dfdf640c70ec9c6fc1022e0b",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "c6a82ba678a51bcba862f9ddee2150ade41810bd693498b62b58254c83aa260c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "102",
+      "kind": "function",
+      "name": "ConstructionExportEffect",
+      "semanticHash": "5fda68fa75b9eb3fe132ff408d8e567e3b409f5ad09bf74840787e98fbe82a95",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Only a ready result can hand bytes to the existing document callback; it is acknowledged before invoking the picker.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "b3fd468079d6d80c179ff5fe1be105fddd3409030499b4464c264b8a9e44cd90": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 123,
+      "kind": "function",
+      "name": "ConstructionStatus",
+      "semanticHash": "bd93f50fc469e667aec47fdfb557cccdc2fae36de350267ba62ea0cc1b0d908e",
+      "reason": "Keeps existing failure state and adds a localized legibility-limit explanation without overwriting saved data. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "metric_status": "compose-transformation"
+    },
+    "b1049c55fac6b02327d2044ba47c55ccb39aabc8643877e91737108bed213106": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "123",
+      "kind": "function",
+      "name": "ConstructionWorkers",
+      "semanticHash": "81b467761e77c8e100f453665c08a19e8b7123855c7fc248b4baf4c57edee423",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Loading/cancel controls forward to the existing revocable operation owners.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "7d3b3164546f52e5aceb0264bc0052c11f9cf9b26e3a1e8e0d198307aad3ec16": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "131",
+      "kind": "function",
+      "name": "ConstructionCandidates",
+      "semanticHash": "dd8cd9844000e9b788c7226cb7679c00d90e494866a6c5d6e0c31108d51fb007",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Selection callbacks present only the ranked immutable candidates and explicit current geometry choice.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "f3d12845ed078453161b7d19bb171beb9d4a4283c7d796226331e4211e21b9c2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "138",
+      "kind": "function",
+      "name": "ConstructionPlanActions",
+      "semanticHash": "6e54a023bc29d396c1948ade12da02c952e170d684d01b1b5c2a785d4f61ed3e",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Save and export actions exist only for a ready generated plan; a search result is not a saved plan.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "6fe892a00a78265d2a672e22ffa12c7cc2c75f0c70f848015acaef1486ca2f48": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "155",
+      "kind": "function",
+      "name": "ConstructionField",
+      "semanticHash": "244d4745bba7e5e0df982dc6509b79c4ee54138de73963462b78e16a2f2395a5",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Labeled bounded form field with semantic test identity; numeric parsing remains in the domain boundary.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "eb1b13a823cb39b677dca503cfb4d374a66773ed21f8e5654a4983161dcbaa2c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 173,
+      "kind": "function",
+      "name": "ConstructionTargetFields",
+      "semanticHash": "882ca6f7405d73446f035e62138d6d0ed7fd002a65c840a9c2ea472ef021a8f6",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "9f21390daa155b39408b0463d04df69d4372dcced69b14d7842e85b5954a0abc": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 265,
+      "kind": "function",
+      "name": "ConstructionMethodFields",
+      "semanticHash": "c8732ced095bbbc9aad81fa4e83cdfc6f8ec471e03ea9cdbb74e39d78ae51fa3",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "8df3344cdd99b55c10e91bf0f5b5ed1ace01b636cd4d8ea60fa2a44a05ea3dda": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 223,
+      "kind": "function",
+      "name": "ConstructionCandidateCard",
+      "semanticHash": "8e5c6a4da06233a64fe2c178b093a5949624b951df336c32dec3952c63ec9c7b",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests. Editorial revision: display dimensions use the existing locale-aware formatter; CSV numbers remain locale independent. No geometric calculation or state transition changed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "11aeefc4ba94c4479d3dac4607edf6a3cad604aa05dd659f4dbfa64097cf1bac": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 237,
+      "kind": "function",
+      "name": "ConstructionPlanView",
+      "semanticHash": "e54d34d033b01fc12d4da0ddd7867b40653c068ca6d630f61bb7b334ecdccba0",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests. Editorial revision: display dimensions use the existing locale-aware formatter; CSV numbers remain locale independent. No geometric calculation or state transition changed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "fab9efa1702f4fa84afc6933233099cf868ad216d108f7fec10e383a9322c488": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": "241",
+      "kind": "function",
+      "name": "ConstructionProfile",
+      "semanticHash": "ffe620f5e37a6fa95eb575ebb4cc79ec343373e90683026807cfbc561cb979aa",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Accessible ideal/manufactured plot delegates physical outline geometry to the measured domain helper.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "8b5ccf12ad73b2944b81215c50de688b963aeef5676170d5d04cda15257fb686": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 757,
+      "kind": "function",
+      "name": "EvolutionScreen",
+      "semanticHash": "75fa659e7d4754f4176279e9d90af72e00a33c0ded9c6925fedc9007e225150f",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "dbaf13ede01bb97f977a9fe9addda021613d11355db90ce429e3dfc73c194c29": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "811",
+      "kind": "function",
+      "name": "LibraryScreen",
+      "semanticHash": "45cfef65f4eaed677e6e7f48147bbfdbed247fe37f3f455f911f07e3932e589e",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Forwards the existing exporter to saved design cards; no recording or navigation changes.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "b2d7df8cf954780784f5404585be596628751ca50de3fd61ef767d1a697d390f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": "985",
+      "kind": "function",
+      "name": "DesignsLibrary",
+      "semanticHash": "efa4259e608a4145ec7bf7c04b75251767a1ec90cf7ed7a2060be82d2fd98aaa",
+      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Opens a construction project for the selected design ID without altering the original design.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "metric_status": "compose-transformation"
+    },
+    "6a50d29de8eb0abac991e4997c1046f1e95106513d3bbe1761d01be453ef6c22": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 96,
+      "kind": "function",
+      "name": "ConstructionHeader",
+      "semanticHash": "150966ab134ad2378109e1aedec0c126b683a317bc6779e307eda851aa5565b6",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "5f1ce7751e2bc4356efe0fe50e88fddc59f5d59103aeaf3592072a33d9ac47f9": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d1b9febc311867a8a4920db928e5309079d7af728c4bb29656558cc83508148f",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "0773730ffb97cefbedd7d50e774bd8c25beb954aa7fbf1a0e137bcf1a1a0c310": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bc448c3f24a9e74bc5ae41f3bb4dda95101a205bb836cd12da98baaaf978916e",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "6d51b23f1b1d9cddbaaaf37cbb0cf2ebe4445ef5d4c5fb9738747a89928cb48c": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 25,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "769cc0974f17ebf46a5dfa1fcc994786bdc0bdf025c5b67a9bfcbee162557706",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "fc01b58f61c5f031403724754024a7de31236b5b2ff57cd70a934d20954b18f7": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 26,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "2433ec5753f31f015279004ffd55f277fde4cc95e94738a6cb2b39146fd8e7e4",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "a71dd15f0f23d1570a914ee050c4d94970672c16035da5454ff4cd76c45f6487": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 76,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a940160469f71abbcf965cd4ef9af57f8b832cfc4459a810b030bb7c46680cf3",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "d65dd07d858db03d85aa35e6ba7000216b67e3b975929a4117b96fc0732989e6": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 77,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5c3faf2b3e833c0d7e785f6953199b924e40dc22399165e65e8273b9c299de89",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "ac0bcfb927e03c10436be0300be505b90a5b87edc60fc5d756dd017a073f9f9f": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopLanguage.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "92237feddf3e1063b07ab1c7f07be743261fb30132161cb47bc8712fb424d1c6",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "553dc851c6bb0d2d3130091a1c1a47f103d5ce487821bd3e40ce5d6603aa0462": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopTables.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "fdf3b7588cbe16e04125000715afc60a9bf821f9cf35422a1a12969d72e0068c",
+      "reason": "Immutable document/vocabulary dimensions or page-local rendering state; no independent Detekt function MCC. Construction ownership and geometry are exercised through the enclosing named behavior.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "a55dbec333d68de5e6f74fad30c45f4c29df3795169022cb8c4ea6f22d30d3fc": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionPdf.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f219ae8681b8ac5434649b53ec6f16f014c359af9a3cfd4b5e80d7b8cc45929e",
+      "reason": "Android export value carrier or Canvas adapter constructor; independent constructor CRAP is unavailable. Native tests create, close and rasterize actual PDF pages; no drawing decisions or persistent state are owned here.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "871c94e65727e7cb54d415e61361ea03c06d830146fa6fbfec72db1812008f53": {
+      "file": "app/src/main/java/ar/didgetaller/data/ConstructionPdf.kt",
+      "line": 33,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "4c7389b4554c03bffb13caee2456b0f61672d4cfc82b3ed1ec500062b2c5f94b",
+      "reason": "Android export value carrier or Canvas adapter constructor; independent constructor CRAP is unavailable. Native tests create, close and rasterize actual PDF pages; no drawing decisions or persistent state are owned here.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision"
+    },
+    "e180faaddff3dfbebf24f21392201006670964569d4e54b579441e00e2651f73": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 109,
+      "kind": "function",
+      "name": "ConstructionExportEffect",
+      "semanticHash": "0c16b5ec615a1c291cc3964c030a6da1ed66be220da523426ed44ad78fde13ef",
+      "reason": "Acknowledges one owned result, chooses its MIME type and a safe human-name filename; the real Compose export callbacks verify all four formats. Compose source/JVM correspondence is unsupported; no synthetic score is claimed.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "metric_status": "compose-transformation"
+    },
+    "d7138299125a5254c83f0946cb263e70250fcbbe87b1a414dfd47ea88800099e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 259,
+      "kind": "function",
+      "name": "exportLanguage",
+      "semanticHash": "78f220e1d3981d8f6b13deff9ceab0d21e9992e690bd280383f3bfd7343a1fd1",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "1da4089963dba36837c872fc33dedeedf25d653469a4e11227581632d6a8b78d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 259,
+      "kind": "function",
+      "name": "constructionDimensions",
+      "semanticHash": "0418bbcdb943e856059590255c036170e016da3bdd230771fe31e785e7a1023d",
+      "reason": "Pure presentation of assembled length and endpoint diameters inside Compose; no acoustic or persistence calculation. Compose source/JVM correspondence is unsupported; no synthetic score is claimed. Editorial revision: display dimensions use the existing locale-aware formatter; CSV numbers remain locale independent. No geometric calculation or state transition changed.",
+      "evidence": [
+        "docs/engineering/WORKSHOP_DOCUMENTS.md",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "2e997e1 plus source-bound workshop document revision",
+      "metric_status": "compose-transformation"
+    },
+    "ec3b1a5546cf7bf0065aeeb4eddb6a747a4b3a40755e24a0a45e076ab738c8d3": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionProject.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "98237d8f169694487f4d086a8b9dc4be6ea3aeca6dc2d69f3519d363c87b1726",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "57d17f6f6011d74540e0244a94eee00b3d75e44dbb2ba12309f5d5fc16130064": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "287e8f76633651e1dcfafafd658293b4c7dcf686fe260341d657a8adff20f14d",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "322bfa49858764d27decaeb95e006dbdc7edc17b3629eafec961fbdad58f0071": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "5e6a50984d39b057a42412677c09815f3940c5d4adae3c5cfe663252ee6510f3",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "cab7d090568bb2325f163b72880c812ddffc7b94259f50c6188633b761ba924f": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 6,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "ab2e609b4dbd79426ceb131e4adc57f9ee4bd67254240041a5b7ed98b56620f3",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "6432a76c94213b3530a92ec6c2f0f896be357cf42e6ab1cbdbee13364136b070": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "62e8e861bd9e3581e3b7b5db40ffd80bcd79c46f536d4c11223d7ae0a6b0be45",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "a9b28a8777f3e1aa37bb09e8df4de8ac4553cafa7278f56016117bd815c0b9bf": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "47e1b20f6cdc189fe48b4fe3cf6651f179c87c0cec7d7af6a0a22902361eae50",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ebc0e06e9dba283a3986385db0e2cc504e31cc6c5e726d38b6fd116f4c7538b8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "8a49b3f799f694f969834c3b5781b3e5f86efa8819cce27a8e05ecd9804e02da",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "220441c022af1cedddc7102aef248bea252ce69299eed4239bbc25cd246afa47": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodDrawing.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "51432164a33c8c0e66a7b7124d388563395ddd2d8a9ec80b239e294771cbe12a",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "294d1e94f13186980bf14c6287f820c17ccfa4b512722e7e2182ad344e5f9fd8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c85f8f8ef39b31a195ed833cc226156fbe81fa6c9e7fba919a7e9cfb8859e059",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ebcd34744a8c1fc25a385a46c05b2ddec8bf21dde87428cf3d3899bf3b4c159e": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 7,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6f1988298b85dcfa94607bcae83fddd11bc7cba6f25bf916a2aba44136265a48",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "4184ee6e9aa934f6ff80d7426a7089b643fe3eac8ffe3057be6a03724d91e858": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 7,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "1204a3134571681ec6d7699c4aab21140aa19e8e9bebfa3d501bcd1fbef50214",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "3fa3fac6f8fff534ff9f3b931804a9ca6baf25657ebeeb7725dec7fe8c5e7764": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 9,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c942e1beac0f1b460f4b4c7ba1921b1c31874ca8bfbf62fd63a779753d472590",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "eb4c6f901044ed0985136aab2779550640e21c651d7f9b78a84b391890ad3474": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 10,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f2b032dea968ba00e9b08cdf6511f1335c2d936a49b10505ea8a0f5d2420d41b",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "119f5feea8f1317df2fd1a9915f3a66de87c2b51447ac4af2aae0625257fc645": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "44e431c4cb8ccf10cb20ff03eac9f762232367cb3059d3ad3f597cfc07d5b378",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "6e79b3c06223c0835d0b83827bdb31dc1f5df5923f2f478ef56d9ee1bbc657a0": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 19,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "d0a3c63da4afdca14fd36753185c299d02719a746ea75caf175ec827cd58bbd3",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "48321f3ab04e2179a242d8baf5894f1aa191770d736dcef032a76af139fd4e06": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "e1ac0bab81e0e0d250b91ba8263fbfde8a6263c07cb236bd7be987e85798a52b",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "fee637b0f92c0f51242a53d1e9113260169fb74d5c21c10b248dbcbe255ad9d8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 23,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "5e669febcac76f0e9094614a1b42788b4416c38475cab0d631281bb633ca48ed",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "1a2d86164a911b1548d4764bd2af0699425f3ce9ae6b9183928a8ef125f12bb8": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 27,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "8e4a9f3360ac3981f3a4764a5b4d12f3f3494777463cdc10012d50521a9e3062",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "14978538cd88b69e3111836401ba09385bee4a0c4bd1ac28c00c241e373ca115": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 29,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "fb53a24efbe4a293f18d17bec1728b14846363aff1f5a9c1d36f5c679380ee5c",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ed1b37f6116b7fd13e9a972c492b6297334f6cf78562f889e78bc32c3a00cb30": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 29,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "c1abe92909f5f17dc75af776669b30bdd5b1b774366e55099b15f784543d4ffd",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "aee1cfdda5b0f7cc07e4430b9887417d9080f2d5824acf5e260c1bf96e3e5173": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 35,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f74cfe5daef98e44a3d2c84c8c3bc18ed49165b6a41b1c92147f9a1e22a6291e",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "4f9378c0ed7aee7d2c68822f01fe15d9602c35b48dd5bd50e1df624ab280bacc": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodStock.kt",
+      "line": 37,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "0c9ff66c2a1c3660866cf59785148d16f043f7eceefec2a0bcf9098d98a23dc1",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "be1048c878270efe77ebc28127f706beb8e8fc7ca0eba6e64ea53beea6ca7e25": {
+      "file": "app/src/main/java/ar/didgetaller/core/WoodWords.kt",
+      "line": 3,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "92237feddf3e1063b07ab1c7f07be743261fb30132161cb47bc8712fb424d1c6",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "3c298f159989860778a7255efad1ebf0f507883c96469328fbc05440b0cc2398": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 14,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "37acda9d4924866b77d53f06a042adcd22f3f27bd4eba6fe11816d1353f42fcc",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "8da4f4d642e1dc8fae8dfd8a86da4c30499058a30ca1aad44e6f77aa432a17cc": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 17,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "c802ce0750160e0ed29cdbcd94876f60ee8c2a7986dccb870b49d2d08cca0a98",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "42955e6e950e6f1753ab782a50017602c79a3a3ec0d1e9806e7fa96c007a21d2": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 26,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f89aa987cd9a9864d66985fe1701741be955cc9606d4195957ae18984aea6139",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "39545d28b6a500e438bfb4dac2cd411c0e2aaa0de245ff8ad97c2477daaab37b": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 27,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7e03e494f419b5331db65e6bfb46600838c030c4cf8b209bcfa8598ed01e4317",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "d9b93514cb4e52314c66f03b97243e50f4c1ef5ba6587a77a0e768b0e8204d50": {
+      "file": "app/src/main/java/ar/didgetaller/core/WorkshopDocument.kt",
+      "line": 80,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6ab5e27d0d662b36531f4d93dbe92c78651514dda2daf91e4bb0fcfb534cdbcb",
+      "reason": "Explicit immutable stock/drawing value or constructor/property initializer, outside standalone named-function Detekt/JaCoCo correlation. Reviewed units, bounds, preparation axes, independent page-owned drawing lists and deterministic palette. Geometry/invalid-input regressions exercise behavior; no synthetic constructor or initializer CRAP-L is claimed.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/test/java/ar/didgetaller/core/WoodStockTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WoodWorkshopTest.kt",
+        "app/src/test/java/ar/didgetaller/core/WorkshopDocumentTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5"
+    },
+    "ea7398782961d22b9d2f4e1a6c69b6774108935f3fea7b88739cb278d4b0d02a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 15,
+      "kind": "function",
+      "name": "WoodStockFields",
+      "semanticHash": "187d54242a2765ea6b3b9d171fa81c4687941a76fa09ef9b3911f5b4df85a9ba",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "866c4e95e94023b345b8c4b7d1b59e96db3e86cea84548e044d64e7945a8865e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 46,
+      "kind": "function",
+      "name": "WoodPreparationFields",
+      "semanticHash": "9264bb6e28811154b3f92e06fd3f0f2a9d0913ecc1c09eae0673a782c8a82c7b",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "ff830a0c5671c9e1d115bf8a0cc9fee61245bcf3ee30386667be4e3da65a1e79": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 59,
+      "kind": "function",
+      "name": "WoodInput",
+      "semanticHash": "9eb1a17bd5e314ff1a6f523333675c323d1c0ffe35f3ea5a0571d18500e53536",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "b5a6f59333dc16ebd4363210c6a8a9cc5e9d50b3cba1ea7927084b2bf121d02c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 65,
+      "kind": "function",
+      "name": "WoodFitMessage",
+      "semanticHash": "c89a6bf8e9e71e3ab658a7d712847586f4c0d42ca84aa41553b7ada6c17ee2b0",
+      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "evidence": [
+        "docs/engineering/CONSTRUCTION_PROGRESS.md",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+      ],
+      "reviewed_source": "stock-aware revision on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "86a964e726925b5e7488745d48c7ce5f313d40995f1131131e38f22ea1a8f90e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 232,
+      "kind": "function",
+      "name": "ConstructionTargetFields",
+      "semanticHash": "0fe8ced796922f20c91f437dffd0e8409ba5b2c564a70a4b7dbf10a7c5bb930d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "72974a6203c922771d71968911024eb7c191c9378bd224726774e7b83a018b2b": {
+      "file": "app/src/main/java/ar/didgetaller/core/CarvingMeasurements.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "fa0950432b52b76d75ad6fd4756d4207eac0e151ea30bc8f624fac5fc36ca5c1",
+      "reason": "Immutable workshop-station value with explicit diameter, half-groove depth, wood below the groove and minimum radial/side wall. Constructor has no standalone named-function Detekt/JaCoCo correspondence. All calculations are measured in CarvingMeasurements.row; independent board/log/uncertainty/section tests protect the quantities. No numeric CRAP exception is claimed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/WorkshopUsabilityTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt",
+        "docs/engineering/WORKSHOP_DOCUMENTS.md"
+      ],
+      "reviewed_source": "Focused workshop usability correction following c497246"
+    },
+    "d1a0d4a1e99379aeb5d8e179378eb66da1671a1f264c774295087e8695f6ecbc": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionJourney.kt",
+      "line": 8,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "a6de2d394ef0f709a757f9bc96b26f03a35760a2a52178ccc2a6c8609696c994",
+      "reason": "Immutable saveable draft snapshot: constructor enforces stage bounds and the acceptance accessor compares the exact approved input map. Constructor/initializer/accessor have no independent named-function Detekt correspondence. Ordinary transition, restoration and readiness functions are measured below target; tests cover all readiness states, legacy metadata and revocation on input edits.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "04871da3914b75c2350bff8b2ed7b9b902ce6b642a7752a9dde022af6b136218": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionJourney.kt",
+      "line": 9,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "620ae6b50c95eb246957a7a80cf14834b70c3406039f2bec06dccd76f4aa9688",
+      "reason": "Immutable saveable draft snapshot: constructor enforces stage bounds and the acceptance accessor compares the exact approved input map. Constructor/initializer/accessor have no independent named-function Detekt correspondence. Ordinary transition, restoration and readiness functions are measured below target; tests cover all readiness states, legacy metadata and revocation on input edits.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "7a2e0c5a8cfc7cb2235fd7190d8291b78626658ddf5e594e614b31cfa0334a6d": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionJourney.kt",
+      "line": 10,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "bc094879e3310cb22a8b621aa2bd7ab66b54eb71ace9a4ff502fb269bd8c6540",
+      "reason": "Immutable saveable draft snapshot: constructor enforces stage bounds and the acceptance accessor compares the exact approved input map. Constructor/initializer/accessor have no independent named-function Detekt correspondence. Ordinary transition, restoration and readiness functions are measured below target; tests cover all readiness states, legacy metadata and revocation on input edits.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "d30ae3b677417701502a51616a60576251c3d602ebef934cdecd50184fa3de1c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 12,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d59bc981a0e0ce8bd0c6308d24f53cea67c4dfaab4105e803e0e719ca866b5e4",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "88910a0e5d10144fb6c7788036cecdeab2b99349d691560791df9a1dbb8692d1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 15,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "16472e6475677ddea59c083ca553322a58113068d319ce7ba7cfac7949d34cbd",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "0ae5f974e5abb8bdfeab2406cdd71063b90d12d2e8154c97d3991488365a3ed3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 16,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "51f5870497e478de115592629f56c7d8004525cc8dc658ba22738808236d8a54": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 17,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "ce7b3493a378cc9e41d4da82830914c3cac47271a31cf33886e80820d0d02a3c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 19,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "cb4da411523453b1e715e1b450322ef31b02693e0707e14ef949e78b715e7753": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 20,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "6cf7fab619c5c29622075dd9ff966b778f26f4e8541543c084c60b8d02dbf736": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 21,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "7db298e5e6e53979f45d68e60e158884e2937d2e00277d61ad11d71eca91222c",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "3e4b7491da1b1b2975d94da8c57d0299829b823eb7dbbf229fa8bae1fd496fa7": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 21,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "c6f2fa852dd54a631515ba604712692c2e3043009db4f7b5a96f4e54943411c5",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "00fa884175dc8e3e33d128b2db700175cf143957efa0533ce84ef762cd807dff": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 21,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "bd7dc142c5e18cbda2a9d5f8a0e0bde6db3954109a0b1b6712f06a4fb04d29d1",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "48a137e51065a2d4ff62cc832ccccdec9a33eb2a5ac1dd1655826c8a7ff2f014": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 22,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "45ea6f6f967cf2e4c2b1f74b9afdcb31914edfbe4cfc3865605ccc4773d349e5",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "7376d255429603fd9c20bfa8249b24edd9ac8abd842ca40572e394d62724b7ee": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "2f7d9cac95b811b1538cbdf388653841b72b6e86936e700c29d6ca96d2a0a8d2",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "684ec703961092b9f90d37bf8b5b4fa55c7833793027b6c32d79cfa246f9c60e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 22,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "153896787a93b0a5247259d572654e113731534fc5d9b3cbffc19fad0a3d1fe1",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "2b4de717f42339ab8479722b8cd124b02597f1a40c05a5966db3545d4372f46c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 23,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "313b90f44045a655ce52bda917b356f80a26b14b59a011b1337a98064840505b",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "55f3156ea8530e0ff024f0d3b211ccf8dc7e35d6b92eaadb88c226ed1401d315": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 23,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "0c84abe965f76f1d5bbb9cceb3570ac778230a07eaaa3fd12a12e0ebf4810107",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "3bae8bd38001311a7064884fd714c9122186b0c2c33cc780751cba3c5195611a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 24,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "bf8aead130e42bcaf998b1c0f3c079a2b55968196e496ca8315e5ef9518ea2ac",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "506f3f68ba22340e05abbb03420bbd745c7b2b5fad028432e28a211525eb3a5c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 24,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "35ec8ba532e836df4c0676a346bf4a108aaf1b4eddc858ac5082204ea443c9f7",
+      "reason": "Compose-observable adapter around one caller-owned MutableState draft and the existing LatestAnalysis workers. This auxiliary constructor/state accessor/callback is not a separately measured named source function. Input-bound current-result access, disposal, cancellation, catalog preservation, explicit approval and stable-id saving are exercised directly in JVM and native tests; all ordinary editor commands are measured below target. No numerical CRAP waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "cc4752cb1c541673fef0f599c0bac621ed4edc51874783e618bfb3f1ef010a1f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionReadinessLabel.kt",
+      "line": 12,
+      "kind": "function",
+      "name": "ConstructionReadinessLabel",
+      "semanticHash": "b1386166e778b7d3378ddb758c6d74ed74d04c79a7809daead90bdb37f345e73",
+      "reason": "Localized Compose presentation of the independently tested, measured readiness policy. Compose source/JVM transformation has no reliable per-source CRAP correspondence. Native tests verify readiness-dependent progression and bilingual rendering; no calculation or feasibility threshold is duplicated here.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "ff74befc60c31f2e853052a25ea087a0f00b45a81445cb1a40d21a237e984545": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 40,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "de2aec0e932202db604128cdbd50208cc5467213f566a5e0244a6a42b379c534",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "f1a7d37604ed5faf8cdd96ec24672e59328b5cd3dce321d598faaecb4080c65d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 41,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "94f271e39a27f8e38a42e764b488e0f9aa7b5a572078fefd2a8f35759f48d766",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "6cfd8dcb838166e9b176b7c48392f863745f7cd1ff1d3cc326df8cdb3780c22f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 41,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "79a1643eba0385ff073b33b01a54413d91858cb7075a5011959eca2e5ace6d6d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "0cf7a311dd9adb787613f2491dd12e6ed5e713176517e93ae0322dfdf0959353": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 42,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "6fd40f1aa9f6804c0fba7dc3dcb9589d9d5930b5d66bf998a07c60a294ac242d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "e59af7f7e9deaabfd34567ff5c0cfac4f0b4852c3f48afff842f68a6d1eef4cf": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 43,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "e221728a17c60a33ad8df0b4e71ccfb4edc0ae434efd5ed4cc4f1cafbea5bf7d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "4097b35f0660586f4250e03cf5cd07f114d4e3f682a2198af57588608ed95d16": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 43,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "8dbe55384f23c0a020e89cb75929db96c6d3d9c1b8947b8ed65b834e7f6a7d47",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "bda97ce76e20d4f53554d66bd33cb7821b876ddeea8064d7cae392d34e1d4fae": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 43,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "062ebeb0aebefe29bea472ddea7ea78ed8e143561a8df30b39c893355613a0c9",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8"
+    },
+    "81878b2233e57da42c9d08ae3d1374ccb6b4b1fcbb407a2aa28d0df71a4ebb0b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 49,
+      "kind": "function",
+      "name": "ConstructionWorkspace",
+      "semanticHash": "cd3f67813238f6c1c3c2344a8d35435e989d760c7ad770c2391e89e30551ea3a",
+      "reason": "Compose viewport presentation: the bounded four-stage wizard derives compact layout from actual available height. Short viewports scroll the whole wizard so an editable control can fit; normal portrait keeps its header and footer fixed. The Laboratory toolbar yields space at short/large-font configurations while bottom navigation remains available. Native bilingual 150% portrait/landscape journeys, Back and tab restoration exercise these bounds. Source/JVM Compose mapping is unsupported; no CRAP or numeric baseline waiver is claimed. Lifecycle observation is detached independently from editor disposal, so replacing the owner does not close a surviving draft; a dedicated native RED/GREEN regression protects this boundary. Analysis admission is keyed by editor identity as well as inputs; replacing a design with identical measurements starts its own validation. Dedicated deterministic native RED/GREEN covers this previously missed owner change.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard, final responsive verification on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "fa87b23f39c13ff047bd9f03c16bdadafcae444b4b54aa9783a714a4b2b004d0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 89,
+      "kind": "function",
+      "name": "ConstructionWindow",
+      "semanticHash": "6d1a2941500933d254a02f478037e798567e028bacaf2c8e9936fd0d041ecf18",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "6f69a18aa31610d20c700f41751c431dfedd88374a06ef17643187125900e28a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 100,
+      "kind": "function",
+      "name": "ConstructionHelp",
+      "semanticHash": "4becebc041f8d27c02b3313103c38127166681a487d9babb8d601418b4799843",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "ed8d667b5e58b15ca9685324da5569e1cfb46f2bd33ef0acabde9bdff8f1f946": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 107,
+      "kind": "function",
+      "name": "ConstructionStep",
+      "semanticHash": "c65fac73ab1d1bc90ff32ec50acc12fcfd2617c2296913e93238143b996010c5",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "15f76b053904573997523a777204bb6a2da6304ed18fa9f6128b00244e9dbb4f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 121,
+      "kind": "function",
+      "name": "ConstructionValidation",
+      "semanticHash": "c5c23bb7d9d06f9fd7ac035c7998354887ddec61d4f4e14ad87c1bfde5da15c5",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "8542e7269412d526c6ea6d0bcbf5f1cd93de13a86b92e675db00f4505221b26f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 134,
+      "kind": "function",
+      "name": "ConstructionApproval",
+      "semanticHash": "63b6a12a9b92cce2554486bb93a0f4b590ef3d0369adb7dc4bf3ee5b43e1a257",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "434dd7a5a711e1f589cdee4a0cfb171c6b9645419bcd13aeeda567949df44ba8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 141,
+      "kind": "function",
+      "name": "ConstructionFooter",
+      "semanticHash": "41d51f04b34ace4a2ecb66d029289441127014f459714643ea16c75b8b7db826",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "3fabc71bca7b9d62776f82be61c42b0ebe502d5e8511ae0f57db143d5850d2fb": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 150,
+      "kind": "function",
+      "name": "ConstructionLeaveDialog",
+      "semanticHash": "ec5b227433a694a4bd0de8488f487bc5cc11f4588de659f7b447850638c6712d",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "cecd44499b316b10a7e8447678f083d9be76f385cfba6257b751989f81444639": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 157,
+      "kind": "function",
+      "name": "ConstructionHeader",
+      "semanticHash": "30c7d6546429ed5b60cb9e72fc32f32472a3f06da784b43d1df4ec8557df8f08",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "8356802cd527bbd6f5f153ca3965bcd420a4ec2e4afeb11f69a92f06a2e3304f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 210,
+      "kind": "function",
+      "name": "ConstructionPlanActions",
+      "semanticHash": "18bc31e813a9fc387c3efb8dd59e1bc9f58d4c5f9d15dde79453ed12d5ff43f6",
+      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "09030d6ae4466bab5a965a29eccb1be8e660898915b03ed8b86963eb05531a3f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/LaboratoryWizard.kt",
+      "line": 21,
+      "kind": "function",
+      "name": "LaboratoryWizard",
+      "semanticHash": "9ba3897f9451c22167e58124c90b5e925ceec28dcdba8ca72bf4e804c8bfe0ed",
+      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5",
+      "metric_status": "compose-transformation"
+    },
+    "3e659df7591919487e12fc8c1671baafd485a6d19457779d9055addb5a911e6f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 719,
+      "kind": "function",
+      "name": "DimensionControl",
+      "semanticHash": "07d93b537a43701ac8c18b377d73af1a41389ab55aa508f44c111270606053d5",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "865b70f3a9186b80bce91f67f1faa7f7ef76e010eb7650b7b39cff3e8c62b364": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 731,
+      "kind": "function",
+      "name": "BoreGraph",
+      "semanticHash": "97fe83f82bb713cb2aea125d91c333e059997c32adfc66e2c37f8c0a48671f79",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "68315abeec6c0284c856260fae874a7a1fb5ad313bb32103120ef1b162dfd05f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 812,
+      "kind": "function",
+      "name": "LibraryScreen",
+      "semanticHash": "adb3d7dd6b078d44d0c88ecfe9edb423e0efbeadcd9e0293f79fcd0a7b7b3fb6",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "bc07012c199e571c4e45f9e4b6e2e6640867de2f8b5d34f60b95832c8561ad6f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 986,
+      "kind": "function",
+      "name": "DesignsLibrary",
+      "semanticHash": "aa58e84850e2b5743c32a15fce9c6212209f05301baa0e8bf207b33e261eacc5",
+      "reason": "Compose navigation/presentation update only: Laboratory hosts the bounded wizard and Library Open resumes the same design identity; the old Search construction detour is removed. DimensionControl/BoreGraph visibility is widened for reuse without duplicating geometry logic. Native navigation, save/resume and metronome regressions plus pure dense-profile editing tests protect this integration. Existing Compose mapping limitation; no numerical waiver.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "metric_status": "compose-transformation"
+    },
+    "09d208e33dae5f96b98aeb3b5722eb3bf9d4ef518246c5aeebcf365221696633": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 16,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "ca1c45a5cb2f56bb00402e2346f42101d510a48b5f21059237af6ec218959ed2",
+      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+      ],
+      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5"
     }
   }
 }

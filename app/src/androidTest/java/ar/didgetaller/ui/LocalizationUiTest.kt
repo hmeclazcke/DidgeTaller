@@ -99,6 +99,8 @@ class LocalizationUiTest {
     @Test fun englishMeasurementAndLibrary() {
         show("en")
         Assert.assertEquals("C2", app.noteLabel(ar.didgetaller.core.Music.frequency(36)))
+        Assert.assertEquals("C♯2", app.noteLabel(ar.didgetaller.core.Music.frequency(37)))
+        Assert.assertEquals("A♭2", app.noteLabel(ar.didgetaller.core.Music.frequency(44)))
         Assert.assertEquals("C", app.noteBase(ar.didgetaller.core.Music.frequency(36)))
         Assert.assertEquals("73.4 Hz", hzLabel(73.4))
         Assert.assertEquals("18.5", axisLabel(18.5, 5.0))
@@ -111,7 +113,7 @@ class LocalizationUiTest {
         show("es-AR")
         Assert.assertEquals("Do · C2", app.noteLabel(ar.didgetaller.core.Music.frequency(36)))
         Assert.assertEquals("Do", app.noteBase(ar.didgetaller.core.Music.frequency(36)))
-        Assert.assertEquals("Do♯ · C#2", app.noteLabel(ar.didgetaller.core.Music.frequency(37)))
+        Assert.assertEquals("Do♯ · C♯2", app.noteLabel(ar.didgetaller.core.Music.frequency(37)))
         Assert.assertEquals("73,4 Hz", hzLabel(73.4))
         Assert.assertEquals("18,5", axisLabel(18.5, 5.0))
         compose.onNodeWithText("Iniciar medición").assertIsDisplayed()

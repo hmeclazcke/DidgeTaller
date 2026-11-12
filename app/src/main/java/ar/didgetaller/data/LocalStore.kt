@@ -45,12 +45,10 @@ class LocalStore(context: Context) {
             .put("time",SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault()).format(Date()))
             .put("hz",hz).put("note",Music.note(hz)).put("cents",Music.cents(hz))) }
     }
-    fun saveDesign(name: String, shape: AcousticModel.Shape) {
-        document("designs").update { arr -> arr.put(JSONObject().put("id",UUID.randomUUID().toString()).put("name",name.take(70)).put("length",shape.lengthMm)
-            .put("mouth",shape.mouthMm).put("mid",shape.middleMm).put("bell",shape.bellMm)
-            .put("points",JSONArray().also { arr ->
-                shape.points.forEach { p -> arr.put(JSONArray().put(p.positionMm).put(p.diameterMm)) }
-            })) }
+    fun saveDesign(name:String,shape:AcousticModel.Shape)=saveDesign(UUID.randomUUID().toString(),name,shape)
+    /** The transaction owns publication; the codec preserves identity and unknown legacy fields. */
+    fun saveDesign(id:String,name:String,shape:AcousticModel.Shape) {
+        document("designs").update {DesignMetadata.upsert(it,id,name,shape)}
     }
     fun deleteMeasurement(id:String)=delete("measurements",id)
     fun deleteDesign(id:String)=delete("designs",id)

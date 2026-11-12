@@ -25,7 +25,7 @@ Didge Taller brings live pitch readings, WAV recording, and saved-session analys
 </tr>
 <tr>
 <td width="50%" valign="top">
-  <a href="docs/screenshots/showcase/live-measurement.png"><img src="docs/screenshots/showcase/live-measurement.png" alt="Live didgeridoo measurement showing a stable 70 Hz synthetic reading" width="420"></a>
+  <a href="docs/screenshots/showcase/live-measurement-editorial.png"><img src="docs/screenshots/showcase/live-measurement-editorial.png" alt="Live didgeridoo measurement showing a stable 70 Hz synthetic reading" width="420"></a>
   <p><strong>Live measurement.</strong> Read an accepted pitch estimate, note, and signal status while playing.</p>
 </td>
 <td width="50%" valign="top">
@@ -141,6 +141,28 @@ python tools/check_localization.py
 These run JVM suites and resource-format parity, not Android instrumentation. For explicitly selected clean-emulator execution, coverage, CRAP-L, duplication and mutation commands, use the [quality guide](docs/quality/QUALITY_GUIDE.md). Detekt's broad audit is informational; the measured regression/source gates are enforced. Consult [validation records](docs/VALIDATION.md) for exact revisions, executed scopes and limitations instead of treating historical numbers as current guarantees.
 
 The app remains a personal beta distributed from source. Hardware microphone response and audio output latency vary; no calibrated accuracy, universal timing guarantee, full coverage or whole-app mutation score is claimed. Preserve original recordings and signing compatibility when updating.
+
+### From acoustic targets to workshop plans
+
+This section describes the implementation on `feature/inverse-design-construction` (draft PR #5), not a published release. Existing transverse-layer projects retain legacy access; new plans offer split wood or measured PVC.
+
+Open **Laboratory → Design instrument → Choose material → Validate and adjust → Construction plan**. Save a draft without leaving the wizard; opening the same design from **Library → Designs** restores its editing stage, material and accepted construction alternative. Saving updates that identity rather than creating duplicates. Geometry edits invalidate old calculations and exports. A PVC approximation requires explicit approval, with predictions calculated from the actual measured assembly. Live microphone Spectrum and the older three-resonance search remain optional tools, separate from workshop-plan navigation.
+
+- **Split wood:** mirrored longitudinal halves, station diameters, semicircular hollowing depths, minimum blank dimensions and radial overcut allowance.
+- **Modular PVC:** editable measured tube/socket/reducer catalog, cut lengths, insertion overlaps, variable internal transitions and assembled length. No commercial sizes or availability are assumed.
+- **Workshop exports:** a two-page A4 PDF: specifications and measurements, then a landscape dimensioned construction drawing. Split-wood plans distinguish a measured natural log, two separate boards and a block to split. Wood dimensions and preparation losses constrain the candidate search; incomplete measurements remain unconfirmed. White-background vector sheets show the stock and bore with station diameters, full cross-sections and a carving-depth/remaining-wood table. Separate optional 1:1 tiled templates, localized CSV tables and SVG technical drawings are available. Displayed dimensions use 0.1 mm; measure the 100 mm reference before trusting printer scale. Stock minima round upward to 0.1 mm; dense station data stays in CSV, while oversized component lists report a legibility limit instead of shrinking text.
+
+[Two-page sample PDFs, vector drawings and measurements](docs/examples/construction/README.md) are generated and rendered on Android using synthetic fixtures.
+- **Sensitivity:** recompute diameter, length and insertion variations with the existing acoustic model. These are predictions, not physical calibration or a guarantee of the played drone/toot.
+
+The [construction implementation and verification record](docs/engineering/CONSTRUCTION_PROGRESS.md) documents scope, numerical checks, Android evidence and remaining limitations. Search is bounded, not a proof of global optimality; tapered intervals are discretized and circular-bore assumptions remain applicable.
+
+<p>
+  <img src="docs/screenshots/construction/wizard-en-design.png" alt="Persistent Laboratory construction wizard" width="280" />
+  <img src="docs/screenshots/construction/wizard-en-plan.png" alt="Construction-plan PDF export at 150% font size" width="280" />
+</p>
+
+Authentic synthetic-data emulator captures; see the [construction gallery and provenance](docs/screenshots/construction/README.md).
 
 ## License and contributions
 

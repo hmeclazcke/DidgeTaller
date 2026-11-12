@@ -9,7 +9,12 @@ on:
         description: Select deep checks without repeating unchanged successful evidence
         type: choice
         default: all
-        options: [all, instrumentation, mutation, metronome, localization]
+        options: [all, instrumentation, mutation, metronome, localization, construction]
+      configuration:
+        description: Construction evidence only; reuse unchanged successful configurations
+        type: choice
+        default: all
+        options: [all, landscape]
 permissions:
   contents: read
 concurrency:
@@ -47,7 +52,7 @@ jobs:
           retention-days: 7
           if-no-files-found: error
   instrumentation:
-    name: ${{ inputs.scope == 'localization' && 'Focused localization and navigation (not full suite)' || inputs.scope == 'metronome' && 'Focused Measure and metronome UI (not full suite)' || 'instrumentation' }}
+    name: ${{ inputs.scope == 'construction' && 'Focused workshop construction (not full suite)' || inputs.scope == 'localization' && 'Focused localization and navigation (not full suite)' || inputs.scope == 'metronome' && 'Focused Measure and metronome UI (not full suite)' || 'instrumentation' }}
     if: github.event_name != 'workflow_dispatch' || inputs.scope != 'mutation'
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -80,9 +85,9 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: bash ${{ inputs.scope == 'localization' && 'scripts/run-localization-quality.sh' || inputs.scope == 'metronome' && 'scripts/run-metronome-quality.sh' || 'scripts/run-emulator-quality.sh' }} emulator-5554
+          script: bash ${{ inputs.scope == 'construction' && 'scripts/run-construction-quality.sh' || inputs.scope == 'localization' && 'scripts/run-localization-quality.sh' || inputs.scope == 'metronome' && 'scripts/run-metronome-quality.sh' || 'scripts/run-emulator-quality.sh' }} emulator-5554 ${{ inputs.configuration == 'landscape' && 'landscape' || 'all' }}
       - name: Separate emulator coverage report
-        if: always() && inputs.scope != 'metronome' && inputs.scope != 'localization'
+        if: always() && inputs.scope != 'metronome' && inputs.scope != 'localization' && inputs.scope != 'construction'
         run: |
           ./gradlew --no-daemon -Pkotlin.incremental=false -PandroidCoverage=true :app:jacocoEmulatorReport detekt detektComplexity :engineering-tools:sourceInventory :engineering-tools:bytecodeInventory
           python3 tools/emulator_coverage_summary.py
@@ -91,8 +96,10 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: ${{ inputs.scope == 'localization' && 'Focused-Localization-Results' || inputs.scope == 'metronome' && 'Focused-Metronome-Results' || 'Complete-Emulator-Results' }}
+          name: ${{ inputs.scope == 'construction' && 'Focused-Construction-Results' || inputs.scope == 'localization' && 'Focused-Localization-Results' || inputs.scope == 'metronome' && 'Focused-Metronome-Results' || 'Complete-Emulator-Results' }}
           path: |
+            build/reports/quality/construction-*.txt
+            build/reports/quality/construction-screenshots/
             build/reports/quality/instrumentation.*
             build/reports/quality/localization-*.txt
             build/reports/quality/library-screenshots/

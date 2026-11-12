@@ -2355,3 +2355,247 @@ Ignored full evidence: `checkpoints/metronome-redesign/42865033307/`,
 `checkpoints/metronome-redesign/42865043802/` and
 `checkpoints/measure-metronome-ui/samsung/`. Published clean-emulator images
 and individual provenance are in `docs/screenshots/showcase/` and `showcase-es/`.
+
+
+### Workshop domain checkpoint ? IN PROGRESS
+
+See [construction checkpoint](engineering/CONSTRUCTION_PROGRESS.md) for implemented geometry, RED/GREEN,562 debug cases,218 selected mutants and explicit remaining scope. No manufacturing UI or PDF is claimed delivered.
+
+### Workshop workflow verification (production992dadc)
+
+[Fast CI42917012360](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917012360)
+passed:580 discovered per JVM variant,572 passed,8 protected skips, no failures;
+APK/test compilation, Lint, localization, differential/source/coverage/CPD gates
+and quality-tool tests. JVM46.94/45.18%, core99.26/82.01% line/branch;670 measured
+functions,150 unscored in the numerical summary,64 historical above-target methods,
+zero gate violations and zero CPD groups. Lint0 errors/70 warnings/7 hints; broad
+Detekt2453 informational findings. No baseline/threshold relaxation.
+
+[Native run42917003540](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42917003540)
+passed eight cases (base plus EN/ES normal/150% portrait) but failed landscape
+navigation automation. It is not a passing full run. The remaining complete
+landscape150 scenario passed in
+[42993552622](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42993552622),
+test-only70e744d, with unchanged production. Every construction scenario has actual
+clean-API35 execution; this is focused feature verification, not the full app suite.
+[Fast CI42993559385](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42993559385)
+also passed for that test-only revision; numerical source evidence above is reused
+because production code and JVM tests are unchanged.
+
+Selected local PIT:16 bytecode classes,647 mutants,432 killed,200 survived,15
+uncovered, no incomplete outcomes;66.77% detection. Different scope from the
+historical218-mutant checkpoint. New geometry/physics contracts cover interpolation,
+overlaps, layer openings, midpoint cells, sensitivity and unit conversions. Android
+verifies both PDF modes, CSV/SVG callbacks, exact page count, native-rendered100mm
+ruler and150mm alignment mark. No physical calibration or printer result is claimed.
+
+See [construction record](engineering/CONSTRUCTION_PROGRESS.md) and
+[authentic screenshot gallery](screenshots/construction/README.md). Synthetic
+fixtures only; no physical device, private WAV or existing user session was accessed.
+
+
+# Two-sheet workshop generator — 2026-11-11
+
+Debug/release each 591 tests:583 passed,8 protected skips; no failure. Source gate:
+712 scored/156 unscored,64 historical high-risk functions,0 new violations,CPD 0.
+No numerical baseline or quality threshold changed. Native API 37: six base cases,
+Spanish narrow 150% full workflow, and final two PDF-generation/raster cases passed.
+Actual default PDFs contain exactly two A 4 pages for all three methods in EN/ES;
+optional 1:1 wood pattern contains 10 independent tiles. Every PDF page was rasterized
+and inspected. Synthetic samples and file hashes are in examples/construction.
+PIT selected document scope 474:232 killed,231 surviving,11 uncovered;48.95%,24s
+mutation execution. Surviving layout/iteration mutations remain a stated limitation.
+Scientific calculations, saved schemas and audio code are unchanged. No Samsung or
+private WAV access. See engineering/WORKSHOP_DOCUMENTS.md for reproduction/limits.
+
+
+# Final measured-socket workshop evidence
+
+Implementation764bc63: fast CI43037920159 and clean API35 native CI43037955490
+both succeeded. Native artifact logs prove11 executions, including EN/ES and 150%
+portrait/landscape. Both JVM variants have591 cases (583 passed,8 protected skips).
+Source gate713/156 measured/unscored,64 historical above-target,0 violations,CPD0.
+Final selected document PIT487:245 killed,231 surviving,11 uncovered;50.31%,19s
+mutation execution. No timeout/runner errors; score is not an application-wide claim.
+Current samples come from that CI artifact; every PDF page was rasterized and
+inspected. PVC sockets are drawn with measured diameters/insertions; outside fitting
+geometry is deliberately unspecified. Physical printing, material strength and
+played note remain unverified. See engineering/CONSTRUCTION_PROGRESS.md for links.
+
+
+## Stock-aware plan implementation checkpoint
+
+Local branch revision after4688f4f: JVM debug/release602 each (594 pass,8 protected
+skips,0 failures); clean production/test APK compilation; source inventory754
+measured/160 unscored;0 strict-gate violations,CPD0;46 tooling tests; localization
+parity668 strings/5 plurals/2 arrays. Selected WoodFit/WoodStockForm PIT146,128
+killed/18 survived/0 uncovered. New domain/drawing functions have CRAP-L<10;
+unsupported Compose/constructors have content-linked technical reviews only.
+Actual clean-emulator workflow and final Android PDF rendering are pending;
+see engineering/CONSTRUCTION_PROGRESS.md for assumptions and completion state.
+
+
+Stock-aware final code:603 JVM debug/release each,595 pass/8 protected skips;
+755 measured/160 technically unscored,0 strict violations,CPD0. Selected stock PIT
+146/128 killed/18 survivors/0 uncovered. Native43071118247 on9bd4100 passed14
+actual cases and generated10 bilingual two-page PDFs plus the10-page template.
+All30 raster pages were compared byte-for-byte with inspected3997e06 previews.
+The synthetic gallery manifest verifies63 files. Final UI-only semantics/header
+changes are covered by the focused EN/ES150% landscape native run; final CI links
+and observed conclusions are maintained in PR5. Do not infer a pass from compilation
+or cancelled runs. No physical print, structural wood safety or played-note
+validation is claimed; no private data or physical device was used.
+
+
+## Workshop usability correction — 2026-11-11
+
+Both JVM variants: 615 discovered, 607 passed, 8 protected skips, no failures.
+Twelve focused usability tests protect the actual board/log quantities, profile
+stations, complete circles, dimension-arrow lengths, unknown measurements and
+CSV agreement. Strict source gate: 767 measured, 160 technically unscored,
+64 historical high-risk functions, zero violations; CPD zero. No new numerical
+exception. The new immutable Row constructor has a content-linked technical review.
+Selected CarvingMeasurements PIT: 57 generated, 39 killed, 18 surviving, zero
+uncovered (68.42% killed); selected bytecode scope only. Survivors remain disclosed,
+not all declared equivalent. Tool/localization evidence is reused for unchanged inputs.
+
+A fresh task-owned API 37 emulator executed the two native document tests and the
+actual Compose search/save/tolerance/export workflow: 3 passed, zero failures/skips.
+Android generated ten bilingual two-page A4 PDFs, SVG/CSV and the separate ten-page
+1:1 template. Every one of the 30 pages was rasterized and visually inspected;
+the requested Spanish board/log PDFs were independently rendered before/after using
+Windows.Data.Pdf. Final caption-only rerendering is checked separately; unchanged
+pages reuse exact-pixel evidence. Earlier emulator launcher/System UI ANRs interfered
+with UI input; after dismissing those dialogs, the unchanged workflow passed. The
+failed attempts are not counted as successful instrumentation.
+
+The 1500 mm example has 30/43/83 mm bores at 0/1020/1500 mm, 15/21.5/41.5 mm groove
+depths and 35.5/29/9 mm below-groove wood in 50.5 mm prepared boards. Its assembled
+101 x 101 mm envelope is rectangular. Log calculations assume the explicitly stated
+centred circular/minimum envelope and deduct supplied preparation losses. Numerical
+boundary examples do not establish wood strength, physical printer scale or played
+pitch. Source/artifact hashes are in docs/examples/construction/manifest.json.
+Final automatic CI URL/conclusion will be recorded in PR #5, without another
+redundant emulator dispatch. No Samsung/private recording operations occurred.
+
+Final caption payload also passed all three native cases. Of 30 regenerated PNGs,
+24 are byte-identical; the six caption-changed wood pages were reinspected. Final
+JVM variants and strict gate passed again. Selected PIT survivors are four in
+minimum selection, one Kotlin null assertion in row, and thirteen in station
+spreading. No survivor changes a tested diameter/depth/board-or-log wall formula;
+selection-boundary/tie mutations are retained as disclosed test-strength limits.
+
+## Bilingual workshop editorial correction — 2026-11-11
+
+Reviewed all eight known-stock PDF pages. Localized only the synthetic generator's
+sample title (Ejemplo de construcción / Construction example); real user names
+remain unchanged, with a regression using Río claro. PDF feasibility now separates
+positive allowance, the geometric minimum with no extra allowance, failure and
+unconfirmed measurements, using the unchanged assessment and its tolerance.
+Log section labels identify width at the joining plane and calculated plane-to-outside
+depth, rather than board thickness. Board terminology and exterior geometry remain.
+Both languages use clearer bore/depth/remaining-thickness terms and native decimals.
+
+RED usability assertions failed before the correction. Final debug JVM: 616 cases,
+608 passed, 8 protected skips. Two actual API 37 native document tests passed;
+all four requested two-page A4 PDFs were regenerated, independently rasterized on
+Windows and visually inspected. SVG/CSV samples refreshed from the same synthetic
+payload. Source gate: 768 measured,160 unscored,64 historical above-target,zero
+violations,CPD0. No new review/threshold exception or acoustic/storage change.
+Prior unchanged geometry/selected mutation evidence is retained; no broad PIT or
+physical-device operation was repeated. Final remote CI observation belongs to PR5.
+
+## Instrument titles and supported construction selection — 2026-11-11
+
+Both split-wood PDF sheets now use the real design name or, for an empty name,
+Didgeridoo plus the actual localized target note. Stock/method and a named design's
+note are secondary. No acoustic prediction is invented when target frequency is
+absent. The SVG export uses the same titled document as the PDF.
+
+Normal method selection contains only longitudinal split wood and modular PVC.
+The transverse-layer control and layer input were removed; active sample galleries
+and both README feature lists no longer advertise it. Legacy LAMINATED enum/form
+parsing, stored fields, numerical geometry and export support remain unchanged.
+Opening an old project therefore never silently reinterprets or deletes its data.
+Existing legacy numerical/document tests remain; new tests verify active selection
+and legacy option decoding. The PVC native test verifies the removed chip is absent.
+
+Debug JVM:617 cases,609 passed,8 protected skips. Three actual API37 native cases
+passed (bilingual document generation, calibration and PVC catalog/selection/error
+workflow). All eight requested wood PDF pages were regenerated, independently
+rasterized and visually inspected; two A4 pages retained with unchanged geometry.
+Strict source gate771 measured/160 technically unscored,64 historical high-risk,
+zero violations,CPD0. No numerical exception; the changed Compose declaration's
+source-bound compiler-mapping review was refreshed. No Samsung/private data access,
+main modification or merge. Remote CI observation is recorded in PR5.
+
+
+## Cross-application bilingual editorial pass — 2026-11-11
+
+Reviewed all 668 paired string values, five plural resources and two note arrays;
+inspected production Text/contentDescription literals, localized diagnostics,
+construction vocabularies/tables/templates and README-linked screenshots. Scope
+includes Measure, Metronome, Laboratory, Library, playback/viewers, signal/YIN/SWIPE
+and spectral diagnostics, inverse design and supported/legacy construction exports.
+The source inventory of paired values is local/ignored; terminology is documented
+in LANGUAGE_POLICY.md rather than a duplicate localization framework.
+
+Corrected passive-resonance versus fundamental wording, Spanish grammatical gender,
+guide language assumptions, follow/gesture instructions, catalog/validation terms,
+Unicode musical accidentals, locale-aware construction numbers and CSV width/log
+column meanings. Unknown stock no longer invents a limiting position. Geometry,
+acoustic criteria, persisted formats and private data are unchanged. Corrected the
+Laboratory guide: live Spectrum uses the microphone, not the impedance simulation.
+Both READMEs identify construction as current draft-branch work, not a release.
+
+Debug JVM 618 cases:610 passed,8 protected skips; strict gate771 measured/160
+unscored,zero violations/CPD0. Twenty focused native cases passed, covering compiled
+formats/plurals and note labels in EN/ES, navigation accessibility at150%, recording
+ownership during configuration change, metronome and construction/PVC exports.
+Final CSV-only changes retain that UI evidence; four final native executions
+regenerate bilingual PDFs/SVG/CSV and exercise both locale-specific wood workflows.
+Requested PDFs are independently rendered and visually inspected; legacy laminate
+output is inspected locally without restoring active selection. Prior unchanged
+landscape evidence is reused: this is not a new exhaustive screenshot matrix of
+all screens/states. Raw system error details may remain in their originating
+language, as explicitly required by the existing diagnostic boundary. No physical
+acoustic/printing accuracy or perfect localization is claimed. Actual current CI
+conclusion is recorded in PR5 after publication. No Samsung/private data access.
+
+Cross-check follow-up: an exact C♯2 assertion exposed that the live scientific-note
+line still displayed the canonical C#2 identifier, while localized labels used
+musical glyphs. The first targeted run failed on that actual inconsistency; only
+the UI presentation now substitutes sharp/flat glyphs. Core Music and saved note
+identifiers are unchanged. The same controlled PCM test then passed, including
+both instrument profiles and unchanged recording-control geometry. One additional
+native case passed; a fresh unretouched English live-meter capture is linked in
+the README. The earlier failing run is not counted as a pass. Final source gate
+remains771/160,zero violations. No private fixture method was executed.
+
+
+## Persistent Laboratory construction wizard - 2026-11-12
+
+Final canonical build: debug/release JVM637 discovered each,629 passed,8 protected
+skips,zero failures; debug and androidTest APKs built, Lint passed. Seventeen actual
+native integration cases passed on task-owned emulator-5582/API37, synthetic data
+only. They cover new-save/Library resume without duplicates, incomplete/canonical
+geometry separation, old projects, ownership changes with identical measurements,
+LifecycleOwner replacement, cancellation, stale-plan invalidation, PVC approval,
+all exports and SavedState restoration. Two localization regression cases also
+passed; focused EN/ES150% portrait/landscape captures were rendered and inspected.
+Configuration runs are separate executions, not additional unique test methods.
+
+Strict source gate:798 measured/169 unscored,60 historical above-target JVM
+functions,zero violations; CPD0. New ordinary journey/editor methods are measured
+below10. ConstructionWorkspace MCC7, stage routing6, validation4; no replacement
+giant controller. Compose/accessor/constructor/Saver technical reviews are narrowly
+source-hash-bound. No numeric gate/baseline changed. Full logs are ignored under
+checkpoints/workshop-final/wizard-*. Earlier failing diagnostic attempts remain
+recorded and are not represented as passes. PR5 carries exact published SHA/CI.
+
+Physical acoustics/printing and OS process-kill restoration are not claimed.
+The current search evaluates the entered measured assembly and bounded alternatives,
+not exhaustive component-catalog synthesis. No Samsung or private audio/session data
+was accessed; the existing scientific model and document geometry were unchanged.
+
+Final compact follow-up: both Library reopening and measured-PVC configuration/export passed at 1280x720 and 150% font on the final APK. The earlier fixed-header assertion was corrected to scroll the responsive header into view before retaining its visibility assertion.

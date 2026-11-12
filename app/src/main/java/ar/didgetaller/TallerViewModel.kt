@@ -412,6 +412,7 @@ class TallerViewModel internal constructor(
     fun saveDesign(name:String){if(name.isBlank()){message="Escribí un nombre para el diseño.";return}
         persistMetadata {store.saveDesign(name.trim(),shape);refreshLibrary();message="Diseño guardado."}
     }
+    fun reloadDesigns(){refreshLibrary()}
     fun selectDesign(item:LocalStore.Design){shape=item.shape;labTab=0;calculate()}
     fun duplicateDesign(item:LocalStore.Design){runCatching {store.saveDesign("${item.name} (copia)",item.shape)}
         .onSuccess {refreshLibrary()}.onFailure {message="No se pudo duplicar: ${it.message}"}}

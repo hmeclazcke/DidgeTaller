@@ -57,3 +57,23 @@ screens. Compare Spanish resource bytes against the starting revision when
 they are outside the change scope. Review source diffs to separate translated
 comments/assertion text from executable changes. Screenshot fixtures may change
 test setup; they must not alter production behavior or use private recordings.
+
+
+## Technical terminology reference (current interface and exports)
+
+| Quantity or operation | English | Spanish | Meaning |
+|---|---|---|---|
+| First inverse-design target | First passive resonance | Primera resonancia pasiva | Input-impedance model target, not a guaranteed played fundamental |
+| Circular air passage | Internal bore diameter | Diámetro interior | Full opening; distinct from radius or groove depth |
+| Semicircular groove | Groove depth per half | Profundidad por mitad | From the joining plane to the bottom of each groove |
+| Prepared rectangular stock | Prepared width | Ancho preparado | Full width, not half the numerical value |
+| Prepared log section | Joint plane to outer surface (derived) | Plano de unión a superficie exterior (calculado) | Derived circular-cap depth after supplied preparation losses |
+| Wood below the groove | Remaining wall thickness | Espesor de pared restante | Below-groove thickness; minimum wall separately considers board sides |
+
+Display values follow the selected locale; interchange/catalog numeric input and
+CSV values retain decimal points so delimiters and parsing remain stable. Note
+labels use musical sharp/flat glyphs; persisted pitch identifiers are untouched.
+YIN confidence/periodicity is not a probability, spectral evidence is not a confirmed
+fundamental, and passive bore resonances are not guaranteed played notes or toots.
+Unknown platform error details deliberately remain verbatim in DiagnosticText;
+do not translate saved names, diagnostic matching keys or scientific identifiers.

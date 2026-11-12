@@ -1,5 +1,14 @@
 # Current README showcase - en
 
+## 2026-11-11 editorial note display
+
+`live-measurement-editorial.png` is the actual, unretouched API 37 English capture
+from the focused controlled-PCM meter regression after the editorial correction.
+It verifies sharp notation on the scientific-note line and stable controls for
+both instrument profiles. Synthetic PCM only; no AudioRecord or WAV writer.
+Size: 1080 x 2400; SHA-256 `26037f6ad8ec30026924b9d6cf66db5cb58337d4e2895f54fd8445338a07860b`.
+Earlier images below retain their original provenance.
+
 ## 2026-11-10 UI update
 
 `live-measurement.png` and `metronome.png` are unaltered, visually inspected
