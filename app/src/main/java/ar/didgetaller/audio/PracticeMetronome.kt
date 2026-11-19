@@ -29,6 +29,8 @@ class PracticeMetronome(context: Context) {
     private fun publish(next: MetronomeState) {
         main.post { if (engine.state === next) state = next }
     }
+    internal val currentSettings get() = engine.state.settings
+
     fun start() { refreshAudioEnvironment(); engine.start() }
     fun pause() = engine.pause()
     fun stop() = engine.stop()

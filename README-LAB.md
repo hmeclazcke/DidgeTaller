@@ -12,7 +12,7 @@ For installation and recording, start with the [project README](README.md). This
 4. **Construction plan:** preview dimensions and export PDF, SVG, CSV or the separate tiled 1:1 template. Editing earlier inputs revokes the prior plan and approval.
 5. Save from any stage without leaving the wizard. **Library → Designs → Open** resumes the same identity and stage; repeated saves update it rather than append copies. Incomplete drafts remain editable, and plans are recalculated after restoration.
 
-Closing an edited unsaved draft offers Save, Keep editing or Leave without saving. Android Back first returns to the preceding stage. The live microphone spectrum, the older three-resonance evolutionary search and Guide remain optional Laboratory tools after closing the wizard. The spectrum does not record and does not represent simulated impedance. Session/design association remains available independently.
+Swipe left to advance or right to return. The numbered step tabs provide the same navigation with screen-reader labels. The material step asks for measured stock dimensions or a valid measured PVC assembly before it unlocks validation. Closing an edited unsaved draft offers Save, Keep editing or Leave without saving. Android Back first returns to the preceding stage. The live microphone spectrum, the older three-resonance evolutionary search and Guide remain optional Laboratory tools after closing the wizard. The spectrum does not record and does not represent simulated impedance. Session/design association remains available independently.
 
 ## What the model represents
 

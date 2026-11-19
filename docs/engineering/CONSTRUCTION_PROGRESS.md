@@ -2,7 +2,10 @@
 
 Branch: `feature/inverse-design-construction`; draft [PR #5](https://github.com/hmeclazcke/DidgeTaller/pull/5).
 Main reference: `b411bb8978ab5c610ba5ffba882a98cb1e2b6bef`.
-Current status: **PERSISTENT WIZARD IMPLEMENTED - LOCAL INTEGRATION VERIFIED**. PR5 remains draft and unmerged.
+PR #5 was merged into main at e364a34. This file retains the original validation record.
+The responsive wizard follow-up adds native horizontal paging and validates measured
+wood or PVC inputs before the validation stage. Numbered tabs mirror the same
+prerequisites and stored design identities remain stable.
 
 ## Implemented application workflow
 

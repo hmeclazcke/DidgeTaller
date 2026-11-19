@@ -80,21 +80,26 @@ class MetronomeEngine(private val clock: MetronomeClock, private val click: Metr
     @Synchronized fun update(settings: MetronomeSettings) {
         if (closed || settings == state.settings) return
         val previous = state.settings
-        val timingChanged = settings.bpm != previous.bpm || settings.subdivision != previous.subdivision || settings.beatsPerBar != previous.beatsPerBar
+        val boundary = anchor + grid.offset(ordinal)
         grid = MetronomeGrid(settings)
         publish(state.copy(settings = settings, audioFailed = false))
         if (!settings.audible || settings.volume == 0f) click.silence()
-        if (timingChanged) rephase(previous)
+        if (meterChanged(previous, settings)) resetMeter()
+        // Tempo edits change the spacing after the next pulse. Keep that pulse scheduled.
+        else anchor = boundary - grid.offset(ordinal)
     }
-    private fun rephase(previous: MetronomeSettings) {
+
+    private fun meterChanged(before: MetronomeSettings, after: MetronomeSettings) =
+        before.subdivision != after.subdivision || before.beatsPerBar != after.beatsPerBar
+
+    private fun resetMeter() {
         invalidate()
-        if (previous.subdivision != state.settings.subdivision || previous.beatsPerBar != state.settings.beatsPerBar) {
-            ordinal = 0
-            publish(state.copy(pulse = null))
-        }
-        anchor = clock.nowNanos() + grid.offset(1) - grid.offset(ordinal)
+        ordinal = 0
+        publish(state.copy(pulse = null))
+        anchor = clock.nowNanos() + grid.offset(1)
         if (state.mode == MetronomeMode.RUNNING) schedule()
     }
+
     @Synchronized fun captureActive(active: Boolean) {
         if (closed || state.captureActive == active) return
         if (active) click.silence()

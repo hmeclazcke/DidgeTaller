@@ -1450,3 +1450,56 @@ wizard-canonical-final-build.log. Remote publication/CI result is recorded in PR
 No new dependencies, numeric baseline changes, Samsung access, private recordings,
 main changes or merge. OS process-kill restoration was not separately exercised;
 SavedState restoration, lifecycle replacement and Library reopening were executed.
+
+## Workshop navigation and tempo controls
+
+PR #5 was merged at e364a34. The iteration starts on
+`feature/workshop-navigation-tempo` from that remote main revision.
+Compose HorizontalPager and numbered tabs use the editor's available stage range.
+New stock measurements start blank, measured dimensions are checked before
+validation, and existing saved values and design identities survive intact.
+
+The metronome uses the platform hold threshold and one cancellable coroutine for
+both directions. Repeats advance one BPM each, decreasing the interval from
+150 ms to 55 ms. A fake clock reproduced pulse starvation when frequent tempo
+changes replaced the queued pulse. The pending deadline is now retained and
+the new grid starts from that pulse. Meter and subdivision changes retain their
+separate rescheduling behavior.
+
+Emulator validation uses only synthetic fixtures. The original Samsung was not
+used for this development iteration. See VALIDATION.md for observed results.
+
+### Material validation feedback
+
+The material admission check now distinguishes pending entries from invalid
+values. The Material page uses that result for a visible status, external field
+labels and field-specific errors. The numbered step and a forward drag at the
+pager boundary share the same action to reveal the first incomplete input.
+The native pager still owns gesture handling and the wizard still owns draft
+identity, plan invalidation and saved-design restoration.
+
+The initial Compose regression reproduced an Error semantic on an empty stock
+field. The fix keeps missing fields neutral and adds the localized explanation to
+the editable node only for invalid values. A fitting is required only when the
+measured PVC assembly joins multiple pipes. No metronome, acoustic-model or
+persistence-format code changed.
+
+### Guided material inputs
+
+The basic PVC form asks for the opening's inside and outside diameters and
+the available length. The inside diameter defines the air passage. The
+outside diameter identifies the measured pipe for socket fit and the parts
+list. The available length bounds the proposed cut. The proposal uses the
+design length when stock allows and becomes an assembly only on selection.
+Existing catalog pipes and fittings can be picked by segment. The cut length
+remains explicit because a measured stock length does not determine the cut
+or the length after assembly. Raw catalog and assembly records and the socket
+allowance remain in advanced settings for editing and compatibility.
+
+Wood asks for length and minimum outside diameter for a log, the smaller
+dimensions of the two boards or the dimensions of the whole block before
+splitting. Confirmation still records that these are usable measured bounds.
+Bark, preparation losses, kerf, per-end trimming, uncertainty and optional
+log sections remain under preparation. Plan interval, wall and tolerance
+remain under optional plan settings. The project schema, accepted-alternative
+check, acoustic calculations and exports are unchanged.

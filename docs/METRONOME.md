@@ -9,6 +9,8 @@ accessible titles and chooses short captions from the actual width/text-scale
 budget. Landscape practice omits the redundant toolbar; short viewports use a
 compact navigation height. Start/stop precedes the secondary sound/pause row.
 
+Tap either tempo button for one BPM. Holding uses the Android long-press threshold,
+then repeats one BPM at a time, shortening the interval from 150 ms to 55 ms.
 Tempo is 30-240 BPM; meters are 2/4, 3/4 and 4/4. Each quarter-note beat has one,
 two, three or four pulses. Only the first subdivision of the first beat receives
 the configurable accent. Sound defaults off; its visible switch distinguishes
@@ -25,9 +27,9 @@ restart. Settings keep the same separate preference file and keys.
 `core/Metronome.kt` owns an integer rational grid, transport state and one pending
 callback. Deadlines are calculated from a monotonic origin, not from the delivery
 time of the preceding callback. Late delivery skips missed subdivisions rather
-than producing a burst. Tempo changes invalidate old callbacks and place the next
-pulse one new interval ahead, preserving the pulse ordinal; changing meter or
-subdivision restarts the bar on that next interval. Pause, stop and close revoke
+than producing a burst. A tempo edit keeps the pending pulse and applies the new
+interval after it. Changing meter or subdivision restarts the bar on the new grid.
+Pause, stop and close revoke
 callback ownership. Close is permanent and idempotent.
 
 The Android adapter uses uptime and an audio-priority `HandlerThread`, created

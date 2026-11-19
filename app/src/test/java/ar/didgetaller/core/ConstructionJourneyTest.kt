@@ -14,6 +14,76 @@ class ConstructionJourneyTest {
         val p=ConstructionProjects.create("Test",shape,ConstructionForm.options(fields()))
         assertFalse(ConstructionJourney.canPlan(p,false))
     }
+    @Test fun materialMustBeMeasuredBeforeValidationCanStart() {
+        assertFalse(ConstructionJourney.available(fields(),2))
+        assertFalse(ConstructionJourney.available(boards()+("stockConfirmed" to "false"),2))
+        assertFalse(ConstructionJourney.available(boards()+("stockThickness" to ""),2))
+        assertTrue(ConstructionJourney.available(boards(),2))
+        assertTrue(ConstructionJourney.available(boards()+("stockWidth" to "30"),2))
+        assertFalse(ConstructionJourney.available(fields()+("method" to "PVC"),2))
+    }
+
+    @Test fun savedIncompleteDraftsResumeWhereTheUserCanCorrectThem() {
+        val draft = boards()+mapOf("stockWidth" to "", "_wizardStep" to "3")
+        assertEquals(1, ConstructionJourney.restore(draft).step)
+        assertEquals(0, ConstructionJourney.restore(draft+("geometry" to "")).step)
+        val configured = ConstructionJourney(boards(), 1)
+        assertEquals("false", configured.edit("stockKind","LOG").values["stockConfirmed"])
+        assertEquals("true", configured.edit("stockKind","BOARDS").values["stockConfirmed"])
+    }
+
+    @Test fun materialErrorsPointToMeasuredPvcInputs() {
+        val pvc = fields()+mapOf("method" to "PVC", "pipes" to "tube,30,40,1800", "assembly" to "tube,1500,-")
+        assertNull(ConstructionMaterial.issue(pvc))
+        assertTrue(ConstructionJourney.available(pvc,2))
+        assertEquals("pipes",ConstructionMaterial.issue(pvc+("pipes" to "tube,14,40,1800")))
+        assertEquals("fittings",ConstructionMaterial.issue(pvc+("fittings" to "invalid")))
+        assertEquals("clearance",ConstructionMaterial.issue(pvc+("clearance" to "NaN")))
+        assertEquals("assembly",ConstructionMaterial.issue(pvc+("assembly" to "other,1500,-")))
+        assertEquals("interval",ConstructionMaterial.issue(pvc+("interval" to "5")))
+        assertEquals("interval",ConstructionMaterial.issue(pvc+("interval" to "")))
+        assertNull(ConstructionMaterial.issue(fields()+("method" to "LAMINATED")))
+    }
+
+    @Test fun materialProblemsSeparatePendingAndInvalidMeasurementsForEachMethod() {
+        val pending = ConstructionMaterial.Problem.MISSING
+        val invalid = ConstructionMaterial.Problem.INVALID
+        val values = boards() + mapOf("stockWidth" to "", "stockThickness" to "0")
+        assertEquals(mapOf("stockWidth" to pending, "stockThickness" to invalid), ConstructionMaterial.problems(values))
+        assertEquals(mapOf("stockKind" to pending), ConstructionMaterial.problems(fields()))
+        assertEquals(mapOf("stockConfirmed" to pending), ConstructionMaterial.problems(boards() + ("stockConfirmed" to "false")))
+        val pvc = values + ("method" to "PVC")
+        assertEquals(mapOf("pipeInside" to pending, "pipeOutside" to pending, "pipeLength" to pending), ConstructionMaterial.problems(pvc))
+        assertEquals(mapOf("pipes" to invalid), ConstructionMaterial.problems(pvc + ("pipes" to "a,40,40,1800")))
+        assertEquals(mapOf("fittings" to pending), ConstructionMaterial.problems(pvc + mapOf("pipes" to "a,30,40,1800", "assembly" to "a,800,c\na,700,-")))
+        assertTrue(ConstructionMaterial.problems(pvc + mapOf("pipes" to "a,30,40,1800", "assembly" to "a,1500,-")).isEmpty())
+    }
+
+    @Test fun logAndBlockUseTheirOwnDimensionsAndKeepLegacyValues() {
+        val values = boards()
+        assertEquals("stockDiameter", ConstructionMaterial.issue(values+mapOf("stockKind" to "LOG","stockDiameter" to "0")))
+        assertNull(ConstructionMaterial.issue(values+mapOf("stockKind" to "LOG","stockDiameter" to "120,5")))
+        assertEquals("stockBlockThickness", ConstructionMaterial.issue(values+mapOf("stockKind" to "BLOCK","stockBlockThickness" to "NaN")))
+        assertNull(ConstructionMaterial.issue(values+("stockKind" to "BLOCK")))
+    }
+
+    @Test fun guidedPvcUsesMeasuredStockAndRetainsTheExistingAssemblyFormat() {
+        val incomplete = SinglePipeDraft("32", "", "1600")
+        assertEquals(incomplete, SinglePipeDraft.read(incomplete.record()))
+        assertNull(incomplete.cutFor(1500))
+        assertNull(incomplete.copy(outside = "31").cutFor(1500))
+        val pipe = incomplete.copy(outside = "40")
+        assertEquals("measured-pipe,1500,-", pipe.cutFor(1500))
+        assertEquals("measured-pipe,1600,-", pipe.cutFor(1800))
+        assertNull(SinglePipeDraft.read("catalog-a,32,40,1600"))
+        val rows = "a,800,c\nb,650,-"
+        assertEquals(rows, PvcCutDraft.records(requireNotNull(PvcCutDraft.read(rows))))
+        assertTrue(PvcCutDraft.pending("a,800,c\nb,,-"))
+        val single = requireNotNull(PvcCutDraft.read("a,800,-"))
+        assertTrue(PvcCutDraft.pending(PvcCutDraft.records(single + PvcCutDraft("b", "650"))))
+        assertFalse(PvcCutDraft.pending(rows))
+    }
+
     @Test fun validatedBoardsPermitAPlanButInsufficientStockDoesNot() {
         val valid=ConstructionProjects.create("Test",shape,ConstructionForm.options(boards()))
         assertTrue(ConstructionJourney.canPlan(valid,false))

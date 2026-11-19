@@ -5565,17 +5565,17 @@
     },
     "aa9c77932bba65679cc501ea2603d9bb3350ca776731b267d233cf439510c9e9": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
-      "line": 82,
+      "line": 89,
       "kind": "function",
       "name": "MetronomeTempo",
-      "semanticHash": "4c094521a84c2ab0b3daa027b40f029d55bf4a1ccb2f6f6ca7a55f8d618886f9",
-      "metric_status": "compose-transformation",
-      "reason": "Reviewed icon-only Material tabs with complete localized icon descriptions, native Tab role/selection/click tests; viewport-dependent tempo density preserves system scaling and expanded scrolling. Compose JVM correspondence remains unsupported; no numeric ceiling changed.",
+      "semanticHash": "6944f8e6cfe3ecaa18c1c21af42e569580fab67cbc5f6027f84d1b659cfa4c8b",
+      "reason": "Reads the current tempo from the engine for repeat and single-step commands. Its adapter retains existing edit and transport controls. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/LocalizationUiTest.kt"
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
       ],
-      "reviewed_source": "bfc70c5 + icon-only/viewport correction"
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
     },
     "2c13ae93d7c8d75ed4a20f87edc7052fd5e3a8bfc37d2db29e3b4965f97ef5c9": {
       "file": "app/src/main/java/ar/didgetaller/ui/MetronomeScreen.kt",
@@ -5729,15 +5729,14 @@
       "line": 98,
       "kind": "function",
       "name": "TallerToolbar",
-      "semanticHash": "b55ad57d43564451dbcd78bd82fd0b27ebb2fedc6c8b9a76026584b3735f016b",
-      "reason": "Compose viewport presentation: the bounded four-stage wizard derives compact layout from actual available height. Short viewports scroll the whole wizard so an editable control can fit; normal portrait keeps its header and footer fixed. The Laboratory toolbar yields space at short/large-font configurations while bottom navigation remains available. Native bilingual 150% portrait/landscape journeys, Back and tab restoration exercise these bounds. Source/JVM Compose mapping is unsupported; no CRAP or numeric baseline waiver is claimed.",
-      "metric_status": "compose-transformation",
+      "semanticHash": "8d192c145fb49e84e1a3daf5bb9cad9f45a4867fe0f99507feb836bbfe935b1d",
+      "reason": "Leaves the Laboratory wizard its own compact toolbar and retains the existing bars for other destinations. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Persistent Laboratory wizard, final responsive verification on PR5"
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
     },
     "62ff3f35dedd6ea9f6ede82711c677111c666d35b7dc9839c5138587e2d231a6": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
@@ -6319,15 +6318,16 @@
     },
     "6fe892a00a78265d2a672e22ffa12c7cc2c75f0c70f848015acaef1486ca2f48": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "155",
+      "line": 347,
       "kind": "function",
       "name": "ConstructionField",
-      "semanticHash": "244d4745bba7e5e0df982dc6509b79c4ee54138de73963462b78e16a2f2395a5",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Labeled bounded form field with semantic test identity; numeric parsing remains in the domain boundary.",
+      "semanticHash": "c43b8902c70df70fff7b769c5786ef0ca179585de2cb601dbbd74c6d343c266b",
+      "reason": "Retains the existing design-only text editors after material-specific feedback moved out of them. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "Workshop material validation feedback",
       "metric_status": "compose-transformation"
     },
     "eb1b13a823cb39b677dca503cfb4d374a66773ed21f8e5654a4983161dcbaa2c": {
@@ -7080,17 +7080,15 @@
     },
     "ea7398782961d22b9d2f4e1a6c69b6774108935f3fea7b88739cb278d4b0d02a": {
       "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
-      "line": 15,
+      "line": 17,
       "kind": "function",
       "name": "WoodStockFields",
-      "semanticHash": "187d54242a2765ea6b3b9d171fa81c4687941a76fa09ef9b3911f5b4df85a9ba",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "semanticHash": "d3dccb01490cd529ce60688aae1120341265b917816586c21c5985921125f32f",
+      "reason": "Shows required measured-stock inputs and moves preparation assumptions alongside their optional controls while preserving fit feedback. Compose-transformed source has no reliable standalone CRAP-L correspondence.",
       "evidence": [
-        "docs/engineering/CONSTRUCTION_PROGRESS.md",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "stock-aware revision on PR5",
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "compose-transformation"
     },
     "866c4e95e94023b345b8c4b7d1b59e96db3e86cea84548e044d64e7945a8865e": {
@@ -7110,17 +7108,16 @@
     },
     "ff830a0c5671c9e1d115bf8a0cc9fee61245bcf3ee30386667be4e3da65a1e79": {
       "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
-      "line": 59,
+      "line": 68,
       "kind": "function",
       "name": "WoodInput",
-      "semanticHash": "9eb1a17bd5e314ff1a6f523333675c323d1c0ffe35f3ea5a0571d18500e53536",
-      "reason": "Compose source declaration has transformed JVM parameters/default/group methods and no reliable standalone CRAP-L correspondence. Reviewed stock-field ownership, localized semantics, invalid/unconfirmed fit states and export selection; real clean-emulator workflow tests exercise the controls. No numeric score or framework execution is inferred from JVM tests.",
+      "semanticHash": "129cc80197109a9e4f33b67219dce1becf0aabf053939aa61bcf9fd1ab8520ae",
+      "reason": "Localizes exact missing or invalid dimension guidance using the material validation rules. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
       "evidence": [
-        "docs/engineering/CONSTRUCTION_PROGRESS.md",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/WorkshopDocumentsUiTest.kt"
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "stock-aware revision on PR5",
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "compose-transformation"
     },
     "b5a6f59333dc16ebd4363210c6a8a9cc5e9d50b3cba1ea7927084b2bf121d02c": {
@@ -7140,18 +7137,16 @@
     },
     "86a964e726925b5e7488745d48c7ce5f313d40995f1131131e38f22ea1a8f90e": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 232,
+      "line": 300,
       "kind": "function",
       "name": "ConstructionTargetFields",
-      "semanticHash": "0fe8ced796922f20c91f437dffd0e8409ba5b2c564a70a4b7dbf10a7c5bb930d",
-      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "semanticHash": "fa0fc61c1b36401dbab5d8b4abdb410328c9f9e5fbc726ba1c3b71e3d450f9b2",
+      "reason": "Keeps the bore editor and exposes optional search constraints in the advanced section. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
       "evidence": [
-        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
-        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "compose-transformation"
     },
     "72974a6203c922771d71968911024eb7c191c9378bd224726774e7b83a018b2b": {
@@ -7576,33 +7571,30 @@
     },
     "81878b2233e57da42c9d08ae3d1374ccb6b4b1fcbb407a2aa28d0df71a4ebb0b": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 49,
+      "line": 56,
       "kind": "function",
       "name": "ConstructionWorkspace",
-      "semanticHash": "cd3f67813238f6c1c3c2344a8d35435e989d760c7ad770c2391e89e30551ea3a",
-      "reason": "Compose viewport presentation: the bounded four-stage wizard derives compact layout from actual available height. Short viewports scroll the whole wizard so an editable control can fit; normal portrait keeps its header and footer fixed. The Laboratory toolbar yields space at short/large-font configurations while bottom navigation remains available. Native bilingual 150% portrait/landscape journeys, Back and tab restoration exercise these bounds. Source/JVM Compose mapping is unsupported; no CRAP or numeric baseline waiver is claimed. Lifecycle observation is detached independently from editor disposal, so replacing the owner does not close a surviving draft; a dedicated native RED/GREEN regression protects this boundary. Analysis admission is keyed by editor identity as well as inputs; replacing a design with identical measurements starts its own validation. Dedicated deterministic native RED/GREEN covers this previously missed owner change.",
+      "semanticHash": "347a2dfb7ad5ea9aac4f8aafd9cc0de89e28cbed25bf5173e7d5f52fefff1da3",
+      "reason": "Owns the saveable draft and scoped worker lifetime. The bounded viewport hosts a compact toolbar and a native pager. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
-        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Persistent Laboratory wizard, final responsive verification on PR5",
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "compose-transformation"
     },
     "fa87b23f39c13ff047bd9f03c16bdadafcae444b4b54aa9783a714a4b2b004d0": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 89,
+      "line": 182,
       "kind": "function",
       "name": "ConstructionWindow",
-      "semanticHash": "6d1a2941500933d254a02f478037e798567e028bacaf2c8e9936fd0d041ecf18",
-      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "semanticHash": "770485fc72f8aebc9fb9ce47b2a88aa3ad378570da946ded9dfc945b27b5dc97",
+      "reason": "Uses the host Back handler for the embedded wizard and the Dialog dismissal callback for the Library presentation. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
       "evidence": [
-        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
-        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "compose-transformation"
     },
     "6f69a18aa31610d20c700f41751c431dfedd88374a06ef17643187125900e28a": {
@@ -7719,18 +7711,15 @@
     },
     "8356802cd527bbd6f5f153ca3965bcd420a4ec2e4afeb11f69a92f06a2e3304f": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 210,
+      "line": 280,
       "kind": "function",
       "name": "ConstructionPlanActions",
-      "semanticHash": "18bc31e813a9fc387c3efb8dd59e1bc9f58d4c5f9d15dde79453ed12d5ff43f6",
-      "reason": "Compose rendering or framework Saver serialization for the unified four-stage wizard. Source/JVM Compose correspondence is unsupported by the existing mapper, so no CRAP is invented. Saveable restoration, validation transitions, locked stages, explicit PVC approval, all exports and stale-plan regeneration are exercised on a synthetic emulator; business commands live in measured ConstructionEditor/ConstructionJourney. The stable scroll owner regression is retained. No numeric complexity threshold is changed.",
+      "semanticHash": "22b2f4968d67dd629bcf957463463502490cdfd02248b9fff2a4ca431c1d8ce3",
+      "reason": "Shows the validated plan immediately and retains the established document formats and sensitivity request. This removes the redundant generate button for an already current plan. Compose-transformed source has no reliable standalone CRAP-L correspondence.",
       "evidence": [
-        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt",
-        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
       ],
-      "reviewed_source": "Persistent Laboratory wizard on PR5, baseline 84968d8",
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "compose-transformation"
     },
     "09030d6ae4466bab5a965a29eccb1be8e660898915b03ed8b86963eb05531a3f": {
@@ -7825,6 +7814,863 @@
         "docs/engineering/CONSTRUCTION_PROGRESS.md"
       ],
       "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5"
+    },
+    "33a86ef7fc9cafd72a302304b72b58cb9f4455f6ba3a25a76c2c6efd9ce657f0": {
+      "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
+      "line": 32,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "b39af577b1b7f075c1a5ea915bb8862d4b031fe09fe1dce7e27d256f2ea5ed39",
+      "reason": "Read-only accessor to authoritative engine settings, used by fast consecutive tempo events. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "de0437b8a55d90364f96f9c6ed3a942db41b850f088769e243fec810c7eec133": {
+      "file": "app/src/main/java/ar/didgetaller/core/ConstructionMaterial.kt",
+      "line": 5,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "6fe194fe3e23e1a84ef39d3a0ec63c29024bdb9b5833edc3d268639355c08106",
+      "reason": "Initializes the declared list of required stock dimension keys used by new drafts and inline validation. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "d0b3eb794f2ba1ac10c6db65617eb3eb90cad1a18692ee2f862688bbe5ccd6b4": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 26,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "b147446638cc5a43ab77ae81067504e1b21eb7b2ccd58c0a6807b324f80a8ecf",
+      "reason": "Derived Compose material admission state shares the domain material check with field feedback. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "edc7cab84fae8bc581b8b0f55d3f0b807492cb150d65ea88a10e6639a32feea8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 27,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "29d0966e3bb55f711254371ad1fd7c07769bf0f3c93579973d9bdecdf31c7e87",
+      "reason": "Derived Compose material admission state shares the domain material check with field feedback. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "04b40fcf6ac8b015f4ed2d8216356ccf8c94d971d83214e03e4df5307a4185da": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 89,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "22cc4292598bff37b6c70344b94476ce02d1227fdf41f8a1465b1cf1485632cb",
+      "reason": "Immutable localized stage resource IDs for the pager and accessible step tabs. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "c5771ccd7fb9dd606562524d529977f11e43282b440c590e8ef271c20bbae52a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 98,
+      "kind": "function",
+      "name": "WizardPages",
+      "semanticHash": "7b92a3e358b257408b3af36e6ec18b68c6432ed8d4f5780a939e4c2ad784242e",
+      "reason": "Binds the current draft and permitted page range to the native pager and shares one blocked-navigation action. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "b4918abbcacb5deb9601e003e6f870b0467a30c8f23b245a37f0d6cce1b8ef0c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 117,
+      "kind": "function",
+      "name": "scrollToSelectedStep",
+      "semanticHash": "812ff8743a23868411add3e864b058338169dabdcf2cd75f5de26016a6071327",
+      "reason": "Reflects accepted programmatic stage changes in the pager, including Android Back and compact tab actions. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "067fc52a57e69bfdadeb3a31d213305f4ea53a01057ab0c3618b5644de216aae": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 125,
+      "kind": "function",
+      "name": "WizardPage",
+      "semanticHash": "05d4f7b179ede4f30eb2e5c1bb0771566f15afaa5e188269fa559bd62715a564",
+      "reason": "Gives each stage its own vertical scroll without taking over child horizontal gestures. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "7b314a6350f80d77d0ca6c81355b124ac7404531deff54a63fb47b0933428d7a": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 185,
+      "kind": "function",
+      "name": "WizardNextHint",
+      "semanticHash": "bce137aa4c4f5898b2ee0a4f5d34519556d1b49ab486f79129129f6fd191711f",
+      "reason": "Displays the non-material step hints; the material step owns its own validation status. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "bb144bf9f82ecf80a04936d7ebf5da565fdfcda52780f49537e4f69fb87fcea8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 148,
+      "kind": "function",
+      "name": "WizardToolbar",
+      "semanticHash": "1b720ec1a8a71fc55075661e1129fcdc187448ae9bb74dbae7559baa48a1f226",
+      "reason": "Displays the current stage and compact save and close actions, including accessibility save feedback. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "1d525ed2f563d3856e018c7e72c7ae70d204edd3f6289b91c92d7fcc0863100e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 161,
+      "kind": "function",
+      "name": "WizardSteps",
+      "semanticHash": "176f91e4c1aa6c28c6df23938479af4df1ecad7d91835a4f505eb017d7019455",
+      "reason": "Retains numbered native tabs and applies a distinct disabled foreground to unavailable stages. Their localized accessibility descriptions are unchanged. Compose-transformed source has no reliable standalone CRAP-L correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "43b6d93822e3662fa7d6235d6e38b0265fb5523f77b91943818acc06587f8fee": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 199,
+      "kind": "function",
+      "name": "ConstructionStep",
+      "semanticHash": "5f969567eb6bb041560a7a07b3b564f0a0adcfaa90ff4b583717f696f619d8a8",
+      "reason": "Selects the existing designer, material, validation and export controls for the visible page. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "d0ca8be1d21456d3fb895a3e370735f58642a1173417e77d838caa37222d5ce5": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 254,
+      "kind": "function",
+      "name": "ConstructionStatus",
+      "semanticHash": "db3adc916a9e3577e93d8a0bd1913a8c4d92fd2178db2e7a55a2acc7b5af074d",
+      "reason": "Keeps load, analysis and export errors in the page. Successful save feedback is in the toolbar. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "d376d0fcea9e43993f289d0cd19d0722e2fd388f34c4c39b1921b8c88e4a6ba0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 293,
+      "kind": "function",
+      "name": "ConstructionField",
+      "semanticHash": "87c1b10b43fa8ad7b4c3d40d4e8e9a531350b6659ebba4a21e9f0dc5d941046d",
+      "reason": "Shows a supporting error on the field it belongs to. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "e5fdfcec12ce0b8e1291d47abdc867ac62c91bc283992493fb3c5ddea1a44716": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 335,
+      "kind": "function",
+      "name": "ConstructionMethodFields",
+      "semanticHash": "e5c15f9ff9ad50b7b297b1cfe6fff671ccf3a42e1d8c5d3acbe117c26d1ea19a",
+      "reason": "Lists only relevant inputs. Optional plan settings follow measured stock or PVC data, so the required fields stay nearer the top. Compose-transformed source has no reliable standalone CRAP-L correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "bbf3d6d38882d24664050cbad05941cf8c644d075126649bc79934a09f74a86c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 358,
+      "kind": "function",
+      "name": "PvcFormatHelp",
+      "semanticHash": "ac4ba1308a85440e8b84d3b3e2ccb29f17af62044ec70b47b57bd69125092a9f",
+      "reason": "Keeps optional CSV format help in a collapsible panel. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "84ef5e0b6f46ed70072d83b57ee08a79fb473e9f6a3bda6f024cc09fafdb7b29": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 366,
+      "kind": "function",
+      "name": "MaterialSettings",
+      "semanticHash": "f2f90636f217c6a762b5b1e7139ef880eef65ef42c65c68a2a9936c917f76bee",
+      "reason": "Gives the optional station and construction settings a dedicated label and opens them automatically when their values block advancement. Compose-transformed source has no reliable standalone CRAP-L correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "1905c27754a1efe6f9f89a2765b5b7d12b26e4c5c23df14fe43f4a24664c557c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 38,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "e3051c32cb3b2178d19d8b51374626e08a4022a6a63bacad0246a9194cabae60",
+      "reason": "Initializes press ownership and injectable coroutine timing used by the deterministic loop and native gestures. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "02e7b2d667e406c4e1c83a5753a437fb702329f1a830987776487d78c04d069b": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 38,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "8aeafdabd2534147da4abd8512a30cfad4cc5c7c9c69ea6ce4af8b008ff46259",
+      "reason": "Initializes press ownership and injectable coroutine timing used by the deterministic loop and native gestures. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "05d1ce7daef809c11c587bf74fb628f1295def8b37ab6869380fead9dda4411d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 39,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Initializes press ownership and injectable coroutine timing used by the deterministic loop and native gestures. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "0eb4fce34363f9a37832af34ad61f2a2804cc10cf615e7d3d0ccec64828cdc99": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 40,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "f332ef6686cd16a99656d8b5969f26e6dc10f652d3e33fdfe4a43b5f4c5ed7d7",
+      "reason": "Initializes press ownership and injectable coroutine timing used by the deterministic loop and native gestures. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "153c7a4e285d4ac42f70f20a2957ac0a3fd092651c6ae6473b4e86b8ee12b8aa": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 72,
+      "kind": "function",
+      "name": "rememberTempoHold",
+      "semanticHash": "4da51b0ff07eb511f25682d1f1143e44b66b4e69f3bd1bef00ca28e602e8c756",
+      "reason": "Owns the shared repeat job for both directions and cancels it when the lifecycle pauses or composition leaves. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "5cbb1c5991587ae0d3b6557cc63c06468d317a74b435c4e842133204e3a2789e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 90,
+      "kind": "function",
+      "name": "TempoButton",
+      "semanticHash": "f1374405e210c92b3a2d8d929ec4a355cb3798fdb938388325c427b559d6388f",
+      "reason": "Preserves native touch, ripple, keyboard and accessibility click actions. Press ownership prevents competing repeat jobs. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "compose-transformation"
+    },
+    "f12d71e7fb8defa0b6ffb73189a515b75ac4702f4bc9b96fea3dd136ffdf69b8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 113,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "66dd82782414a26fc93e00259ce53a84099e37e93cc6f61e2c369cadf6164bfe",
+      "reason": "Initializes press ownership and injectable coroutine timing used by the deterministic loop and native gestures. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo"
+    },
+    "ccde9818c6f01ac06a6afa62a33822316a1b7a0d5f67bbee51d442e2c214cb3d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TempoButton.kt",
+      "line": 119,
+      "kind": "function",
+      "name": "trackTempoPress",
+      "semanticHash": "72f8c9b0ac09f273d299ac52201b842348be2238a1f3282b0e106d65deaba15f",
+      "reason": "Observes the initial and final touch passes to release the owning pointer on loss, cancellation or exit. The restricted suspend function maps to a state machine. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/MetronomeUiTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/TempoHoldTest.kt"
+      ],
+      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "metric_status": "suspend-state-machine"
+    },
+    "2e4086ca00ceb977e55328105528191ab0d19a2090bc471f5e66f0ed61973396": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 26,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "b8b1b299f613d7345ab4e68b6650569b7e15ca19fec8bfb2ff87c7d3aa9a3204",
+      "reason": "Derives material validation from the current saveable editor draft; the domain validator owns the decisions. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "0f0427b43061ad6b668ce88ab506f7fba126dbcf6971faa892ce41de99eb2524": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 28,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "118f3c5a39b9901a9aba6b1056e246e255f7ab309899111be88f2c73186374f4",
+      "reason": "Carries the validation snapshot or the requested field and attempt number between the editor and Compose. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "435f20d3dfe3813ee9d4a302c12005c9d9359cd4be2ba19f6cdd87be2dae345d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 30,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d02ceb72920d81f881426933f6c4b6d1652a8d629d8193b802836a29fd451790",
+      "reason": "Carries the validation snapshot or the requested field and attempt number between the editor and Compose. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "8a0716350952c058aa3a6afdcf2764dababed2442f60ecd1a7b048e17e457e93": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 34,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "e00c9a48487ce37ca2f993374aaa5f4d6d3a9cccecd57c2734b67dacd48d6199",
+      "reason": "Derives pending fields and the first field to reveal from the existing typed validation result. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "a03d6477e9cfee05bd593e192bf2c2e1c48934348fd0fb3f099a52892f2fef8d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 34,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "fccd112f0cbc0ba36658946723ae082b78315bc2e2f45a058a02e8c7970cb8da",
+      "reason": "Selects missing inputs from the existing validation entries for the status and reveal action. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "a69172856f621efbd531a6287f8de2f0a6d95f96b25194237bb4e0dbf55bb326": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 35,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "eed09d40f2a92323ec3bcc16bd8c072ab360bcf28f6b8813d25ded9305879ea8",
+      "reason": "Derives pending fields and the first field to reveal from the existing typed validation result. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "1f3d2420d6fe15b05b11de6b658918367d6386b93f66d581faddd473a80a34f6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 35,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "9cde6037bd34e166988999be3ef2902da79309ab83b49c90e047c6b798e856e0",
+      "reason": "Selects missing inputs from the existing validation entries for the status and reveal action. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "40b4052c49fbd53f9dd8fc15a16e300785504e448dfa27c5bcb36a1eef859fd5": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 38,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "530901de943b279cde526d3368b372cebf89388ac37dbd7012253f06136f3735",
+      "reason": "Declares field-to-label lookup used to name the current material inputs in the pending status. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "c711c567d21c83592e600c233072102dca1103f180c704ae9978716cd941cd54": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 44,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "63b5561b12bc62fa8675b2f70c5c77528fc045ccc1064528005683829ffbc325",
+      "reason": "Declares field-to-label lookup used to name the current material inputs in the pending status. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "3f3b88182532164c7b25f10363c073f7b7b6ab03d47366dd0cdbf916c1dc2177": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 54,
+      "kind": "function",
+      "name": "MaterialStatus",
+      "semanticHash": "0fba4b29c6a563880cc86bc7db8150ac79a145b669e190472be717a8e33d0db9",
+      "reason": "Keeps the localized list of pending inputs in a visible live region while the controls scroll. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "42932d418862a0c0f54a18fe5b61cad3a854a0358438587729b3d11883cd4f84": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 73,
+      "kind": "function",
+      "name": "reveal",
+      "semanticHash": "97c47bb3f4414864c78b40e308c3cf1b63b8bdcfdd29dad06e697b1adfd54a21",
+      "reason": "Owns the Compose relocation request for the field selected by a blocked navigation attempt. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "9cc016a7fb50ac6f50d8d82401599364551e3366625451fea2b8ec34a34f9bf5": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 81,
+      "kind": "function",
+      "name": "MaterialField",
+      "semanticHash": "00aa8858543a34dabf188cb9334f3612769ef292c7a7070cac3479cd38cdfb00",
+      "reason": "Uses an external label, exposes the actual error on the editable node and renders the explanation below it; pending measurements use neutral semantics. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "fb812b4298cc5257e0b0a2450c7456f270ed8e8da3635ce67db8cebbe8a6f4e3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 107,
+      "kind": "function",
+      "name": "ConstructionMethodFields",
+      "semanticHash": "e9681d881fbf0be978ac66e43bf4afc15a5c478a1a6bb7e03f567d3e7135b1e3",
+      "reason": "Chooses the existing wood or PVC editor and retains the current draft across selections. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "d6ddb0527f4f0e430a7433a79e81ddc1a41f953688d0c999ea86634c3f520ecb": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 126,
+      "kind": "function",
+      "name": "PvcFields",
+      "semanticHash": "007128b7687bd0d6a662ece86e50b3c92f27b5d5d38451dc5a9963b9fb371937",
+      "reason": "Presents measured catalog and assembly fields with independent format help and input-specific feedback. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "146e4837e6c30e06482726080eb523184e2d6984cb18a2d4d532dc298a6b2616": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 146,
+      "kind": "function",
+      "name": "MaterialSettings",
+      "semanticHash": "9de1b7fa90583e0ca7f98b837c5f05149916d3ae3ba4068f2663cb42021168ae",
+      "reason": "Discloses existing settings and exposes a setting directly when its value needs correction. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "211f07622c4f6560fe107676358dc4a3f32387c1caa6466b45696f31846f3acb": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 128,
+      "kind": "function",
+      "name": "explainBlockedSwipe",
+      "semanticHash": "c82c010e8f3d7aae546635c370da0a469dffdb85fbbb0ba959cb349edc3eca01",
+      "reason": "Observes unused forward drag at the pager boundary without consuming gesture input. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "e5bf774e5c4903ec3931608e82bc291f0e3a9dfe85ce508a879144dc5db8bb65": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 136,
+      "kind": "function",
+      "name": "onPostScroll",
+      "semanticHash": "8d6d509e8e61fa312e600a6e80eceba7c4cc568884ab400ea8ddf617915a6dfa",
+      "reason": "Accumulates unhandled forward user drag at the pager edge and issues one explanation without consuming the delta. The anonymous pager connection has no reliable independent source-method correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "anonymous-owner"
+    },
+    "5ce4eceff4d6f4dcd0547a4ccd5febd730de543fb59d4df91a757c47c9ecf4c2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 144,
+      "kind": "function",
+      "name": "onPreFling",
+      "semanticHash": "cffdca8b35022bea353bb8273f8519ad3904dc584e69e1a66bff8f0b86212007",
+      "reason": "Resets the edge-drag distance when the native pager completes the gesture. The anonymous pager connection has no reliable independent source-method correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "anonymous-owner"
+    },
+    "c8313aea9b6a30bf95dbb1327acd6d2b67313c9f65597e03ce13c7af136a0c3c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 154,
+      "kind": "function",
+      "name": "synchronizeWizardStep",
+      "semanticHash": "7cf2df90bd3f645466a85a9f1a9b76b64957fe7278121c5a512d794c5d044fc5",
+      "reason": "Synchronizes the editor and native pager in both directions while releasing focus when a page settles. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "22260f87c727c38383533af3bfbeacc7998ad8eea4a257e35aef6d3145bffab4": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 170,
+      "kind": "function",
+      "name": "WizardPage",
+      "semanticHash": "e2a02f5a121aa0282ada4b997018c9b7022298f93454d75d32e82cd21ca1948c",
+      "reason": "Keeps the material status above the scroll container so the reason stays visible when a field is revealed. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "2d6e6f8b453e8b6e46a6e3d14b5def8b4d524bc61ae0ada1ab416a3cc750bb49": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 208,
+      "kind": "function",
+      "name": "WizardSteps",
+      "semanticHash": "7c751a58aac2bd6742b65e647e383c46d0c9a50212c7691afff5b89540f36f9d",
+      "reason": "Renders the existing numbered navigation with the current state and delegates each tab presentation. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "e5a34724a0492fe885b1633b11a6415bf9a92ff136400ad79e24407b9a48f6d8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 217,
+      "kind": "function",
+      "name": "WizardStep",
+      "semanticHash": "996fe5d45284ac8d1790c6aeff80c3d391d309e2a9f5de78b52ace2dde21b040",
+      "reason": "Makes blocked validation explainable from the numbered tab while retaining its unavailable color and localized accessibility state. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "f265869ed0f66a764ce2678274184c0fef27991425a7c4b4811327e33c52b39e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 254,
+      "kind": "function",
+      "name": "ConstructionStep",
+      "semanticHash": "417752636a78ec70f8357fcf0c9c4a0fc44d7473fe444382c446d03652de77aa",
+      "reason": "Routes the active page to existing construction operations and the typed material feedback. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "18dcb65ed9f887fe9909708a4e99832159bbb1b0fed3d958b9eec21e9d1aea56": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 17,
+      "kind": "function",
+      "name": "WoodStockFields",
+      "semanticHash": "12b6f7313ee6c901a8c79efae3bd81959015b3be8f3f7992434ec8f71e0f315c",
+      "reason": "Shows only the selected stock dimensions and retains the existing fit assessment after inputs are complete. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "f0476ebd2c55effbad1ef55d4c18777c662326b3da27276ad73ed90c8f66e127": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 47,
+      "kind": "function",
+      "name": "WoodPreparation",
+      "semanticHash": "be530ebec899bc95b701b479a486f64026fb272ee6bd4cdc9e70e79ac5541f5e",
+      "reason": "Keeps preparation allowances discoverable and shows the existing parser failure near the preparation inputs. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "d92fd2f9846e743489b6a3e984ad4f4d3990ee8396a01f6755c735dfc84b3dd6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 51,
+      "kind": "function",
+      "name": "ConfirmWoodMeasurements",
+      "semanticHash": "9f3f48133fef478f65ff1259aec3c9e1c51145a3998628a847d6540a106c0d72",
+      "reason": "Associates the pending instruction with the existing confirmation control and enables it after valid dimensions. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "9f7d22704c0726ab85fbb577e77091cba645fb6a59c51a35739c4cb18e88e4e9": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 62,
+      "kind": "function",
+      "name": "WoodPreparationFields",
+      "semanticHash": "e831d6bc444467417145663bea08beea7244a173989ca52f7846da593c50bc42",
+      "reason": "Shows the existing allowances appropriate to the selected stock using external field labels. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "dfe71564400a40e03ab4207f2bb1060cc812a4f6ea357a3bb8f5f3264acc47e4": {
+      "file": "app/src/main/java/ar/didgetaller/core/PvcMaterialDraft.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f0cf990ba814182a89441f7ab17e02dc7ec82ef3afd360e50aa3c40a6da50eb9",
+      "reason": "Holds exact input cells so guided edits round trip the existing PVC catalog and assembly records. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "42ccbda53d59417c7e0d1572759850164374028f48c584635bc39a809d631a4c": {
+      "file": "app/src/main/java/ar/didgetaller/core/PvcMaterialDraft.kt",
+      "line": 23,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "7222666c666f915c88f86e6fe0338baa45c35fd237f2fd89129feda94738c525",
+      "reason": "Defines the generated catalog ID used by the guided pipe without asking the user for an identifier. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "575b8f8a9de90b40c3e4bd39c988b384b2453856262a97fd200e54dd6a6a23cf": {
+      "file": "app/src/main/java/ar/didgetaller/core/PvcMaterialDraft.kt",
+      "line": 43,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "db800743820c69df3ae3c4635f27a3abcc9c0979823d0fa24ea646e9684e4089",
+      "reason": "Holds exact input cells so guided edits round trip the existing PVC catalog and assembly records. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "96c031bf7c63ce678f7e33f312e18ff439c1468816ec0b2640a9baf03da69160": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 21,
+      "kind": "function",
+      "name": "PvcFields",
+      "semanticHash": "eb1f22ad013177bfd6e03731f8b5dd06c78744251734ef43f67a2df52739b19d",
+      "reason": "Keeps the guided PVC form primary and opens the measured catalog or advanced settings on demand. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "217f1472d04051d7fbafd5d1340366b054bc1b479aa98b23ca20468c0fa0bcc0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 37,
+      "kind": "function",
+      "name": "GuidedPvcFields",
+      "semanticHash": "c3dc93607784c6908698694f431dc6ecdf822b0a260baaae8559b1644f675641",
+      "reason": "Chooses the single-pipe measurements or the measured component selector without changing the draft. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "caa9fe39abc1b900de13eec9975703d6ed5149ada7979e6ef6518b488c3d4f99": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 58,
+      "kind": "function",
+      "name": "SinglePipeFields",
+      "semanticHash": "3ccbed9416adf015c540cf1bccb7b86883747030988d302518f3063b0afe78ef",
+      "reason": "Labels the three measurements of a physical pipe and maps edits into the existing catalog record. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "fa4fac06f4422411cb2585cb4e8afc16fbcff0294902b77cc6569a8033434e55": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 75,
+      "kind": "function",
+      "name": "SinglePipeCut",
+      "semanticHash": "d7916906ad3544a59677ebc431509bfa12234e74720f5c74a195af39a96be4bd",
+      "reason": "Uses the existing design length and measured stock to propose a cut, with an explicit application action. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "3447133ee64f14134d6a75b3eea9c5c13229edfd524de08e49aefebea33ee0b1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 95,
+      "kind": "function",
+      "name": "PvcAssembly",
+      "semanticHash": "498d022f90c369127df1a96c0412dd88a20dba40227985283e845278cd7be05f",
+      "reason": "Renders the stored assembly in order, allowing measured pipes and fittings to select the segment geometry. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "dce2904bb302f4faa9ee602419365a2ca7c6eee0ea567d5e283446db3ecdc823": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 118,
+      "kind": "function",
+      "name": "PvcSegment",
+      "semanticHash": "63e77c749512505556e71d2ffed0cf0c776f2374e9369e48668a6dfa2bb3da26",
+      "reason": "Offers the measured catalog components and cut length for one segment. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "4f02a6d70d1b023945f2a04061bf231d21008bcb794299405781e5cfda1cbe70": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 129,
+      "kind": "function",
+      "name": "ComponentPicker",
+      "semanticHash": "db27fee70bdcb8f396143e24bc0090813dab88971393a28e3fb1187dfdf1fd97",
+      "reason": "Presents the existing measured component IDs as selectable catalog entries and closes on selection. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "ede2fe503ef3f1ad0f7a1fae140c19215012f8c16e3396f7cda02406cd26f6e2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 142,
+      "kind": "function",
+      "name": "PvcCatalogFields",
+      "semanticHash": "8247113710b584ca285ea765ca397ee31c5fe4a4f9189650581b5bd630ab8d7c",
+      "reason": "Retains the existing raw catalog and assembly editing behind the advanced entry point. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
     }
   }
 }
