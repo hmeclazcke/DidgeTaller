@@ -6318,15 +6318,16 @@
     },
     "6fe892a00a78265d2a672e22ffa12c7cc2c75f0c70f848015acaef1486ca2f48": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": "155",
+      "line": 347,
       "kind": "function",
       "name": "ConstructionField",
-      "semanticHash": "244d4745bba7e5e0df982dc6509b79c4ee54138de73963462b78e16a2f2395a5",
-      "reason": "Compose compiler transformation prevents reliable independent source CRAP-L. Labeled bounded form field with semantic test identity; numeric parsing remains in the domain boundary.",
+      "semanticHash": "c43b8902c70df70fff7b769c5786ef0ca179585de2cb601dbbd74c6d343c266b",
+      "reason": "Retains the existing design-only text editors after material-specific feedback moved out of them. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "8cd0d14 + workshop Android workflow",
+      "reviewed_source": "Workshop material validation feedback",
       "metric_status": "compose-transformation"
     },
     "eb1b13a823cb39b677dca503cfb4d374a66773ed21f8e5654a4983161dcbaa2c": {
@@ -7881,16 +7882,16 @@
     },
     "c5771ccd7fb9dd606562524d529977f11e43282b440c590e8ef271c20bbae52a": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 92,
+      "line": 98,
       "kind": "function",
       "name": "WizardPages",
-      "semanticHash": "2850f76d0f2615cd1e768b30143e1268c5cf55b83059195cc614366aa97beff2",
-      "reason": "Uses the native pager with its available range derived from editor admission, leaving child drag consumption and fling handling to Compose. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "semanticHash": "7b92a3e358b257408b3af36e6ec18b68c6432ed8d4f5780a939e4c2ad784242e",
+      "reason": "Binds the current draft and permitted page range to the native pager and shares one blocked-navigation action. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "reviewed_source": "Workshop material validation feedback",
       "metric_status": "compose-transformation"
     },
     "b4918abbcacb5deb9601e003e6f870b0467a30c8f23b245a37f0d6cce1b8ef0c": {
@@ -7923,16 +7924,16 @@
     },
     "7b314a6350f80d77d0ca6c81355b124ac7404531deff54a63fb47b0933428d7a": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
-      "line": 137,
+      "line": 185,
       "kind": "function",
       "name": "WizardNextHint",
-      "semanticHash": "a1b98cb0c699999f9d42d1c7464a28e0e8b6179ca5a67d415bfaae9f0513d9b9",
-      "reason": "Supplies a localized explanation when prerequisites prevent the next transition. Independent source-method CRAP-L correspondence is unavailable for this framework or auxiliary declaration.",
+      "semanticHash": "bce137aa4c4f5898b2ee0a4f5d34519556d1b49ab486f79129129f6fd191711f",
+      "reason": "Displays the non-material step hints; the material step owns its own validation status. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
+      "reviewed_source": "Workshop material validation feedback",
       "metric_status": "compose-transformation"
     },
     "bb144bf9f82ecf80a04936d7ebf5da565fdfcda52780f49537e4f69fb87fcea8": {
@@ -8150,6 +8151,375 @@
       ],
       "reviewed_source": "Workshop navigation and hold-to-adjust tempo",
       "metric_status": "suspend-state-machine"
+    },
+    "2e4086ca00ceb977e55328105528191ab0d19a2090bc471f5e66f0ed61973396": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionEditor.kt",
+      "line": 26,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "b8b1b299f613d7345ab4e68b6650569b7e15ca19fec8bfb2ff87c7d3aa9a3204",
+      "reason": "Derives material validation from the current saveable editor draft; the domain validator owns the decisions. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "0f0427b43061ad6b668ce88ab506f7fba126dbcf6971faa892ce41de99eb2524": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 28,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "118f3c5a39b9901a9aba6b1056e246e255f7ab309899111be88f2c73186374f4",
+      "reason": "Carries the validation snapshot or the requested field and attempt number between the editor and Compose. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "435f20d3dfe3813ee9d4a302c12005c9d9359cd4be2ba19f6cdd87be2dae345d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 30,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "d02ceb72920d81f881426933f6c4b6d1652a8d629d8193b802836a29fd451790",
+      "reason": "Carries the validation snapshot or the requested field and attempt number between the editor and Compose. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "8a0716350952c058aa3a6afdcf2764dababed2442f60ecd1a7b048e17e457e93": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 34,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "e00c9a48487ce37ca2f993374aaa5f4d6d3a9cccecd57c2734b67dacd48d6199",
+      "reason": "Derives pending fields and the first field to reveal from the existing typed validation result. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "a03d6477e9cfee05bd593e192bf2c2e1c48934348fd0fb3f099a52892f2fef8d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 34,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "fccd112f0cbc0ba36658946723ae082b78315bc2e2f45a058a02e8c7970cb8da",
+      "reason": "Selects missing inputs from the existing validation entries for the status and reveal action. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "a69172856f621efbd531a6287f8de2f0a6d95f96b25194237bb4e0dbf55bb326": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 35,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "eed09d40f2a92323ec3bcc16bd8c072ab360bcf28f6b8813d25ded9305879ea8",
+      "reason": "Derives pending fields and the first field to reveal from the existing typed validation result. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "1f3d2420d6fe15b05b11de6b658918367d6386b93f66d581faddd473a80a34f6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 35,
+      "kind": "lambda",
+      "name": null,
+      "semanticHash": "9cde6037bd34e166988999be3ef2902da79309ab83b49c90e047c6b798e856e0",
+      "reason": "Selects missing inputs from the existing validation entries for the status and reveal action. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "40b4052c49fbd53f9dd8fc15a16e300785504e448dfa27c5bcb36a1eef859fd5": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 38,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "530901de943b279cde526d3368b372cebf89388ac37dbd7012253f06136f3735",
+      "reason": "Declares field-to-label lookup used to name the current material inputs in the pending status. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "c711c567d21c83592e600c233072102dca1103f180c704ae9978716cd941cd54": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 44,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "a75728fec48621cb6cb65ea2c6d0c5140fb4883729a2624f260708b9dcd60577",
+      "reason": "Declares field-to-label lookup used to name the current material inputs in the pending status. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback"
+    },
+    "3f3b88182532164c7b25f10363c073f7b7b6ab03d47366dd0cdbf916c1dc2177": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 54,
+      "kind": "function",
+      "name": "MaterialStatus",
+      "semanticHash": "0fba4b29c6a563880cc86bc7db8150ac79a145b669e190472be717a8e33d0db9",
+      "reason": "Keeps the localized list of pending inputs in a visible live region while the controls scroll. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "42932d418862a0c0f54a18fe5b61cad3a854a0358438587729b3d11883cd4f84": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 73,
+      "kind": "function",
+      "name": "reveal",
+      "semanticHash": "97c47bb3f4414864c78b40e308c3cf1b63b8bdcfdd29dad06e697b1adfd54a21",
+      "reason": "Owns the Compose relocation request for the field selected by a blocked navigation attempt. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "9cc016a7fb50ac6f50d8d82401599364551e3366625451fea2b8ec34a34f9bf5": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 81,
+      "kind": "function",
+      "name": "MaterialField",
+      "semanticHash": "00aa8858543a34dabf188cb9334f3612769ef292c7a7070cac3479cd38cdfb00",
+      "reason": "Uses an external label, exposes the actual error on the editable node and renders the explanation below it; pending measurements use neutral semantics. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "fb812b4298cc5257e0b0a2450c7456f270ed8e8da3635ce67db8cebbe8a6f4e3": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 106,
+      "kind": "function",
+      "name": "ConstructionMethodFields",
+      "semanticHash": "cd7a683af0b9bee4721f4cb3c949beace67eb19511f641f529a6ed2b0d46a103",
+      "reason": "Chooses the existing wood or PVC editor and retains the current draft across selections. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "d6ddb0527f4f0e430a7433a79e81ddc1a41f953688d0c999ea86634c3f520ecb": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 126,
+      "kind": "function",
+      "name": "PvcFields",
+      "semanticHash": "007128b7687bd0d6a662ece86e50b3c92f27b5d5d38451dc5a9963b9fb371937",
+      "reason": "Presents measured catalog and assembly fields with independent format help and input-specific feedback. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "146e4837e6c30e06482726080eb523184e2d6984cb18a2d4d532dc298a6b2616": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
+      "line": 146,
+      "kind": "function",
+      "name": "MaterialSettings",
+      "semanticHash": "9de1b7fa90583e0ca7f98b837c5f05149916d3ae3ba4068f2663cb42021168ae",
+      "reason": "Discloses existing settings and exposes a setting directly when its value needs correction. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "211f07622c4f6560fe107676358dc4a3f32387c1caa6466b45696f31846f3acb": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 128,
+      "kind": "function",
+      "name": "explainBlockedSwipe",
+      "semanticHash": "c82c010e8f3d7aae546635c370da0a469dffdb85fbbb0ba959cb349edc3eca01",
+      "reason": "Observes unused forward drag at the pager boundary without consuming gesture input. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "e5bf774e5c4903ec3931608e82bc291f0e3a9dfe85ce508a879144dc5db8bb65": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 136,
+      "kind": "function",
+      "name": "onPostScroll",
+      "semanticHash": "8d6d509e8e61fa312e600a6e80eceba7c4cc568884ab400ea8ddf617915a6dfa",
+      "reason": "Accumulates unhandled forward user drag at the pager edge and issues one explanation without consuming the delta. The anonymous pager connection has no reliable independent source-method correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "anonymous-owner"
+    },
+    "5ce4eceff4d6f4dcd0547a4ccd5febd730de543fb59d4df91a757c47c9ecf4c2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 144,
+      "kind": "function",
+      "name": "onPreFling",
+      "semanticHash": "cffdca8b35022bea353bb8273f8519ad3904dc584e69e1a66bff8f0b86212007",
+      "reason": "Resets the edge-drag distance when the native pager completes the gesture. The anonymous pager connection has no reliable independent source-method correspondence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "anonymous-owner"
+    },
+    "c8313aea9b6a30bf95dbb1327acd6d2b67313c9f65597e03ce13c7af136a0c3c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 154,
+      "kind": "function",
+      "name": "synchronizeWizardStep",
+      "semanticHash": "7cf2df90bd3f645466a85a9f1a9b76b64957fe7278121c5a512d794c5d044fc5",
+      "reason": "Synchronizes the editor and native pager in both directions while releasing focus when a page settles. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "22260f87c727c38383533af3bfbeacc7998ad8eea4a257e35aef6d3145bffab4": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 170,
+      "kind": "function",
+      "name": "WizardPage",
+      "semanticHash": "e2a02f5a121aa0282ada4b997018c9b7022298f93454d75d32e82cd21ca1948c",
+      "reason": "Keeps the material status above the scroll container so the reason stays visible when a field is revealed. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "2d6e6f8b453e8b6e46a6e3d14b5def8b4d524bc61ae0ada1ab416a3cc750bb49": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 208,
+      "kind": "function",
+      "name": "WizardSteps",
+      "semanticHash": "7c751a58aac2bd6742b65e647e383c46d0c9a50212c7691afff5b89540f36f9d",
+      "reason": "Renders the existing numbered navigation with the current state and delegates each tab presentation. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "e5a34724a0492fe885b1633b11a6415bf9a92ff136400ad79e24407b9a48f6d8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 217,
+      "kind": "function",
+      "name": "WizardStep",
+      "semanticHash": "996fe5d45284ac8d1790c6aeff80c3d391d309e2a9f5de78b52ace2dde21b040",
+      "reason": "Makes blocked validation explainable from the numbered tab while retaining its unavailable color and localized accessibility state. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "f265869ed0f66a764ce2678274184c0fef27991425a7c4b4811327e33c52b39e": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ConstructionWorkspace.kt",
+      "line": 254,
+      "kind": "function",
+      "name": "ConstructionStep",
+      "semanticHash": "417752636a78ec70f8357fcf0c9c4a0fc44d7473fe444382c446d03652de77aa",
+      "reason": "Routes the active page to existing construction operations and the typed material feedback. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "18dcb65ed9f887fe9909708a4e99832159bbb1b0fed3d958b9eec21e9d1aea56": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 17,
+      "kind": "function",
+      "name": "WoodStockFields",
+      "semanticHash": "6314759c3570db24f768100549bdc308696eba1f2132b6fb012cff87e6333600",
+      "reason": "Shows only the selected stock dimensions and retains the existing fit assessment after inputs are complete. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "f0476ebd2c55effbad1ef55d4c18777c662326b3da27276ad73ed90c8f66e127": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 41,
+      "kind": "function",
+      "name": "WoodPreparation",
+      "semanticHash": "2745fb97838a07c4f2e488fa3826baa0ba4001495e4d344d145aa33d1061f47b",
+      "reason": "Keeps preparation allowances discoverable and shows the existing parser failure near the preparation inputs. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "d92fd2f9846e743489b6a3e984ad4f4d3990ee8396a01f6755c735dfc84b3dd6": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 51,
+      "kind": "function",
+      "name": "ConfirmWoodMeasurements",
+      "semanticHash": "9f3f48133fef478f65ff1259aec3c9e1c51145a3998628a847d6540a106c0d72",
+      "reason": "Associates the pending instruction with the existing confirmation control and enables it after valid dimensions. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "9f7d22704c0726ab85fbb577e77091cba645fb6a59c51a35739c4cb18e88e4e9": {
+      "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
+      "line": 62,
+      "kind": "function",
+      "name": "WoodPreparationFields",
+      "semanticHash": "e831d6bc444467417145663bea08beea7244a173989ca52f7846da593c50bc42",
+      "reason": "Shows the existing allowances appropriate to the selected stock using external field labels. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
     }
   }
 }

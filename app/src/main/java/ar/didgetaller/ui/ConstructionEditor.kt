@@ -23,10 +23,9 @@ internal class ConstructionEditor(private val context:Context,private val design
     private val exportOwner=LatestAnalysis<ConstructionExport,ByteArray>(CoroutineAnalysisLoader(scope,Dispatchers.Default){r:ConstructionExport,_,_->constructionBytes(r)}){exported=it}
     val current get()=analysis.value?.takeIf {analysis is AnalysisState.Ready && analysis.request?.action!="search" && analysis.request?.values==draft.value.values}
     val canPlan get()=current?.let {ConstructionJourney.canPlan(it.plan,draft.value.accepted)}==true
-    private val materialIssue by derivedStateOf { ConstructionMaterial.issue(draft.value.values) }
-    val blockedMaterial get() = materialIssue
+    val materialProblems by derivedStateOf { ConstructionMaterial.problems(draft.value.values) }
     fun available(step:Int):Boolean=when(step) {
-        2 -> materialIssue == null && ConstructionJourney.available(draft.value.values,1)
+        2 -> materialProblems.isEmpty() && ConstructionJourney.available(draft.value.values,1)
         3 -> canPlan && available(2)
         else -> ConstructionJourney.available(draft.value.values,step)
     }

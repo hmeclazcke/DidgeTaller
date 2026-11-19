@@ -2,6 +2,8 @@ package ar.didgetaller.core
 
 /** Admission checks for the material step. Fit and acoustic predictions remain separate. */
 internal object ConstructionMaterial {
+    enum class Problem { MISSING, INVALID }
+
     val stockDimensions = listOf("stockLength", "stockDiameter", "stockWidth", "stockThickness", "stockBlockThickness")
 
     fun woodDimensions(kind: String?) = when (kind) {
@@ -11,41 +13,70 @@ internal object ConstructionMaterial {
         else -> emptyList()
     }
 
-    fun invalidDimension(field: String, value: String) =
-        value.trim().replace(',', '.').toDoubleOrNull()?.let { it !in stockRange(field) } ?: true
+    fun maximumDimension(field: String) = if (field == "stockLength") 10000 else 2000
 
-    private fun stockRange(field: String): ClosedFloatingPointRange<Double> = when (field) {
-        "stockLength" -> 1.0..10000.0
-        else -> 1.0..2000.0
+    fun issue(values: Map<String, String>): String? = problems(values).keys.firstOrNull()
+
+    fun problems(values: Map<String, String>): Map<String, Problem> = buildMap {
+        when (values["method"]) {
+            "SANDWICH" -> putAll(woodProblems(values))
+            "PVC" -> putAll(pvcProblems(values))
+            "LAMINATED" -> Unit
+            else -> put("method", Problem.MISSING)
+        }
+        putAll(settingsProblems(values))
+        if (isEmpty()) {
+            val options = runCatching { ConstructionForm.options(values) }.getOrNull()
+            when {
+                options == null -> put("options", Problem.INVALID)
+                options.method == ConstructionMethod.PVC && !validAssembly(values, options) -> put("assembly", Problem.INVALID)
+            }
+        }
     }
 
-    fun issue(values: Map<String, String>): String? = when (values["method"]) {
-        "SANDWICH" -> woodIssue(values) ?: optionsIssue(values)
-        "PVC" -> pvcIssue(values) ?: optionsIssue(values)
-        "LAMINATED" -> optionsIssue(values)
-        else -> "method"
-    }
-
-    private fun woodIssue(values: Map<String, String>): String? {
+    private fun woodProblems(values: Map<String, String>): Map<String, Problem> = buildMap {
         val dimensions = woodDimensions(values["stockKind"])
-        if (dimensions.isEmpty()) return "stockKind"
-        dimensions.firstOrNull { invalidDimension(it, values.getValue(it)) }?.let { return it }
-        return "stockConfirmed".takeUnless { values["stockConfirmed"] == "true" }
+        if (dimensions.isEmpty()) {
+            put("stockKind", Problem.MISSING)
+            return@buildMap
+        }
+        dimensions.forEach { key ->
+            required(values, key) { value ->
+                value.trim().replace(',', '.').toDoubleOrNull()?.let { it in 1.0..maximumDimension(key).toDouble() } == true
+            }
+        }
+        if (isEmpty() && values["stockConfirmed"] != "true") put("stockConfirmed", Problem.MISSING)
     }
 
-    private fun pvcIssue(values: Map<String, String>): String? {
-        val pipes = runCatching { ConstructionCatalog.pipes(values.getValue("pipes")) }.getOrNull()
-        if (pipes.isNullOrEmpty() || pipes.values.any { it.insideMm !in 15.0..220.0 }) return "pipes"
-        if (runCatching { ConstructionCatalog.connectors(values.getValue("fittings")) }.isFailure) return "fittings"
-        val clearance = values["clearance"]?.toDoubleOrNull()
-        if (clearance == null || !clearance.isFinite() || clearance < 0.0) return "clearance"
-        return null
+    private fun pvcProblems(values: Map<String, String>): Map<String, Problem> = buildMap {
+        required(values, "pipes") { text ->
+            runCatching { ConstructionCatalog.pipes(text).values.all { it.insideMm in 15.0..220.0 } }.getOrDefault(false)
+        }
+        val fittings = values.getValue("fittings")
+        when {
+            fittings.isBlank() && ConstructionCatalog.usesFittings(values.getValue("assembly")) -> put("fittings", Problem.MISSING)
+            runCatching { ConstructionCatalog.connectors(fittings) }.isFailure -> put("fittings", Problem.INVALID)
+        }
+        required(values, "assembly") { true }
+        required(values, "clearance") { it.isAmount(0.0) }
     }
 
-    private fun optionsIssue(values: Map<String, String>): String? {
-        val options = runCatching { ConstructionForm.options(values) }.getOrElse { return "options" }
-        if (options.intervalMm !in 50..500) return "interval"
-        return "assembly".takeIf { options.method == ConstructionMethod.PVC && !validAssembly(values, options) }
+    private fun settingsProblems(values: Map<String, String>): Map<String, Problem> = buildMap {
+        required(values, "interval") { it.toIntOrNull()?.let { number -> number in 50..500 } == true }
+        if (values["method"] != "PVC") {
+            required(values, "wall") { it.toDoubleOrNull()?.let { number -> number.isFinite() && number > 0.0 } == true }
+            required(values, "tolerance") { it.isAmount(0.0) }
+        }
+    }
+
+    private fun String.isAmount(minimum: Double) = toDoubleOrNull()?.let { it.isFinite() && it >= minimum } == true
+
+    private fun MutableMap<String, Problem>.required(values: Map<String, String>, key: String, valid: (String) -> Boolean) {
+        val value = values[key].orEmpty()
+        when {
+            value.isBlank() -> put(key, Problem.MISSING)
+            !valid(value) -> put(key, Problem.INVALID)
+        }
     }
 
     private fun validAssembly(values: Map<String, String>, options: ConstructionOptions) = runCatching {

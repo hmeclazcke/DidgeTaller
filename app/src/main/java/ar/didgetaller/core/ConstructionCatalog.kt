@@ -41,9 +41,7 @@ object ConstructionCatalog {
     }
     fun plan(name:String,shape:AcousticModel.Shape,o:ConstructionOptions):ConstructionPlan {
         val pipes=pipes(o.pipes);val fittings=connectors(o.fittings)
-        val assembly=rows(o.assembly)
-        require(assembly.size in 1..100 && assembly.all {it.size==3})
-        require(assembly.last()[2]=="-")
+        val assembly=assemblyRows(o.assembly)
         val cuts=assembly.map {r->WorkshopPlans.Cut(requireNotNull(pipes[r[0]]),r[1].toInt())}
         val connections=assembly.dropLast(1).map {requireNotNull(fittings[it[2]])}
         val measured=WorkshopPlans.pvc(cuts,connections.map {it.fitting},o.socketClearanceMm)
@@ -52,6 +50,14 @@ object ConstructionCatalog {
         val parts=cuts.mapIndexed {i,c->"${i+1}: ${c.pipe.id}; L=${c.lengthMm} mm; ID=${c.pipe.insideMm}; OD=${c.pipe.outsideMm}; Lmax=${c.pipe.stockLengthMm} mm"}+
             connections.mapIndexed {i,c->"${c.fitting.id}: x=${measured.fittingStartsMm[i]} mm; L=${c.fitting.bodyLengthMm}; I=${c.fitting.leftInsertionMm}/${c.fitting.rightInsertionMm} mm; ID(x)=${connections[i].profile.joinToString("|"){"${it.positionMm}:${it.diameterMm}"}}"}
         return ConstructionPlan(name,shape,o,pieces,parts)
+    }
+
+    internal fun usesFittings(assembly: String): Boolean =
+        runCatching { assemblyRows(assembly).size > 1 }.getOrDefault(false)
+
+    private fun assemblyRows(text: String): List<List<String>> = rows(text).also { assembly ->
+        require(assembly.size in 1..100 && assembly.all { it.size == 3 })
+        require(assembly.last()[2] == "-")
     }
     private fun pieces(cuts:List<WorkshopPlans.Cut>,connectors:List<Connector>):List<ConstructionPiece> = buildList {
         cuts.forEachIndexed {i,c->

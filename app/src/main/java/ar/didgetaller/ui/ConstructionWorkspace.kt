@@ -10,6 +10,10 @@ import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import kotlinx.coroutines.flow.drop
 import androidx.compose.runtime.*
@@ -24,12 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import ar.didgetaller.R
@@ -92,44 +98,86 @@ private val wizardTitles = listOf(R.string.wizard_design,R.string.wizard_materia
 private fun WizardPages(editor: ConstructionEditor, language: WorkshopLanguage, modifier: Modifier) {
     val step = editor.draft.value.step
     val focus = LocalFocusManager.current
+    var attention by remember(editor) { mutableStateOf<MaterialAttention?>(null) }
+    val feedback = MaterialFeedback(editor.materialProblems, attention)
+    LaunchedEffect(step) { if (step != 1) attention = null }
+    val explain = {
+        feedback.nextField?.let { attention = MaterialAttention(it, (attention?.attempt ?: 0) + 1) }
+        Unit
+    }
     val lastPage by rememberUpdatedState(maxOf(step, wizardTitles.indices.lastOrNull(editor::available) ?: 0))
     val pager = remember(editor) { PagerState(step) { lastPage + 1 } }
-    pager.scrollToSelectedStep(editor)
-    LaunchedEffect(pager, editor) {
-        snapshotFlow { pager.settledPage }.drop(1).collect { page ->
-            focus.clearFocus()
-            editor.select(page)
-            if (editor.draft.value.step != page) pager.scrollToPage(editor.draft.value.step)
-        }
+    pager.synchronizeWizardStep(editor)
+    val blockedValidation = step == 1 && !editor.available(2)
+    WizardSteps(step, editor::available, blockedValidation) { page ->
+        focus.clearFocus()
+        if (page == 2 && blockedValidation) explain() else editor.select(page)
     }
-    WizardSteps(step, editor::available) { page -> focus.clearFocus(); editor.select(page) }
     HorizontalPager(
         state = pager,
-        modifier = modifier.fillMaxWidth().testTag("construction-pager"),
+        modifier = modifier.fillMaxWidth().testTag("construction-pager")
+            .explainBlockedSwipe(blockedValidation, explain),
         verticalAlignment = Alignment.Top,
         userScrollEnabled = lastPage > 0,
     ) { page ->
-        if (page <= lastPage) WizardPage(editor, language, page)
+        if (page <= lastPage) WizardPage(editor, language, page, feedback)
     }
 }
 
 @Composable
-private fun PagerState.scrollToSelectedStep(editor: ConstructionEditor) {
+private fun Modifier.explainBlockedSwipe(blocked: Boolean, explain: () -> Unit): Modifier {
+    val active by rememberUpdatedState(blocked)
+    val onBlocked by rememberUpdatedState(explain)
+    val threshold = with(LocalDensity.current) { 24.dp.toPx() }
+    val connection = remember(threshold) {
+        object : NestedScrollConnection {
+            private var distance = 0f
+
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                if (active && source == NestedScrollSource.UserInput && available.x < 0 && distance < threshold) {
+                    distance -= available.x
+                    if (distance >= threshold) onBlocked()
+                }
+                return Offset.Zero
+            }
+
+            override suspend fun onPreFling(available: Velocity): Velocity {
+                distance = 0f
+                return Velocity.Zero
+            }
+        }
+    }
+    return nestedScroll(connection)
+}
+
+@Composable
+private fun PagerState.synchronizeWizardStep(editor: ConstructionEditor) {
     val step = editor.draft.value.step
+    val focus = LocalFocusManager.current
     LaunchedEffect(this, step) {
         if (settledPage != step) animateScrollToPage(step)
     }
+    LaunchedEffect(this, editor) {
+        snapshotFlow { settledPage }.drop(1).collect { page ->
+            focus.clearFocus()
+            editor.select(page)
+            if (editor.draft.value.step != page) scrollToPage(editor.draft.value.step)
+        }
+    }
 }
 
 @Composable
-private fun WizardPage(editor: ConstructionEditor, language: WorkshopLanguage, page: Int) {
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        ConstructionStatus(editor.load.isFailure,editor.failed,editor.analysis,editor.exported)
-        WizardNextHint(page, editor)
-        ConstructionStep(editor,language,page)
-        ConstructionWorkers(editor.analysis,editor.exported,editor::cancel)
-        ConstructionHelp()
+private fun WizardPage(editor: ConstructionEditor, language: WorkshopLanguage, page: Int, feedback: MaterialFeedback) {
+    Column(Modifier.fillMaxSize()) {
+        if (page == 1) MaterialStatus(feedback)
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            ConstructionStatus(editor.load.isFailure,editor.failed,editor.analysis,editor.exported)
+            WizardNextHint(page, editor)
+            ConstructionStep(editor,language,page,feedback)
+            ConstructionWorkers(editor.analysis,editor.exported,editor::cancel)
+            ConstructionHelp()
+        }
     }
 }
 
@@ -137,7 +185,6 @@ private fun WizardPage(editor: ConstructionEditor, language: WorkshopLanguage, p
 private fun WizardNextHint(page: Int, editor: ConstructionEditor) {
     val message = when (page) {
         0 -> if(editor.available(1)) null else R.string.wizard_check_design
-        1 -> if(editor.available(2)) null else R.string.wizard_check_material
         2 -> if(editor.available(3)) null else R.string.wizard_check_plan
         else -> null
     }
@@ -158,26 +205,31 @@ private fun WizardToolbar(step: Int, saved: Boolean, save: () -> Unit, dismiss: 
 }
 
 @Composable
-private fun WizardSteps(step: Int, available: (Int) -> Boolean, select: (Int) -> Unit) {
+private fun WizardSteps(step: Int, available: (Int) -> Boolean, blockedValidation: Boolean, select: (Int) -> Unit) {
     TabRow(step) {
         wizardTitles.forEachIndexed { index, title ->
-            val label = stringResource(title)
-            val enabled = available(index)
-            val status = stringResource(when {
-                index == step -> R.string.wizard_current
-                !enabled -> R.string.wizard_unavailable_short
-                index < step -> R.string.wizard_completed
-                else -> R.string.wizard_available
-            })
-            Tab(selected = index == step, onClick = { select(index) }, enabled = enabled,
-                modifier = Modifier.height(48.dp).testTag("construction-step-$index").semantics {
-                    contentDescription = label
-                    stateDescription = status
-                }) {
-                val ink = if (enabled || index == step) LocalContentColor.current else MaterialTheme.colorScheme.onSurface.copy(alpha = .38f)
-                Text((index + 1).toString(), color = ink, style = MaterialTheme.typography.labelLarge)
-            }
+            WizardStep(step, index, stringResource(title), available(index), blockedValidation && index == 2) { select(index) }
         }
+    }
+}
+
+@Composable
+private fun WizardStep(step: Int, index: Int, label: String, available: Boolean, explainable: Boolean, select: () -> Unit) {
+    val current = index == step
+    val status = stringResource(when {
+        current -> R.string.wizard_current
+        explainable -> R.string.wizard_material_blocked_step
+        !available -> R.string.wizard_unavailable_short
+        index < step -> R.string.wizard_completed
+        else -> R.string.wizard_available
+    })
+    Tab(selected = current, onClick = select, enabled = available || explainable,
+        modifier = Modifier.height(48.dp).testTag("construction-step-$index").semantics {
+            contentDescription = label
+            stateDescription = status
+        }) {
+        val ink = if (available) LocalContentColor.current else MaterialTheme.colorScheme.onSurface.copy(alpha = .38f)
+        Text((index + 1).toString(), color = ink, style = MaterialTheme.typography.labelLarge)
     }
 }
 
@@ -199,12 +251,12 @@ private fun ConstructionHelp() {
 }
 
 @Composable
-private fun ConstructionStep(editor:ConstructionEditor,language:WorkshopLanguage,page:Int) {
+private fun ConstructionStep(editor:ConstructionEditor,language:WorkshopLanguage,page:Int,feedback:MaterialFeedback) {
     val journey=editor.draft.value
     val run:(String)->Unit={editor.run(it,language)}
     when(page) {
         0->ConstructionTargetFields(journey.values,editor::set,editor.name(language))
-        1->ConstructionMethodFields(journey.values,editor::set,editor::saveCatalog,editor::loadCatalog,editor.load.isSuccess,editor.blockedMaterial)
+        1->ConstructionMethodFields(journey.values,editor::set,editor::saveCatalog,editor::loadCatalog,editor.load.isSuccess,feedback)
         2->ConstructionValidation(editor,run)
         else->if(editor.canPlan)ConstructionPlanActions(editor.analysis,editor.exported is AnalysisState.Loading,run){plan,format->
             editor.export(plan,format,ConstructionPdf.Labels(language,journey.values["target"]?.toDoubleOrNull()))
@@ -292,10 +344,10 @@ private fun ConstructionPlanActions(state:AnalysisState<ConstructionRequest,Cons
 }
 
 @Composable
-private fun ConstructionField(key:String,label:Int,values:Map<String,String>,set:(String,String)->Unit,multiline:Boolean=false,error:Int?=null) {
+private fun ConstructionField(key:String,label:Int,values:Map<String,String>,set:(String,String)->Unit,multiline:Boolean=false) {
     OutlinedTextField(values.getValue(key),{set(key,it)},label={Text(stringResource(label))},singleLine=!multiline,
         minLines=if(multiline)3 else 1,maxLines=if(multiline)8 else 1,
-        isError=error!=null,supportingText=error?.let { id -> { Text(stringResource(id)) } },modifier=Modifier.fillMaxWidth().testTag("construction-$key"))
+        modifier=Modifier.fillMaxWidth().testTag("construction-$key"))
 }
 
 @Composable
@@ -329,50 +381,6 @@ private fun ConstructionTargetFields(v:Map<String,String>,set:(String,String)->U
         ConstructionField("geometry",R.string.construction_geometry,v,set,true)
     }
     Text(stringResource(R.string.construction_limits),style=MaterialTheme.typography.bodySmall)
-}
-
-@Composable
-private fun ConstructionMethodFields(v:Map<String,String>,set:(String,String)->Unit,saveCatalog:()->Unit,loadCatalog:()->Unit,writable:Boolean,issue:String?) {
-    if(v.getValue("method")=="LAMINATED")Text(stringResource(R.string.wizard_legacy),style=MaterialTheme.typography.bodySmall)
-    val names=listOf(R.string.construction_sandwich,R.string.construction_pvc)
-    FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) { ConstructionForm.activeMethods().forEachIndexed {i,method->
-        FilterChip(v.getValue("method")==method.name,{set("method",method.name)},label={Text(stringResource(names[i]))},modifier=Modifier.testTag("construction-method-${method.name}"))
-    }
-    }
-    if (issue == "options") Text(stringResource(R.string.wizard_material_invalid), color = MaterialTheme.colorScheme.error)
-    if(v.getValue("method")=="SANDWICH")WoodStockFields(v,set)
-    if(v.getValue("method")=="PVC") {
-        PvcFormatHelp()
-        ConstructionField("pipes",R.string.construction_pipes,v,set,true,error=R.string.wizard_invalid_pipes.takeIf { issue=="pipes" })
-        ConstructionField("fittings",R.string.construction_fittings,v,set,true,error=R.string.wizard_invalid_fittings.takeIf { issue=="fittings" })
-        ConstructionField("assembly",R.string.construction_assembly,v,set,true,error=R.string.wizard_invalid_assembly.takeIf { issue=="assembly" })
-        ConstructionField("clearance",R.string.construction_clearance,v,set,error=R.string.wizard_invalid_dimension.takeIf { issue=="clearance" })
-        FlowRow {
-            TextButton(onClick=saveCatalog,enabled=writable,modifier=Modifier.testTag("construction-save-catalog")){Text(stringResource(R.string.construction_save_catalog))}
-            TextButton(onClick=loadCatalog){Text(stringResource(R.string.construction_load_catalog))}
-        }
-    }
-    MaterialSettings(v,set,issue)
-}
-
-@Composable
-private fun PvcFormatHelp() {
-    var show by rememberSaveable { mutableStateOf(false) }
-    TextButton(onClick = { show = !show }) { Text(stringResource(R.string.wizard_pvc_format)) }
-    if (show) Text(stringResource(R.string.construction_schema), style = MaterialTheme.typography.bodySmall)
-}
-
-@Composable
-private fun MaterialSettings(values: Map<String,String>, set: (String,String) -> Unit, issue: String?) {
-    var show by rememberSaveable { mutableStateOf(false) }
-    TextButton(onClick = { show = !show }) { Text(stringResource(R.string.wizard_plan_settings)) }
-    if (show || issue in setOf("interval", "options")) {
-        ConstructionField("interval",R.string.construction_interval,values,set,error=R.string.wizard_invalid_dimension.takeIf { issue=="interval" })
-        if(values.getValue("method")!="PVC") {
-            ConstructionField("wall",R.string.construction_wall,values,set)
-            ConstructionField("tolerance",R.string.construction_tolerance,values,set)
-        }
-    }
 }
 
 @Composable

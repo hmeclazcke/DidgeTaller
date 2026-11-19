@@ -41,8 +41,22 @@ class ConstructionJourneyTest {
         assertEquals("clearance",ConstructionMaterial.issue(pvc+("clearance" to "NaN")))
         assertEquals("assembly",ConstructionMaterial.issue(pvc+("assembly" to "other,1500,-")))
         assertEquals("interval",ConstructionMaterial.issue(pvc+("interval" to "5")))
-        assertEquals("options",ConstructionMaterial.issue(pvc+("interval" to "")))
+        assertEquals("interval",ConstructionMaterial.issue(pvc+("interval" to "")))
         assertNull(ConstructionMaterial.issue(fields()+("method" to "LAMINATED")))
+    }
+
+    @Test fun materialProblemsSeparatePendingAndInvalidMeasurementsForEachMethod() {
+        val pending = ConstructionMaterial.Problem.MISSING
+        val invalid = ConstructionMaterial.Problem.INVALID
+        val values = boards() + mapOf("stockWidth" to "", "stockThickness" to "0")
+        assertEquals(mapOf("stockWidth" to pending, "stockThickness" to invalid), ConstructionMaterial.problems(values))
+        assertEquals(mapOf("stockKind" to pending), ConstructionMaterial.problems(fields()))
+        assertEquals(mapOf("stockConfirmed" to pending), ConstructionMaterial.problems(boards() + ("stockConfirmed" to "false")))
+        val pvc = values + ("method" to "PVC")
+        assertEquals(mapOf("pipes" to pending, "assembly" to pending), ConstructionMaterial.problems(pvc))
+        assertEquals(mapOf("pipes" to invalid, "assembly" to pending), ConstructionMaterial.problems(pvc + ("pipes" to "a,40,40,1800")))
+        assertEquals(mapOf("fittings" to pending), ConstructionMaterial.problems(pvc + mapOf("pipes" to "a,30,40,1800", "assembly" to "a,800,c\na,700,-")))
+        assertTrue(ConstructionMaterial.problems(pvc + mapOf("pipes" to "a,30,40,1800", "assembly" to "a,1500,-")).isEmpty())
     }
 
     @Test fun logAndBlockUseTheirOwnDimensionsAndKeepLegacyValues() {

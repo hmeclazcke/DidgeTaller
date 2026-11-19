@@ -1468,3 +1468,18 @@ separate rescheduling behavior.
 
 Emulator validation uses only synthetic fixtures. The original Samsung was not
 used for this development iteration. See VALIDATION.md for observed results.
+
+### Material validation feedback
+
+The material admission check now distinguishes pending entries from invalid
+values. The Material page uses that result for a visible status, external field
+labels and field-specific errors. The numbered step and a forward drag at the
+pager boundary share the same action to reveal the first incomplete input.
+The native pager still owns gesture handling and the wizard still owns draft
+identity, plan invalidation and saved-design restoration.
+
+The initial Compose regression reproduced an Error semantic on an empty stock
+field. The fix keeps missing fields neutral and adds the localized explanation to
+the editable node only for invalid values. A fitting is required only when the
+measured PVC assembly joins multiple pipes. No metronome, acoustic-model or
+persistence-format code changed.

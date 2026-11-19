@@ -79,18 +79,72 @@ class ConstructionUiTest {
         field("stockThickness","70")
         click("stock-confirmed")
     }
+    @Test fun materialFieldsStayNeutralUntilAnInvalidMeasurementIsEntered() {
+        open();tab(1);click("stock-kind-BOARDS")
+        val length = compose.onNodeWithTag("construction-stockLength").performScrollTo()
+        val error = SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Error)
+        length.assert(!error)
+        val status = compose.onNodeWithTag("material-status")
+        val language = if (compose.activity.resources.configuration.locales[0].language == "es") WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
+        status.assertIsDisplayed().assertTextContains(language.wood(WoodTerm.LENGTH), substring = true)
+        screenshot("material-empty")
+        field("stockLength", "1520")
+        compose.onNodeWithTag("construction-stockWidth").assert(!error)
+        screenshot("material-partial")
+        field("stockWidth", "0")
+        val width = compose.onNodeWithTag("construction-stockWidth").performScrollTo().assert(error)
+        val message = compose.onNodeWithTag("material-error-stockWidth").assertIsDisplayed()
+        val rangeMessage = compose.activity.getString(R.string.wizard_dimension_range, 1, 2000)
+        message.assertTextEquals(rangeMessage)
+        width.assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.Error, rangeMessage))
+        assertTrue(message.getUnclippedBoundsInRoot().top >= width.getUnclippedBoundsInRoot().bottom)
+        screenshot("material-invalid")
+        measuredBoards()
+        compose.onNodeWithTag("construction-stockWidth").assert(!error)
+        compose.onNodeWithTag("material-error-stockWidth").assertDoesNotExist()
+        status.assertIsDisplayed().assertTextEquals(compose.activity.getString(R.string.wizard_material_ready))
+        screenshot("material-complete")
+        tab(2)
+    }
+
+    @Test fun selectingBlockedValidationRevealsTheFirstMissingFieldAndRetainsMaterialInputs() {
+        open();tab(1);click("stock-kind-BOARDS")
+        field("stockLength", "1520")
+        val width = compose.onNodeWithTag("construction-stockWidth")
+        val status = compose.onNodeWithTag("material-status")
+        val validation = compose.onNodeWithTag("construction-step-2")
+        val review = compose.activity.getString(R.string.wizard_material_blocked_step)
+        validation.assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.StateDescription, review))
+        compose.onNodeWithTag("stock-confirmed").performScrollTo()
+        validation.performClick().assertIsNotSelected()
+        width.assertIsDisplayed().assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.StateDescription,
+            compose.activity.getString(R.string.wizard_material_field_missing)))
+        status.assertIsDisplayed()
+        compose.onNodeWithTag("construction-method-PVC").performScrollTo().performClick()
+        val pipes = compose.onNodeWithTag("construction-pipes").performScrollTo()
+        pipes.assert(!SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Error))
+        status.assertTextContains(compose.activity.getString(R.string.wizard_assembly_label), substring = true)
+        field("pipes", "tube,40,39,1800")
+        compose.onNodeWithTag("material-error-pipes").performScrollTo()
+            .assertTextEquals(compose.activity.getString(R.string.wizard_invalid_pipes))
+        compose.onNodeWithTag("construction-method-SANDWICH").performScrollTo().performClick()
+        compose.onNodeWithTag("construction-stockLength").performScrollTo().assertTextEquals("1520", includeEditableText = true)
+    }
     @Test fun swipeRespectsPrerequisitesAndReturnsToThePreviousStage() {
         open()
         val pager = compose.onNodeWithTag("construction-pager")
         pager.performTouchInput { swipeLeft() }
         compose.onNodeWithTag("construction-step-1").assertIsSelected()
         click("stock-kind-BOARDS")
-        compose.onNodeWithTag("construction-stockThickness").performScrollTo()
-            .assertTextContains(compose.activity.getString(R.string.wizard_required_dimension))
-        compose.onNodeWithTag("construction-step-2").assertIsNotEnabled()
+        compose.onNodeWithTag("stock-confirmed").performScrollTo()
+        compose.onNodeWithTag("construction-step-2").assertIsNotSelected()
         screenshot("incomplete-material")
         pager.performTouchInput { swipeLeft() }
         compose.onNodeWithTag("construction-step-1").assertIsSelected()
+        compose.onNodeWithTag("construction-stockLength").assertIsDisplayed()
+            .assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.StateDescription,
+                compose.activity.getString(R.string.wizard_material_field_missing)))
+        compose.onNodeWithTag("material-status").assertIsDisplayed()
         pager.performTouchInput { swipeRight() }
         compose.onNodeWithTag("construction-step-0").assertIsSelected()
         pager.performTouchInput { swipeLeft() }
@@ -201,7 +255,7 @@ class ConstructionUiTest {
         tab(1);compose.onNodeWithTag("construction-method-LAMINATED").assertDoesNotExist()
         field("pipes","invalid")
         compose.onNodeWithText(compose.activity.getString(R.string.wizard_invalid_pipes)).assertExists()
-        compose.onNodeWithTag("construction-step-2").assertIsNotEnabled()
+        compose.onNodeWithTag("construction-step-2").performClick().assertIsNotSelected()
         compose.onNodeWithTag("construction-step-3").assertIsNotEnabled()
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])
     }

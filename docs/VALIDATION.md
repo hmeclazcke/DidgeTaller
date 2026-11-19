@@ -2621,3 +2621,19 @@ Final emulator results and visual evidence are tracked separately from the
 JVM coverage. An initial run was interrupted by an emulator System UI ANR.
 A separate large batch reached its timeout, after which decisive cases were
 split into smaller runs. No timeout is counted as a pass.
+
+### Material validation feedback
+
+The empty-field Compose regression failed on the original Error semantic. The
+final APK passed all 11 focused emulator executions in English and Spanish at
+100% and 150% text size. They cover neutral empty fields, separate visible error
+text and error semantics, positive readiness, blocked tap and swipe, measured
+PVC and its export, saved-state restoration and Library reopening. All 16
+synthetic screenshots were inspected. Local review sheets and build reports are
+under `checkpoints/workshop-material/`.
+
+Debug JVM discovered 645 tests with 637 passes and eight protected skips. The
+strict source gate reported 819 measured, 184 unmapped and zero violations.
+CPD found zero groups. Resource parity and the 46 quality-tool tests passed.
+The gate thresholds and numerical baselines were unchanged. Source-bound
+technical reviews document Compose and anonymous callback mapping limits.
