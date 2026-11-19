@@ -55,7 +55,7 @@ object ConstructionCatalog {
     internal fun usesFittings(assembly: String): Boolean =
         runCatching { assemblyRows(assembly).size > 1 }.getOrDefault(false)
 
-    private fun assemblyRows(text: String): List<List<String>> = rows(text).also { assembly ->
+    internal fun assemblyRows(text: String): List<List<String>> = rows(text).also { assembly ->
         require(assembly.size in 1..100 && assembly.all { it.size == 3 })
         require(assembly.last()[2] == "-")
     }

@@ -1483,3 +1483,23 @@ field. The fix keeps missing fields neutral and adds the localized explanation t
 the editable node only for invalid values. A fitting is required only when the
 measured PVC assembly joins multiple pipes. No metronome, acoustic-model or
 persistence-format code changed.
+
+### Guided material inputs
+
+The basic PVC form asks for the opening's inside and outside diameters and
+the available length. The inside diameter defines the air passage. The
+outside diameter identifies the measured pipe for socket fit and the parts
+list. The available length bounds the proposed cut. The proposal uses the
+design length when stock allows and becomes an assembly only on selection.
+Existing catalog pipes and fittings can be picked by segment. The cut length
+remains explicit because a measured stock length does not determine the cut
+or the length after assembly. Raw catalog and assembly records and the socket
+allowance remain in advanced settings for editing and compatibility.
+
+Wood asks for length and minimum outside diameter for a log, the smaller
+dimensions of the two boards or the dimensions of the whole block before
+splitting. Confirmation still records that these are usable measured bounds.
+Bark, preparation losses, kerf, per-end trimming, uncertainty and optional
+log sections remain under preparation. Plan interval, wall and tolerance
+remain under optional plan settings. The project schema, accepted-alternative
+check, acoustic calculations and exports are unchanged.

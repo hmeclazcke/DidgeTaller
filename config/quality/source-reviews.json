@@ -8261,13 +8261,13 @@
       "line": 44,
       "kind": "initializer",
       "name": null,
-      "semanticHash": "a75728fec48621cb6cb65ea2c6d0c5140fb4883729a2624f260708b9dcd60577",
+      "semanticHash": "63b5561b12bc62fa8675b2f70c5c77528fc045ccc1064528005683829ffbc325",
       "reason": "Declares field-to-label lookup used to name the current material inputs in the pending status. The inventory has no independently scored source method for this auxiliary declaration.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Workshop material validation feedback"
+      "reviewed_source": "Guided workshop material inputs"
     },
     "3f3b88182532164c7b25f10363c073f7b7b6ab03d47366dd0cdbf916c1dc2177": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
@@ -8313,16 +8313,16 @@
     },
     "fb812b4298cc5257e0b0a2450c7456f270ed8e8da3635ce67db8cebbe8a6f4e3": {
       "file": "app/src/main/java/ar/didgetaller/ui/ConstructionMaterialFields.kt",
-      "line": 106,
+      "line": 107,
       "kind": "function",
       "name": "ConstructionMethodFields",
-      "semanticHash": "cd7a683af0b9bee4721f4cb3c949beace67eb19511f641f529a6ed2b0d46a103",
+      "semanticHash": "e9681d881fbf0be978ac66e43bf4afc15a5c478a1a6bb7e03f567d3e7135b1e3",
       "reason": "Chooses the existing wood or PVC editor and retains the current draft across selections. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Workshop material validation feedback",
+      "reviewed_source": "Guided workshop material inputs",
       "metric_status": "compose-transformation"
     },
     "d6ddb0527f4f0e430a7433a79e81ddc1a41f953688d0c999ea86634c3f520ecb": {
@@ -8470,27 +8470,27 @@
       "line": 17,
       "kind": "function",
       "name": "WoodStockFields",
-      "semanticHash": "6314759c3570db24f768100549bdc308696eba1f2132b6fb012cff87e6333600",
+      "semanticHash": "12b6f7313ee6c901a8c79efae3bd81959015b3be8f3f7992434ec8f71e0f315c",
       "reason": "Shows only the selected stock dimensions and retains the existing fit assessment after inputs are complete. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Workshop material validation feedback",
+      "reviewed_source": "Guided workshop material inputs",
       "metric_status": "compose-transformation"
     },
     "f0476ebd2c55effbad1ef55d4c18777c662326b3da27276ad73ed90c8f66e127": {
       "file": "app/src/main/java/ar/didgetaller/ui/WoodStockFields.kt",
-      "line": 41,
+      "line": 47,
       "kind": "function",
       "name": "WoodPreparation",
-      "semanticHash": "2745fb97838a07c4f2e488fa3826baa0ba4001495e4d344d145aa33d1061f47b",
+      "semanticHash": "be530ebec899bc95b701b479a486f64026fb272ee6bd4cdc9e70e79ac5541f5e",
       "reason": "Keeps preparation allowances discoverable and shows the existing parser failure near the preparation inputs. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
       "evidence": [
         "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
-      "reviewed_source": "Workshop material validation feedback",
+      "reviewed_source": "Guided workshop material inputs",
       "metric_status": "compose-transformation"
     },
     "d92fd2f9846e743489b6a3e984ad4f4d3990ee8396a01f6755c735dfc84b3dd6": {
@@ -8519,6 +8519,157 @@
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
       "reviewed_source": "Workshop material validation feedback",
+      "metric_status": "compose-transformation"
+    },
+    "dfe71564400a40e03ab4207f2bb1060cc812a4f6ea357a3bb8f5f3264acc47e4": {
+      "file": "app/src/main/java/ar/didgetaller/core/PvcMaterialDraft.kt",
+      "line": 6,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f0cf990ba814182a89441f7ab17e02dc7ec82ef3afd360e50aa3c40a6da50eb9",
+      "reason": "Holds exact input cells so guided edits round trip the existing PVC catalog and assembly records. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "42ccbda53d59417c7e0d1572759850164374028f48c584635bc39a809d631a4c": {
+      "file": "app/src/main/java/ar/didgetaller/core/PvcMaterialDraft.kt",
+      "line": 23,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "7222666c666f915c88f86e6fe0338baa45c35fd237f2fd89129feda94738c525",
+      "reason": "Defines the generated catalog ID used by the guided pipe without asking the user for an identifier. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "575b8f8a9de90b40c3e4bd39c988b384b2453856262a97fd200e54dd6a6a23cf": {
+      "file": "app/src/main/java/ar/didgetaller/core/PvcMaterialDraft.kt",
+      "line": 43,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "db800743820c69df3ae3c4635f27a3abcc9c0979823d0fa24ea646e9684e4089",
+      "reason": "Holds exact input cells so guided edits round trip the existing PVC catalog and assembly records. The inventory has no independently scored source method for this auxiliary declaration.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs"
+    },
+    "96c031bf7c63ce678f7e33f312e18ff439c1468816ec0b2640a9baf03da69160": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 21,
+      "kind": "function",
+      "name": "PvcFields",
+      "semanticHash": "eb1f22ad013177bfd6e03731f8b5dd06c78744251734ef43f67a2df52739b19d",
+      "reason": "Keeps the guided PVC form primary and opens the measured catalog or advanced settings on demand. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "217f1472d04051d7fbafd5d1340366b054bc1b479aa98b23ca20468c0fa0bcc0": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 37,
+      "kind": "function",
+      "name": "GuidedPvcFields",
+      "semanticHash": "c3dc93607784c6908698694f431dc6ecdf822b0a260baaae8559b1644f675641",
+      "reason": "Chooses the single-pipe measurements or the measured component selector without changing the draft. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "caa9fe39abc1b900de13eec9975703d6ed5149ada7979e6ef6518b488c3d4f99": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 58,
+      "kind": "function",
+      "name": "SinglePipeFields",
+      "semanticHash": "3ccbed9416adf015c540cf1bccb7b86883747030988d302518f3063b0afe78ef",
+      "reason": "Labels the three measurements of a physical pipe and maps edits into the existing catalog record. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "fa4fac06f4422411cb2585cb4e8afc16fbcff0294902b77cc6569a8033434e55": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 75,
+      "kind": "function",
+      "name": "SinglePipeCut",
+      "semanticHash": "d7916906ad3544a59677ebc431509bfa12234e74720f5c74a195af39a96be4bd",
+      "reason": "Uses the existing design length and measured stock to propose a cut, with an explicit application action. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "3447133ee64f14134d6a75b3eea9c5c13229edfd524de08e49aefebea33ee0b1": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 95,
+      "kind": "function",
+      "name": "PvcAssembly",
+      "semanticHash": "498d022f90c369127df1a96c0412dd88a20dba40227985283e845278cd7be05f",
+      "reason": "Renders the stored assembly in order, allowing measured pipes and fittings to select the segment geometry. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "dce2904bb302f4faa9ee602419365a2ca7c6eee0ea567d5e283446db3ecdc823": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 118,
+      "kind": "function",
+      "name": "PvcSegment",
+      "semanticHash": "63e77c749512505556e71d2ffed0cf0c776f2374e9369e48668a6dfa2bb3da26",
+      "reason": "Offers the measured catalog components and cut length for one segment. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "4f02a6d70d1b023945f2a04061bf231d21008bcb794299405781e5cfda1cbe70": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 129,
+      "kind": "function",
+      "name": "ComponentPicker",
+      "semanticHash": "db27fee70bdcb8f396143e24bc0090813dab88971393a28e3fb1187dfdf1fd97",
+      "reason": "Presents the existing measured component IDs as selectable catalog entries and closes on selection. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "ede2fe503ef3f1ad0f7a1fae140c19215012f8c16e3396f7cda02406cd26f6e2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/PvcFields.kt",
+      "line": 142,
+      "kind": "function",
+      "name": "PvcCatalogFields",
+      "semanticHash": "8247113710b584ca285ea765ca397ee31c5fe4a4f9189650581b5bd630ab8d7c",
+      "reason": "Retains the existing raw catalog and assembly editing behind the advanced entry point. Compose-transformed bytecode cannot be reliably mapped to this source callable by the existing correlator.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
+      ],
+      "reviewed_source": "Guided workshop material inputs",
       "metric_status": "compose-transformation"
     }
   }

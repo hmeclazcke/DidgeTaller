@@ -24,24 +24,30 @@ internal fun WoodStockFields(values:Map<String,String>,set:(String,String)->Unit
     }
     val dimensions = ConstructionMaterial.woodDimensions(values["stockKind"])
     if (dimensions.isEmpty()) return
+    val help = when (values["stockKind"]) {
+        "LOG" -> R.string.wood_material_log_help
+        "BOARDS" -> R.string.wood_material_boards_help
+        else -> R.string.wood_material_block_help
+    }
+    Text(stringResource(help), style = MaterialTheme.typography.bodySmall)
     dimensions.forEach { key ->
         MaterialField(key, l.wood(woodDimensionsLabels.getValue(key)), values, set, feedback,
             errorText = stringResource(R.string.wizard_dimension_range, 1, ConstructionMaterial.maximumDimension(key)))
     }
-    WoodPreparation(values, set, feedback)
     ConfirmWoodMeasurements(values, set, feedback, ready = dimensions.none { it in feedback.problems })
     val fit = if (feedback.problems.isEmpty()) runCatching {
         val o=ConstructionForm.options(values)
         WoodFit.assess(ConstructionForm.shape(values),o.woodStock,o.wallMm,o.radialToleranceMm)
     }.getOrNull() else null
     if (fit != null) WoodFitMessage(fit)
+    WoodPreparation(values, set, feedback)
 }
 
 @Composable
 private fun WoodPreparation(values: Map<String, String>, set: (String, String) -> Unit, feedback: MaterialFeedback) {
     val l = exportLanguage()
     var expanded by remember {mutableStateOf(false)}
-    TextButton(onClick={expanded=!expanded},modifier=Modifier.testTag("stock-allowances").then(feedback.reveal("options"))){Text(l.wood(WoodTerm.LOSS))}
+    TextButton(onClick={expanded=!expanded},modifier=Modifier.testTag("stock-allowances").then(feedback.reveal("options"))){Text(stringResource(R.string.wood_material_advanced))}
     if (expanded || "options" in feedback.problems) WoodPreparationFields(values,set,feedback)
     if ("options" in feedback.problems) Text(stringResource(R.string.wizard_material_invalid), color=MaterialTheme.colorScheme.error)
     if(expanded) Text(l.wood(WoodTerm.ASSUMPTION),style=MaterialTheme.typography.bodySmall)

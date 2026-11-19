@@ -49,17 +49,22 @@ internal object ConstructionMaterial {
     }
 
     private fun pvcProblems(values: Map<String, String>): Map<String, Problem> = buildMap {
-        required(values, "pipes") { text ->
-            runCatching { ConstructionCatalog.pipes(text).values.all { it.insideMm in 15.0..220.0 } }.getOrDefault(false)
-        }
+        val pipe = SinglePipeDraft.read(values.getValue("pipes"))
+        if (pipe != null) putAll(pipe.problems())
+        else required(values, "pipes", ::validPipes)
+        val pipeNeedsAttention = isNotEmpty()
         val fittings = values.getValue("fittings")
         when {
             fittings.isBlank() && ConstructionCatalog.usesFittings(values.getValue("assembly")) -> put("fittings", Problem.MISSING)
             runCatching { ConstructionCatalog.connectors(fittings) }.isFailure -> put("fittings", Problem.INVALID)
         }
-        required(values, "assembly") { true }
+        if (!pipeNeedsAttention && PvcCutDraft.pending(values.getValue("assembly"))) put("assembly", Problem.MISSING)
         required(values, "clearance") { it.isAmount(0.0) }
     }
+
+    private fun validPipes(text: String) = runCatching {
+        ConstructionCatalog.pipes(text).values.all { it.insideMm in 15.0..220.0 }
+    }.getOrDefault(false)
 
     private fun settingsProblems(values: Map<String, String>): Map<String, Problem> = buildMap {
         required(values, "interval") { it.toIntOrNull()?.let { number -> number in 50..500 } == true }

@@ -45,6 +45,7 @@ private val materialLabels = mapOf(
     "method" to R.string.wizard_material, "stockKind" to R.string.wizard_wood_type,
     "stockConfirmed" to R.string.wizard_confirm_measurements,
     "pipes" to R.string.wizard_pipes_label, "fittings" to R.string.wizard_fittings_label,
+    "pipeInside" to R.string.pvc_inside, "pipeOutside" to R.string.pvc_outside, "pipeLength" to R.string.pvc_stock_length,
     "assembly" to R.string.wizard_assembly_label, "clearance" to R.string.construction_clearance,
     "interval" to R.string.construction_interval, "wall" to R.string.construction_wall,
     "tolerance" to R.string.construction_tolerance,
@@ -108,7 +109,7 @@ internal fun ConstructionMethodFields(
     loadCatalog: () -> Unit, writable: Boolean, feedback: MaterialFeedback,
 ) {
     if (values.getValue("method") == "LAMINATED") Text(stringResource(R.string.wizard_legacy), style = MaterialTheme.typography.bodySmall)
-    val names = listOf(R.string.construction_sandwich, R.string.construction_pvc)
+    val names = listOf(R.string.material_wood, R.string.material_pvc)
     FlowRow(feedback.reveal("method"), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         ConstructionForm.activeMethods().forEachIndexed { i, method ->
             FilterChip(values.getValue("method") == method.name, { set("method", method.name) },
@@ -120,26 +121,6 @@ internal fun ConstructionMethodFields(
         "PVC" -> PvcFields(values, set, feedback, writable, saveCatalog, loadCatalog)
     }
     MaterialSettings(values, set, feedback)
-}
-
-@Composable
-private fun PvcFields(values: Map<String, String>, set: (String, String) -> Unit, feedback: MaterialFeedback,
-    writable: Boolean, saveCatalog: () -> Unit, loadCatalog: () -> Unit) {
-    var showFormat by rememberSaveable { mutableStateOf(false) }
-    TextButton(onClick = { showFormat = !showFormat }) { Text(stringResource(R.string.wizard_pvc_format)) }
-    if (showFormat) Text(stringResource(R.string.construction_schema), style = MaterialTheme.typography.bodySmall)
-    MaterialField("pipes", stringResource(R.string.wizard_pipes_label), values, set, feedback, multiline = true,
-        helper = stringResource(R.string.wizard_pipes_help), errorText = stringResource(R.string.wizard_invalid_pipes))
-    MaterialField("fittings", stringResource(R.string.wizard_fittings_label), values, set, feedback, multiline = true,
-        helper = stringResource(R.string.wizard_fittings_help), errorText = stringResource(R.string.wizard_invalid_fittings))
-    MaterialField("assembly", stringResource(R.string.wizard_assembly_label), values, set, feedback, multiline = true,
-        helper = stringResource(R.string.wizard_assembly_help), errorText = stringResource(R.string.wizard_invalid_assembly))
-    MaterialField("clearance", stringResource(R.string.construction_clearance), values, set, feedback,
-        errorText = stringResource(R.string.wizard_nonnegative_dimension))
-    FlowRow {
-        TextButton(onClick = saveCatalog, enabled = writable, modifier = Modifier.testTag("construction-save-catalog")) { Text(stringResource(R.string.construction_save_catalog)) }
-        TextButton(onClick = loadCatalog) { Text(stringResource(R.string.construction_load_catalog)) }
-    }
 }
 
 @Composable

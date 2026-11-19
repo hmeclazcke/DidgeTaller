@@ -53,8 +53,8 @@ class ConstructionJourneyTest {
         assertEquals(mapOf("stockKind" to pending), ConstructionMaterial.problems(fields()))
         assertEquals(mapOf("stockConfirmed" to pending), ConstructionMaterial.problems(boards() + ("stockConfirmed" to "false")))
         val pvc = values + ("method" to "PVC")
-        assertEquals(mapOf("pipes" to pending, "assembly" to pending), ConstructionMaterial.problems(pvc))
-        assertEquals(mapOf("pipes" to invalid, "assembly" to pending), ConstructionMaterial.problems(pvc + ("pipes" to "a,40,40,1800")))
+        assertEquals(mapOf("pipeInside" to pending, "pipeOutside" to pending, "pipeLength" to pending), ConstructionMaterial.problems(pvc))
+        assertEquals(mapOf("pipes" to invalid), ConstructionMaterial.problems(pvc + ("pipes" to "a,40,40,1800")))
         assertEquals(mapOf("fittings" to pending), ConstructionMaterial.problems(pvc + mapOf("pipes" to "a,30,40,1800", "assembly" to "a,800,c\na,700,-")))
         assertTrue(ConstructionMaterial.problems(pvc + mapOf("pipes" to "a,30,40,1800", "assembly" to "a,1500,-")).isEmpty())
     }
@@ -65,6 +65,23 @@ class ConstructionJourneyTest {
         assertNull(ConstructionMaterial.issue(values+mapOf("stockKind" to "LOG","stockDiameter" to "120,5")))
         assertEquals("stockBlockThickness", ConstructionMaterial.issue(values+mapOf("stockKind" to "BLOCK","stockBlockThickness" to "NaN")))
         assertNull(ConstructionMaterial.issue(values+("stockKind" to "BLOCK")))
+    }
+
+    @Test fun guidedPvcUsesMeasuredStockAndRetainsTheExistingAssemblyFormat() {
+        val incomplete = SinglePipeDraft("32", "", "1600")
+        assertEquals(incomplete, SinglePipeDraft.read(incomplete.record()))
+        assertNull(incomplete.cutFor(1500))
+        assertNull(incomplete.copy(outside = "31").cutFor(1500))
+        val pipe = incomplete.copy(outside = "40")
+        assertEquals("measured-pipe,1500,-", pipe.cutFor(1500))
+        assertEquals("measured-pipe,1600,-", pipe.cutFor(1800))
+        assertNull(SinglePipeDraft.read("catalog-a,32,40,1600"))
+        val rows = "a,800,c\nb,650,-"
+        assertEquals(rows, PvcCutDraft.records(requireNotNull(PvcCutDraft.read(rows))))
+        assertTrue(PvcCutDraft.pending("a,800,c\nb,,-"))
+        val single = requireNotNull(PvcCutDraft.read("a,800,-"))
+        assertTrue(PvcCutDraft.pending(PvcCutDraft.records(single + PvcCutDraft("b", "650"))))
+        assertFalse(PvcCutDraft.pending(rows))
     }
 
     @Test fun validatedBoardsPermitAPlanButInsufficientStockDoesNot() {

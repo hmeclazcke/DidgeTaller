@@ -2637,3 +2637,19 @@ strict source gate reported 819 measured, 184 unmapped and zero violations.
 CPD found zero groups. Resource parity and the 46 quality-tool tests passed.
 The gate thresholds and numerical baselines were unchanged. Source-bound
 technical reviews document Compose and anonymous callback mapping limits.
+
+### Guided material inputs
+
+The original Compose screen failed the test that opens PVC without showing a
+raw catalog editor. The guided tests measure a single pipe, reject an outside
+diameter below its inside diameter and keep a straight-pipe approximation from
+opening the plan before acceptance. The measured catalog journey selects two
+segments and a fitting and checks the 1485 mm assembly and CSV values. Wood
+checks cover logs, boards and stored block dimensions. The Library journey
+resumes the same draft. Actual emulator capture sets include English and
+Spanish at 150% text size under `checkpoints/material-form/`.
+
+Debug JVM discovered 646 tests with 638 passes and eight protected skips. The
+strict source gate measured 830 functions and classified 191 as unmapped, with
+zero violations and zero CPD groups. Resource parity passed. The quality
+thresholds and numerical baselines are unchanged.
