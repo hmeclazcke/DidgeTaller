@@ -103,7 +103,7 @@ private fun TallerToolbar(route: String?, detail: Boolean, fullscreen: Boolean, 
         TallerRoutes.Viewer to true,
         TallerRoutes.Measure to (shortLarge || capturing),
         TallerRoutes.Metronome to (configuration.orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE),
-        TallerRoutes.Lab to shortLarge)
+        TallerRoutes.Lab to true)
     if((detail || !fullscreen) && suppressed[route]!=true)
         TopAppBar(title=title,navigationIcon=navigationIcon,colors=TopAppBarDefaults.topAppBarColors(containerColor=background))
 }

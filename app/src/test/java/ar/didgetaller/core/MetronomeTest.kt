@@ -81,13 +81,36 @@ class MetronomeTest {
         engine.captureActive(false); clock.fireLast(); assertEquals(2, click.accents.size)
         engine.pause(); clock.tasks.last().second(); assertEquals(2, click.accents.size)
     }
-    @Test fun tempoChangeInvalidatesOldDeadlineAndUsesNewInterval() {
+    @Test fun repeatedTempoChangesDoNotKeepPostponingTheNextBeat() {
+        val clock = Clock()
+        val click = Click()
+        val engine = MetronomeEngine(clock, click) {}
+        engine.update(MetronomeSettings(bpm = 90, audible = true))
+        engine.start()
+        clock.fireLast()
+        val next = clock.tasks.last().first
+        for (bpm in 91..100) {
+            clock.time += 55_000_000
+            engine.update(engine.state.settings.copy(bpm = bpm))
+            assertEquals(next, clock.tasks.last().first)
+        }
+        clock.fireLast()
+        assertEquals(2, click.accents.size)
+        assertEquals(2, engine.state.pulse!!.beat)
+        assertEquals(next + 600_000_000L, clock.tasks.last().first)
+    }
+
+    @Test fun tempoChangeKeepsThePendingBeatAndUsesTheNewIntervalAfterIt() {
         val clock = Clock(); val engine = MetronomeEngine(clock, Click()) {}
-        engine.start(); clock.fireLast(); val stale = clock.tasks.last().second
+        engine.start(); clock.fireLast()
+        val pending = clock.tasks.last()
         engine.update(engine.state.settings.copy(bpm = 240))
-        assertEquals(250_000_000L, clock.tasks.last().first)
-        val pending = engine.state; stale(); assertEquals(pending, engine.state)
-        clock.fireLast(); assertEquals(2, engine.state.pulse!!.beat)
+        assertSame(pending, clock.tasks.last())
+        clock.fireLast()
+        assertEquals(2, engine.state.pulse!!.beat)
+        assertEquals(pending.first + 250_000_000L, clock.tasks.last().first)
+        pending.second()
+        assertEquals(2, engine.state.pulse!!.beat)
     }
     @Test fun visualDefaultZeroVolumeEarlyCallbacksAndAudioFailureAreSafe() {
         val clock = Clock(); val click = Click(); val engine = MetronomeEngine(clock, click) {}
@@ -179,13 +202,13 @@ class MetronomeTest {
             assertEquals(137L * subdivision.pulses, grid.due(60_000_000_000))
         }
     }
-    @Test fun mutingOrZeroGainStopsTheCurrentClickAndTempoChangesCancelTheOldQueue() {
+    @Test fun mutingOrZeroGainStopsTheCurrentClickAndMeterChangesCancelTheOldQueue() {
         val clock = Clock(); val click = Click(); val engine = MetronomeEngine(clock, click) {}
         engine.update(MetronomeSettings(audible = true)); engine.start(); clock.fireLast()
         engine.update(engine.state.settings.copy(audible = false)); assertEquals(1, click.silenced)
         engine.update(engine.state.settings.copy(audible = true)); clock.fireLast()
         engine.update(engine.state.settings.copy(volume = 0f)); assertEquals(2, click.silenced)
         val cancelled = clock.cancellations
-        engine.update(engine.state.settings.copy(bpm = 137)); assertEquals(cancelled + 1, clock.cancellations)
+        engine.update(engine.state.settings.copy(beatsPerBar = 3)); assertEquals(cancelled + 1, clock.cancellations)
     }
 }

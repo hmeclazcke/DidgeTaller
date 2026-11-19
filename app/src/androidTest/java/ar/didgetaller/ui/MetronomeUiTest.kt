@@ -48,6 +48,60 @@ class MetronomeUiTest {
         if (::metronome.isInitialized) compose.runOnUiThread { metronome.close() }
         if (::app.isInitialized) app.clean()
     }
+    @Test fun tempoTapAndHoldRespectReleaseBoundsAndPlayback() {
+        compose.setContent { androidx.compose.material3.MaterialTheme(colorScheme = appColors) { MetronomeScreen(metronome) } }
+        val plus = compose.onNodeWithTag("metronome-faster").performScrollTo().assertHasClickAction()
+        val minus = compose.onNodeWithTag("metronome-slower").assertHasClickAction()
+        plus.performTouchInput { click() }
+        compose.runOnIdle { assertEquals(91, metronome.state.settings.bpm) }
+        minus.performTouchInput { down(center); advanceEventTime(240); up() }
+        compose.runOnIdle {
+            assertEquals(90, metronome.state.settings.bpm)
+            metronome.start()
+        }
+        plus.performTouchInput { down(center) }
+        compose.waitUntil(5000) { metronome.state.settings.bpm >= 94 }
+        plus.performTouchInput { up() }
+        val released = compose.runOnIdle { metronome.state.settings.bpm }
+        minus.performTouchInput { click() }
+        compose.runOnIdle {
+            assertEquals(released - 1, metronome.state.settings.bpm)
+            assertEquals(MetronomeMode.RUNNING, metronome.state.mode)
+            metronome.update(metronome.state.settings.copy(bpm = 238))
+        }
+        plus.performTouchInput { down(center) }
+        compose.waitUntil(5000) { metronome.state.settings.bpm == 240 }
+        plus.performTouchInput { up() }
+        plus.assertIsNotEnabled()
+        compose.runOnIdle { metronome.update(metronome.state.settings.copy(bpm = 32)) }
+        minus.performTouchInput { down(center) }
+        compose.waitUntil(5000) { metronome.state.settings.bpm == 30 }
+        minus.performTouchInput { up() }
+        minus.assertIsNotEnabled()
+        screenshot("-tempo-hold")
+    }
+
+    @Test fun leavingButtonAndDisposingScreenEndRepeat() {
+        val visible = androidx.compose.runtime.mutableStateOf(true)
+        compose.setContent {
+            if (visible.value) androidx.compose.material3.MaterialTheme(colorScheme = appColors) { MetronomeScreen(metronome) }
+        }
+        val plus = compose.onNodeWithTag("metronome-faster").performScrollTo()
+        plus.performTouchInput { down(center) }
+        compose.waitUntil(5000) { metronome.state.settings.bpm >= 93 }
+        plus.performTouchInput { moveTo(center.copy(x = -24f)) }
+        val left = compose.runOnIdle { metronome.state.settings.bpm }
+        compose.mainClock.advanceTimeBy(500)
+        plus.performTouchInput { up() }
+        compose.runOnIdle { assertEquals(left, metronome.state.settings.bpm) }
+        plus.performTouchInput { down(center) }
+        compose.waitUntil(5000) { metronome.state.settings.bpm > left + 1 }
+        val detached = compose.runOnIdle { visible.value = false; metronome.state.settings.bpm }
+        compose.onNodeWithTag("metronome-screen").assertDoesNotExist()
+        compose.mainClock.advanceTimeBy(500)
+        compose.runOnIdle { assertEquals(detached, metronome.state.settings.bpm) }
+    }
+
     @Test fun transportSettingsAndVisualCaptureInterlock() {
         captureTransportFailure = true
         val owners = ViewModelStore().also { stores += it }

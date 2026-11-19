@@ -1450,3 +1450,21 @@ wizard-canonical-final-build.log. Remote publication/CI result is recorded in PR
 No new dependencies, numeric baseline changes, Samsung access, private recordings,
 main changes or merge. OS process-kill restoration was not separately exercised;
 SavedState restoration, lifecycle replacement and Library reopening were executed.
+
+## Workshop navigation and tempo controls
+
+PR #5 was merged at e364a34. The iteration starts on
+`feature/workshop-navigation-tempo` from that remote main revision.
+Compose HorizontalPager and numbered tabs use the editor's available stage range.
+New stock measurements start blank, measured dimensions are checked before
+validation, and existing saved values and design identities survive intact.
+
+The metronome uses the platform hold threshold and one cancellable coroutine for
+both directions. Repeats advance one BPM each, decreasing the interval from
+150 ms to 55 ms. A fake clock reproduced pulse starvation when frequent tempo
+changes replaced the queued pulse. The pending deadline is now retained and
+the new grid starts from that pulse. Meter and subdivision changes retain their
+separate rescheduling behavior.
+
+Emulator validation uses only synthetic fixtures. The original Samsung was not
+used for this development iteration. See VALIDATION.md for observed results.

@@ -68,18 +68,62 @@ class ConstructionUiTest {
     private fun tab(index:Int) {
         hideKeyboard()
         val node=compose.onNodeWithTag("construction-step-$index")
-        node.performScrollTo()
-        val vertical=compose.onAllNodes(SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange) and hasAnyDescendant(hasTestTag("construction-step-$index")))
-        if(vertical.fetchSemanticsNodes().isNotEmpty())vertical.onFirst().performScrollToNode(hasTestTag("construction-step-$index"))
         node.assertIsDisplayed().performClick()
         compose.waitUntil(5000){node.fetchSemanticsNode().config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Selected)==true}
         node.assertIsSelected()
+    }
+    private fun measuredBoards() {
+        click("stock-kind-BOARDS")
+        field("stockLength","1520")
+        field("stockWidth","130")
+        field("stockThickness","70")
+        click("stock-confirmed")
+    }
+    @Test fun swipeRespectsPrerequisitesAndReturnsToThePreviousStage() {
+        open()
+        val pager = compose.onNodeWithTag("construction-pager")
+        pager.performTouchInput { swipeLeft() }
+        compose.onNodeWithTag("construction-step-1").assertIsSelected()
+        click("stock-kind-BOARDS")
+        compose.onNodeWithTag("construction-stockThickness").performScrollTo()
+            .assertTextContains(compose.activity.getString(R.string.wizard_required_dimension))
+        compose.onNodeWithTag("construction-step-2").assertIsNotEnabled()
+        screenshot("incomplete-material")
+        pager.performTouchInput { swipeLeft() }
+        compose.onNodeWithTag("construction-step-1").assertIsSelected()
+        pager.performTouchInput { swipeRight() }
+        compose.onNodeWithTag("construction-step-0").assertIsSelected()
+        pager.performTouchInput { swipeLeft() }
+        measuredBoards()
+        pager.performTouchInput { swipeLeft() }
+        compose.onNodeWithTag("construction-step-2").assertIsSelected()
+        ready()
+        pager.performTouchInput { swipeLeft() }
+        compose.onNodeWithTag("construction-step-3").assertIsSelected()
+        compose.onNodeWithTag("construction-export-pdf").performScrollTo().assertIsDisplayed()
+        screenshot("swipe-plan")
+    }
+    @Test fun draggingTheLengthSliderDoesNotPageAwayFromDesign() {
+        open()
+        val progress = androidx.compose.ui.semantics.SemanticsProperties.ProgressBarRangeInfo
+        val slider = compose.onAllNodes(SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsActions.SetProgress))[0]
+        slider.performScrollTo().assertIsDisplayed()
+        val before = slider.fetchSemanticsNode().config[progress].current
+        slider.performTouchInput { swipeRight(startX = width * .4f, endX = width * .8f) }
+        assertTrue(slider.fetchSemanticsNode().config[progress].current > before)
+        compose.onNodeWithTag("construction-step-0").assertIsSelected()
     }
     private fun field(key:String,value:String) {
         compose.onNodeWithTag("construction-$key").performScrollTo().performTextReplacement(value)
         hideKeyboard()
     }
     private fun ready() {compose.waitUntil(60000){compose.onAllNodesWithTag("construction-plan-summary").fetchSemanticsNodes().isNotEmpty()}}
+    private fun displayedPlanSummary(): SemanticsNodeInteraction {
+        val summaries = compose.onAllNodesWithTag("construction-plan-summary")
+        val visible = summaries.fetchSemanticsNodes().indices.map { summaries[it] }.filter { it.isDisplayed() }
+        assertEquals("Only the active pager page displays the plan summary", 1, visible.size)
+        return visible.single()
+    }
     private fun export(format:String) {
         val key=if(format=="tiles")"pdf" else format
         exports.remove(key);click("construction-export-$format")
@@ -87,7 +131,7 @@ class ConstructionUiTest {
         assertTrue(exports.getValue(key).size>100)
     }
     @Test fun validationPublishesForCurrentGeometry() {
-        open();tab(1);click("stock-kind-BOARDS");click("stock-confirmed")
+        open();tab(1);measuredBoards()
         try {
             tab(2);ready()
             compose.onNodeWithTag("construction-step-3").assertIsEnabled()
@@ -104,7 +148,7 @@ class ConstructionUiTest {
         field("planName","Workshop draft");field("target","73.42")
         click("wizard-save-draft")
         compose.onNodeWithTag("construction-step-0").assertIsSelected()
-        tab(1);click("stock-kind-BOARDS");click("stock-confirmed")
+        tab(1);measuredBoards()
         screenshot("wood-method");tab(2);ready()
         click("construction-search")
         val first="construction-candidate-0"
@@ -148,15 +192,16 @@ class ConstructionUiTest {
         compose.onNodeWithTag("construction-step-3").assertIsNotEnabled()
         compose.onNodeWithTag("construction-approximation").performScrollTo().assertIsDisplayed()
         click("construction-accept-alternative");tab(3)
-        compose.onNodeWithTag("construction-plan-summary").assertTextContains("1485 mm",substring=true)
+        displayedPlanSummary().assertTextContains("1485 mm",substring=true)
         screenshot("pvc-plan");export("csv")
         val csv=exports.getValue("csv").toString(Charsets.UTF_8)
         assertTrue(csv.contains("1485.0"));assertTrue(csv.contains("770"))
         click("wizard-save-draft")
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])
         tab(1);compose.onNodeWithTag("construction-method-LAMINATED").assertDoesNotExist()
-        field("pipes","invalid");tab(2);click("construction-validate")
-        compose.waitUntil(30000){compose.onAllNodesWithTag("construction-error").fetchSemanticsNodes().isNotEmpty()}
+        field("pipes","invalid")
+        compose.onNodeWithText(compose.activity.getString(R.string.wizard_invalid_pipes)).assertExists()
+        compose.onNodeWithTag("construction-step-2").assertIsNotEnabled()
         compose.onNodeWithTag("construction-step-3").assertIsNotEnabled()
         assertEquals("PVC",ConstructionStore(app).project("synthetic-construction")["method"])
     }
@@ -164,6 +209,7 @@ class ConstructionUiTest {
         open()
         field("planName","Río claro")
         tab(1);click("stock-kind-LOG")
+        field("stockLength","1520")
         field("stockDiameter","130")
         val language=if(compose.activity.resources.configuration.locales[0].language=="es")WorkshopLanguage.SPANISH else WorkshopLanguage.ENGLISH
         compose.onNodeWithTag("stock-confirmed").assertContentDescriptionEquals(language.wood(WoodTerm.CONFIRM))
@@ -172,7 +218,7 @@ class ConstructionUiTest {
         compose.onNodeWithTag("stock-fit-FITS").performScrollTo().assertIsDisplayed()
         screenshot("log-stock")
         click("stock-kind-BOARDS")
-        field("stockWidth","130");field("stockThickness","70")
+        field("stockWidth","130");field("stockThickness","70");click("stock-confirmed")
         screenshot("board-stock")
         tab(2);ready();tab(3);click("wizard-save-draft")
         val stored=ConstructionStore(app).project("synthetic-construction")
@@ -204,7 +250,7 @@ class ConstructionUiTest {
             compose.setContent {TallerApp(vm,{},{},{_,_,_->})}
             compose.onNode(hasContentDescription(compose.activity.getString(R.string.ui_laboratory)) and hasAnyAncestor(hasTestTag("main-navigation"))).performClick()
             compose.onNodeWithTag("construction-workspace").assertIsDisplayed()
-            compose.onNodeWithText(compose.activity.getString(R.string.ui_close)).performClick()
+            compose.onNodeWithContentDescription(compose.activity.getString(R.string.ui_close)).performClick()
             compose.onNodeWithTag("construction-workspace").assertDoesNotExist()
             compose.onNodeWithTag("lab-home").assertExists()
         } finally {compose.runOnUiThread {owners.clear()}}
@@ -261,7 +307,7 @@ class ConstructionUiTest {
             click("construction-design-$id")
             compose.onNodeWithTag("construction-step-1").assertIsSelected()
             compose.onNodeWithTag("construction-stockWidth").performScrollTo().assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("139")))
-            compose.onNodeWithText(compose.activity.getString(R.string.ui_close)).performClick()
+            compose.onNodeWithContentDescription(compose.activity.getString(R.string.ui_close)).performClick()
             section(R.string.ui_laboratory).performClick()
             field("planName","Unsaved edit")
             androidx.test.espresso.Espresso.pressBackUnconditionally()
@@ -300,7 +346,7 @@ class ConstructionUiTest {
             tab(0);compose.onNodeWithTag("construction-target").performScrollTo().assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("80")))
             field("planName","Revised");click("wizard-save-draft")
             tab(2);ready();tab(3);click("wizard-save-draft")
-            compose.onNodeWithText(compose.activity.getString(R.string.ui_close)).performClick()
+            compose.onNodeWithContentDescription(compose.activity.getString(R.string.ui_close)).performClick()
             click("construction-design-resume-id")
             compose.onNodeWithTag("construction-step-3").assertIsSelected();ready()
             androidx.test.espresso.Espresso.pressBackUnconditionally()
@@ -337,8 +383,10 @@ class ConstructionUiTest {
         compose.onNodeWithTag("construction-step-3").assertIsNotEnabled()
         compose.onNodeWithTag("construction-step-0").assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.StateDescription,resources.getString(R.string.wizard_current)))
         screenshot("$language-large-design")
-        tab(1);click("stock-kind-$stock");click("stock-confirmed")
-        if(stock=="LOG")field("stockDiameter","140")
+        tab(1)
+        if (stock == "LOG") {
+            click("stock-kind-LOG");field("stockLength","1520");field("stockDiameter","140");click("stock-confirmed")
+        } else measuredBoards()
         tab(2);ready();tab(3)
         compose.onNodeWithTag("construction-export-pdf").performScrollTo().assertIsDisplayed()
         screenshot("$language-large-plan");export("pdf");verifyPdf(exports.getValue("pdf"))
@@ -357,7 +405,7 @@ class ConstructionUiTest {
         compose.waitUntil(5000){compose.onAllNodesWithTag("construction-plan-summary").fetchSemanticsNodes().any {
             it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.any {text->text.text.contains("second")}==true
         }}
-        compose.onNodeWithTag("construction-plan-summary").assertTextContains("second",substring=true)
+        displayedPlanSummary().assertTextContains("second",substring=true)
     }
     @Test fun replacementLifecycleOwnerDoesNotDisposeTheSurvivingDraft() {
         lateinit var first:androidx.lifecycle.LifecycleOwner
@@ -378,9 +426,9 @@ class ConstructionUiTest {
                 }
             }
         }
-        tab(1);click("stock-kind-BOARDS");click("stock-confirmed");tab(2);ready()
+        tab(1);measuredBoards();tab(2);ready()
         compose.runOnIdle {active.value=second}
-        compose.onNodeWithTag("construction-plan-summary").assertExists()
+        displayedPlanSummary().assertTextContains("Draft",substring=true)
         tab(0);field("target","80");tab(2);ready()
     }
     @Test fun unreadableCatalogDoesNotAuthorizeReplacingAnExistingProject() {

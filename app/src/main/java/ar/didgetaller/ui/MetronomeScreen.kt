@@ -92,19 +92,25 @@ private fun MetronomeTempo(controller: PracticeMetronome, compact: Boolean) {
     val editLabel = stringResource(R.string.metronome_edit)
     val slower = stringResource(R.string.metronome_slower)
     val faster = stringResource(R.string.metronome_faster)
+    val hold = rememberTempoHold()
+    fun step(delta: Int): Boolean {
+        val settings = controller.currentSettings
+        val next = settings.bpm + delta
+        if (next !in 30..240) return false
+        controller.update(settings.copy(bpm = next))
+        return next + delta in 30..240
+    }
     BoxWithConstraints(Modifier.fillMaxWidth()) {
       val tempoSize = minOf(if (compact) 44f else 76f, (maxWidth.value - 96f) / 1.8f / LocalDensity.current.fontScale).coerceAtLeast(24f).sp
       Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        FilledTonalButton(onClick = { controller.update(controller.state.settings.copy(bpm = bpm - 1)) }, enabled = bpm > 30,
-            contentPadding = PaddingValues(0.dp), modifier = Modifier.size(48.dp).testTag("metronome-slower").semantics { contentDescription = slower }) { Text("−", fontSize = 26.sp) }
+        TempoButton("−", slower, "metronome-slower", bpm > 30, hold) { step(-1) }
         Column(Modifier.weight(1f).clickable { editing = true }.testTag("metronome-edit").semantics { contentDescription = editLabel },
             horizontalAlignment = Alignment.CenterHorizontally) {
             Text(bpm.toString(), fontSize = tempoSize, lineHeight = tempoSize * 1.1f, fontWeight = FontWeight.Bold, modifier = Modifier.testTag("metronome-tempo-value"),
                 maxLines = 1)
             Text(stringResource(R.string.metronome_bpm), style = MaterialTheme.typography.labelMedium)
         }
-        FilledTonalButton(onClick = { controller.update(controller.state.settings.copy(bpm = bpm + 1)) }, enabled = bpm < 240,
-            contentPadding = PaddingValues(0.dp), modifier = Modifier.size(48.dp).testTag("metronome-faster").semantics { contentDescription = faster }) { Text("+", fontSize = 26.sp) }
+        TempoButton("+", faster, "metronome-faster", bpm < 240, hold) { step(1) }
       }
     }
     if (editing) MetronomeTempoDialog(bpm, onDismiss = { editing = false }) {

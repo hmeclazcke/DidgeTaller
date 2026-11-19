@@ -2599,3 +2599,25 @@ not exhaustive component-catalog synthesis. No Samsung or private audio/session 
 was accessed; the existing scientific model and document geometry were unchanged.
 
 Final compact follow-up: both Library reopening and measured-PVC configuration/export passed at 1280x720 and 150% font on the final APK. The earlier fixed-header assertion was corrected to scroll the responsive header into view before retaining its visibility assertion.
+
+## Workshop navigation and tempo controls
+
+The base is e364a34, which merged the original construction wizard. The new
+navigation uses Compose paging constrained by the design and material checks.
+New stock measurements start empty and drafts retain their original identity.
+Focused emulator journeys use synthetic designs and verify both directions,
+slider ownership, Library restoration, stale-plan invalidation and exports.
+
+Debug and release JVM each discovered 644 tests, with 636 passing and eight
+protected skips. The fake clock reproduced repeated edits postponing the next
+pulse. Preserving that deadline allows playback to continue while a new tempo
+takes effect. Controlled coroutine tests verify the 150 to 55 ms acceleration
+curve, release and competing pointer ownership. Android Lint reported zero
+errors. The strict source gate measured 815 functions, with 178 unscored and
+zero violations. CPD reported zero groups, and the 46 quality-tool tests and
+localization parity passed. There are no numeric gate or baseline changes.
+
+Final emulator results and visual evidence are tracked separately from the
+JVM coverage. An initial run was interrupted by an emulator System UI ANR.
+A separate large batch reached its timeout, after which decisive cases were
+split into smaller runs. No timeout is counted as a pass.

@@ -23,10 +23,17 @@ internal class ConstructionEditor(private val context:Context,private val design
     private val exportOwner=LatestAnalysis<ConstructionExport,ByteArray>(CoroutineAnalysisLoader(scope,Dispatchers.Default){r:ConstructionExport,_,_->constructionBytes(r)}){exported=it}
     val current get()=analysis.value?.takeIf {analysis is AnalysisState.Ready && analysis.request?.action!="search" && analysis.request?.values==draft.value.values}
     val canPlan get()=current?.let {ConstructionJourney.canPlan(it.plan,draft.value.accepted)}==true
-    fun available(step:Int)=ConstructionJourney.available(draft.value.values,step,canPlan)
+    private val materialIssue by derivedStateOf { ConstructionMaterial.issue(draft.value.values) }
+    val blockedMaterial get() = materialIssue
+    fun available(step:Int):Boolean=when(step) {
+        2 -> materialIssue == null && ConstructionJourney.available(draft.value.values,1)
+        3 -> canPlan && available(2)
+        else -> ConstructionJourney.available(draft.value.values,step)
+    }
     fun set(key:String,value:String) {
         owner.clear();exportOwner.clear()
-        draft.value=draft.value.edit(key,value.take(64000)).copy(step=minOf(draft.value.step,2))
+        val updated = draft.value.edit(key,value.take(64000))
+        draft.value = updated.copy(step = ConstructionJourney.restorableStep(updated.values,minOf(updated.step,2)))
         failed=false;saved=false
     }
     fun name(language:WorkshopLanguage):String {

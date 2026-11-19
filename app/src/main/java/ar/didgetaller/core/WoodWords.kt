@@ -23,7 +23,7 @@ enum class WoodTerm(val en:String,val es:String) {
     EXTERIOR("Radial exterior preparation loss (mm)","Pérdida radial de preparación exterior (mm)"), UNCERTAINTY("Radial uncertainty reserve (mm)","Reserva radial por incertidumbre (mm)"),
     SECTIONS("Optional log measurements: distance, minimum diameter (mm)","Medidas opcionales del tronco: distancia, diámetro mínimo (mm)"),
     CONFIRM("These are my measured bounds along a straight, centred, sound piece","Son mis medidas límite de una pieza recta, centrada y sin defectos conocidos"),
-    ASSUMPTION("Initial values are examples. Use the smaller dimensions of both boards. A log needs conservative bounds between measurements; curvature, cracks, knots or ovality may prevent confirmation.","Los valores iniciales son ejemplos. Usá las menores dimensiones de ambas tablas. El tronco necesita límites conservadores entre mediciones; curvatura, grietas, nudos u ovalidad pueden impedir confirmarlo."),
+    ASSUMPTION("Use the smaller dimensions of both boards. A log needs conservative bounds between measurements; curvature, cracks, knots or ovality may prevent confirmation.","Usá las menores dimensiones de ambas tablas. El tronco necesita límites conservadores entre mediciones; curvatura, grietas, nudos u ovalidad pueden impedir confirmarlo."),
     ZERO_MARGIN("Geometric minimum: no additional allowance","Mínimo geométrico: sin margen adicional"),
     POSITIVE_MARGIN("Fits geometrically, with dimensional allowance","Cabe geométricamente, con margen dimensional"),
     JOIN_WIDTH("Width at joining plane","Ancho en la unión"), LOG_DEPTH("Joint plane to outer surface (derived)","Plano de unión a superficie exterior (calculado)"),

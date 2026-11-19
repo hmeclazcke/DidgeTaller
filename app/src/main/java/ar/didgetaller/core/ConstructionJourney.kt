@@ -8,18 +8,26 @@ enum class ConstructionReadiness { READY, MINIMUM, INCOMPATIBLE, UNCONFIRMED, AL
 data class ConstructionJourney(val values:Map<String,String>,val step:Int=0,val acceptedValues:Map<String,String>?=null) {
     init {require(step in 0..3)}
     val accepted:Boolean get()=acceptedValues==values
-    fun edit(key:String,value:String)=copy(values=values+(key to value),acceptedValues=null)
+    fun edit(key:String,value:String): ConstructionJourney {
+        val confirmation = if (key == "stockKind" && values[key] != value) mapOf("stockConfirmed" to "false") else emptyMap()
+        return copy(values=values+confirmation+(key to value),acceptedValues=null)
+    }
     companion object {
         fun restore(saved:Map<String,String>):ConstructionJourney {
             val values=saved.filterKeys {!it.startsWith("_wizard")}
             val step=(saved["_wizardStep"]?.toIntOrNull() ?: 0).coerceIn(0,3)
-            return ConstructionJourney(values,step,if(saved["_wizardAccepted"]=="true")values else null)
+            return ConstructionJourney(values,restorableStep(values,step),if(saved["_wizardAccepted"]=="true")values else null)
+        }
+        fun restorableStep(values: Map<String, String>, step: Int): Int = when {
+            step >= 1 && !available(values,1) -> 0
+            step >= 2 && !available(values,2) -> 1
+            else -> step
         }
         fun available(values:Map<String,String>,step:Int,validated:Boolean=false):Boolean {
             if(step==0)return true
             if(runCatching {ConstructionForm.shape(values);ConstructionForm.target(values)}.isFailure)return false
             if(step==1)return true
-            if(runCatching {ConstructionForm.options(values)}.isFailure)return false
+            if(ConstructionMaterial.issue(values)!=null)return false
             return step==2 || step==3 && validated
         }
         fun canPlan(p:ConstructionPlan,accepted:Boolean)=readiness(p,accepted) in setOf(ConstructionReadiness.READY,ConstructionReadiness.MINIMUM,ConstructionReadiness.ACCEPTED_ALTERNATIVE,ConstructionReadiness.LEGACY)
