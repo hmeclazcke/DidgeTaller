@@ -5,7 +5,8 @@ import java.util.Random
 import kotlin.math.*
 
 internal data class Trial(val category: String, val profile: InstrumentProfile, val rate: Int,
-    val seed: Int, val target: Double, val pcm: ShortArray, val elapsedMs: Double = 0.0)
+    val seed: Int, val target: Double, val pcm: ShortArray, val elapsedMs: Double = 0.0,
+    val upperHz: Int = profile.initialMaxHz)
 
 private val didge = InstrumentProfile.DIDGERIDOO
 private val flute = InstrumentProfile.NATIVE_AMERICAN_FLUTE

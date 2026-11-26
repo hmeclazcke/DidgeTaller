@@ -13,7 +13,7 @@ private val fluteFile = "Flute.nonvib.mf.C5B5.aiff"
 private const val fluteHash = "43d8d6c620fe9c508c30b568b023e54fc226960adcb8455467e511a22866066c"
 
 /** Nominal chromatic note labels from the publisher. No estimate is used to align notes. */
-private fun publicFlute(file: File): List<Trial> {
+internal fun publicFlute(file: File): List<Trial> {
     check(MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) } == fluteHash)
     val pcm = AudioSystem.getAudioInputStream(file).use { input ->
         require(input.format.run { isBigEndian && sampleRate == 44100f && channels == 1 && sampleSizeInBits == 16 })
@@ -103,6 +103,10 @@ private fun costs(directory: File, split: String, fixtures: List<Trial>) {
 fun main(args: Array<String>) {
     val directory = File(args[0]).apply { mkdirs() }
     val split = args[1]
+    if (split.startsWith("phase2-")) {
+        phaseTwo(directory, split.removePrefix("phase2-"))
+        return
+    }
     val trials = when (split) {
         "public" -> publicFlute(File(directory, fluteFile))
         "replication" -> replication().toList()
