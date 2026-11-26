@@ -1,5 +1,49 @@
 # Pitch estimation: engineering decision
 
+## Paired window and periodicity study
+
+The baseline is the application at `fa4aeee`. The experiment calls its compiled
+detector and applies the production acceptance policy for each instrument. Two
+desktop-only challengers use the same incoming frame and callback time. One
+analyzes just the most recent half with the existing YIN implementation. The other
+uses direct normalized correlation (type-II NSDF), selecting the earliest positive
+lobe within 93% of the strongest in-range lobe, with parabolic refinement.
+Neither alternative has access to future samples. Strength is a periodicity score.
+
+**Decision rule fixed before held-out evaluation.** Compare each instrument at
+44.1 kHz separately. A general replacement must produce more correct notes or
+react sooner, without fewer correct notes within 50 cents in a signal family,
+more octave mistakes, or more false positives on negative controls. Report misses
+and accepted-only errors together. A narrow win on four held-out frequencies is
+grounds for further independent verification before introducing a special mode.
+No tuning on the held-out or recorded flute cases.
+
+Run from the repository root using JDK 21 and the existing Gradle wrapper:
+
+```sh
+./gradlew :engineering-tools:pitchStudy -PpitchSplit=development
+python tools/pitch_study.py development
+./gradlew :engineering-tools:pitchStudy -PpitchSplit=held
+python tools/pitch_study.py held
+```
+
+For the optional real-flute check, download Sonja Feig's unmodified 2000 mezzo-forte,
+non-vibrato C5–B5 chromatic scale to
+`build/reports/pitch-study/Flute.nonvib.mf.C5B5.aiff`. Run the same two commands
+with `public`. The runner checks the SHA-256 and format. The public source is
+external to the APK and repository. [University of Iowa recording](https://theremin.music.uiowa.edu/sound%20files/MIS/Woodwinds/flute/Flute.nonvib.mf.C5B5.aiff)
+
+Raw paired decisions, strata, confidence bins, transition times and cost samples
+are written to `build/reports/pitch-study/`. Development and held-out splits use
+disjoint pitches and random seeds with the same synthesis families. Accuracy uses
+every labelled periodic trial, including deliberately quiet tones. Negative controls
+and two independent oscillators have separate denominators. Octave errors fall
+within 50 cents of any nonzero integer octave. Frequency-modulated trials use
+instantaneous pitch at the end of the window as the live display target. A
+register change is confirmed on the second consecutive estimate within 50 cents.
+The extra 32/48 kHz runs stress the detector API only. Capture and saved YIN
+replay operate at 44.1 kHz.
+
 ## Musician-facing saved sessions (Musical Experience 4.0)
 
 The ordinary saved-session chart now presents one measured quantity per

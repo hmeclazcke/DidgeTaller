@@ -7,6 +7,35 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 }
 
+// Research code needs desktop JDK audio and allocation counters. Keep it out of Android.
+val pitchSources = rootProject.fileTree("tools/pitch-study") { include("*.kt") }
+val pitchClasses = layout.buildDirectory.dir("classes/pitch-study")
+val appClasses = project(":app").layout.buildDirectory.dir("tmp/kotlin-classes/debug")
+val pitchClasspath = files(appClasses, configurations.runtimeClasspath.map { cp ->
+    cp.filter { it.name.startsWith("kotlin-stdlib-") }
+})
+val compilePitchStudy by tasks.registering(JavaExec::class) {
+    dependsOn(":app:compileDebugKotlin")
+    inputs.files(pitchSources, pitchClasspath)
+    outputs.dir(pitchClasses)
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("org.jetbrains.kotlin.cli.jvm.K2JVMCompiler")
+    doFirst {
+        args("-no-stdlib", "-no-reflect", "-jvm-target", "17", "-classpath", pitchClasspath.asPath,
+            "-d", pitchClasses.get().asFile.absolutePath)
+        args(pitchSources.files.sorted().map { it.absolutePath })
+    }
+}
+
+tasks.register<JavaExec>("pitchStudy") {
+    group = "verification"
+    dependsOn(compilePitchStudy)
+    classpath(pitchClasses, pitchClasspath)
+    mainClass.set("ar.didgetaller.study.PitchStudyKt")
+    args(rootProject.layout.buildDirectory.dir("reports/pitch-study").get().asFile,
+        providers.gradleProperty("pitchSplit").getOrElse("development"))
+}
+
 tasks.register<JavaExec>("sourceInventory") {
     group = "verification"
     description = "Inventories actual Kotlin PSI declarations without guessing from source regexes."
