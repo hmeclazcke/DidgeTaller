@@ -71,6 +71,8 @@ Live YIN-based periodicity supplies an accepted frequency, musical note and scie
 
 For didgeridoo, the ordinary **Drone** curve tracks a supported low-frequency spectral component. It is **not** a physically confirmed lip-oscillator fundamental, and it is not automatically assigned a musical note. Live YIN readings and advanced YIN/SWIPE′ diagnostics answer different questions; the original historical readings remain accessible. The [session explorer guide](docs/SESSION_EXPLORER.md) and [acoustic uncertainty notes](docs/ACOUSTIC_UNCERTAINTY.md) explain these distinctions.
 
+Strong periodicity can also describe a higher harmonic. See the [reproducible detector comparison](docs/PITCH_RESOLUTION.md#paired-window-and-periodicity-study) for accuracy, missed notes and response time on synthetic signals and a public flute recording.
+
 ## Build from source
 
 Current beta: **3.3.0-beta1**, versionCode **13**, package `ar.didgetaller`. Minimum Android **8.0 (API 26)**; compile/target SDK **35**. Minimum support is a build constraint, not a claim of physical testing on every Android release.

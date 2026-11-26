@@ -1,3 +1,7 @@
+# Pitch detection study
+
+Started from merged main `fa4aeee`. Froze the candidates in `9014db3` after the development split. Ran the held-out split, an external flute scale, independent frequency/phase replication and two sensitivity sweeps. Preserved the production estimator after observing the tradeoff between harmonic errors and noise responses. [Decision and reproduction](PITCH_STUDY.es.md)
+
 # Sequential validation checkpoint
 
 Old Gradle clients finished. One --no-daemon execution completed successfully in

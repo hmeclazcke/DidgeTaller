@@ -12,6 +12,60 @@ private val flute = InstrumentProfile.NATIVE_AMERICAN_FLUTE
 private val categories = listOf("pure", "rich", "missing", "second", "third", "fifth", "envelope",
     "am", "fm", "breathDip", "snr20", "snr6", "snr0", "quiet", "silence", "noise", "impulse", "twoSources")
 
+// Independent confirmation after the small initial holdout. No candidate changes.
+internal fun replication() = sequence {
+    val seeds = Random(1290827)
+    for (profile in listOf(didge, flute)) {
+        val low = profile.minHz.toDouble()
+        val high = profile.initialMaxHz.toDouble()
+        val frequencies = listOf(low, high) + List(30) { low * (high / low).pow(seeds.nextDouble()) }
+        for (hz in frequencies) for (kind in categories) {
+            yield(synthesize(kind, hz, 44100, profile, seeds.nextInt()))
+        }
+    }
+}
+
+/** Probe sensitivity to the strength of the residual fundamental, not just phase and F0. */
+internal fun harmonicBalance() = sequence {
+    for (profile in listOf(didge, flute)) {
+        val frequencies = if (profile == didge) listOf(36.5, 47.0, 66.7, 71.2, 103.4, 139.0)
+            else listOf(201.5, 295.0, 403.0, 557.2, 790.0, 1256.0)
+        for (hz in frequencies) for (h in listOf(2, 3, 5)) for (percent in listOf(4, 8, 12, 16, 20, 28, 40)) {
+            val frame = ShortArray(profile.windowSamples) { i ->
+                val angle = 2 * PI * i * hz / 44100
+                (14000 * (sin(h * angle) + percent / 100.0 * sin(angle + .7) + .06 * sin((h + 1) * angle))).roundToInt().toShort()
+            }
+            yield(Trial("dominant$h", profile, 44100, percent, hz, frame))
+        }
+    }
+}
+
+/** A passive filter excited only by noise has a spectral peak but no oscillator F0. */
+internal fun resonantNoise() = sequence {
+    val rate = 44100
+    for (profile in listOf(didge, flute)) {
+        val centers = if (profile == didge) listOf(42, 73, 118) else listOf(260, 610, 1360)
+        for (center in centers) for (q in listOf(2, 5, 10)) for (seed in 71..86) {
+            val random = Random((center * 1000L + q * 100 + seed))
+            val pole = exp(-PI * center / q / rate)
+            val coefficient = 2 * pole * cos(2 * PI * center / rate)
+            var a = 0.0
+            var b = 0.0
+            fun sample(): Double {
+                val next = coefficient * a - pole * pole * b + random.nextGaussian()
+                b = a
+                a = next
+                return next
+            }
+            repeat(rate / 2) { sample() }
+            val signal = DoubleArray(profile.windowSamples) { sample() }
+            val gain = 20000 / signal.maxOf { abs(it) }
+            yield(Trial("resonator${center}Hz-Q$q", profile, rate, seed, 0.0,
+                ShortArray(signal.size) { (signal[it] * gain).roundToInt().toShort() }))
+        }
+    }
+}
+
 internal fun synthetic(held: Boolean) = sequence {
     val randomSeed = if (held) 9301 else 742
     for (profile in listOf(didge, flute)) {

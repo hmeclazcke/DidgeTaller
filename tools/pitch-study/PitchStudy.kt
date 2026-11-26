@@ -103,9 +103,14 @@ private fun costs(directory: File, split: String, fixtures: List<Trial>) {
 fun main(args: Array<String>) {
     val directory = File(args[0]).apply { mkdirs() }
     val split = args[1]
-    require(split in setOf("development", "held", "public"))
-    val trials = if (split == "public") publicFlute(File(directory, fluteFile)) else
-        (synthetic(split == "held") + transitions(split == "held")).toList()
+    val trials = when (split) {
+        "public" -> publicFlute(File(directory, fluteFile))
+        "replication" -> replication().toList()
+        "balance" -> harmonicBalance().toList()
+        "resonators" -> resonantNoise().toList()
+        "development", "held" -> (synthetic(split == "held") + transitions(split == "held")).toList()
+        else -> error("Unknown evaluation split: $split")
+    }
     File(directory, "$split.csv").printWriter().use { out ->
         out.println("profile,category,rate,seed,target_hz,elapsed_ms,estimator,estimated_hz,strength")
         for (trial in trials) for (method in Estimator.entries) {

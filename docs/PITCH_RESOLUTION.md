@@ -2,6 +2,10 @@
 
 ## Paired window and periodicity study
 
+The [scientific report in Spanish](PITCH_STUDY.es.md) includes the numerical
+results, a public flute recording, harmonic-balance and resonant-noise controls,
+and the decision to retain the production detector.
+
 The baseline is the application at `fa4aeee`. The experiment calls its compiled
 detector and applies the production acceptance policy for each instrument. Two
 desktop-only challengers use the same incoming frame and callback time. One

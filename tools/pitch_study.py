@@ -1,4 +1,4 @@
-"""Summarize opt-in :app:pitchStudy results using only the standard library."""
+"""Summarize opt-in :engineering-tools:pitchStudy results using only the standard library."""
 import argparse
 import csv
 import math
@@ -76,5 +76,5 @@ def summarize(split):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("split", choices=["development", "held", "public"])
+    parser.add_argument("split", choices=["development", "held", "public", "replication", "balance", "resonators"])
     summarize(parser.parse_args().split)

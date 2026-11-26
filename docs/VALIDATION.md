@@ -1,3 +1,7 @@
+# Acoustic detector comparison - 2026-11-26
+
+The focused debug JVM run discovered 50 cases across acoustic reliability, live acceptance, pitch recovery, saved YIN replay, drone components, musical traces and SWIPE comparison. 45 passed and five fixture-dependent cases were skipped. Two additional Python tests verified scoring denominators and undefined conditional error. Six desktop research splits ran against compiled production Kotlin. The recorded flute check used the pinned public Iowa source. [Results and limits](PITCH_STUDY.es.md)
+
 # Responsive metronome follow-up - 2026-11-10
 
 [Fast CI on 46d841f](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42809274276)

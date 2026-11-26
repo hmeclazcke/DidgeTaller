@@ -72,6 +72,8 @@ La periodicidad basada en YIN aporta frecuencia aceptada, nota musical y notaci�
 
 Para didgeridoo, la curva ordinaria de **Dron** sigue una componente espectral de baja frecuencia respaldada por armónicos. **No** es una fundamental de la oscilación labial confirmada físicamente, ni recibe automáticamente una nota musical. Las lecturas YIN en vivo y los diagnósticos avanzados YIN/SWIPE′ responden preguntas distintas; las lecturas históricas originales siguen disponibles. La [guía del explorador de sesiones](docs/SESSION_EXPLORER.md) y las [notas sobre incertidumbre acústica](docs/ACOUSTIC_UNCERTAINTY.md), en inglés, explican estas diferencias.
 
+Una periodicidad alta también puede corresponder a un armónico superior. El [estudio de los detectores](docs/PITCH_STUDY.es.md) compara aciertos, notas sin detectar y tiempo de respuesta con señales sintéticas y una grabación pública de flauta.
+
 ## Compilar desde el código fuente
 
 Beta actual: **3.3.0-beta1**, versionCode **13**, paquete `ar.didgetaller`. Android mínimo **8.0 (API 26)**; SDK de compilación y destino **35**. El mínimo es una restricción de compilación, no una afirmación de pruebas físicas en cada versión de Android.
