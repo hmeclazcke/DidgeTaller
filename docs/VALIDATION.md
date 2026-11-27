@@ -2661,3 +2661,7 @@ thresholds and numerical baselines are unchanged.
 ### Pitch study, phase 2
 
 The frozen JVM methods and three pretrained CPU models were evaluated against the same PCM. The new held-out split contains 1,008 static windows and 432 post-transition decisions. Checked five analytic controls, equality with 735 archived YIN decisions and 36 public flute windows, as well as all 52 Python tool tests. Continuous PESTO processing used 56 independent transitions and verified the overlapping PCM. Physical instrument, mobile resource use and battery performance remain unmeasured. [Numerical results](PITCH_STUDY.es.md#exactitud-y-cobertura-sobre-frecuencias-conocidas)
+
+### Pitch study, phase 3
+
+Both archived estimators reproduced 1,440 frequencies and scores each. The independent split had 4,608 delivered windows across 72 instrument/frequency groups and three sampling rates. Replayed history versus reset on identical samples, checked source twins, an alternating pulse train and a flat-spectrum impulse, ran all 55 Python tests, and evaluated the public flute separately. No Android performance or physical lip-reference evidence was collected. [Evidence and reproduction](PITCH_RESOLUTION.md#phase-3--harmonic-evidence-and-source-attribution)

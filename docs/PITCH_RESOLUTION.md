@@ -1,5 +1,34 @@
 # Pitch estimation: engineering decision
 
+## Phase 3 · Harmonic evidence and source attribution
+
+**Keep production YIN.** Corroborating several temporal minima with spectral spacing recovered most weak fundamentals. It also assigned a confident spacing to mixtures in which no oscillator had that frequency. The safest use evaluated was an explicitly labelled, separate offline hypothesis. This remains a research implementation. [Detailed Spanish results and reproduction](PITCH_STUDY.es.md#fase-3--qué-permite-afirmar-el-espaciado-armónico)
+
+Correct within 50 cents / estimates emitted, out of 252 identifiable frozen stimuli and 144 independent static stimuli per instrument:
+
+| Route | Frozen didgeridoo | Frozen flute | Independent didgeridoo | Independent flute |
+|---|---:|---:|---:|---:|
+| Production YIN | 45/252 | 107/244 | 46/144 | 53/137 |
+| Phase 2 selector | 224/252 | 243/244 | 144/144 | 137/137 |
+| Independent spectral estimate | 204/204 | 252/252 | 108/108 | 108/108 |
+| Harmonic selection among YIN minima | 224/252 | 244/244 | 108/144 | 101/137 |
+| Conditional correction | 141/252 | 189/244 | 74/144 | 76/137 |
+| Separate hypothesis, alongside unmodified YIN | 204/204 | 244/244 | 108/108 | 101/101 |
+
+The prior selector admitted any two coprime orders. The revised rule penalizes residual peak error, requires at least 90% of retained peak amplitude, and accepts an isolated pair only if consecutive or including order one. It keeps the 68 Hz hypothesis for 340 and 408 Hz, and rejects the 36.94 Hz hypothesis for 332.57 and 406.21 Hz. This preserved the full 179-estimate didgeridoo gain on the frozen corpus. On the independent set, the improvement over YIN was 43.1 percentage points for didgeridoo (paired 95% bootstrap interval 38.2–47.2) and 33.3 for flute (26.4–40.3). The same rule missed all 36 genuine sparse third/fifth-harmonic cases per profile, which the prior selector recovered. Counts at 10, 25 and 50 cents were identical on these two static benchmarks.
+
+Identical samples can encode either a common missing fundamental or two separately driven oscillators. The observable repetition can be estimated; the physical driver cannot be identified from that observation alone. Even conditional correction changed YIN by over 50 cents to a pitch below all three independent near-harmonic oscillators in 33/36 didgeridoo and 31/36 flute trials. At a selection score of 0.99, harmonic selection was correct on all 78 and 70 retained identifiable cases but still emitted below-source estimates on 51 and 66 ambiguous mixtures. The score does not measure source identity.
+
+At matched coverage, harmonic selection versus YIN yielded 108 versus 46 correct didgeridoo estimates out of 108 retained, and 101 versus 53 out of 101 for flute. At a retrospectively matched zero false-positive rate on held-out noise, it retained 144/144 and 137/144 identifiable cases. A cutoff fitted to development noise instead allowed two held-out didgeridoo false positives. Without filtering, harmonic selection inherited YIN's 12 and 5 false readings on 108 negative controls per profile. A spectral-only answer abstained on all 216 negatives.
+
+Restoring up to two previous callbacks of directly anchored evidence improved articulation from 71 to 117 correct out of 324 for didgeridoo and from 69 to 115 for flute, comparing the same code and samples with and without history. Neither variant emitted in any of the 252 fully silent windows per profile. Median YIN versus harmonic-selection register response was 483 versus 464 ms in didgeridoo and 177 versus 188 ms in flute. Desktop median compute time increased from 0.66 to 1.57 ms and from 0.46 to 0.91 ms respectively. The conditional detector still misattributed independent mixtures; context could not distinguish a source handoff producing identical audio.
+
+The experiments used separate development and held-out groups, randomized phases, amplitudes and noise, and 32, 44.1 and 48 kHz input. Replaying the 1,440 frozen decisions for each original estimator reproduced every frequency and score. All 36 public flute windows remained correct within 25 cents with harmonic selection. Synthetic success and a single nominally labelled flute recording do not validate lip vibration during didgeridoo playing. A physical study would synchronize consented audio with independently visible lip cycles, mark unobservable intervals and vocal activity, and hold out entire players. A second pitch tracker or bore simulation does not provide that reference. Android energy and concurrent recording cost remain unmeasured.
+
+An additional control generated proposals directly from each YIN minimum and refined them with nearby peaks. It matched the spectrum-first intersection on all 1,440 frozen decisions and 4,603 of 4,608 independent windows. The five differences occurred during didgeridoo frequency modulation. Static accuracy was identical.
+
+Run the existing Gradle `:engineering-tools:pitchStudy` task with `-PpitchSplit=phase3-SPLIT` sequentially for `check`, `dev`, `held`, `frozen`, `legacy`, `flute`, `ablation` and `periods`, then run `python tools/phase_three_scores.py`. The score tables and frame-level decisions are written under `build/reports/pitch-study/phase3/`. The public flute input is described in the original protocol below.
+
 ## Paired window and periodicity study
 
 The [scientific report in Spanish](PITCH_STUDY.es.md) includes the numerical

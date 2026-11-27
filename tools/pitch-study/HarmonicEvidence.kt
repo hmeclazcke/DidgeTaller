@@ -34,18 +34,43 @@ private fun pattern(seed: Double, peaks: List<Line>, bin: Double, total: Double)
 internal class PeakPatterns(size: Int) {
     private val fft = SpectralAnalysis(size)
 
-    fun candidates(t: Trial): List<Pattern> {
+    private fun peaks(t: Trial): List<Line> {
         if (t.pcm.sumOf { it.toDouble() * it } < t.pcm.size * (.005 * 32768).pow(2)) return emptyList()
         val spectrum = fft.frame(t.pcm, t.rate)
         val peaks = spectralLines(spectrum, t.upperHz * 12.0)
+        // A spectrally flat impulse has no defined parabolic peak location.
+        return if (peaks.any { !it.hz.isFinite() }) emptyList() else peaks
+    }
+
+    fun candidates(t: Trial): List<Pattern> {
+        val peaks = peaks(t)
         val total = peaks.sumOf { it.amplitude }
         val range = t.profile.validMinHz..t.upperHz.toDouble()
         return peaks.flatMap { peak ->
             (1..12).mapNotNull { order ->
                 val seed = peak.hz / order
-                if (seed in range) pattern(seed, peaks, spectrum.binHz, total) else null
+                if (seed in range) pattern(seed, peaks, t.rate.toDouble()/t.pcm.size, total) else null
             }
         }.sortedByDescending { it.rank }
+    }
+
+    /** Start from integer-lag YIN minima and let resolved peaks refine their period estimates. */
+    fun fromPeriods(t: Trial): Decision {
+        var periods = emptyList<PitchDetector.Minimum>()
+        val yin = reading(t, t.pcm) { periods = it.minima }
+        if (yin.hz == 0.0) return yin
+        val lines = peaks(t)
+        val total = lines.sumOf { it.amplitude }
+        val fits = periods.filter { it.confidence >= .65 }.flatMap { period ->
+            lines.mapNotNull { line ->
+                val order = (line.hz / period.hz).roundToInt()
+                if (order !in 1..12) return@mapNotNull null
+                val seed = line.hz / order
+                if (seed !in t.profile.validMinHz..t.upperHz.toDouble() || abs(seed/period.hz-1) >= .03) null
+                else pattern(seed, lines, t.rate.toDouble()/t.pcm.size, total)
+            }
+        }.sortedByDescending { it.rank }
+        return choose(fits)?.let { Decision(it.hz, it.rank) } ?: yin
     }
 }
 

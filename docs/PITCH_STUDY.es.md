@@ -194,3 +194,61 @@ PESTO consumió alrededor de 3,5 ms de CPU por bloque de 10 ms. Reconoció pront
 El criterio nuevo exige que un par por sí solo contenga el primer orden o dos órdenes consecutivos. Con más componentes admite órdenes no consecutivos coprimos. Cada pico debe concordar dentro de medio bin o el 0,2 % de su frecuencia, lo que sea mayor. El ajuste penaliza el residuo y la amplitud inexplicada entre los picos retenidos. Son supuestos de trabajo conservadores. Un par no consecutivo también puede proceder de una única fuente. [Estudio experimental de tonos no consecutivos](https://pubmed.ncbi.nlm.nih.gov/670547/)
 
 Se fijaron 12 grupos de desarrollo y 36 reservados por instrumento, con semillas diferentes, a 32, 44,1 y 48 kHz. Hay controles de fuentes independientes que producen **exactamente el mismo PCM** que una fundamental ausente. Se evalúan por separado aciertos sobre tonos etiquetados, falsas emisiones en negativos, subarmónicos por debajo de ambas fuentes y recuperación tras cambios reales. La comparación a cobertura o falsos positivos iguales es descriptiva; los umbrales operativos deben poder trasladarse de desarrollo a evaluación. Para recomendar un reemplazo se requieren ganancias replicadas sin perjuicio material sobre ruido, atribución de fuente ni transiciones.
+
+### Resultado principal
+
+Cada celda expresa **aciertos a 50 cents / lecturas emitidas**. El denominador experimental fue de 252 estímulos identificables por perfil en el conjunto congelado y 144 en el independiente. En estas señales estáticas, los conteos a 10, 25 y 50 cents coincidieron: los errores grandes fueron generalmente de registro o espaciado, no de afinación fina. Las 1.440 decisiones completas de YIN y las 1.440 del selector anterior reprodujeron las frecuencias y las puntuaciones archivadas.
+
+| Arquitectura | Didgeridoo congelado | Flauta congelada | Didgeridoo independiente | Flauta independiente |
+|---|---:|---:|---:|---:|
+| A · YIN actual | 45/252 | 107/244 | 46/144 | 53/137 |
+| Selector de fase 2 | 224/252 | 243/244 | 144/144 | 137/137 |
+| B · Espaciado espectral independiente | 204/204 | 252/252 | 108/108 | 108/108 |
+| C · Mínimos de YIN con selección armónica | **224/252** | **244/244** | **108/144** | **101/137** |
+| D · Corrección condicionada | 141/252 | 189/244 | 74/144 | 76/137 |
+| E · Hipótesis adicional cuando hay respaldo temporal | 204/204 | 244/244 | 108/108 | 101/101 |
+
+E conserva exactamente la salida A como lectura principal. La tabla muestra su **segundo canal**. En el conjunto congelado, C retuvo los 179 aciertos adicionales de la fase 2 en didgeridoo y sumó 137 en flauta frente a los 136 anteriores. D conservó 96/179 y 82/136 de esas ganancias. En el conjunto independiente, la ventaja de C frente a A fue de 43,1 puntos porcentuales en didgeridoo (IC bootstrap pareado del 95 %: 38,2–47,2) y 33,3 en flauta (26,4–40,3). Los 36 grupos por perfil son las unidades de remuestreo. La incertidumbre describe este generador.
+
+Todos acertaron los 36 drones estables de cada perfil. Cuando solo estaban presentes los armónicos tercero y quinto, el selector anterior acertó los 36 de cada perfil; C perdió los 36. La restricción corrige falsos subarmónicos y también descarta series genuinas. En didgeridoo, A → C pasó de 11 a 0 errores de octava, la mediana de error de 40,05 a 0,01 Hz y el p95 de 76,95 a 76,95 Hz. En flauta pasó de 4 a 0 errores de octava y de 15 y 10 errores de factor 3 y 5 a cero de ambos. La escala pública de flauta conservó 36/36 aciertos a 25 cents con A, C y D; el segundo canal E emitió en 35/36.
+
+### Una periodicidad puede tener dos orígenes
+
+Un período parcial corto explica la componente más intensa y puede satisfacer el primer umbral de YIN. El espaciado de otros picos permite comprobar un período más largo. Para líneas ideales en órdenes enteros coprimos, el máximo divisor común da la frecuencia de repetición de **la suma**. Con mediciones finitas y ruido interviene además la tolerancia espectral. Incluso una coincidencia exacta es compatible tanto con armónicos de una sola excitación como con osciladores independientes. Una sola línea tampoco permite contar los ciclos de una fuente oculta.
+
+El ajuste anterior daba el mismo crédito a dos picos de órdenes altos y separados que a órdenes bajos contiguos si explicaban igual amplitud. El nuevo filtro conserva la hipótesis de 68 Hz para 340 y 408 Hz y retira la de 36,94 Hz ante 332,57 y 406,21 Hz. En los controles ambiguos congelados, el selector anterior sustituyó la lectura de YIN por otra situada por debajo de todos los osciladores en 28 casos de didgeridoo y 33 de flauta. C lo hizo en **cero** casos allí. Pero hereda las lecturas ambiguas de YIN cuando no corrige.
+
+En los controles independientes apareció la limitación decisiva. Un par de órdenes contiguos con fundamental ausente y dos osciladores sincronizados en esas mismas frecuencias tienen muestras idénticas. B emitió el espaciado en 36/36 pares de cada perfil bajo **ambas** interpretaciones. Incluso exigir tres picos dejó pasar tres fuentes próximas a los órdenes 3, 5 y 7: D cambió la lectura más de 50 cents y propuso otra frecuencia por debajo de los tres osciladores en **33/36** casos de didgeridoo y **31/36** de flauta. Ambas lecturas pueden carecer de respaldo como frecuencia física aunque una explique mejor el espectro. En cambio, el espectral B se abstuvo en todas las mezclas de dos familias con razón 1,37 y todos los pares con separación desafinada. El umbral depende del tipo de estímulo.
+
+### Cobertura, confianza y coste
+
+Con igual cantidad de lecturas retenidas por puntuación (108 en didgeridoo y 101 en flauta), A/C/D acertaron respectivamente **46/108/74** en didgeridoo y **53/101/76** en flauta. A y C emitieron sobre los mismos negativos: 12/108 y 5/108 por perfil, todos de ruido resonante. B dio 0/108 en ambos. Ajustando retrospectivamente el umbral hasta cero emisiones sobre negativos, C retuvo 144/144 ventanas identificables en didgeridoo y 137/144 en flauta, con 108 y 101 aciertos. El umbral de C seleccionado para cero emisiones en desarrollo produjo dos falsos positivos de didgeridoo en evaluación. Ese presupuesto de error no se trasladó intacto.
+
+| Umbral de C | Didgeridoo: emitidas / correctas | Flauta: emitidas / correctas | Lecturas por debajo de fuentes ambiguas, didgeridoo / flauta |
+|---|---:|---:|---:|
+| Sin filtro adicional | 144 / 108 | 137 / 101 | 143 / 126 |
+| 0,90 | 143 / 108 | 137 / 101 | 114 / 97 |
+| 0,99 | 78 / 78 | 70 / 70 | **51 / 66** |
+
+Cada perfil tiene 180 mezclas ambiguas. Una puntuación alta selecciona bien la afinación de casos de fuente única y sigue dando crédito a coincidencias entre fuentes. En C, al ajustar intervalos de puntuación solo en desarrollo, el error de Brier en lecturas identificables emitidas fue 0,117 en didgeridoo y 0,128 en flauta (puntuación cruda: 0,229 y 0,240). El Brier excluye mezclas sin etiqueta individual. No demuestra calibración de la identidad física.
+
+**Contexto causal.** Con el mismo código, el mismo PCM continuo y el mismo instante de entrega, reiniciar el historial en cada ventana dio 71/324 aciertos durante articulación en didgeridoo y 69/324 en flauta. Con historial fueron **117/324 y 115/324**, sin pérdida de un acierto previo. En 252 ventanas de silencio completo por perfil hubo cero emisiones en ambas variantes. Si los dos armónicos agudos procedieran de otros osciladores después de la articulación, el historial previo también sería idéntico. La mejora es condicional a continuidad real de la fuente. En el barrido de modulación, C acertó 58/324 en didgeridoo frente a 68/324 de YIN. Se compara con la frecuencia al final de cada ventana, por lo que la respuesta temporal interviene en el error.
+
+| Coste en JVM de escritorio, didgeridoo / flauta | Reloj mediano (ms) | CPU media por ventana (ms) | Memoria asignada por ventana (kB) | Mediana hasta el nuevo registro (ms) |
+|---|---:|---:|---:|---:|
+| A | 0,66 / 0,46 | 0,52 / 0,33 | 31 / 59 | 483 / 177 |
+| B | 0,92 / 0,45 | 0,81 / 0,39 | 61 / 33 | 404 / 205 |
+| C | 1,57 / 0,91 | 1,25 / 0,76 | 92 / 89 | 464 / 188 |
+| D | 1,43 / 0,86 | 1,14 / 0,67 | 77 / 80 | 464 / 188 |
+
+Las 36 transiciones por perfil llegaron al nuevo registro en cada una de estas rutas. La latencia se cuenta hasta la entrega del audio, antes del cómputo. Los costes incluyen adquisición de evidencia y decisión sobre el PCM en memoria. La inicialización y la generación del estímulo se excluyen. Falta medir Android, batería y carga concurrente con grabación.
+
+### Decisión y validación física
+
+**Conservar YIN en producción.** E es la arquitectura preferida para estudiar discrepancias offline: guarda la lectura original y el espaciado inferido por separado para contrastarlos con el espectro. C conserva la ganancia congelada pero pierde series dispersas, empeora algunas modulaciones y puede reasignar mezclas a una fundamental inexistente como oscilador. D y el historial reducen algunas correcciones sin resolver la atribución. El experimento no cambia la traza guardada, la medición en vivo ni el seguimiento de componentes.
+
+Para decidir una integración, registrar con consentimiento micrófono y una medición independiente de los ciclos labiales (por ejemplo, video de alta velocidad con visibilidad y resolución comprobadas), sincronizados por un pulso común. Marcar por separado actividad glótica si se quiere identificar vocalizaciones. Incluir varios intérpretes e instrumentos, vocales sostenidas, comienzo y fin de notas, respiración circular y toots. Reservar intérpretes completos para la evaluación ciega. Anotar períodos, incertidumbre y tramos no observables sin consultar el detector; contrastar frecuencia, cobertura y latencia con esas anotaciones. La nota pedida, el pico más fuerte, el acuerdo entre dos algoritmos y la resonancia pasiva del instrumento no son referencias independientes de labios.
+
+Como control adicional se invirtió el orden de la búsqueda: cada mínimo de YIN propuso primero un período y los picos cercanos afinaron su frecuencia. La frecuencia resultante coincidió con C en las 1.440 ventanas congeladas y en 4.603/4.608 ventanas independientes. Las cinco diferencias fueron durante modulación en didgeridoo. Los aciertos estáticos no cambiaron.
+
+**Reproducción.** Con JDK 21 ejecutar `./gradlew :engineering-tools:pitchStudy -PpitchSplit=phase3-SPLIT` para `check`, `dev`, `held`, `frozen`, `legacy`, `flute`, `ablation` y `periods`, de forma secuencial. Para `flute` se requiere el AIFF público fijado en la fase 1. Ejecutar `python tools/phase_three_scores.py` y `python -m unittest discover -s tools -p "test_*.py"`. En Windows usar `.\gradlew.bat`. Los CSV bajo `build/reports/pitch-study/phase3/` incluyen las métricas por señal y tasa, el error por razón, las curvas, los intervalos, el coste y la segunda lectura consecutiva por transición. La variante espectral comprueba expresamente el impulso de espectro plano, donde la interpolación parabólica no define una frecuencia de pico. [Generador](../tools/pitch-study/PhaseThreeSignals.kt) · [Detectores](../tools/pitch-study/HarmonicEvidence.kt) · [Métricas](../tools/phase_three_scores.py) · [English report](PITCH_RESOLUTION.md#phase-3--harmonic-evidence-and-source-attribution)

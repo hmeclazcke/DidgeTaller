@@ -20,6 +20,24 @@ private fun previousChallenge() = sequence {
 }
 
 internal fun phaseThree(parent: File, split: String) {
+    if (split == "ablation") {
+        contextAblation(File(parent, "phase3").apply { mkdirs() })
+        return
+    }
+    if (split == "periods") {
+        val target = File(parent, "phase3").apply { mkdirs() }
+        val beds = InstrumentProfile.entries.associateWith { PeakPatterns(it.windowSamples) }
+        for ((set, observations) in listOf("frozen" to previousChallenge(), "held" to independentSignals(true))) {
+            File(target, "$set-periods.csv").bufferedWriter().use { out ->
+                out.appendLine("id,estimated_hz,strength")
+                for ((id, obs) in observations.withIndex()) {
+                    val d = beds.getValue(obs.trial.profile).fromPeriods(obs.trial)
+                    out.appendLine(listOf(id, d.hz, d.strength).joinToString(","))
+                }
+            }
+        }
+        return
+    }
     val trials = when (split) {
         "dev", "held" -> independentSignals(split == "held")
         "frozen" -> previousChallenge()
@@ -56,6 +74,20 @@ internal fun phaseThree(parent: File, split: String) {
                     obs.lowestLine,route,result.pitch.hz,result.pitch.strength,result.hypothesis?.hz ?: 0,
                     result.hypothesis?.rank ?: 0,wall,usedCpu,bytes).joinToString(","))
             }
+        }
+    }
+}
+
+/** Identical algorithm and delivered PCM, varying only the availability of previous frames. */
+private fun contextAblation(dir: File) {
+    val readers = InstrumentProfile.entries.associateWith { EvidenceReader(it.windowSamples, Route.CONTEXT) }
+    File(dir, "ablation.csv").bufferedWriter().use { out ->
+        out.appendLine("id,estimated_hz,strength")
+        for ((id, obs) in independentSignals(true).withIndex()) {
+            val reader = readers.getValue(obs.trial.profile)
+            reader.reset()
+            val answer = reader.read(obs.trial).pitch
+            out.appendLine(listOf(id, answer.hz, answer.strength).joinToString(","))
         }
     }
 }

@@ -1511,3 +1511,7 @@ check, acoustic calculations and exports are unchanged.
 ### Pitch study, phase 2
 
 The experimental branch retains production YIN. Multiple temporal minima and spectral spacing recovered weak drone fundamentals, but high-order matches also assigned spurious source pitches to detuned oscillator pairs. Measured adaptive YIN, CREPE tiny/full and both centered and streaming PESTO. The research harness and optional Python environment are outside the APK. [Methods and decision](PITCH_STUDY.es.md#exactitud-y-cobertura-sobre-frecuencias-conocidas)
+
+### Pitch study, phase 3
+
+The harmonic evidence study retains production YIN. A stricter peak pattern fixed the sparse high-order counterexample but also rejected genuine third/fifth-order pairs. Distinct oscillators can reproduce a missing fundamental exactly. Keep inferred spacing separate for offline research. [Evidence and reproduction](PITCH_RESOLUTION.md#phase-3--harmonic-evidence-and-source-attribution)
