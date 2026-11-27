@@ -1507,3 +1507,7 @@ Bark, preparation losses, kerf, per-end trimming, uncertainty and optional
 log sections remain under preparation. Plan interval, wall and tolerance
 remain under optional plan settings. The project schema, accepted-alternative
 check, acoustic calculations and exports are unchanged.
+
+### Pitch study, phase 2
+
+The experimental branch retains production YIN. Multiple temporal minima and spectral spacing recovered weak drone fundamentals, but high-order matches also assigned spurious source pitches to detuned oscillator pairs. Measured adaptive YIN, CREPE tiny/full and both centered and streaming PESTO. The research harness and optional Python environment are outside the APK. [Methods and decision](PITCH_STUDY.es.md#exactitud-y-cobertura-sobre-frecuencias-conocidas)

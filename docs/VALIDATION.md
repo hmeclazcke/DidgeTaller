@@ -2657,3 +2657,7 @@ Debug JVM discovered 646 tests with 638 passes and eight protected skips. The
 strict source gate measured 830 functions and classified 191 as unmapped, with
 zero violations and zero CPD groups. Resource parity passed. The quality
 thresholds and numerical baselines are unchanged.
+
+### Pitch study, phase 2
+
+The frozen JVM methods and three pretrained CPU models were evaluated against the same PCM. The new held-out split contains 1,008 static windows and 432 post-transition decisions. Checked five analytic controls, equality with 735 archived YIN decisions and 36 public flute windows, as well as all 52 Python tool tests. Continuous PESTO processing used 56 independent transitions and verified the overlapping PCM. Physical instrument, mobile resource use and battery performance remain unmeasured. [Numerical results](PITCH_STUDY.es.md#exactitud-y-cobertura-sobre-frecuencias-conocidas)

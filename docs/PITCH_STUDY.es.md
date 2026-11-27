@@ -82,3 +82,107 @@ Para reproducir la réplica y ambos barridos, repetir los dos comandos del proto
 Evaluamos el YIN de producción, una ventana adaptativa y un selector que contrasta los mínimos de YIN con un peine armónico. Contrastamos además CREPE tiny y full y PESTO. Los tres modelos conservan sus salidas nativas para inspección. Para la tabla principal se aplica el rango del perfil, RMS mínimo de 0,005 y umbral de puntuación neuronal de 0,5. No se ajustan los umbrales con el conjunto reservado. La fuente latente de las señales ambiguas queda fuera del denominador de exactitud. Se informan aparte las lecturas que cada método emitiría en esas condiciones.
 
 Para considerar un cambio general buscamos ganancias reproducibles en aciertos sobre todos los casos o en latencia, sin aumentar falsas detecciones en ruido, perjudicar un perfil ni introducir subarmónicos en controles simples. La viabilidad en Android necesita medición en Android. Una mejora limitada a mezclas sintéticas justifica contrastarla con una referencia instrumental independiente. La calibración ajusta intervalos de puntuación únicamente en desarrollo. Los intervalos de incertidumbre remuestrean grupos completos de frecuencias, evitando tratar todas las ventanas como independientes.
+
+### Por qué se pierde una fundamental de 68 Hz
+
+Con un quinto armónico dominante cerca de 340 Hz, la onda se parece a sí misma tras unos 2,94 ms. Los componentes más débiles distinguen esa repetición parcial del período completo de 14,71 ms. El primer mínimo aceptable de YIN puede favorecer una recurrencia parcial o alguno de sus múltiplos dentro del rango de búsqueda. El resultado también puede errar por una quinta musical. En el control analítico, una línea de 340 Hz y otra de 408 Hz permitieron recuperar 68 Hz. Una línea aislada de 340 Hz tiene exactamente las mismas muestras tanto si se genera directamente como si representa el único armónico audible de una fuente de 68 Hz. La oscilación física de esa fuente es indeterminable a partir de esas muestras.
+
+El selector experimental divide cada pico espectral significativo por órdenes de 1 a 12 y contrasta el resultado con **todos** los mínimos locales de YIN. Refina la frecuencia con los picos concordantes y suma su amplitud. Para corregir una lectura exige al menos dos órdenes cuyo máximo común divisor sea 1, un 90 % de amplitud explicada entre los picos retenidos y una ventaja de al menos 3,5 puntos porcentuales frente a la hipótesis rival. Si falta evidencia conserva la decisión original; su puntuación permite estudiar qué ocurriría al abstenerse. Son dos descripciones de la misma onda, no dos mediciones físicas independientes. [Implementación](../tools/pitch-study/HarmonicHypotheses.kt) · [Suma subarmónica de Hermes](https://pubmed.ncbi.nlm.nih.gov/3343445/)
+
+**Contraejemplo reproducible.** Dos componentes impuestas a 332,57 y 406,21 Hz casi coinciden con los órdenes 9 y 11 de 36,94 Hz. El selector asignó 36,94 Hz con puntuación 0,913. Ninguno de los dos osciladores tenía esa frecuencia. En 28 de 84 mezclas desafinadas de didgeridoo y 33 de 84 de flauta, el selector cambió la lectura más de un 4 % y le dio al resultado una puntuación ≥0,9. Por eso el hallazgo útil para diagnóstico es **qué picos sostienen una hipótesis**. La puntuación no identifica al oscilador de los labios durante una vocalización.
+
+### Métodos neuronales ejecutados
+
+| Implementación exacta | Entrada y decisión en este ensayo | Alcance |
+|---|---|---|
+| CREPE tiny y full, torchcrepe 0.0.24 | Pesos originales convertidos a PyTorch. Remuestreo de la ventana observada a 16 kHz, últimas 1.024 muestras (64 ms), promedio local ponderado alrededor del máximo, sin Viterbi. Búsqueda entre 32 y 2.006 Hz. | Una lectura por ventana entregada. Su centro está unos 32 ms antes del final. La semilla fija incluye el dithering del conversor de bins. |
+| PESTO 2.0.1, `mir-1k_g7` | Pesos incluidos en la distribución oficial. PCM a 44,1 kHz, CQT centrada de 8.192 muestras y salto de 441, lectura más cercana al centro de la ventana. El banco desplegado va aproximadamente de 27 a 3.322 Hz; la salida usa una grilla MIDI más amplia. | Variante offline sobre un clip disponible completo. Su respuesta se contabiliza al entregar el clip y su tiempo de CPU incluye todos los pasos de 10 ms que calcula en él. |
+
+El código de CREPE y torchcrepe declara MIT. El paquete oficial de PESTO declara LGPL-3.0. Se comprobaron los pesos contra SHA-256 antes de ejecutar. En la rama de pesos original de CREPE y en el directorio de pesos de PESTO no encontramos un aviso adicional específico de redistribución. Las pruebas se ejecutaron localmente, sin distribuir pesos. El uso offline es posible tras obtenerlos. Una integración Android necesitaría validar la conversión del modelo, el frontend espectral o remuestreador, su licencia de distribución y el presupuesto de memoria y energía. [CREPE y pesos originales](https://github.com/marl/crepe/tree/models) · [Procedencia de la conversión](https://github.com/maxrmorrison/torchcrepe) · [PESTO y pesos](https://github.com/SonyCSLParis/pesto) · [Runner y huellas](../tools/pitch-study/neural.py)
+
+### Reproducción de la fase 2
+
+1. Usar JDK 21 y el wrapper del proyecto. Para cada valor de `SPLIT` en `dev`, `test`, `old` y `flute`, ejecutar `./gradlew :engineering-tools:pitchStudy -PpitchSplit=phase2-SPLIT`. El último usa el AIFF público fijado en la fase 1. El control analítico se ejecuta con `-PpitchSplit=phase2-check`. Los archivos locales de PCM contienen únicamente los estímulos del generador y, en el conjunto `flute`, las ventanas de esa referencia pública.
+2. En un entorno virtual de investigación con Python 3.12, instalar `torch==2.8.0 torchaudio==2.8.0` desde el índice CPU de PyTorch y luego `torchcrepe==0.0.24 pesto-pitch==2.0.1 psutil==7.2.2`. La corrida usó NumPy 2.5.5 y SciPy 1.18.1. Ninguna dependencia se incorpora a Gradle ni al APK.
+3. Desde la raíz ejecutar `python tools/pitch-study/neural.py MODELO dev` y, en otro proceso, `python tools/pitch-study/neural.py MODELO test old flute`, para cada modelo (`tiny`, `full`, `pesto`). Así también se reproduce la semilla del decodificador de CREPE. Ejecutar `python tools/pitch-study/streaming.py` para el ensayo causal de PESTO. Para cada conjunto, ejecutar `python tools/phase_two_scores.py SPLIT`. Los CSV de decisiones, subgrupos, cobertura, errores de razón, calibración, latencia y costes quedan en `build/reports/pitch-study/phase2/`.
+
+### Exactitud y cobertura sobre frecuencias conocidas
+
+Cada perfil tiene 252 señales reservadas con una fundamental inferible, 252 controles con fuente ambigua y una serie aparte de cambios de registro. Las siguientes columnas cuentan aciertos sobre **las 252 señales inferibles**, incluidas las abstenciones en el denominador. Los errores en cents se calculan solo para las lecturas emitidas. Estas señales se eligieron para exponer el fallo armónico. Sus proporciones de acierto no estiman la exactitud de la app durante una práctica musical.
+
+| Perfil | Detector | Emitidas | Aciertos a 10 / 25 / 50 cents | Error mediano / p95 (cents) | Errores de octava |
+|---|---|---:|---:|---:|---:|
+| Didgeridoo | YIN actual | 252 | 45 / 45 / 45 | 701,4 / 1205,1 | 49 |
+| | Adaptativo | 252 | 45 / 45 / 45 | 701,4 / 1205,1 | 49 |
+| | Selector armónico | 252 | 224 / 224 / 224 | 0,2 / 694,5 | 3 |
+| | CREPE tiny | 67 | 20 / 27 / 27 | 1190,9 / 1214,2 | 40 |
+| | CREPE full | 131 | 77 / 99 / 107 | 8,5 / 1217,6 | 24 |
+| | PESTO centrado | 66 | 10 / 27 / 33 | 616,7 / 1232,8 | 33 |
+| Flauta | YIN actual | 244 | 107 / 107 / 107 | 380,7 / 1937,5 | 8 |
+| | Adaptativo | 244 | 133 / 133 / 133 | 0,7 / 1924,0 | 8 |
+| | Selector armónico | 244 | 243 / 243 / 243 | <0,1 / 0,1 | 0 |
+| | CREPE tiny | 162 | 67 / 101 / 102 | 11,3 / 2769,2 | 23 |
+| | CREPE full | 180 | 97 / 130 / 132 | 9,5 / 1914,7 | 23 |
+| | PESTO centrado | 147 | 68 / 105 / 113 | 12,4 / 1919,6 | 15 |
+
+Para el selector frente a YIN, el incremento de aciertos a 50 cents fue de **71,0 puntos porcentuales** en didgeridoo (intervalo bootstrap pareado del 95 %: 67,5–74,2) y **54,0 puntos** en flauta (48,4–59,5). El error mediano absoluto de didgeridoo bajó de 36,45 Hz a menos de 0,05 Hz, pero el p95 del selector siguió en 34,3 Hz. En flauta bajó de 103,6 Hz a menos de 0,05 Hz. Los intervalos reflejan variación entre frecuencias de este generador.
+
+| Armónico dominante del didgeridoo | Fundamental débil | Fundamental ausente | Envolvente variable |
+|---|---:|---:|---:|
+| Segundo | 4 → 28 | 1 → 28 | 23 → 24 |
+| Tercero | 1 → 28 | 0 → 28 | 16 → 21 |
+| Quinto | 0 → 28 | 0 → 28 | 0 → 11 |
+
+Cada celda indica aciertos de YIN → selector sobre 28 frecuencias. Con el quinto armónico reforzado y envolvente variable quedaron **17 fallos de 28**. En el conjunto de didgeridoo los errores cerca de las razones 3:2 y 5:3 pasaron de 67 y 63 a 7 y 5. El desglose reproducible incluye las demás razones, Hz y percentiles por categoría.
+
+**Comprobación externa al nuevo generador.** En los estímulos congelados a 44,1 kHz hubo 182 ventanas con frecuencia conocida y 156 negativas por perfil. YIN → selector pasó de 89 a 178 aciertos en didgeridoo y de 77 a 166 en flauta. Ambos emitieron en las mismas 44 y 10 ventanas negativas, respectivamente, todas de ruido resonante. CREPE tiny, full y PESTO produjeron respectivamente 25, 17 y 58 falsos positivos en didgeridoo y 15, 3 y 92 en flauta. La frecuencia y la periodicidad de YIN coincidieron con los resultados archivados en las 735 ventanas anteriores y las 36 de la flauta pública. En esa grabación, los seis métodos acertaron las 36 notas nominales a 50 cents. A 25 cents, tiny acertó 35 y PESTO 28; los otros cuatro acertaron las 36. No hay una referencia independiente equivalente de labios de didgeridoo.
+
+### Cuándo confiar en una lectura
+
+| Puntuación mínima | Cobertura / acierto entre lecturas, didgeridoo | Cobertura / acierto entre lecturas, flauta |
+|---|---:|---:|
+| YIN, sin filtro adicional | 100 % / 17,9 % | 96,8 % / 43,9 % |
+| YIN, 0,95 | 50,4 % / 35,4 % | 76,6 % / 55,4 % |
+| Selector, sin filtro adicional | 100 % / 88,9 % | 96,8 % / 99,6 % |
+| Selector, 0,75 | 81,3 % / 100 % | 89,7 % / 100 % |
+| Selector, 0,95 | 35,3 % / 100 % | 64,7 % / 100 % |
+
+La tabla solo incluye las señales inferibles. Al calibrar por intervalos sobre desarrollo, la puntuación de Brier en didgeridoo pasó de 0,720 a 0,090 para YIN y de 0,022 a 0,010 para el selector (menor es mejor). En flauta, el selector calibrado dio 0,009, peor que usar la proporción constante aprendida en desarrollo (0,004). La calibración se condicionó a que hubiera lectura y referencia conocida.
+
+En los controles con una línea o solo armónicos pares, YIN y el selector recuperaron la **repetición observable** en todos los casos dentro del rango nominal (64/64 y 87/87). Aun así, en 54/84 ejemplos de armónicos pares de didgeridoo y 51/84 de flauta, el selector dio una puntuación ≥0,9 aunque esos armónicos admitían distintas fuentes físicas. Las mezclas desafinadas descritas arriba también atravesaron ese umbral. La puntuación permite ordenar hipótesis en un conjunto controlado; comunicarla como probabilidad de haber identificado la vibración labial sería injustificado.
+
+### Cambios de registro y coste
+
+La ruta adaptativa comprueba si el período largo sigue explicando las últimas tres oscilaciones (al menos 31 ms). Si la diferencia normalizada supera 0,28, contrasta la última media ventana y exige periodicidad ≥0,85. En un salto exacto de octava, el período antiguo sigue siendo múltiplo del nuevo. La discrepancia puede permanecer pequeña y el detector no cambia de ventana. La mejora histórica al acortar **todas** las ventanas no se reprodujo con esta regla adaptativa.
+
+| Primera detección correcta tras el salto, mediana a la cadencia de la aplicación | Didgeridoo ×2 | Didgeridoo ×2,8 | Flauta ×2 |
+|---|---:|---:|---:|
+| YIN / adaptativo | 483 / 483 ms | 426 / 426 ms | 165 / 165 ms |
+| Selector armónico | 450 ms | 404 ms | 195 ms |
+| CREPE tiny / full | 113 / 113 ms | 139 / 117 ms | 95 / 96 ms |
+| PESTO centrado | 298 ms | 269 ms | 165 ms |
+
+Son tiempos de disponibilidad del audio desde el cambio conocido, antes del cómputo. Cada método detectó 14/14 cambios en cada grupo de didgeridoo y 28/28 en flauta, salvo PESTO centrado (27/28). El CSV también exige dos lecturas consecutivas para una segunda medida. CREPE usa solo los últimos 64 ms y responde antes, pero pierde cobertura sobre los armónicos dominantes. La CQT centrada de PESTO analiza el clip completo.
+
+| Coste por ventana, didgeridoo / flauta | Mediana de reloj (ms) | Media de CPU (ms) | Asignaciones (kB decimales) |
+|---|---:|---:|---:|
+| YIN | 0,40 / 0,29 | 0,53 / 0,43 | 36 / 68 |
+| Adaptativo | 0,39 / 0,28 | 0,41 / 0,32 | 37 / 69 |
+| Selector armónico | 1,11 / 0,65 | 0,97 / 0,67 | 110 / 107 |
+| CREPE tiny | 6,57 / 6,65 | 5,78 / 6,63 | 1926 / 1831 |
+| CREPE full | 107,64 / 108,14 | 103,96 / 104,67 | 11340 / 11263 |
+| PESTO centrado | 128,25 / 67,01 | 123,16 / 65,22 | 16198 / 8739 |
+
+Medido en el equipo de escritorio de la fase 1. Para Kotlin se midieron bytes asignados por el hilo. Para PyTorch se sumaron asignaciones positivas de tensores en una ventana representativa por tamaño. La memoria residente del proceso calentado fue de 362 MB para tiny, 539 MB para full y 393 MB para PESTO. Los tamaños incluyen el entorno Python y sus bibliotecas. Quedan sin medir el consumo energético y el coste de un runtime optimizado en Android.
+
+**PESTO causal.** También se ejecutó el modelo oficial en modo streaming, sin reflexión de muestras futuras, en bloques consecutivos de 441 muestras. Se reconstruyó el inicio de cada estímulo sintético y se verificó su coincidencia muestra por muestra con el tramo anterior al cambio. El modelo recibió al menos 928 ms de la nota inicial. Se exigió puntuación ≥0,5 y amplitud eficaz centrada ≥0,005 por bloque. [Ensayo continuo](../tools/pitch-study/streaming.py)
+
+| Registro | Nota anterior correcta durante los últimos 40 ms | Llegó a la nota nueva | Primera / segunda lectura correcta, cadencia 10 ms | Primera / segunda, cadencia de la app |
+|---|---:|---:|---:|---:|
+| Didgeridoo ×2 | 0/14 | 14/14 | 98 / 108 ms | 157 / 343 ms |
+| Didgeridoo ×2,8 | 0/14 | 14/14 | 93 / 103 ms | 185 / 371 ms |
+| Flauta ×2 | 28/28 | 27/28 | 116 / 126 ms | 165 / 258 ms |
+
+PESTO consumió alrededor de 3,5 ms de CPU por bloque de 10 ms. Reconoció pronto el registro alto de didgeridoo, pero en ninguna de las 28 pruebas siguió correctamente el dron durante los 40 ms anteriores. Informar solo la latencia posterior daría una impresión equivocada de su capacidad para seguir la transición completa.
+
+**Decisión de la fase 2.** Mantener YIN en producción. El selector armónico merece conservarse como hipótesis de análisis offline: resuelve muchos casos sintéticos con armónicos dominantes, pero puede atribuir con seguridad aparente una fundamental ajena a los dos osciladores presentes. La ventana adaptativa ensayada no adelantó la mediana de las transiciones. CREPE full respondió rápido y mejoró la exactitud de algunos casos difíciles frente a YIN, con menor cobertura y mayor coste. El resultado tampoco justifica desplegar PESTO para el dron grave. La siguiente evidencia decisiva sería un corpus consentido con referencia independiente y sincronizada de vibración labial y vocalizaciones, además de mediciones de coste en Android si se propone un candidato para producción. No se accedió a sesiones privadas ni se instaló una aplicación nueva.

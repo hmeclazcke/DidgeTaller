@@ -58,9 +58,32 @@ private fun challenge(held: Boolean) = sequence {
 }
 
 internal fun phaseTwo(parent: File, split: String) {
+    if (split == "check") {
+        checkCandidates()
+        return
+    }
+    runSplit(parent, split)
+}
+
+private fun checkCandidates() {
     // Same digital observation under two latent-source labels. An estimator cannot distinguish them.
     fun sine(hz: Double) = ShortArray(16384) { (16000 * sin(2 * PI * hz * it / 44100)).roundToInt().toShort() }
     check(sine(340.0).contentEquals(sine(5 * 68.0)))
+    val pure = Trial("single", InstrumentProfile.DIDGERIDOO, 44100, 0, Double.NaN, sine(340.0))
+    val bed = HarmonicStudy(pure.pcm.size)
+    check(bed.estimate(pure).strength < .75)
+    val missing = pure.copy(pcm = ShortArray(pure.pcm.size) { i ->
+        (pure.pcm[i] + 2400 * sin(2 * PI * 408 * i / 44100)).roundToInt().toShort()
+    })
+    check(abs(bed.estimate(missing).hz - 68) < .5)
+    val upper = pure.copy(pcm = sine(136.0))
+    check(abs(bed.estimate(upper).hz - 136) < .5)
+    val silence = pure.copy(pcm = ShortArray(pure.pcm.size))
+    check(bed.estimate(silence).hz == 0.0 && adaptive(silence).hz == 0.0)
+    println("Five analytic pitch controls passed")
+}
+
+private fun runSplit(parent: File, split: String) {
     val dir = File(parent, "phase2").apply { mkdirs() }
     val trials = when (split) {
         "dev" -> challenge(false)

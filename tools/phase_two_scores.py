@@ -13,10 +13,10 @@ ROOT = DIRECTORY / "phase2"
 
 def describe(rows):
     result = metrics(rows)
-    for ratio in (3, 5):
-        result[f"ratio{ratio}"] = sum(abs(abs(1200 * math.log2(float(r["estimated_hz"]) / float(r["target_hz"])))
-                                           - 1200 * math.log2(ratio)) <= 50 for r in rows
-                                      if float(r["estimated_hz"]) > 0 and float(r["target_hz"]) > 0)
+    errors = [abs(1200 * math.log2(float(r["estimated_hz"]) / float(r["target_hz"]))) for r in rows
+              if float(r["estimated_hz"]) > 0 and float(r["target_hz"]) > 0]
+    for label, ratio in (("3", 3), ("5", 5), ("3_2", 3/2), ("5_3", 5/3), ("5_2", 5/2), ("5_4", 5/4)):
+        result[f"ratio{label}"] = sum(abs(error - 1200 * math.log2(ratio)) <= 50 for error in errors)
     result["unlabelled_emitted"] = sum(math.isnan(float(r["target_hz"])) and float(r["estimated_hz"]) > 0
                                        for r in rows)
     return result
@@ -56,6 +56,20 @@ def calibration(train, test):
     return dict(n=len(errors), **dict(zip(("constant", "raw", "dev_bins"), map(statistics.mean, zip(*errors)))))
 
 
+def waveform_controls(rows):
+    """Score the observable repetition separately from an unknowable source identity."""
+    generators = {r["seed"]: float(r["target_hz"]) for r in rows if r["category"] == "weak5"}
+    controls = defaultdict(list)
+    for r in rows:
+        name = r["category"]
+        if name.startswith(("evenOnly", "isolated")):
+            multiple = 2 if name.startswith("evenOnly") else int(name[-1])
+            repetition = multiple * generators[r["seed"]]
+            within = repetition <= float(r["max_hz"]) and repetition >= (200 if r["profile"].startswith("NATIVE") else 35)
+            controls["in_range" if within else "above_range"].append(dict(r, target_hz=repetition))
+    return controls
+
+
 def clustered_difference(samples, reference):
     """Paired bootstrap of entire synthesized pitch groups, conditional on this generator."""
     groups = defaultdict(list)
@@ -87,7 +101,7 @@ def summarize(split):
         with (ROOT / f"{split}{suffix}.csv").open() as file:
             for r in csv.DictReader(file):
                 by_method[r["profile"], r["estimator"]].append(r)
-    scores, coverage, changes, paired, costs, calibrated = [], [], [], [], [], []
+    scores, coverage, changes, paired, costs, calibrated, controls = [], [], [], [], [], [], []
     for (profile, method), rows in by_method.items():
         key = dict(profile=profile, estimator=method)
         reference = {r["id"]: r for r in by_method[profile, "YIN"]}
@@ -101,6 +115,8 @@ def summarize(split):
         for threshold in (0, .25, .5, .75, .9, .95, .99):
             coverage.append(dict(key, **curve(static, threshold)))
         if split == "test":
+            for support, observable in waveform_controls(static).items():
+                controls.append(dict(key, waveform=support, **describe(observable)))
             lo, hi = clustered_difference(static, reference)
             paired.append(dict(key, low_pp=lo, high_pp=hi))
             suffix = "-" + method if method in ("tiny", "full", "pesto") else ""
@@ -122,7 +138,7 @@ def summarize(split):
                           mean_cpu_ms=statistics.mean(float(r["cpu_ns"]) for r in rows)/1e6,
                           mean_bytes=statistics.mean(float(r["bytes"]) for r in rows)))
     for name, table in (("scores", scores), ("selective", coverage), ("events", changes),
-                        ("paired", paired), ("costs", costs), ("calibration", calibrated)):
+                        ("paired", paired), ("costs", costs), ("calibration", calibrated), ("waveform", controls)):
         write_rows(ROOT / f"{split}-{name}.csv", table)
 
 
