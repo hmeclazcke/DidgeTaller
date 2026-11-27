@@ -4,7 +4,7 @@ import ar.didgetaller.core.*
 import kotlin.math.*
 
 internal data class Decision(val hz: Double, val strength: Double)
-private data class Line(val hz: Double, val amplitude: Double)
+internal data class Line(val hz: Double, val amplitude: Double)
 private data class Fit(val hz: Double, val score: Double, val harmonics: Set<Int>)
 
 internal fun reading(t: Trial, pcm: ShortArray, observe: ((PitchDetector.Diagnostic) -> Unit)? = null): Decision {
@@ -33,7 +33,7 @@ internal fun adaptive(t: Trial): Decision {
     return if (recent.strength >= .85 && recent.hz > 0) recent else original
 }
 
-private fun spectralLines(spectrum: PowerSpectrum, high: Double): List<Line> {
+internal fun spectralLines(spectrum: PowerSpectrum, high: Double): List<Line> {
     val power = spectrum.density
     val last = min(power.lastIndex - 1, (high / spectrum.binHz).toInt())
     val largest = (2..last).maxOf { power[it] }
@@ -48,7 +48,7 @@ private fun spectralLines(spectrum: PowerSpectrum, high: Double): List<Line> {
     }.sortedByDescending { it.amplitude }.take(16)
 }
 
-private tailrec fun gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
+internal tailrec fun gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
 
 private fun fit(f: Double, lines: List<Line>, bin: Double): Fit {
     var support = 0.0

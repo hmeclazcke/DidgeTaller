@@ -103,6 +103,14 @@ private fun costs(directory: File, split: String, fixtures: List<Trial>) {
 fun main(args: Array<String>) {
     val directory = File(args[0]).apply { mkdirs() }
     val split = args[1]
+    if (split == "phase3-check") {
+        checkSeparatedLines()
+        return
+    }
+    if (split.startsWith("phase3-")) {
+        phaseThree(directory, split.removePrefix("phase3-"))
+        return
+    }
     if (split.startsWith("phase2-")) {
         phaseTwo(directory, split.removePrefix("phase2-"))
         return

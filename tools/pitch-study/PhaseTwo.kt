@@ -9,7 +9,7 @@ import java.nio.ByteOrder
 import java.util.Random
 import kotlin.math.*
 
-private fun challenge(held: Boolean) = sequence {
+internal fun challenge(held: Boolean) = sequence {
     val rng = Random(if (held) 290153 else 82021)
     for (profile in InstrumentProfile.entries) repeat(if (held) 28 else 10) { group ->
         val didge = profile == InstrumentProfile.DIDGERIDOO
