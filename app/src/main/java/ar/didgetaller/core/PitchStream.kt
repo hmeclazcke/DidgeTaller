@@ -6,9 +6,12 @@ class PitchStream(
     private val minHz:Int=instrument.minHz,
     private val maxHz:Int=instrument.initialMaxHz,
     private val includeVisuals:Boolean=true,
+    algorithm:PitchAlgorithm=PitchAlgorithm.STANDARD,
+    private val sampleRate:Int=44100,
     private val observe:((PitchDetector.Diagnostic)->Unit)?=null
 ) {
     private val window=ShortArray(instrument.windowSamples)
+    private val assistant = if (algorithm == PitchAlgorithm.HARMONIC) HarmonicYin(window.size) else null
     private var filled=0
     private var updates=0
 
@@ -27,10 +30,15 @@ class PitchStream(
         }
         if(filled<window.size || ++updates%instrument.analysisChunks!=0)return null
         var diagnostic:PitchDetector.Diagnostic?=null
-        val reading=PitchDetector.analyzeWithDiagnostics(window,44100,minHz,maxHz,includeVisuals) {
+        val reading=PitchDetector.analyzeWithDiagnostics(window,sampleRate,minHz,maxHz,includeVisuals) {
             diagnostic=it
             observe?.invoke(it)
         }
-        return reading.copy(diagnostic=diagnostic)
+        return selectedReading(reading.copy(diagnostic=diagnostic))
+    }
+
+    private fun selectedReading(yin: PitchDetector.Reading): PitchDetector.Reading {
+        val detector = assistant ?: return yin
+        return yin.copy(harmonic = detector.estimate(window,sampleRate,instrument,maxHz,yin))
     }
 }

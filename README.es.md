@@ -68,6 +68,8 @@ Biblioteca separa **Sesiones** y **Diseños**. Laboratorio contiene **Diseño**,
 
 ## Análisis acústico y algoritmos
 
+En **Medir** podés elegir **YIN armónico (experimental)** entre capturas. El ajuste inicial es YIN estándar. En las herramientas de Laboratorio o desde una sesión de Biblioteca, **Comparar detectores de frecuencia fundamental** muestra ambas estimaciones del mismo WAV, con sus diferencias y tramos sin lectura. La presencia de varias fuentes puede inducir una estimación armónica incorrecta. [Detector experimental](docs/PITCH_STUDY.es.md#prueba-en-android)
+
 La periodicidad basada en YIN aporta frecuencia aceptada, nota musical y notación científica. Detalles de medición permite consultar cents respecto de la nota cercana, periodicidad y evidencia diagnóstica. Los espectros FFT describen el contenido de frecuencias; los espectrogramas STFT muestran su evolución temporal. SWIPE′ es una comparación experimental opcional sobre audio guardado, no el detector en vivo ni un reemplazo automático de la traza Dron.
 
 Para didgeridoo, la curva ordinaria de **Dron** sigue una componente espectral de baja frecuencia respaldada por armónicos. **No** es una fundamental de la oscilación labial confirmada físicamente, ni recibe automáticamente una nota musical. Las lecturas YIN en vivo y los diagnósticos avanzados YIN/SWIPE′ responden preguntas distintas; las lecturas históricas originales siguen disponibles. La [guía del explorador de sesiones](docs/SESSION_EXPLORER.md) y las [notas sobre incertidumbre acústica](docs/ACOUSTIC_UNCERTAINTY.md), en inglés, explican estas diferencias.
@@ -76,7 +78,7 @@ Una periodicidad alta también puede corresponder a un armónico superior. El [e
 
 ## Compilar desde el código fuente
 
-Beta actual: **3.3.0-beta1**, versionCode **13**, paquete `ar.didgetaller`. Android mínimo **8.0 (API 26)**; SDK de compilación y destino **35**. El mínimo es una restricción de compilación, no una afirmación de pruebas físicas en cada versión de Android.
+Beta actual: **3.3.0-beta2**, versionCode **14**, paquete `ar.didgetaller`. Android mínimo **8.0 (API 26)**; SDK de compilación y destino **35**. El mínimo es una restricción de compilación, no una afirmación de pruebas físicas en cada versión de Android.
 
 Necesitás Android Studio, un JDK 21 instalado para el daemon de Gradle, Android SDK Platform 35, Build Tools 36.0.0, NDK 27.0.12077973 y CMake 3.22.1. El repositorio fija Gradle 9.6.0 y AGP 9.4.1; el bytecode de la aplicación sigue apuntando a Java 17. La guía de calidad explica las opciones temporales de compatibilidad Kotlin/DSL.
 

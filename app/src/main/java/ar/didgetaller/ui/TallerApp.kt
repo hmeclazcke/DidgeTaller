@@ -328,6 +328,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
             }
         }
         RecordingSettings(vm)
+        DetectorSelector(vm)
       }
     }
     if(!capturing && !prioritizeReading)setupControls()
@@ -361,7 +362,7 @@ private fun MeasureScreen(vm:TallerViewModel,startMeasurement:()->Unit,onDiscard
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
             Column(Modifier.heightIn(min=48.dp),verticalArrangement=Arrangement.Center) {
                 if(compactWide && !capturing)Text(context.instrumentLabel(vm.instrument),color=muted,fontSize=12.sp)
-                Text(if(capturing)stringResource(R.string.ui_session_in_progress) else stringResource(R.string.ui_acoustic_measurement),
+                Text(if(capturing)stringResource(activeMeasurementTitle(vm)) else stringResource(R.string.ui_acoustic_measurement),
                     color=if(capturing)orange else muted,fontSize=if(capturing && configuration.fontScale>=1.3f)10.sp else 12.sp,fontWeight=FontWeight.Bold,letterSpacing=1.sp)
             }
             if(compactCaptureHeader)Text("●  ${"%02d:%02d".format(elapsed/60,elapsed%60)}",color=orange,
@@ -941,6 +942,7 @@ private fun SessionDetail(vm:TallerViewModel,item:RecordingStore.Session,
     val musician=vm.musicalTrace(item)
     var more by rememberSaveable(item.id){mutableStateOf(false)}
     SessionExplorer(vm,item,cursor,onExpand) { SessionTransport(vm,item,cursor) }
+    DetectorComparisonAction(vm,item)
     Panel {
         Text(context.sessionName(item),style=MaterialTheme.typography.titleMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         Text(if(item.instrument==InstrumentProfile.DIDGERIDOO)stringResource(R.string.musical_drone_title) else item.summary?.let {context.noteLabel(it.typicalHz)} ?: if(item.timeline.any {item.instrument.accepts(it)})stringResource(R.string.ui_changing_notes) else stringResource(R.string.ui_note_not_determined),style=if(item.instrument==InstrumentProfile.DIDGERIDOO)MaterialTheme.typography.titleMedium else MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold)

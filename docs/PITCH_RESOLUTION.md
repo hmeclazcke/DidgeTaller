@@ -1,8 +1,16 @@
 # Pitch estimation: engineering decision
 
+## Experimental Android integration
+
+Measure starts with standard YIN. The selector also offers the Phase 3 period-constrained harmonic selector (architecture C, `Route.PERIOD`). It selects among supported YIN minima using resolved spectral peaks and falls back to the conventional estimate when the evidence is inconclusive. It abstains when YIN abstains. Switching is available between captures for either instrument and the preference survives restart. Recorded PCM and the historical standard YIN points keep their existing meanings.
+
+In Laboratory, close the construction wizard and choose **Compare pitch detectors** under the additional tools. The same action is available in a Library session. Replay reads the WAV once per analysis and timestamps both estimates at the center of each common window. Select **Both** to compare the solid and dashed curves. Inspect either curve at the same cursor position, including gaps. Several oscillators can support a harmonic spacing absent from the physical sources. Independent physical validation is still needed.
+
+Run `./gradlew :engineering-tools:pitchStudy -PpitchSplit=android-harmonic-parity` to compare Android core output with the independent Phase 3 implementation on 6,048 frozen and held-out frames and measure desktop stream allocations.
+
 ## Phase 3 · Harmonic evidence and source attribution
 
-**Keep production YIN.** Corroborating several temporal minima with spectral spacing recovered most weak fundamentals. It also assigned a confident spacing to mixtures in which no oscillator had that frequency. The safest use evaluated was an explicitly labelled, separate offline hypothesis. This remains a research implementation. [Detailed Spanish results and reproduction](PITCH_STUDY.es.md#fase-3--qué-permite-afirmar-el-espaciado-armónico)
+**Phase 3 retained YIN as the default.** Corroborating several temporal minima with spectral spacing recovered most weak fundamentals. It also assigned a high rank to mixtures in which no oscillator had that frequency. The safest use evaluated was an explicitly labelled, separate offline hypothesis. The subsequent beta makes architecture C available by explicit choice for instrument tests. [Detailed Spanish results and reproduction](PITCH_STUDY.es.md#fase-3--qué-permite-afirmar-el-espaciado-armónico)
 
 Correct within 50 cents / estimates emitted, out of 252 identifiable frozen stimuli and 144 independent static stimuli per instrument:
 

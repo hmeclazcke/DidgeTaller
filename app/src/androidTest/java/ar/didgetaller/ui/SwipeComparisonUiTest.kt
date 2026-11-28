@@ -179,7 +179,7 @@ class SwipeComparisonUiTest {
         return true
     }
 
-    private class IsolatedApplication(private val base:Context):Application(){
+    internal class IsolatedApplication(private val base:Context):Application(){
         private val id=UUID.randomUUID().toString()
         private val names=mutableSetOf<String>()
         private val root=File(base.cacheDir,"swipe-$id").apply {mkdirs()}

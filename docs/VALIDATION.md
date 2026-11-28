@@ -1,3 +1,11 @@
+# Experimental detector integration — 2026-11-27
+
+The independent Phase 3 PERIOD oracle and Android core returned identical frequencies and ranks on 6,048 synthetic windows. A standard-only implementation failed the first comparison before integration. The paired replay tests cover native sample clocks, gaps, early cancellation, an ambiguous two-tone mixture, both instrument profiles and agreement with standard-only replay.
+
+On the clean API 37 x86 emulator, synthetic microphone-size chunks including live display processing took median thread CPU times of 6.0 and 7.5 ms per analyzed didgeridoo window (standard and assisted respectively), and 2.8 and 4.5 ms for flute. The corresponding frame intervals at 44.1 kHz are 186 and 93 ms. Warm desktop HotSpot allocation medians were 176,664 and 245,936 bytes per didgeridoo observation, and 207,416 and 250,288 bytes for flute. These are short synthetic runs, not handset wall latency, sustained thermal behavior or battery measurements. Reproduction commands are in the [integration notes](PITCH_RESOLUTION.md#experimental-android-integration).
+
+Emulator checks exercise the Measure preference, synthetic capture locking, both entry points for read-only replay, both languages, display switching, cursor readings and unchanged synthetic WAV bytes. A separate launch of the actual activity replayed a synthetic WAV in Spanish landscape at system font scale 1.5. No private fixtures are required.
+
 # Acoustic detector comparison - 2026-11-26
 
 The focused debug JVM run discovered 50 cases across acoustic reliability, live acceptance, pitch recovery, saved YIN replay, drone components, musical traces and SWIPE comparison. 45 passed and five fixture-dependent cases were skipped. Two additional Python tests verified scoring denominators and undefined conditional error. Six desktop research splits ran against compiled production Kotlin. The recorded flute check used the pinned public Iowa source. [Results and limits](PITCH_STUDY.es.md)

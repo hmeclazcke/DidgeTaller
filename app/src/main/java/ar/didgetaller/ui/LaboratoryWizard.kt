@@ -34,6 +34,7 @@ internal fun LaboratoryWizard(vm:TallerViewModel,export:(String,String,ByteArray
     Text(stringResource(R.string.wizard_spectrum_help),style=MaterialTheme.typography.bodySmall)
     FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
         TextButton(onClick={tool(1)}){Text(stringResource(R.string.ui_live_spectrum))}
+        DetectorComparisonAction(vm)
         TextButton(onClick={tool(2)}){Text(stringResource(R.string.wizard_advanced_search))}
         TextButton(onClick={tool(3)}){Text(stringResource(R.string.ui_guide))}
     }

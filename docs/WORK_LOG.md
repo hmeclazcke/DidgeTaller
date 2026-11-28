@@ -1,3 +1,7 @@
+# Experimental detector integration
+
+Added an opt-in live and offline implementation of the Phase 3 period-constrained harmonic detector. Selection is fixed for each capture. The preference does not change the meaning of historical YIN points. Laboratory and Library share a cancellable read-only comparison with a common sample clock. See [validation and timing](VALIDATION.md#experimental-detector-integration--2026-11-27).
+
 # Pitch detection study
 
 Started from merged main `fa4aeee`. Froze the candidates in `9014db3` after the development split. Ran the held-out split, an external flute scale, independent frequency/phase replication and two sensitivity sweeps. Preserved the production estimator after observing the tradeoff between harmonic errors and noise responses. [Decision and reproduction](PITCH_STUDY.es.md)

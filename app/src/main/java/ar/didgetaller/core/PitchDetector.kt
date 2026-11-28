@@ -13,7 +13,8 @@ object PitchDetector {
         val rms: Double = 0.0,
         val waveform: List<Float> = emptyList(),
         val spectrum: List<Float> = emptyList(),
-        val diagnostic: Diagnostic? = null
+        val diagnostic: Diagnostic? = null,
+        val harmonic: HarmonicEstimate? = null
     )
 
     /** Diagnostic evidence, not a second estimator or a confidence calibration. */

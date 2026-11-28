@@ -103,6 +103,10 @@ private fun costs(directory: File, split: String, fixtures: List<Trial>) {
 fun main(args: Array<String>) {
     val directory = File(args[0]).apply { mkdirs() }
     val split = args[1]
+    if (split == "android-harmonic-parity") {
+        checkAndroidHarmonicParity()
+        return
+    }
     if (split == "phase3-check") {
         checkSeparatedLines()
         return

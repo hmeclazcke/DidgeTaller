@@ -109,13 +109,23 @@ class TallerViewModel internal constructor(
     var viewerOriginalOrientation:Int?=null
     var instrument by mutableStateOf(tools.instrument());private set
     fun selectInstrument(profile:InstrumentProfile){
-        if(listening || sessionPhase!=SessionPhase.IDLE)return
+        if(!canConfigureMeasurement)return
         instrument=profile;tools.setInstrument(profile);minHz=profile.minHz;maxHz=profile.initialMaxHz
         mic.instrument=profile;mic.minHz=minHz;mic.maxHz=maxHz
         reading=PitchDetector.Reading();filteredHz=0.0;consecutiveReadings=0
         clearAcousticDiagnostics()
     }
     var recordingLimitSeconds by mutableStateOf(tools.limitSeconds());private set
+    var pitchAlgorithm by mutableStateOf(tools.pitchAlgorithm()); private set
+    val canConfigureMeasurement get() = sessionPhase == SessionPhase.IDLE && !listening
+    fun selectPitchAlgorithm(value: ar.didgetaller.core.PitchAlgorithm) {
+        if (!canConfigureMeasurement) return
+        tools.setPitchAlgorithm(value)
+        pitchAlgorithm = value
+        filteredHz = 0.0; consecutiveReadings = 0; lastMeasuredHz = 0.0
+        reading = PitchDetector.Reading()
+        clearAcousticDiagnostics()
+    }
     var undoEntry by mutableStateOf<UndoEntry?>(null);private set
     val trashCount get()=library.trashCount
     val trashedSessions get()=library.trashedSessions
@@ -298,11 +308,13 @@ class TallerViewModel internal constructor(
 
     private fun onLiveReading(incoming:PitchDetector.Reading) {
         reading=incoming
-        val live=LivePitch.next(LivePitch.State(filteredHz,consecutiveReadings,lastMeasuredHz),incoming,instrument)
-        acousticSample=incoming.diagnostic?.let {diagnosticHistory.record(SystemClock.elapsedRealtime(),incoming,live,instrument)}
+        val previous = LivePitch.State(filteredHz,consecutiveReadings,lastMeasuredHz)
+        val conventional = LivePitch.next(previous,incoming,instrument)
+        val live = LivePitch.display(previous, incoming, instrument, conventional)
+        acousticSample=incoming.diagnostic?.let {diagnosticHistory.record(SystemClock.elapsedRealtime(),incoming,conventional,instrument)}
         filteredHz=live.hz;consecutiveReadings=live.consecutive;lastMeasuredHz=live.lastMeasuredHz
         recording.append(SessionAnalysis.Point(
-            (SystemClock.elapsedRealtime()-sessionStartedAtMs).coerceAtLeast(0),live.storedHz,incoming.confidence))
+            (SystemClock.elapsedRealtime()-sessionStartedAtMs).coerceAtLeast(0),conventional.storedHz,incoming.confidence))
     }
     private val recording=RecordingCoordinator(object:RecordingCoordinator.Observer {
         override fun changed(state:RecordingCoordinator.State) {
@@ -367,6 +379,7 @@ class TallerViewModel internal constructor(
         else message=MIC_PERMISSION_NOTICE
     }
     fun microphoneStart() {
+        mic.algorithm = pitchAlgorithm.forCapture(inMeasurementDestination)
         metronome.captureActive(true)
         stopPlayback()
         microphoneError=null;permissionDenied=false

@@ -765,4 +765,15 @@
     <string name="wizard_alternative_required">Manufactured alternative: approval required</string>
     <string name="wizard_alternative_accepted">Manufactured approximation accepted; original target retained</string>
     <string name="wizard_legacy">Existing legacy construction: read and export support only</string>
+    <string name="detector_standard">YIN (standard)</string>
+    <string name="detector_experimental">Harmonic-assisted YIN (experimental)</string>
+    <string name="detector_harmonic">Harmonic-assisted YIN</string>
+    <string name="detector_both">Both</string>
+    <string name="detector_compare">Compare pitch detectors</string>
+    <string name="detector_choose">Choose a recording</string>
+    <string name="detector_help">Harmonic-assisted YIN infers pitch from harmonics. Several sound sources can give an incorrect fundamental.</string>
+    <string name="detector_error">Could not analyze this recording.</string>
+    <string name="detector_loading">Analyzing the recording…</string>
+    <string name="detector_cursor">Time cursor</string>
+    <string name="detector_absent">No estimate</string>
 </resources>
