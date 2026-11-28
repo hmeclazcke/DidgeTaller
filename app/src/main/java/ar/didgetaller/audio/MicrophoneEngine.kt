@@ -30,6 +30,7 @@ class MicrophoneEngine(
     @Volatile private var capture:RecordingCapture?=null
     val captureId get()=capture?.id
     @Volatile var instrument=InstrumentProfile.DIDGERIDOO
+    var algorithm = ar.didgetaller.core.PitchAlgorithm.STANDARD
     @Volatile var minHz=35
     @Volatile var maxHz=140
 
@@ -79,7 +80,7 @@ class MicrophoneEngine(
     }
     private fun readLoop(record:AudioRecord,ownedCapture:RecordingCapture) {
         // Freeze one consistent profile/range for this capture. UI changes require stopping first.
-        val stream=PitchStream(instrument,minHz,maxHz);val chunk=ShortArray(CHUNK)
+        val stream=PitchStream(instrument,minHz,maxHz,algorithm=algorithm);val chunk=ShortArray(CHUNK)
         try {
             while(active.get() && audio===record && !Thread.currentThread().isInterrupted) {
                 val n=record.read(chunk,0,CHUNK,AudioRecord.READ_BLOCKING)

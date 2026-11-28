@@ -1,3 +1,11 @@
+# Experimental detector integration
+
+Added an opt-in live and offline implementation of the Phase 3 period-constrained harmonic detector. Selection is fixed for each capture. The preference does not change the meaning of historical YIN points. Laboratory and Library share a cancellable read-only comparison with a common sample clock. See [validation and timing](VALIDATION.md#experimental-detector-integration--2026-11-27).
+
+# Pitch detection study
+
+Started from merged main `fa4aeee`. Froze the candidates in `9014db3` after the development split. Ran the held-out split, an external flute scale, independent frequency/phase replication and two sensitivity sweeps. Preserved the production estimator after observing the tradeoff between harmonic errors and noise responses. [Decision and reproduction](PITCH_STUDY.es.md)
+
 # Sequential validation checkpoint
 
 Old Gradle clients finished. One --no-daemon execution completed successfully in
@@ -1503,3 +1511,11 @@ Bark, preparation losses, kerf, per-end trimming, uncertainty and optional
 log sections remain under preparation. Plan interval, wall and tolerance
 remain under optional plan settings. The project schema, accepted-alternative
 check, acoustic calculations and exports are unchanged.
+
+### Pitch study, phase 2
+
+The experimental branch retains production YIN. Multiple temporal minima and spectral spacing recovered weak drone fundamentals, but high-order matches also assigned spurious source pitches to detuned oscillator pairs. Measured adaptive YIN, CREPE tiny/full and both centered and streaming PESTO. The research harness and optional Python environment are outside the APK. [Methods and decision](PITCH_STUDY.es.md#exactitud-y-cobertura-sobre-frecuencias-conocidas)
+
+### Pitch study, phase 3
+
+The harmonic evidence study retains production YIN. A stricter peak pattern fixed the sparse high-order counterexample but also rejected genuine third/fifth-order pairs. Distinct oscillators can reproduce a missing fundamental exactly. Keep inferred spacing separate for offline research. [Evidence and reproduction](PITCH_RESOLUTION.md#phase-3--harmonic-evidence-and-source-attribution)

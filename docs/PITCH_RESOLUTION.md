@@ -1,5 +1,90 @@
 # Pitch estimation: engineering decision
 
+## Experimental Android integration
+
+Measure starts with standard YIN. The selector also offers the Phase 3 period-constrained harmonic selector (architecture C, `Route.PERIOD`). It selects among supported YIN minima using resolved spectral peaks and falls back to the conventional estimate when the evidence is inconclusive. It abstains when YIN abstains. Switching is available between captures for either instrument and the preference survives restart. Recorded PCM and the historical standard YIN points keep their existing meanings.
+
+In Laboratory, close the construction wizard and choose **Compare pitch detectors** under the additional tools. The same action is available in a Library session. Replay reads the WAV once per analysis and timestamps both estimates at the center of each common window. Select **Both** to compare the solid and dashed curves. Inspect either curve at the same cursor position, including gaps. Several oscillators can support a harmonic spacing absent from the physical sources. Independent physical validation is still needed.
+
+Run `./gradlew :engineering-tools:pitchStudy -PpitchSplit=android-harmonic-parity` to compare Android core output with the independent Phase 3 implementation on 6,048 frozen and held-out frames and measure desktop stream allocations.
+
+## Phase 3 · Harmonic evidence and source attribution
+
+**Phase 3 retained YIN as the default.** Corroborating several temporal minima with spectral spacing recovered most weak fundamentals. It also assigned a high rank to mixtures in which no oscillator had that frequency. The safest use evaluated was an explicitly labelled, separate offline hypothesis. The subsequent beta makes architecture C available by explicit choice for instrument tests. [Detailed Spanish results and reproduction](PITCH_STUDY.es.md#fase-3--qué-permite-afirmar-el-espaciado-armónico)
+
+Correct within 50 cents / estimates emitted, out of 252 identifiable frozen stimuli and 144 independent static stimuli per instrument:
+
+| Route | Frozen didgeridoo | Frozen flute | Independent didgeridoo | Independent flute |
+|---|---:|---:|---:|---:|
+| Production YIN | 45/252 | 107/244 | 46/144 | 53/137 |
+| Phase 2 selector | 224/252 | 243/244 | 144/144 | 137/137 |
+| Independent spectral estimate | 204/204 | 252/252 | 108/108 | 108/108 |
+| Harmonic selection among YIN minima | 224/252 | 244/244 | 108/144 | 101/137 |
+| Conditional correction | 141/252 | 189/244 | 74/144 | 76/137 |
+| Separate hypothesis, alongside unmodified YIN | 204/204 | 244/244 | 108/108 | 101/101 |
+
+The prior selector admitted any two coprime orders. The revised rule penalizes residual peak error, requires at least 90% of retained peak amplitude, and accepts an isolated pair only if consecutive or including order one. It keeps the 68 Hz hypothesis for 340 and 408 Hz, and rejects the 36.94 Hz hypothesis for 332.57 and 406.21 Hz. This preserved the full 179-estimate didgeridoo gain on the frozen corpus. On the independent set, the improvement over YIN was 43.1 percentage points for didgeridoo (paired 95% bootstrap interval 38.2–47.2) and 33.3 for flute (26.4–40.3). The same rule missed all 36 genuine sparse third/fifth-harmonic cases per profile, which the prior selector recovered. Counts at 10, 25 and 50 cents were identical on these two static benchmarks.
+
+Identical samples can encode either a common missing fundamental or two separately driven oscillators. The observable repetition can be estimated; the physical driver cannot be identified from that observation alone. Even conditional correction changed YIN by over 50 cents to a pitch below all three independent near-harmonic oscillators in 33/36 didgeridoo and 31/36 flute trials. At a selection score of 0.99, harmonic selection was correct on all 78 and 70 retained identifiable cases but still emitted below-source estimates on 51 and 66 ambiguous mixtures. The score does not measure source identity.
+
+At matched coverage, harmonic selection versus YIN yielded 108 versus 46 correct didgeridoo estimates out of 108 retained, and 101 versus 53 out of 101 for flute. At a retrospectively matched zero false-positive rate on held-out noise, it retained 144/144 and 137/144 identifiable cases. A cutoff fitted to development noise instead allowed two held-out didgeridoo false positives. Without filtering, harmonic selection inherited YIN's 12 and 5 false readings on 108 negative controls per profile. A spectral-only answer abstained on all 216 negatives.
+
+Restoring up to two previous callbacks of directly anchored evidence improved articulation from 71 to 117 correct out of 324 for didgeridoo and from 69 to 115 for flute, comparing the same code and samples with and without history. Neither variant emitted in any of the 252 fully silent windows per profile. Median YIN versus harmonic-selection register response was 483 versus 464 ms in didgeridoo and 177 versus 188 ms in flute. Desktop median compute time increased from 0.66 to 1.57 ms and from 0.46 to 0.91 ms respectively. The conditional detector still misattributed independent mixtures; context could not distinguish a source handoff producing identical audio.
+
+The experiments used separate development and held-out groups, randomized phases, amplitudes and noise, and 32, 44.1 and 48 kHz input. Replaying the 1,440 frozen decisions for each original estimator reproduced every frequency and score. All 36 public flute windows remained correct within 25 cents with harmonic selection. Synthetic success and a single nominally labelled flute recording do not validate lip vibration during didgeridoo playing. A physical study would synchronize consented audio with independently visible lip cycles, mark unobservable intervals and vocal activity, and hold out entire players. A second pitch tracker or bore simulation does not provide that reference. Android energy and concurrent recording cost remain unmeasured.
+
+An additional control generated proposals directly from each YIN minimum and refined them with nearby peaks. It matched the spectrum-first intersection on all 1,440 frozen decisions and 4,603 of 4,608 independent windows. The five differences occurred during didgeridoo frequency modulation. Static accuracy was identical.
+
+Run the existing Gradle `:engineering-tools:pitchStudy` task with `-PpitchSplit=phase3-SPLIT` sequentially for `check`, `dev`, `held`, `frozen`, `legacy`, `flute`, `ablation` and `periods`, then run `python tools/phase_three_scores.py`. The score tables and frame-level decisions are written under `build/reports/pitch-study/phase3/`. The public flute input is described in the original protocol below.
+
+## Paired window and periodicity study
+
+The [scientific report in Spanish](PITCH_STUDY.es.md) includes the numerical
+results, a public flute recording, harmonic-balance and resonant-noise controls,
+and the decision to retain the production detector.
+
+The baseline is the application at `fa4aeee`. The experiment calls its compiled
+detector and applies the production acceptance policy for each instrument. Two
+desktop-only challengers use the same incoming frame and callback time. One
+analyzes just the most recent half with the existing YIN implementation. The other
+uses direct normalized correlation (type-II NSDF), selecting the earliest positive
+lobe within 93% of the strongest in-range lobe, with parabolic refinement.
+Neither alternative has access to future samples. Strength is a periodicity score.
+
+**Decision rule fixed before held-out evaluation.** Compare each instrument at
+44.1 kHz separately. A general replacement must produce more correct notes or
+react sooner, without fewer correct notes within 50 cents in a signal family,
+more octave mistakes, or more false positives on negative controls. Report misses
+and accepted-only errors together. A narrow win on four held-out frequencies is
+grounds for further independent verification before introducing a special mode.
+No tuning on the held-out or recorded flute cases.
+
+Run from the repository root using JDK 21 and the existing Gradle wrapper:
+
+```sh
+./gradlew :engineering-tools:pitchStudy -PpitchSplit=development
+python tools/pitch_study.py development
+./gradlew :engineering-tools:pitchStudy -PpitchSplit=held
+python tools/pitch_study.py held
+```
+
+For the optional real-flute check, download Sonja Feig's unmodified 2000 mezzo-forte,
+non-vibrato C5–B5 chromatic scale to
+`build/reports/pitch-study/Flute.nonvib.mf.C5B5.aiff`. Run the same two commands
+with `public`. The runner checks the SHA-256 and format. The public source is
+external to the APK and repository. [University of Iowa recording](https://theremin.music.uiowa.edu/sound%20files/MIS/Woodwinds/flute/Flute.nonvib.mf.C5B5.aiff)
+
+Raw paired decisions, strata, confidence bins, transition times and cost samples
+are written to `build/reports/pitch-study/`. Development and held-out splits use
+disjoint pitches and random seeds with the same synthesis families. Accuracy uses
+every labelled periodic trial, including deliberately quiet tones. Negative controls
+and two independent oscillators have separate denominators. Octave errors fall
+within 50 cents of any nonzero integer octave. Frequency-modulated trials use
+instantaneous pitch at the end of the window as the live display target. A
+register change is confirmed on the second consecutive estimate within 50 cents.
+The extra 32/48 kHz runs stress the detector API only. Capture and saved YIN
+replay operate at 44.1 kHz.
+
 ## Musician-facing saved sessions (Musical Experience 4.0)
 
 The ordinary saved-session chart now presents one measured quantity per

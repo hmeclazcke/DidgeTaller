@@ -8,6 +8,12 @@ object LivePitch {
     data class State(val hz:Double=0.0,val consecutive:Int=0,val lastMeasuredHz:Double=0.0,
         val storedHz:Double?=null)
 
+    /** Only the live readout opts into the harmonic inference; saved points retain standard YIN. */
+    fun display(previous: State, reading: PitchDetector.Reading, profile: InstrumentProfile, conventional: State): State {
+        val hypothesis = reading.harmonic ?: return conventional
+        return next(previous, reading.copy(hz = hypothesis.hz), profile)
+    }
+
     fun next(previous:State,incoming:PitchDetector.Reading,profile:InstrumentProfile):State {
         if(!incoming.hz.isFinite())return State(lastMeasuredHz=previous.lastMeasuredHz)
         val usable=if(profile==InstrumentProfile.DIDGERIDOO)incoming.hz>0 else

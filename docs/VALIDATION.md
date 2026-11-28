@@ -1,3 +1,15 @@
+# Experimental detector integration — 2026-11-27
+
+The independent Phase 3 PERIOD oracle and Android core returned identical frequencies and ranks on 6,048 synthetic windows. A standard-only implementation failed the first comparison before integration. The paired replay tests cover native sample clocks, gaps, early cancellation, an ambiguous two-tone mixture, both instrument profiles and agreement with standard-only replay.
+
+On the clean API 37 x86 emulator, synthetic microphone-size chunks including live display processing took median thread CPU times of 6.0 and 7.5 ms per analyzed didgeridoo window (standard and assisted respectively), and 2.8 and 4.5 ms for flute. The corresponding frame intervals at 44.1 kHz are 186 and 93 ms. Warm desktop HotSpot allocation medians were 176,664 and 245,936 bytes per didgeridoo observation, and 207,416 and 250,288 bytes for flute. These are short synthetic runs, not handset wall latency, sustained thermal behavior or battery measurements. Reproduction commands are in the [integration notes](PITCH_RESOLUTION.md#experimental-android-integration).
+
+Emulator checks exercise the Measure preference, synthetic capture locking, both entry points for read-only replay, both languages, display switching, cursor readings and unchanged synthetic WAV bytes. A separate launch of the actual activity replayed a synthetic WAV in Spanish landscape at system font scale 1.5. No private fixtures are required.
+
+# Acoustic detector comparison - 2026-11-26
+
+The focused debug JVM run discovered 50 cases across acoustic reliability, live acceptance, pitch recovery, saved YIN replay, drone components, musical traces and SWIPE comparison. 45 passed and five fixture-dependent cases were skipped. Two additional Python tests verified scoring denominators and undefined conditional error. Six desktop research splits ran against compiled production Kotlin. The recorded flute check used the pinned public Iowa source. [Results and limits](PITCH_STUDY.es.md)
+
 # Responsive metronome follow-up - 2026-11-10
 
 [Fast CI on 46d841f](https://github.com/hmeclazcke/DidgeTaller/actions/runs/42809274276)
@@ -2653,3 +2665,11 @@ Debug JVM discovered 646 tests with 638 passes and eight protected skips. The
 strict source gate measured 830 functions and classified 191 as unmapped, with
 zero violations and zero CPD groups. Resource parity passed. The quality
 thresholds and numerical baselines are unchanged.
+
+### Pitch study, phase 2
+
+The frozen JVM methods and three pretrained CPU models were evaluated against the same PCM. The new held-out split contains 1,008 static windows and 432 post-transition decisions. Checked five analytic controls, equality with 735 archived YIN decisions and 36 public flute windows, as well as all 52 Python tool tests. Continuous PESTO processing used 56 independent transitions and verified the overlapping PCM. Physical instrument, mobile resource use and battery performance remain unmeasured. [Numerical results](PITCH_STUDY.es.md#exactitud-y-cobertura-sobre-frecuencias-conocidas)
+
+### Pitch study, phase 3
+
+Both archived estimators reproduced 1,440 frequencies and scores each. The independent split had 4,608 delivered windows across 72 instrument/frequency groups and three sampling rates. Replayed history versus reset on identical samples, checked source twins, an alternating pulse train and a flat-spectrum impulse, ran all 55 Python tests, and evaluated the public flute separately. No Android performance or physical lip-reference evidence was collected. [Evidence and reproduction](PITCH_RESOLUTION.md#phase-3--harmonic-evidence-and-source-attribution)

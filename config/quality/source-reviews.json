@@ -2901,22 +2901,15 @@
     },
     "dd9b68f3e727f5680f22d75a7dee857663b841cf70e6497c4f9b4794fc2585f1": {
       "file": "app/src/main/java/ar/didgetaller/ui/PreparedPlotInk.kt",
-      "kind": "function",
-      "semanticHash": "a3f70d1fd5ac4a53414e34b1e1b0c60f39d0d459e5b7ec8c100471ced8172415",
       "line": 35,
+      "kind": "function",
       "name": "rememberComparisonInk",
-      "reason": "Native layout/resource/semantics binding with immutable frame inputs; cached paths and paint are owned by the Compose adapter, not PCM, playback or jobs. Source/JVM correspondence remains explicitly unsupported by the current Compose mapper. Pure preparation, layout policy and actual DrawScope paint calls have deterministic JVM tests; framework behavior requires the real emulator configuration/gesture suite. No source-level CRAP is fabricated for constructors or transformed Compose functions.",
+      "semanticHash": "2ad3bb3912252b7ae555620f2f73a66743644b97e94d4389d76d9b8ec3cced35",
+      "reason": "The existing optional SWIPE overlay and the separate harmonic overlay share only projected path construction, preserving isolated dots and segment endpoints.",
       "evidence": [
-        "docs/engineering/ANALYSIS_RENDERING_REBUILD.md",
-        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisControllerTest.kt",
-        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisCoroutineTest.kt",
-        "app/src/test/java/ar/didgetaller/core/RecordingAnalysisPresentationTest.kt",
         "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt",
-        "app/src/test/java/ar/didgetaller/ui/PlotFramePolicyTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/AnalysisOwnershipTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/SessionEvidenceUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt"
       ],
-      "reviewed_base": "806db72b7a50c9a081ea23bf00683de5a7c2780b",
       "metric_status": "compose-transformation"
     },
     "6f4aa0cf874bd957bc36b1d3aca2cf0d06aac1fba8c1ef810a77701c90ff0e29": {
@@ -5479,17 +5472,15 @@
     },
     "bee8fe27f892a7f8015156cd5eca4210a526980a8e94f6dac2e5bb0e3adc1973": {
       "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
-      "line": 311,
+      "line": 312,
       "kind": "function",
       "name": "MeasureScreen",
-      "semanticHash": "db7f22aca32b89852db61b896827111f322d2d96622f7f38b27c22cd0550dda3",
-      "metric_status": "compose-transformation",
-      "reason": "Presentation-only ownership review. FlowRow header gives long localized headings intrinsic width instead of squeezing them under the wide-view action. Recording actions wrap according to available width and system font scale, preserve min 48dp targets and bind the original start/finish/discard actions unchanged. Blank scientific placeholders cannot fabricate notes; controlled PCM asserts C#2/A4. Compose source/JVM CRAP-L remains unsupported; numeric ratchets are unchanged. Scientific-note secondary display substitutes sharp/flat glyphs only; stored identifiers and Music calculations are untouched. The controlled synthetic PCM meter regression asserts the exact glyph and stable layout.",
+      "semanticHash": "462febb8989f6511f27c0df99c6ce126e1e91ea6180111032c5029283f7ff977",
+      "reason": "Measure exposes an idle-only selector and the session detail links to read-only comparison. Existing capture and navigation action owners are preserved.",
       "evidence": [
-        "app/src/androidTest/java/ar/didgetaller/ui/MeasureDiscardUiTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/RecoveryUiTest.kt"
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt"
       ],
-      "reviewed_source": "ddeafa0 + evidenced narrow ES150 wrapping correction"
+      "metric_status": "compose-transformation"
     },
     "d4472273b926e36faa07c393eb7a62c57ec6f11da1b9b88f36881db20e00fd2b": {
       "file": "app/src/main/java/ar/didgetaller/audio/PracticeMetronome.kt",
@@ -7727,14 +7718,11 @@
       "line": 21,
       "kind": "function",
       "name": "LaboratoryWizard",
-      "semanticHash": "9ba3897f9451c22167e58124c90b5e925ceec28dcdba8ca72bf4e804c8bfe0ed",
-      "reason": "Canonical saved bore and editable draft remain distinct. Incomplete geometry text is retained without reverting the last successfully saved shape. Laboratory seeds resumed identities from stored design metadata, and Library reloads its coherent snapshot on entry so a just-saved draft is immediately discoverable. This declaration is a Compose transformation or auxiliary field initializer without independent source-function Detekt correspondence; ordinary save logic is reliably measured below target. JVM RED/GREEN and native new-save/resume/canonical-bore regressions cover the boundary. No metric baseline or numeric exception changes.",
+      "semanticHash": "b4c679e476c36978ee6486c33185dc39918966e84043f63c3958720f32852ca7",
+      "reason": "The additional-tools action opens the same comparison as the Library session action without altering the construction draft.",
       "evidence": [
-        "app/src/test/java/ar/didgetaller/ui/ConstructionEditorTest.kt",
-        "app/src/androidTest/java/ar/didgetaller/ui/ConstructionUiTest.kt",
-        "docs/engineering/CONSTRUCTION_PROGRESS.md"
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt"
       ],
-      "reviewed_source": "Persistent Laboratory wizard final save/resume verification on PR5",
       "metric_status": "compose-transformation"
     },
     "3e659df7591919487e12fc8c1671baafd485a6d19457779d9055addb5a911e6f": {
@@ -8670,6 +8658,354 @@
         "app/src/test/java/ar/didgetaller/core/ConstructionJourneyTest.kt"
       ],
       "reviewed_source": "Guided workshop material inputs",
+      "metric_status": "compose-transformation"
+    },
+    "73741a0b4576c2347c6645f1e93568057ca8353b1b1a26bdb3431569d5bba091": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "line": 33,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "916e15b682ec030362153e96f2f89d198009ebbbea2ee5eaa2a6f50c0b5db25d",
+      "reason": "Capture creates one immutable stream for its worker. The existing AudioRecord ownership check still excludes readings queued by a retired worker.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt"
+      ]
+    },
+    "0987f6b0c42a81c81cf62c1cd10ffc98885356f9481f061f8b5e7b02fb0737da": {
+      "file": "app/src/main/java/ar/didgetaller/audio/MicrophoneEngine.kt",
+      "line": 81,
+      "kind": "function",
+      "name": "readLoop",
+      "semanticHash": "2cd6b4da80f88336eb556d063b2f8bbe4edcb356e8731b63dc9c846c7a3134e9",
+      "reason": "Capture creates one immutable stream for its worker. The existing AudioRecord ownership check still excludes readings queued by a retired worker. Existing hardware-loop complexity is unchanged (18). This method has no host-JVM line coverage.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/androidTest/java/ar/didgetaller/audio/RecordingHandoffTest.kt"
+      ],
+      "max_cc": 18,
+      "max_crap_line": 342
+    },
+    "943b894798a50dc3902676f4d2b2e224ff479798c198dd53be4cc6de2ae7b4a2": {
+      "file": "app/src/main/java/ar/didgetaller/core/DetectorComparison.kt",
+      "line": 7,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "9e57f2c4c2b416651104f8d12c6317297a3d8d79e9c9235ad8e54615379c5324",
+      "reason": "Window centers, sampling rate and nullable paired observations belong to one replay. The reader checks cancellation before each chunk and retains only results.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "8261e8a52bc7f8059acb64c7825294f3dd08e1f8f5d6b7e53c0c56a26289e00b": {
+      "file": "app/src/main/java/ar/didgetaller/core/DetectorComparison.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "7c0616955038e0a0d831381403541163f8d1e48024abaa019c713b1112566117",
+      "reason": "Window centers, sampling rate and nullable paired observations belong to one replay. The reader checks cancellation before each chunk and retains only results.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "b02a8ad92fdd761ea8cb50859566929c30bb19ee37ac79fd83669129f96cab05": {
+      "file": "app/src/main/java/ar/didgetaller/core/DetectorComparison.kt",
+      "line": 30,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "468d36af55511abf452a07950b02b00e1b260f11c5fb59a7ab7e35a74aa72348",
+      "reason": "Window centers, sampling rate and nullable paired observations belong to one replay. The reader checks cancellation before each chunk and retains only results.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "0d09964a44446cef8bc6e8cbf3762d029db2a58390e5002a7367948bd3aedf5e": {
+      "file": "app/src/main/java/ar/didgetaller/core/HarmonicYin.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bf7580bf71f78c7fa45140f93c049ecf43cd0c9e341e45dedb4be39469ab6949",
+      "reason": "Per-stream FFT workspace and immutable spectral peak, candidate and estimate values. Period selection is checked against the separate frozen reference for both instruments.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "5611ba062b90b9bd23ad86160a3a8140facf8dbca34827ef5d1be9df49344770": {
+      "file": "app/src/main/java/ar/didgetaller/core/HarmonicYin.kt",
+      "line": 13,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "f520071fa403ac3509dba1be0a65fcf78787ed0614919d2033a75b9ea064034a",
+      "reason": "Per-stream FFT workspace and immutable spectral peak, candidate and estimate values. Period selection is checked against the separate frozen reference for both instruments.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "12f795c44a8f7a250e2b2e05065ac44497a00ee946b54c02ea68d56208b525df": {
+      "file": "app/src/main/java/ar/didgetaller/core/HarmonicYin.kt",
+      "line": 14,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "389e04564c722c8de334d163a4a05d197e893c37e40983edc1e78a21ed9072c2",
+      "reason": "Per-stream FFT workspace and immutable spectral peak, candidate and estimate values. Period selection is checked against the separate frozen reference for both instruments.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "abc8ee01bc8731f3b74526211361a4e3a21a0c274cb5a88fbdc0e7f9cc0939ab": {
+      "file": "app/src/main/java/ar/didgetaller/core/HarmonicYin.kt",
+      "line": 15,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ce6623ef06e4f73a3b0e24032394fa7176abd1fe0ae0cce857d4a3dc10a44b74",
+      "reason": "Per-stream FFT workspace and immutable spectral peak, candidate and estimate values. Period selection is checked against the separate frozen reference for both instruments.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "197dc55809ac2632a172f1defca057e534f3524c453f7eb1b3605c492431af9d": {
+      "file": "app/src/main/java/ar/didgetaller/core/HarmonicYin.kt",
+      "line": 16,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "bf7580bf71f78c7fa45140f93c049ecf43cd0c9e341e45dedb4be39469ab6949",
+      "reason": "Per-stream FFT workspace and immutable spectral peak, candidate and estimate values. Period selection is checked against the separate frozen reference for both instruments.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "be968b832fef2499a1651fea3b800965d2e5fe1c7c3ecf7ff7995676147d2495": {
+      "file": "app/src/main/java/ar/didgetaller/core/PitchDetector.kt",
+      "line": 10,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "eb99a4157c28dae4c8065f9ac2d38cb035b7db7b8c837c1cb0c6cd13b0166ac8",
+      "reason": "The optional harmonic value is separate from conventional Hz, periodicity and diagnostics. Its default preserves existing callers.",
+      "evidence": [
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt",
+        "tools/pitch-study/AndroidHarmonicParity.kt"
+      ]
+    },
+    "7a8b2bb76016ff5aa2a2e305eb2d2446845be8d586da7fa4d4b59a054dddb204": {
+      "file": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
+      "line": 4,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "ad310048f910046b7db1829b8bf242a5b051529f83271aea34648895d2f7fec8",
+      "reason": "Standard streams need no harmonic workspace. Experimental streams evaluate only the current owned PCM window at the source rate.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "fbaa2e5b67bdd2d7fa3b86a02225215db9c89bf5bcfc8f41975781ddaabcf36b": {
+      "file": "app/src/main/java/ar/didgetaller/core/PitchStream.kt",
+      "line": 14,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "1d45a36d4ee313a2ff699ee97422f153069f3f13306191157d8be23a49c17be0",
+      "reason": "Standard streams need no harmonic workspace. Experimental streams evaluate only the current owned PCM window at the source rate.",
+      "evidence": [
+        "tools/pitch-study/AndroidHarmonicParity.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "b9d3caad11fe9dfe27cad081d1d67c023a43d46a3f9092749bc4852b24d12f30": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 119,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "a84f612079e9bbb9cbb05294220e8e720c29449a133b06af275d94f8806327ca",
+      "reason": "Preference and configuration availability are scoped to idle measurement. Synthetic capture checks persistence, rejects switching and preserves the original timeline.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "618a82ac39b534f80def41aee01ad3ed85ddb570f88222cf593482dde94eeb4c": {
+      "file": "app/src/main/java/ar/didgetaller/TallerViewModel.kt",
+      "line": 120,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "fc0ca48985f71446d9372837e6727f9f358270ad406a08f2212863740e74ba30",
+      "reason": "Preference and configuration availability are scoped to idle measurement. Synthetic capture checks persistence, rejects switching and preserves the original timeline.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "c4e787b5e7e9d913bbe27329b5db64d8877a55ec70fc8d08c83b25f760749d69": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ComparisonGraph.kt",
+      "line": 25,
+      "kind": "initializer",
+      "name": null,
+      "semanticHash": "17e0b9e84ade946d8ed395ba987ca17c0439e2dd441a0911c7307463f631562d",
+      "reason": "Both traces use the same measured plot frame, camera and time cursor. Color and line style are redundant cues. Missing observations remain gaps.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt"
+      ]
+    },
+    "1659cf494b885d7f4ca6987232d00447fde60d669f1d2b7a147f658341656680": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ComparisonGraph.kt",
+      "line": 28,
+      "kind": "function",
+      "name": "ComparisonGraph",
+      "semanticHash": "b8411c506ce422a868ff7907efb7e5c94910c1cab5d41675a9f37105953c1236",
+      "reason": "The comparison owns its camera and shares the session selection. Scrubbing only seeks audio already playing.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "4a6baf281c693e3fc583c92371045e72baebd9618925a3a76a9f85bd81223158": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ComparisonGraph.kt",
+      "line": 56,
+      "kind": "function",
+      "name": "DetectorReadout",
+      "semanticHash": "27d35aa2da2489fd1dec97cd86e0dde40118d3c9490400a5f8050f15fb3e306e",
+      "reason": "Cursor labels resolve the selected instrument estimate, localized note, signed cents or explicit absence.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "805318e737f2b46eb4c5d04e45675ce497ef94a76887a554ae9800933c6654c8": {
+      "file": "app/src/main/java/ar/didgetaller/ui/ComparisonGraph.kt",
+      "line": 65,
+      "kind": "function",
+      "name": "ComparisonCanvas",
+      "semanticHash": "50bf329193f8c3725626925696c64481d7fdf36d80dff42a1853a518ae79e55b",
+      "reason": "The measured projection drives axes, cursor, dashed overlay and existing pinch, pan and reset gestures.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt",
+        "app/src/test/java/ar/didgetaller/ui/PlotInkTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "5d06c1a8530f8be4407aea74ddbc90611cc906141a1e9e5c9820e9fa415c726d": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 23,
+      "kind": "accessor",
+      "name": null,
+      "semanticHash": "26702ad40c44894de2c7f912c666e5168aa29834556735f707bf20f91a3625cb",
+      "reason": "User selects a session before opening a read-only PCM source. The composition owns the job and session identity; the computation returns to its active caller before publication.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "44d7481d6f0f250d1026313ccf49974a310797c98d112dcb84e16c58c4f199c2": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 29,
+      "kind": "function",
+      "name": "DetectorSelector",
+      "semanticHash": "eeaac09f365889eb1326dcecbd9a7dba5de728719647cfe61396077a5f911d5e",
+      "reason": "The localized menu changes the persisted detector only while idle; its explanation is outside the live readout.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "f85ca925bed5a582073cc978d5e065ec520f2d5d1e2feae40e1c5613e367bb5c": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 44,
+      "kind": "constructor",
+      "name": null,
+      "semanticHash": "b1f09b4e0a35daf1d1cb056f6b26a7f114325ad477b0e7953db3d2aa6ebc4d5c",
+      "reason": "User selects a session before opening a read-only PCM source. The composition owns the job and session identity; the computation returns to its active caller before publication.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ]
+    },
+    "85ae078f0e3e1d26506c2ee535dcc0bf84f6c5d7d6d21623b3cb261f480e4674": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 49,
+      "kind": "function",
+      "name": "DetectorComparisonAction",
+      "semanticHash": "dda223b5843f6f5754419f22c6a5fa62c83e76f5e9a94ddce15c60d759688712",
+      "reason": "The full-screen dialog is explicitly opened from a session or Laboratory. Back disposes its analysis scope.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "f7a0d9c76cc176ad4932471fcd24ef6d1af8966a9cf7cf409acb38f55255cf74": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 62,
+      "kind": "function",
+      "name": "ComparisonScreen",
+      "semanticHash": "b04d007e3edf54339887fa7861d2839366b56ae4331a68095e85d39207e7ed26",
+      "reason": "Session identity keys replay state; the display mode changes only which evidence is requested and drawn.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "ca0fbfc7c923610ae1cd058d588efb039b85223802962e1e5b22676f0104c3dd": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 89,
+      "kind": "function",
+      "name": "RecordingChoice",
+      "semanticHash": "53560311af72720cac4682b849ec798ed1ac31971bada54b3a100f5dee0b024f",
+      "reason": "The menu lists metadata; the selected ID alone initiates replay and selection is cleared on removal.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "e673e98dc1cbf4b410021e7d3f31e1920d7147c01422202a102109db7c0f3993": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 107,
+      "kind": "function",
+      "name": "ComparisonResults",
+      "semanticHash": "848227ead3139e867431be4d8176cde7c555d7aa7a9d792f894b3c29cccd3407",
+      "reason": "One cancellable job per session and requested analysis; a complete assisted result can also serve a standard-only display.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ],
+      "metric_status": "compose-transformation"
+    },
+    "5b805eab48febb3f235852f51c5bd3df0b165ae1a42a2c86c80a04c500457d0f": {
+      "file": "app/src/main/java/ar/didgetaller/ui/DetectorComparisonTool.kt",
+      "line": 127,
+      "kind": "function",
+      "name": "replay",
+      "semanticHash": "a1cfb16c4e54d10e152d2c974641c19722fd958e81096b35b7e9cc1a849a76a3",
+      "reason": "The PCM reader is closed by use() on completion, error and coroutine cancellation. Both estimates receive the same samples on a background dispatcher.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt",
+        "app/src/test/java/ar/didgetaller/core/DetectorComparisonTest.kt"
+      ],
+      "metric_status": "suspend-state-machine"
+    },
+    "3dc29a28b578acbaecce7f10d2ab99110a409f017316d7931812cd954ab5edac": {
+      "file": "app/src/main/java/ar/didgetaller/ui/TallerApp.kt",
+      "line": 935,
+      "kind": "function",
+      "name": "SessionDetail",
+      "semanticHash": "23289217c38d7fdd161211a5e9b5f4eeed7573b00c457d557792c292ad8c2a64",
+      "reason": "Measure exposes an idle-only selector and the session detail links to read-only comparison. Existing capture and navigation action owners are preserved.",
+      "evidence": [
+        "app/src/androidTest/java/ar/didgetaller/ui/HarmonicDetectorUiTest.kt"
+      ],
       "metric_status": "compose-transformation"
     }
   }

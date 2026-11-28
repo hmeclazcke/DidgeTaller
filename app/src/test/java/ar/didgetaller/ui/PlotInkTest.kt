@@ -54,6 +54,18 @@ class PlotInkTest {
     })
     private val projection = PlotProjection(PlotViewport(AxisWindow(100.0, 300.0), AxisWindow(50.0, 150.0)), 400.0, 200.0)
 
+    @Test fun comparisonProjectsIsolatedObservationsAndBothSegmentEndpoints() {
+        val calls = mutableListOf<List<Any?>>()
+        val path = Proxy.newProxyInstance(Path::class.java.classLoader, arrayOf(Path::class.java)) { _, _, args ->
+            calls += args?.toList().orEmpty(); null
+        } as Path
+        val a = TraceDrawing.Vertex(100.0, 50.0)
+        val b = TraceDrawing.Vertex(200.0, 100.0)
+        val ink = comparisonInk(listOf(TraceDrawing.Dot(a), TraceDrawing.Segment(a, b)), projection, path)
+        assertEquals(listOf(listOf(0f, 200f), listOf(200f, 100f)), calls)
+        assertEquals(listOf(Offset(0f, 200f)), ink.dots)
+    }
+
     @Test fun tracePainterKeepsOrderGapsToneAndUncertaintyWithoutReadingExplorerState() {
         val s = Surface(); val bridge = nativeToken(PathEffect::class.java); val marker = nativeToken(Path::class.java)
         val a = TraceDrawing.Vertex(100.0, 50.0); val b = TraceDrawing.Vertex(200.0, 100.0)

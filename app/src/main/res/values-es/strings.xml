@@ -765,4 +765,15 @@
     <string name="wizard_alternative_required">Alternativa fabricada: falta tu aceptación</string>
     <string name="wizard_alternative_accepted">Aproximación fabricada aceptada; objetivo original conservado</string>
     <string name="wizard_legacy">Construcción antigua: acceso y exportación conservados</string>
+    <string name="detector_standard">YIN (estándar)</string>
+    <string name="detector_experimental">YIN armónico (experimental)</string>
+    <string name="detector_harmonic">YIN armónico</string>
+    <string name="detector_both">Ambos</string>
+    <string name="detector_compare">Comparar detectores de frecuencia fundamental</string>
+    <string name="detector_choose">Elegir una grabación</string>
+    <string name="detector_help">El YIN armónico infiere la fundamental a partir de los armónicos. Si hay varias fuentes de sonido, puede indicar una frecuencia incorrecta.</string>
+    <string name="detector_error">No se pudo analizar esta grabación.</string>
+    <string name="detector_loading">Analizando la grabación…</string>
+    <string name="detector_cursor">Cursor de tiempo</string>
+    <string name="detector_absent">Sin estimación</string>
 </resources>

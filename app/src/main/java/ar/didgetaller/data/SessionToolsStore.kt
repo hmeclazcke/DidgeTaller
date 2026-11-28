@@ -55,6 +55,11 @@ class SessionToolsStore(context: Context) {
     }
 
     fun instrument() = InstrumentProfile.fromStored(prefs.getString("instrument", null))
+    fun pitchAlgorithm() = if (prefs.getBoolean("harmonicYin", false)) ar.didgetaller.core.PitchAlgorithm.HARMONIC
+        else ar.didgetaller.core.PitchAlgorithm.STANDARD
+    fun setPitchAlgorithm(value: ar.didgetaller.core.PitchAlgorithm) {
+        prefs.edit().putBoolean("harmonicYin", value == ar.didgetaller.core.PitchAlgorithm.HARMONIC).apply()
+    }
     fun setInstrument(profile: InstrumentProfile) { check(prefs.edit().putString("instrument", profile.name).commit()) }
     fun limitSeconds() = prefs.getInt("limitSeconds", 900).coerceIn(60, 3600)
     fun setLimitSeconds(seconds: Int) {

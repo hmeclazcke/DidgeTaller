@@ -35,8 +35,12 @@ internal fun rememberPitchInk(enabled: Boolean, marks: List<TraceDrawing.Mark>, 
 internal fun rememberComparisonInk(curve: SwipeCurve?, projection: PlotProjection, enabled: Boolean): ComparisonInk? =
     remember(curve, projection, enabled) {
         if (curve == null || !enabled) return@remember null
-        val path = Path(); val dots = mutableListOf<Offset>()
-        TraceDrawing.comparison(curve, projection.viewport.x).forEach { mark ->
+        comparisonInk(TraceDrawing.comparison(curve, projection.viewport.x), projection)
+    }
+
+internal fun comparisonInk(marks: List<TraceDrawing.Mark>, projection: PlotProjection, path: Path = Path()): ComparisonInk {
+        val dots = mutableListOf<Offset>()
+        marks.forEach { mark ->
             when (mark) {
                 is TraceDrawing.Segment -> {
                     val a = projection.offset(mark.from.timeMs, mark.from.hz)
@@ -46,7 +50,7 @@ internal fun rememberComparisonInk(curve: SwipeCurve?, projection: PlotProjectio
                 is TraceDrawing.Dot -> dots += projection.offset(mark.at.timeMs, mark.at.hz)
             }
         }
-        ComparisonInk(path, dots)
+        return ComparisonInk(path, dots)
     }
 
 @Composable
